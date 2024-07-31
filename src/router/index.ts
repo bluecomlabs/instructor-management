@@ -9,7 +9,7 @@ import { useConfigStore } from "@/stores/config";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/user",
-    redirect: "/user/dashboard",
+    redirect: "/user/sign-in",
     component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
     meta: {
       middleware: "auth",
@@ -164,7 +164,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/apps/customers/customer-details",
         name: "apps-customers-details",
-        component: () => import("@/views/apps/customers/CustomerDetails.vue"),
+        component: () => import("@/views/apps/customers/myprofile.vue"),
         meta: {
           pageTitle: "Customers Details",
           breadcrumbs: ["Apps", "Customers"],
@@ -563,12 +563,21 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/apps/customers/customer-details",
-        name: "apps-customers-details",
-        component: () => import("@/views/apps/customers/CustomerDetails.vue"),
+        path: "ProgramDetails",
+        name: "admin-ProgramDetails",
+        component: () => import("@/views/apps/customers/ProgramDetails.vue"),
         meta: {
-          pageTitle: "Customers Details",
-          breadcrumbs: ["Apps", "Customers"],
+          pageTitle: "교육 프로그램 관리",
+          breadcrumbs: ["교육 관리", "교육 프로그램 관리"],
+        },
+      },
+      {
+        path: "MyProfile",
+        name: "admin-MyProfile",
+        component: () => import("@/views/apps/customers/MyProfile.vue"),
+        meta: {
+          pageTitle: "마이페이지",
+          breadcrumbs: ["마이페이지"],
         },
       },
       {

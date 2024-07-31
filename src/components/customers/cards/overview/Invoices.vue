@@ -5,13 +5,12 @@
     <div class="card-header border-0">
       <!--begin::Card title-->
       <div class="card-title">
-        <h2>Invoices</h2>
+        <h2>가장 빠른 다음 강의 목록</h2>
       </div>
       <!--end::Card title-->
 
       <!--begin::Toolbar-->
-      <div class="card-toolbar m-0">
-        <!--begin::Tab nav-->
+      <!-- <div class="card-toolbar m-0">
         <ul
           class="nav nav-stretch fs-5 fw-semibold nav-line-tabs nav-line-tabs-2x border-transparent"
           role="tablist"
@@ -64,8 +63,7 @@
             </a>
           </li>
         </ul>
-        <!--end::Tab nav-->
-      </div>
+      </div> -->
       <!--end::Toolbar-->
     </div>
     <!--end::Card header-->

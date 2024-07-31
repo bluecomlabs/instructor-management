@@ -1,3 +1,4 @@
+import Myprofile from "@/views/apps/customers/myprofile.vue";
 import { createI18n } from "vue-i18n";
 
 const messages = {
@@ -69,6 +70,7 @@ const messages = {
     subscriptionList: "Subscription List",
     addSubscription: "Add Subscription",
     viewSubscription: "View Subscription",
+    programdetails : "Program Details"
   },
   es: {
     dashboard: "Tablero",
@@ -272,6 +274,7 @@ const messages = {
     customers: "お客様のお客様",
     ResearchNote: "업무일지",
     customersListing: "신청 가능한 교육",
+    programdetails : "교육 프로그램 관리",
     customerDetails: "마이페이지",
     calendarApp: "교육 배정 현황",
     subscriptions: "購読",
@@ -279,6 +282,7 @@ const messages = {
     subscriptionList: "サブスクリプションリスト",
     addSubscription: "サブスクリプションを追加します",
     viewSubscription: "購読を見る",
+    myprofile : "마이페이지"
   },
   fr: {
     dashboard: "Générateur de mise",

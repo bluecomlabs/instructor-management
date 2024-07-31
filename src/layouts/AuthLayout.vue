@@ -2,9 +2,7 @@
   <!--begin::Authentication Layout -->
   <div class="d-flex flex-column flex-lg-row flex-column-fluid">
     <!--begin::Body-->
-    <div
-      class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1"
-    >
+    <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
       <!--begin::Form-->
       <div class="d-flex flex-center flex-column flex-lg-row-fluid">
         <!--begin::Wrapper-->
@@ -18,13 +16,13 @@
       <!--begin::Footer-->
       <div class="d-flex flex-center flex-wrap px-5">
         <!--begin::Links-->
-        <div class="d-flex fw-semibold text-primary fs-base">
-          <a href="#" class="px-5" target="_blank">Terms</a>
+        <!--        <div class="d-flex fw-semibold text-primary fs-base">-->
+        <!--          <a href="#" class="px-5" target="_blank">Terms</a>-->
 
-          <a href="#" class="px-5" target="_blank">Plans</a>
+        <!--          <a href="#" class="px-5" target="_blank">Plans</a>-->
 
-          <a href="#" class="px-5" target="_blank">Contact Us</a>
-        </div>
+        <!--          <a href="#" class="px-5" target="_blank">Contact Us</a>-->
+        <!--        </div>-->
         <!--end::Links-->
       </div>
       <!--end::Footer-->
@@ -32,72 +30,66 @@
     <!--end::Body-->
 
     <!--begin::Aside-->
-    <div
-      class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2"
-      :style="`background-image: url('${getAssetPath(
-        '/media/misc/auth-bg.png'
-      )}')`"
-    >
-      <!--begin::Content-->
-      <div
-        class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100"
-      >
-        <!--begin::Logo-->
-        <router-link to="/" class="mb-0 mb-lg-12">
-          <img
-            alt="Logo"
-            :src="getAssetPath('media/logos/custom-1.png')"
-            class="h-60px h-lg-75px"
-          />
-        </router-link>
-        <!--end::Logo-->
+<!--    <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2"-->
+<!--        :style="`background-image: url('${getAssetPath('/media/misc/auth-bg.png')}')`">-->
+<!--      &lt;!&ndash;begin::Content&ndash;&gt;-->
+<!--      <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">-->
+<!--        &lt;!&ndash;begin::Logo&ndash;&gt;-->
+<!--        <router-link to="/" class="mb-0 mb-lg-12">-->
+<!--          <img-->
+<!--              alt="Logo"-->
+<!--              :src="getAssetPath('media/logos/custom-1.png')"-->
+<!--              class="h-60px h-lg-75px"-->
+<!--          />-->
+<!--        </router-link>-->
+<!--        &lt;!&ndash;end::Logo&ndash;&gt;-->
 
-        <!--begin::Image-->
-        <img
-          class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
-          :src="getAssetPath('media/misc/auth-screens.png')"
-          alt=""
-        />
-        <!--end::Image-->
+<!--        &lt;!&ndash;begin::Image&ndash;&gt;-->
+<!--        <img-->
+<!--            class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"-->
+<!--            :src="getAssetPath('media/misc/auth-screens.png')"-->
+<!--            alt=""-->
+<!--        />-->
+<!--        &lt;!&ndash;end::Image&ndash;&gt;-->
 
-        <!--begin::Title-->
-        <h1
-          class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7"
-        >
-          Fast, Efficient and Productive
-        </h1>
-        <!--end::Title-->
+<!--        &lt;!&ndash;begin::Title&ndash;&gt;-->
+<!--        <h1-->
+<!--            class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7"-->
+<!--        >-->
+<!--          Fast, Efficient and Productive-->
+<!--        </h1>-->
+<!--        &lt;!&ndash;end::Title&ndash;&gt;-->
 
-        <!--begin::Text-->
-        <div class="d-none d-lg-block text-white fs-base text-center">
-          In this kind of post,
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the blogger</a
-          >
+<!--        &lt;!&ndash;begin::Text&ndash;&gt;-->
+<!--        <div class="d-none d-lg-block text-white fs-base text-center">-->
+<!--          In this kind of post,-->
+<!--          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"-->
+<!--          >the blogger</a-->
+<!--          >-->
 
-          introduces a person they’ve interviewed <br />
-          and provides some background information about
+<!--          introduces a person they’ve interviewed <br/>-->
+<!--          and provides some background information about-->
 
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the interviewee</a
-          >
-          and their <br />
-          work following this is a transcript of the interview.
-        </div>
-        <!--end::Text-->
-      </div>
-      <!--end::Content-->
-    </div>
+<!--          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"-->
+<!--          >the interviewee</a-->
+<!--          >-->
+<!--          and their <br/>-->
+<!--          work following this is a transcript of the interview.-->
+<!--        </div>-->
+<!--        &lt;!&ndash;end::Text&ndash;&gt;-->
+<!--      </div>-->
+<!--      &lt;!&ndash;end::Content&ndash;&gt;-->
+<!--    </div>-->
     <!--end::Aside-->
   </div>
   <!--end::Authentication Layout -->
 </template>
 
 <script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, onMounted } from "vue";
+import {getAssetPath} from "@/core/helpers/assets";
+import {defineComponent, onMounted} from "vue";
 import LayoutService from "@/core/services/LayoutService";
-import { useBodyStore } from "@/stores/body";
+import {useBodyStore} from "@/stores/body";
 
 export default defineComponent({
   name: "auth-layout",

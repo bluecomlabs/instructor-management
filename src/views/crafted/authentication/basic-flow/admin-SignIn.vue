@@ -1,7 +1,10 @@
 <template>
   <!--begin::Wrapper-->
-  <div class="w-lg-500px p-10">
+  <div class="background-container"></div>
+  <div class="form-wrapper">
     <!--begin::Form-->
+    <img src="../../../../../public/logo.png" style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 30px;">
+    
     <VForm
       class="form w-100"
       id="kt_login_signin_form"
@@ -10,7 +13,7 @@
       :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
     >
       <div class="text-center mb-10">
-        <h1 class="text-gray-900 mb-3">관리자 로그인</h1>
+        <h1 class="text-gray-900 mb-3" style="font-size: 35px;">관리자 로그인</h1>
       </div>
 
       <div class="fv-row mb-10">
@@ -78,7 +81,7 @@
           <span class="indicator-label"> 로그인 </span>
 
           <span class="indicator-progress">
-            Please wait...
+            잠시만 기다려주세요
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
@@ -97,12 +100,6 @@
           class="btn btn-lg w-100 mb-5" style="border: 1px solid black;"
         >
           <span class="indicator-label"> 강사로 로그인 </span>
-          <span class="indicator-progress">
-            Please wait...
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
-          </span>
         </button>
       </div>
       <!--end::Actions-->
@@ -204,3 +201,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(200, 204, 210) url('../../../../../public/media/misc/auth-screens.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.form-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin: 0 auto;
+}
+</style>
