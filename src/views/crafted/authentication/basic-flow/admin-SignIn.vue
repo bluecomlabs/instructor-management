@@ -10,7 +10,7 @@
       :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
     >
       <div class="text-center mb-10">
-        <h1 class="text-gray-900 mb-3">강사 로그인</h1>
+        <h1 class="text-gray-900 mb-3">관리자 로그인</h1>
       </div>
 
       <div class="fv-row mb-10">
@@ -96,9 +96,9 @@
           @click="onAdminLogin"
           class="btn btn-lg w-100 mb-5" style="border: 1px solid black;"
         >
-          <span class="indicator-label"> 관리자로 로그인 </span>
+          <span class="indicator-label"> 강사로 로그인 </span>
           <span class="indicator-progress">
-            잠시만 기다려주세요
+            Please wait...
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
@@ -111,6 +111,7 @@
   </div>
   <!--end::Wrapper-->
 </template>
+
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
@@ -167,7 +168,7 @@ export default defineComponent({
           },
         }).then(() => {
           // Go to page after successfully login
-          router.push({ name: "user-dashboard" });
+          router.push({ name: "admin-dashboard" });
         });
       } else {
         Swal.fire({
@@ -191,7 +192,7 @@ export default defineComponent({
     };
 
     const onAdminLogin = () => {
-      router.push({ name: "admin-sign-in" });
+      router.push({ name: "user-sign-in" });
     };
 
     return {

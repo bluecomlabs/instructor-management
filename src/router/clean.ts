@@ -9,16 +9,16 @@ import { useConfigStore } from "@/stores/config";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/userdashboard",
     component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
     meta: {
       middleware: "auth",
     },
     children: [
       {
-        path: "/dashboard",
-        name: "dashboard",
-        component: () => import("@/views/Dashboard.vue"),
+        path: "/userdashboard",
+        name: "userdashboard",
+        component: () => import("@/views/UserDashboard.vue"),
         meta: {
           pageTitle: "Dashboard",
           breadcrumbs: ["Dashboards"],
@@ -37,6 +37,15 @@ const routes: Array<RouteRecordRaw> = [
           import("@/views/crafted/authentication/basic-flow/SignIn.vue"),
         meta: {
           pageTitle: "Sign In",
+        },
+      },
+      {
+        path: "/admin-sign-in",
+        name: "admin-sign-in",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/admin-SignIn.vue"),
+        meta: {
+          pageTitle: "admin-Sign In",
         },
       },
       {

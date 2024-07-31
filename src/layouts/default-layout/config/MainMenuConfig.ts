@@ -9,14 +9,80 @@ const MainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
+    ],
+  },
+  {
+    heading: "apps",
+    route: "/apps",
+    pages: [
       {
-        heading: "layoutBuilder",
-        route: "/builder",
-        keenthemesIcon: "switch",
+        heading: "ResearchNote",
+        route: "/apps/customers/getting-started",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "customersListing",
+        route: "/apps/customers/customers-listing",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "customerDetails",
+        route: "/apps/customers/customer-details",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "widgetsLists",
+        route: "/crafted/widgets/lists",
+        keenthemesIcon: "element-7",
         bootstrapIcon: "bi-layers",
+      },
+      {
+        heading: "calendarApp",
+        route: "/apps/calendar",
+        keenthemesIcon: "calendar-8",
+        bootstrapIcon: "bi-calendar3-event",
       },
     ],
   },
+  // {
+  //   heading: "apps",
+  //   route: "/apps",
+  //   pages: [
+  //     {
+  //       heading: "ResearchNote",
+  //       route: "/apps/customers/getting-started",
+  //       keenthemesIcon: "abstract-38",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "customersListing",
+  //       route: "/apps/customers/customers-listing",
+  //       keenthemesIcon: "abstract-38",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "customerDetails",
+  //       route: "/apps/customers/customer-details",
+  //       keenthemesIcon: "abstract-38",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "widgetsLists",
+  //       route: "/crafted/widgets/lists",
+  //       keenthemesIcon: "element-7",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "calendarApp",
+  //       route: "/apps/calendar",
+  //       keenthemesIcon: "calendar-8",
+  //       bootstrapIcon: "bi-calendar3-event",
+  //     },
+  //   ],
+  // },
   {
     heading: "craft",
     route: "/crafted",
@@ -97,6 +163,10 @@ const MainMenuConfig: Array<MenuItem> = [
           {
             sectionTitle: "basicFlow",
             sub: [
+              {
+                heading: "admin-signIn",
+                route: "/admin-sign-in",
+              },
               {
                 heading: "signIn",
                 route: "/sign-in",
@@ -192,114 +262,6 @@ const MainMenuConfig: Array<MenuItem> = [
                 route: "/crafted/modals/wizards/create-account",
               },
             ],
-          },
-        ],
-      },
-      {
-        sectionTitle: "widgets",
-        route: "/widgets",
-        keenthemesIcon: "element-7",
-        bootstrapIcon: "bi-layers",
-        sub: [
-          {
-            heading: "widgetsLists",
-            route: "/crafted/widgets/lists",
-          },
-          {
-            heading: "widgetsStatistics",
-            route: "/crafted/widgets/statistics",
-          },
-          {
-            heading: "widgetsCharts",
-            route: "/crafted/widgets/charts",
-          },
-          {
-            heading: "widgetsMixed",
-            route: "/crafted/widgets/mixed",
-          },
-          {
-            heading: "widgetsTables",
-            route: "/crafted/widgets/tables",
-          },
-          {
-            heading: "widgetsFeeds",
-            route: "/crafted/widgets/feeds",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    heading: "apps",
-    route: "/apps",
-    pages: [
-      {
-        sectionTitle: "customers",
-        route: "/customers",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-        sub: [
-          {
-            heading: "gettingStarted",
-            route: "/apps/customers/getting-started",
-          },
-          {
-            heading: "customersListing",
-            route: "/apps/customers/customers-listing",
-          },
-          {
-            heading: "customerDetails",
-            route: "/apps/customers/customer-details",
-          },
-        ],
-      },
-      {
-        sectionTitle: "subscriptions",
-        route: "/subscriptions",
-        keenthemesIcon: "basket",
-        bootstrapIcon: "bi-cart",
-        sub: [
-          {
-            heading: "getStarted",
-            route: "/apps/subscriptions/getting-started",
-          },
-          {
-            heading: "subscriptionList",
-            route: "/apps/subscriptions/subscription-list",
-          },
-          {
-            heading: "addSubscription",
-            route: "/apps/subscriptions/add-subscription",
-          },
-          {
-            heading: "viewSubscription",
-            route: "/apps/subscriptions/view-subscription",
-          },
-        ],
-      },
-      {
-        heading: "calendarApp",
-        route: "/apps/calendar",
-        keenthemesIcon: "calendar-8",
-        bootstrapIcon: "bi-calendar3-event",
-      },
-      {
-        sectionTitle: "chat",
-        route: "/chat",
-        keenthemesIcon: "message-text-2",
-        bootstrapIcon: "bi-chat-left",
-        sub: [
-          {
-            heading: "privateChat",
-            route: "/apps/chat/private-chat",
-          },
-          {
-            heading: "groupChat",
-            route: "/apps/chat/group-chat",
-          },
-          {
-            heading: "drawerChat",
-            route: "/apps/chat/drawer-chat",
           },
         ],
       },
