@@ -5,9 +5,6 @@
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
       <ViewDetails></ViewDetails>
 
-      <Events></Events>
-
-      <Invoices></Invoices>
     </div>
     <!--end::Content-->
 

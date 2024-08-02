@@ -102,17 +102,6 @@
           >
         </li>
         <!--end:::Tab item-->
-
-        <!--begin:::Tab item-->
-        <li class="nav-item">
-          <a
-            class="nav-link text-active-primary pb-4"
-            data-kt-countup-tabs="true"
-            data-bs-toggle="tab"
-            href="#kt_customer_view_overview_statements"
-            >상세정보</a
-          >
-        </li>
       </ul>
       <!--end:::Tabs-->
 
@@ -139,13 +128,6 @@
         <!--end:::Tab pane-->
 
         <!--begin:::Tab pane-->
-        <div
-          class="tab-pane fade"
-          id="kt_customer_view_overview_statements"
-          role="tabpanel"
-        >
-          <Statement card-classes="mb-6 mb-xl-9"></Statement>
-        </div>
         <!--end:::Tab pane-->
       </div>
       <!--end:::Tab content-->

@@ -1,90 +1,25 @@
 <template>
-  <!--begin::Earnings-->
   <div :class="`card ${cardClasses}`">
-    <!--begin::Header-->
     <div class="card-header border-0">
       <div class="card-title">
-        <h2>Earnings</h2>
+        <h2>서명 이미지</h2>
       </div>
     </div>
-    <!--end::Header-->
-
-    <!--begin::Body-->
-    <div class="card-body py-0">
+    <div style="display: block; margin-left: auto; margin-right: 20px; text-align: right; padding: 0;" class="card-body py-0">
       <div class="fs-5 fw-semibold text-gray-500 mb-4">
-        Last 30 day earnings calculated. Apart from arranging the order of
-        topics.
-      </div>
-
-      <!--begin::Left Section-->
-      <div class="d-flex flex-wrap flex-stack mb-5">
-        <!--begin::Row-->
-        <div class="d-flex flex-wrap">
-          <!--begin::Col-->
-          <div
-            class="border border-dashed border-gray-300 w-150px rounded my-3 p-4 me-6"
-          >
-            <span class="fs-1 fw-bold text-gray-800 lh-1">
-              <span
-                data-kt-countup="true"
-                data-kt-countup-value="6,840"
-                data-kt-countup-prefix="$"
-                >6,840$</span
-              >
-              <KTIcon icon-name="arrow-up" icon-class="fs-1 text-success" />
-            </span>
-            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2"
-              >Net Earnings</span
-            >
-          </div>
-          <!--end::Col-->
-
-          <!--begin::Col-->
-          <div
-            class="border border-dashed border-gray-300 w-125px rounded my-3 p-4 me-6"
-          >
-            <span class="fs-1 fw-bold text-gray-800 lh-1">
-              <span class="" data-kt-countup="true" data-kt-countup-value="16"
-                >16</span
-              >%
-              <KTIcon icon-name="arrow-down" icon-class="fs-1 text-danger" />
-            </span>
-            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2"
-              >Change</span
-            >
-          </div>
-          <!--end::Col-->
-
-          <!--begin::Col-->
-          <div
-            class="border border-dashed border-gray-300 w-150px rounded my-3 p-4 me-6"
-          >
-            <span class="fs-1 fw-bold text-gray-800 lh-1">
-              <span
-                data-kt-countup="true"
-                data-kt-countup-value="1,240"
-                data-kt-countup-prefix="$"
-                >1,240$</span
-              >
-              <span class="text-primary">--</span>
-            </span>
-            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2"
-              >Fees</span
-            >
-          </div>
-          <!--end::Col-->
-        </div>
-        <!--end::Row-->
-
-        <a href="#" class="btn btn-sm btn-light-primary flex-shrink-0"
-          >Withdraw Earnings</a
+        <p style="color: red;">*서명은 배경을 투명하게 한 PNG,JPG파일만 가능합니다.</p>
+        <a style="margin-bottom: 20px;" href="#" class="btn btn-sm btn-light-primary flex-shrink-0"
+          >이미지 업로드</a
         >
       </div>
-      <!--end::Left Section-->
+      <div>
+        <img :src="getAssetPath('media/misc/image.png')" alt="image" style="width: 30%;" />
+      </div>
+      <a style="margin-bottom: 20px; margin-top: 40px;" href="#" class="btn btn-sm btn-light-primary flex-shrink-0"
+        >저장</a
+      >
     </div>
-    <!--end::Body-->
   </div>
-  <!--end::Earnings-->
 </template>
 
 <script lang="ts">

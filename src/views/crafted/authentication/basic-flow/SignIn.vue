@@ -209,7 +209,6 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(200, 204, 210) url('../../../../../public/media/misc/auth-screens.png') no-repeat center center;
   background-size: contain;
   opacity: 0.2;
   z-index: -1;

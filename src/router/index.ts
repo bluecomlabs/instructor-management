@@ -164,7 +164,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/apps/customers/customer-details",
         name: "apps-customers-details",
-        component: () => import("@/views/apps/customers/myprofile.vue"),
+        component: () => import("@/views/apps/customers/MyProfile.vue"),
         meta: {
           pageTitle: "Customers Details",
           breadcrumbs: ["Apps", "Customers"],
