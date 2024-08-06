@@ -1,4 +1,4 @@
-import Myprofile from "@/views/apps/customers/myprofile.vue";
+import EducationalDetails from "@/views/apps/customers/EducationalDetails.vue";
 import { createI18n } from "vue-i18n";
 
 const messages = {
@@ -213,7 +213,7 @@ const messages = {
     viewSubscription: "Abonnement Anzeigen.",
   },
   ko: {
-    dashboard: "배정완료 목록",
+    dashboard: "대시보드",
     layoutBuilder: "レイアウトビルダー",
     craft: "교육관리",
     pages: "신청 가능한 교육",
@@ -238,12 +238,13 @@ const messages = {
     error404: "エラー404",
     error500: "エラー 500",
     apps: "교육 관리",
+    resources: "교육 리소스 관리",
     chat: "チャット",
     privateChat: "プライベートチャット",
     groupChat: "グループチャット",
     drawerChat: "ドロワーチャット",
     widgets: "ウィジェット",
-    widgetsLists: "강사관리",
+    widgetsLists: "강사 관리",
     widgetsStatistics: "統計",
     widgetsCharts: "チャート",
     widgetsMixed: "混合",
@@ -270,11 +271,10 @@ const messages = {
     activity: "アクティビティ",
     documentation: "ドキュメンテーション",
     components: "コンポーネント",
-    resources: "資力",
     customers: "お客様のお客様",
     ResearchNote: "업무일지",
     customersListing: "신청 가능한 교육",
-    programdetails : "교육 프로그램 관리",
+    programdetails : "교육프로그램 관리",
     customerDetails: "마이페이지",
     calendarApp: "교육 배정 현황",
     subscriptions: "購読",
@@ -282,7 +282,9 @@ const messages = {
     subscriptionList: "サブスクリプションリスト",
     addSubscription: "サブスクリプションを追加します",
     viewSubscription: "購読を見る",
-    myprofile : "마이페이지"
+    myprofile : "마이페이지",
+    completeList : "배정완료 목록",
+    educationaldetails : "교육기관 관리",
   },
   fr: {
     dashboard: "Générateur de mise",

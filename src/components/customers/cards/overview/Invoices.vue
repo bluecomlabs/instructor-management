@@ -5,7 +5,7 @@
     <div class="card-header border-0">
       <!--begin::Card title-->
       <div class="card-title">
-        <h2>가장 빠른 다음 강의 목록</h2>
+        <h2>상세 정보</h2>
       </div>
       <!--end::Card title-->
 

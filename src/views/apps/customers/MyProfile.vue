@@ -87,7 +87,7 @@
             class="nav-link text-active-primary pb-4 active"
             data-bs-toggle="tab"
             href="#kt_customer_view_overview_tab"
-            >예정된 강의목록</a
+            >상세 정보</a
           >
         </li>
         <!--end:::Tab item-->

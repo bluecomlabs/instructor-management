@@ -27,10 +27,10 @@
   </div>
   <!--end::App-->
 
-  <KTDrawers />
+  <!-- <KTDrawers /> -->
   <KTScrollTop />
   <KTModals />
-  <KTCustomize />
+  <!-- <KTCustomize /> -->
 </template>
 
 <script lang="ts">
