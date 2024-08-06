@@ -5,7 +5,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
     pages: [
       {
         heading: "dashboard",
-        route: "/userdashboard",
+        route: "/user/dashboard",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
@@ -16,34 +16,46 @@ const UserMainMenuConfig: Array<MenuItem> = [
     route: "/apps",
     pages: [
       {
-        heading: "ResearchNote",
-        route: "/apps/customers/getting-started",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "customersListing",
-        route: "/apps/customers/customers-listing",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "customerDetails",
-        route: "/apps/customers/customer-details",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "widgetsLists",
-        route: "/crafted/widgets/lists",
-        keenthemesIcon: "element-7",
-        bootstrapIcon: "bi-layers",
+        heading: "completeList",
+        route: "/user/completeList",
+        keenthemesIcon: "element-11",
+        bootstrapIcon: "bi-app-indicator",
       },
       {
         heading: "calendarApp",
         route: "/apps/calendar",
         keenthemesIcon: "calendar-8",
         bootstrapIcon: "bi-calendar3-event",
+      },
+    ],
+  },
+  {
+    heading: "resources",
+    route: "/resources",
+    pages: [
+      // {
+      //   heading: "ResearchNote",
+      //   route: "/apps/customers/getting-started",
+      //   keenthemesIcon: "abstract-38",
+      //   bootstrapIcon: "bi-printer",
+      // },
+      {
+        heading: "programdetails",
+        route: "/user/ProgramDetails",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "educationaldetails",
+        route: "/user/EducationalDetails",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "lists",
+        route: "/user/lists",
+        keenthemesIcon: "element-7",
+        bootstrapIcon: "bi-layers",
       },
     ],
   },

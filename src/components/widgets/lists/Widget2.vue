@@ -3,8 +3,7 @@
   <div class="card" :class="widgetClasses">
     <!--begin::Header-->
     <div class="card-header border-0">
-      <h3 class="card-title fw-bold text-gray-900">Authors</h3>
-
+      <h3 class="card-title fw-bold text-gray-900">강사목록</h3>
       <div class="card-toolbar">
         <!--begin::Menu-->
         <button
@@ -21,32 +20,43 @@
       </div>
     </div>
     <!--end::Header-->
-
     <!--begin::Body-->
     <div class="card-body pt-2">
       <template v-for="(item, index) in list" :key="index">
         <!--begin::Item-->
         <div
           :class="{ 'mb-7': list.length - 1 !== index }"
-          class="d-flex align-items-center"
+          class="d-flex align-items-center justify-content-between"
         >
-          <!--begin::Avatar-->
-          <div class="symbol symbol-50px me-5">
-            <img :src="item.avatar" class="" alt="" />
+          <!--begin::Left side: Avatar and Text-->
+          <div class="d-flex align-items-center">
+            <!--begin::Avatar-->
+            <div class="symbol symbol-50px me-5">
+              <img :src="item.avatar" alt="" />
+            </div>
+            <!--end::Avatar-->
+            <!--begin::Text-->
+            <div class="flex-grow-1">
+              <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">
+                {{ item.name }}
+              </a>
+              <span class="text-muted d-block fw-semibold">
+                {{ item.description }}
+              </span>
+            </div>
+            <!--end::Text-->
           </div>
-          <!--end::Avatar-->
-
-          <!--begin::Text-->
-          <div class="flex-grow-1">
-            <a href="#" class="text-gray-900 fw-bold text-hover-primary fs-6">{{
-              item.name
-            }}</a>
-
-            <span class="text-muted d-block fw-semibold">{{
-              item.description
-            }}</span>
+          <!--end::Left side-->
+          <!--begin::Right side: Buttons-->
+          <div>
+            <router-link to="WorkSituation" class="btn btn-light-primary me-2">
+              근무상황부
+            </router-link>
+            <router-link to="BusinessJournal" class="btn btn-light-primary">
+              업무일지
+            </router-link>
           </div>
-          <!--end::Text-->
+          <!--end::Right side-->
         </div>
         <!--end::Item-->
       </template>
@@ -73,33 +83,48 @@ export default defineComponent({
     const list = ref([
       {
         avatar: getAssetPath("media/avatars/300-6.jpg"),
-        name: "Emma Smith",
-        description: "Project Manager",
+        name: "박강명",
+        description: "010-1234-5678",
       },
       {
         avatar: getAssetPath("media/avatars/300-5.jpg"),
-        name: "Sean Bean",
-        description: "PHP, SQLite, Artisan CLI",
+        name: "박강명",
+        description: "010-1234-5678",
       },
       {
         avatar: getAssetPath("media/avatars/300-11.jpg"),
-        name: "Brian Cox",
-        description: "PHP, SQLite, Artisan CLI",
+        name: "박강명",
+        description: "010-1234-5678",
       },
       {
         avatar: getAssetPath("media/avatars/300-9.jpg"),
-        name: "Francis Mitcham",
-        description: "PHP, SQLite, Artisan CLI",
+        name: "박강명",
+        description: "010-1234-5678",
       },
       {
         avatar: getAssetPath("media/avatars/300-23.jpg"),
-        name: "Dan Wilson",
-        description: "PHP, SQLite, Artisan CLI",
+        name: "박강명",
+        description: "010-1234-5678",
       },
       {
         avatar: getAssetPath("media/avatars/300-23.jpg"),
-        name: "Dan Wilson",
-        description: "PHP, SQLite, Artisan CLI",
+        name: "박강명",
+        description: "010-1234-5678",
+      },
+      {
+        avatar: getAssetPath("media/avatars/300-6.jpg"),
+        name: "박강명",
+        description: "010-1234-5678",
+      },
+      {
+        avatar: getAssetPath("media/avatars/300-5.jpg"),
+        name: "박강명",
+        description: "010-1234-5678",
+      },
+      {
+        avatar: getAssetPath("media/avatars/300-11.jpg"),
+        name: "박강명",
+        description: "010-1234-5678",
       },
     ]);
 
@@ -110,3 +135,30 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.symbol-50px {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.mb-7 {
+  margin-bottom: 1.75rem;
+}
+.text-gray-900 {
+  color: #212529;
+}
+.text-hover-primary:hover {
+  color: #009ef7;
+}
+.text-muted {
+  color: #6c757d;
+}
+.d-block {
+  display: block;
+}
+.flex-grow-1 {
+  flex-grow: 1;
+}
+</style>

@@ -18,7 +18,7 @@
           <div class="fw-bold d-flex align-items-center fs-5">
             이곳에 사용자 이름이 들어갑니다
             <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
-              >강사님</span
+              >관리자/강사님</span
             >
           </div>
           <a href="#" class="fw-semibold text-muted text-hover-primary fs-7"
@@ -36,8 +36,8 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
-        My Profile
+      <router-link to="MyProfile" class="menu-link px-5">
+        마이페이지
       </router-link>
     </div>
     <!--end::Menu item-->
@@ -49,7 +49,7 @@
     <!--end::Menu separator-->
 
     <!--begin::Menu item-->
-    <div
+    <!-- <div
       class="menu-item px-5"
       data-kt-menu-trigger="hover"
       data-kt-menu-placement="left-start"
@@ -71,9 +71,7 @@
         </span>
       </router-link>
 
-      <!--begin::Menu sub-->
       <div class="menu-sub menu-sub-dropdown w-175px py-4">
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('ko')"
@@ -91,37 +89,12 @@
             한국어
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a
-            @click="setLang('en')"
-            href="#"
-            class="menu-link d-flex px-5"
-            :class="{ active: currentLanguage === 'en' }"
-          >
-            <span class="symbol symbol-20px me-4">
-              <img
-                class="rounded-1"
-                :src="getAssetPath('media/flags/united-states.svg')"
-                alt="metronic"
-              />
-            </span>
-            English
-          </a>
-        </div>
-        <!--end::Menu item-->
       </div>
-      <!--end::Menu sub-->
-    </div>
-    <!--begin::Menu item-->
+    </div> -->
     <div class="menu-item px-5">
-      <a @click="signOut()" class="menu-link px-5"> Sign Out </a>
+      <a @click="signOut()" class="menu-link px-5"> 로그아웃 </a>
     </div>
-    <!--end::Menu item-->
   </div>
-  <!--end::Menu-->
 </template>
 
 <script lang="ts">
@@ -144,10 +117,10 @@ export default defineComponent({
       : "en";
 
     const countries = {
-      en: {
-        flag: getAssetPath("media/flags/united-states.svg"),
-        name: "English",
-      },
+      // en: {
+      //   flag: getAssetPath("media/flags/united-states.svg"),
+      //   name: "English",
+      // },
       ko: {
         flag: getAssetPath("media/flags/south-korea.svg"),
         name: "한국어",

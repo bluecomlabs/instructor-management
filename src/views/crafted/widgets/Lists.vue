@@ -1,48 +1,9 @@
 <template>
-  <!--begin::Row-->
   <div class="row g-5 g-xl-8">
-    <div class="col-xl-4">
-      <ListsWidget1 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget1>
-    </div>
-    <div class="col-xl-4">
+    <div class="col-xl-12">
       <ListsWidget2 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget2>
     </div>
-    <div class="col-xl-4">
-      <ListsWidget3
-        widget-classes="card-xl-stretch mb-5 mb-xl-8"
-      ></ListsWidget3>
-    </div>
   </div>
-  <!--end::Row-->
-
-  <!--begin::Row-->
-  <div class="row g-5 g-xl-8">
-    <div class="col-xl-4">
-      <ListsWidget4 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget4>
-    </div>
-    <div class="col-xl-4">
-      <ListsWidget5 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget5>
-    </div>
-    <div class="col-xl-4">
-      <ListsWidget6
-        widget-classes="card-xl-stretch mb-5 mb-xl-8"
-      ></ListsWidget6>
-    </div>
-  </div>
-  <!--end::Row-->
-
-  <!--begin::Row-->
-  <div class="row g-5 g-xl-8">
-    <div class="col-xl-6">
-      <ListsWidget7 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget7>
-    </div>
-    <div class="col-xl-6">
-      <ListsWidget8
-        widget-classes="card-xl-stretch mb-5 mb-xl-8"
-      ></ListsWidget8>
-    </div>
-  </div>
-  <!--end::Row-->
 </template>
 
 <script lang="ts">

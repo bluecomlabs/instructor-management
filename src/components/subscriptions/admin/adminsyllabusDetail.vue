@@ -2,11 +2,11 @@
   <div class="card card-flush pt-3 mb-5 mb-xl-10">
     <div class="card-header">
       <div class="card-title">
-        <h2 class="fw-bold">강의확인서</h2>
+        <h2 class="fw-bold">강의계획서</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="adminsyllabus" class="btn btn-light-primary"
-          >강의계획서 보기
+        <router-link to="syllabus" class="btn btn-light-primary"
+          >강의확인서 보기
         </router-link>
       </div>
     </div>
@@ -70,7 +70,7 @@
         <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')"  style="float: right;"/>
       </div>
       
-      <div class="flex-equal me-5" style="margin-top: 50px;">
+      <!-- <div class="flex-equal me-5" style="margin-top: 50px;">
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
               <tr>
                 <td class="text-gray-500 min-w-175px w-175px">담당자 확인 :</td>
@@ -79,7 +79,7 @@
                 </td>
               </tr>
             </table>
-          </div>
+          </div> -->
     </div>
   </div>
 </template>

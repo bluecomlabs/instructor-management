@@ -9,12 +9,12 @@ const MainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
-      {
-        heading: "myprofile",
-        route: "/admin/MyProfile",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
+      // {
+      //   heading: "myprofile",
+      //   route: "/admin/MyProfile",
+      //   keenthemesIcon: "abstract-38",
+      //   bootstrapIcon: "bi-printer",
+      // },
     ],
   },
   {
@@ -58,8 +58,8 @@ const MainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "widgetsLists",
-        route: "/crafted/widgets/lists",
+        heading: "lists",
+        route: "/admin/lists",
         keenthemesIcon: "element-7",
         bootstrapIcon: "bi-layers",
       },
