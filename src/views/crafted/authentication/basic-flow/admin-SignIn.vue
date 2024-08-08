@@ -23,13 +23,14 @@
           tabindex="1"
           class="form-control form-control-lg form-control-solid"
           type="text"
-          name="email"
-          autocomplete="off"
+          name="ADMN_ACC"
+          placeholder="관리자 ID"
+          autocomplete="on"
         />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
-            <ErrorMessage name="email" />
+            <ErrorMessage name="ADMN_ACC" />
           </div>
         </div>
       </div>
@@ -42,12 +43,6 @@
           <!--begin::Label-->
           <label class="form-label fw-bold text-gray-900 fs-6 mb-0">비밀번호</label>
           <!--end::Label-->
-
-          <!--begin::Link-->
-          <router-link to="/password-reset" class="link-primary fs-6 fw-bold">
-            패스워드를 잊으셨나요 ?
-          </router-link>
-          <!--end::Link-->
         </div>
         <!--end::Wrapper-->
 
@@ -56,13 +51,14 @@
           tabindex="2"
           class="form-control form-control-lg form-control-solid"
           type="password"
-          name="password"
+          name="ADMN_PWD"
+          placeholder="비밀번호"
           autocomplete="off"
         />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
-            <ErrorMessage name="password" />
+            <ErrorMessage name="ADMN_PWD" />
           </div>
         </div>
       </div>
@@ -155,10 +151,10 @@ export default defineComponent({
 
       if (error.length === 0) {
         Swal.fire({
-          text: "You have successfully logged in!",
+          text: "방문을 환영합니다.",
           icon: "success",
           buttonsStyling: false,
-          confirmButtonText: "Ok, got it!",
+          confirmButtonText: "확인",
           heightAuto: false,
           customClass: {
             confirmButton: "btn fw-semibold btn-light-primary",
@@ -172,7 +168,7 @@ export default defineComponent({
           text: error[0] as string,
           icon: "error",
           buttonsStyling: false,
-          confirmButtonText: "Try again!",
+          confirmButtonText: "확인",
           heightAuto: false,
           customClass: {
             confirmButton: "btn fw-semibold btn-light-danger",

@@ -82,7 +82,7 @@ export default defineComponent({
   setup() {
     const list = ref([
       {
-        avatar: getAssetPath("media/avatars/300-6.jpg"),
+        avatar: getAssetPath("media/avatars/300-1.jpg"),
         name: "박강명",
         description: "010-1234-5678",
       },
@@ -92,7 +92,7 @@ export default defineComponent({
         description: "010-1234-5678",
       },
       {
-        avatar: getAssetPath("media/avatars/300-11.jpg"),
+        avatar: getAssetPath("media/avatars/300-10.jpg"),
         name: "박강명",
         description: "010-1234-5678",
       },
@@ -107,7 +107,7 @@ export default defineComponent({
         description: "010-1234-5678",
       },
       {
-        avatar: getAssetPath("media/avatars/300-23.jpg"),
+        avatar: getAssetPath("media/avatars/300-27.jpg"),
         name: "박강명",
         description: "010-1234-5678",
       },
@@ -117,7 +117,7 @@ export default defineComponent({
         description: "010-1234-5678",
       },
       {
-        avatar: getAssetPath("media/avatars/300-5.jpg"),
+        avatar: getAssetPath("media/avatars/300-15.jpg"),
         name: "박강명",
         description: "010-1234-5678",
       },

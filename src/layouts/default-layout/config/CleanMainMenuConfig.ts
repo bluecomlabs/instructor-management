@@ -7,7 +7,7 @@ const MainMenuConfig: Array<MenuItem> = [
         heading: "Dashboard",
         route: "/dashboard",
         keenthemesIcon: "element-11",
-        bootstrapIcon: "bi-app-indicator",
+        bootstrapIcon: "bi-Person-walking",
       },
     ],
   },

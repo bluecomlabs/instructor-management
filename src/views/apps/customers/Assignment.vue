@@ -1,6 +1,7 @@
 <template>
   <!--begin::Card-->
   <div class="card">
+    <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
       <div class="card-title">
@@ -68,21 +69,6 @@
           >
             Delete Selected
           </button>
-        </div>
-      <!--begin::Card header-->
-        <div class="card-toolbar">
-          <!--begin::Menu-->
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown1></Dropdown1>
-          <!--end::Menu-->
         </div>
         <!--end::Group actions-->
       </div>
@@ -181,7 +167,6 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
-import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
 
 interface ISubscription {
   id: number;
@@ -197,7 +182,6 @@ export default defineComponent({
   name: "kt-subscription-list",
   components: {
     KTDatatable,
-    Dropdown1
   },
   setup() {
     const data = ref<Array<ISubscription>>([

@@ -9,7 +9,7 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" :src="getAssetPath('media/avatars/300-3.jpg')" />
+          <img alt="Logo" :src="getAssetPath('media/avatars/blank.png')" />
         </div>
         <!--end::Avatar-->
 
@@ -114,7 +114,7 @@ export default defineComponent({
 
     i18n.locale.value = localStorage.getItem("lang")
       ? (localStorage.getItem("lang") as string)
-      : "en";
+      : "ko";
 
     const countries = {
       // en: {

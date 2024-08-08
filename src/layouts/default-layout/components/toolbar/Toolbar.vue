@@ -11,6 +11,7 @@
       }"
     >
       <KTPageTitle />
+      <KTHeaderNavbar />
     </div>
     <!--end::Toolbar container-->
   </div>
@@ -21,11 +22,13 @@
 import { defineComponent } from "vue";
 import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
 import KTPageTitle from "@/layouts/default-layout/components/toolbar/PageTitle.vue";
+import KTHeaderNavbar from "@/layouts/default-layout/components/header/Navbar.vue";
 
 export default defineComponent({
   name: "layout-toolbar",
   components: {
     KTPageTitle,
+    KTHeaderNavbar,
   },
   setup() {
     return {

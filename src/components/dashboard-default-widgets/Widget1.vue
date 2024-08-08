@@ -9,7 +9,7 @@
       <!--begin::Title-->
       <div class="card-title d-flex flex-column">
         <!--begin::Amount-->
-        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">69</span>
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">72</span>
         <!--end::Amount-->
 
         <!--begin::Subtitle-->
@@ -29,7 +29,7 @@
         <div
           class="d-flex justify-content-between fw-bold fs-6 text-white opacity-50 w-100 mt-auto mb-2"
         >
-          <span>43 Pending</span>
+          <span>72/100 개 교육 완료</span>
           <span>72%</span>
         </div>
 
