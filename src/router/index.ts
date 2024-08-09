@@ -428,7 +428,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/layouts/SystemLayout.vue"),
     children: [
       {
-        // the 404 route, when none of the above matches
         path: "/404",
         name: "404",
         component: () => import("@/views/crafted/authentication/Error404.vue"),
@@ -456,7 +455,6 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to) {
-    // If the route has a hash, scroll to the section with the specified ID; otherwise, scroll toc the top of the page.
     if (to.hash) {
       return {
         el: to.hash,
@@ -476,17 +474,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const configStore = useConfigStore();
-
-  // current page view title
   document.title = `${to.meta.pageTitle} - ${import.meta.env.VITE_APP_NAME}`;
-
-  // reset config to initial state
   configStore.resetLayoutConfig();
-
-  // verify auth token before each page change
   authStore.verifyAuth();
-
-  // before page access check if page requires authentication
+  
   if (to.meta.middleware == "auth") {
     if (authStore.isAuthenticated) {
       next();

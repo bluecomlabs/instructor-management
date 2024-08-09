@@ -1,11 +1,7 @@
 <template>
-  <!--begin::Card-->
   <div class="card">
-    <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
-      <!--begin::Card title-->
       <div class="card-title">
-        <!--begin::Search-->
         <div class="d-flex align-items-center position-relative my-1">
           <KTIcon
             icon-name="magnifier"
@@ -20,13 +16,8 @@
             placeholder="Search Subscriptions"
           />
         </div>
-        <!--end::Search-->
       </div>
-      <!--begin::Card title-->
-
-      <!--begin::Card toolbar-->
       <div class="card-toolbar">
-        <!--begin::Toolbar-->
         <div
           v-if="selectedIds.length === 0"
           class="d-flex justify-content-end"
@@ -43,9 +34,7 @@
             Export
           </button> -->
         </div>
-        <!--end::Toolbar-->
 
-        <!--begin::Group actions-->
         <div v-else class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
             <span class="me-2">{{ selectedIds.length }}</span
@@ -59,13 +48,8 @@
             Delete Selected
           </button>
         </div>
-        <!--end::Group actions-->
       </div>
-      <!--end::Card toolbar-->
     </div>
-    <!--end::Card header-->
-
-    <!--begin::Card body-->
     <div class="card-body pt-0">
       <KTDatatable
         @on-sort="sort"
@@ -110,12 +94,10 @@
             >Actions
             <KTIcon icon-name="down" icon-class="fs-5 m-0" />
           </a>
-          <!--begin::Menu-->
           <div
             class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
             data-kt-menu="true"
           >
-            <!--begin::Menu item-->
             <div class="menu-item px-3">
               <router-link
                 to="/apps/customers/customer-details"
@@ -123,22 +105,16 @@
                 >View</router-link
               >
             </div>
-            <!--end::Menu item-->
-            <!--begin::Menu item-->
             <div class="menu-item px-3">
               <a @click="deleteSubscription(customer.id)" class="menu-link px-3"
                 >Delete</a
               >
             </div>
-            <!--end::Menu item-->
           </div>
-          <!--end::Menu-->
         </template>
       </KTDatatable>
     </div>
-    <!--end::Card body-->
   </div>
-  <!--end::Card-->
 </template>
 
 <script lang="ts">
