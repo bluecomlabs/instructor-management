@@ -1,6 +1,7 @@
 <template>
   <!--begin::Card-->
   <div class="card">
+    <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <!--begin::Card title-->
       <div class="card-title">
@@ -58,21 +59,6 @@
             Delete Selected
           </button>
         </div>
-      <!--begin::Card header-->
-        <div class="card-toolbar">
-          <!--begin::Menu-->
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown1></Dropdown1>
-          <!--end::Menu-->
-        </div>
         <!--end::Group actions-->
       </div>
       <!--end::Card toolbar-->
@@ -99,7 +85,7 @@
           <router-link
             to="Attendance"
             href=""
-            class="btn btn-light-primary me-2"
+            class="text-gray-800 text-hover-primary mb-1"
           >
             {{ customer.customer }}
           </router-link>
@@ -108,7 +94,7 @@
           <router-link
             to="EducationJournal"
             href=""
-            class="btn btn-light-primary me-2"
+            class="text-gray-800 text-hover-primary mb-1"
           >
             {{ customer.status }}
           </router-link>
@@ -117,7 +103,7 @@
           <router-link
             to="syllabus"
             href=""
-            class="btn btn-light-primary me-2"
+            class="text-gray-800 text-hover-primary mb-1"
           >
             {{ customer.product }}
           </router-link>
@@ -132,10 +118,12 @@
             >Actions
             <KTIcon icon-name="down" icon-class="fs-5 m-0" />
           </a>
+          <!--begin::Menu-->
           <div
             class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
             data-kt-menu="true"
           >
+            <!--begin::Menu item-->
             <div class="menu-item px-3">
               <router-link
                 to="/apps/customers/customer-details"
@@ -143,12 +131,16 @@
                 >View</router-link
               >
             </div>
+            <!--end::Menu item-->
+            <!--begin::Menu item-->
             <div class="menu-item px-3">
               <a @click="deleteSubscription(customer.id)" class="menu-link px-3"
                 >Delete</a
               >
             </div>
+            <!--end::Menu item-->
           </div>
+          <!--end::Menu-->
         </template>
       </KTDatatable>
     </div>
@@ -164,7 +156,6 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
-import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
 
 interface ISubscription {
   id: number;
@@ -180,99 +171,98 @@ export default defineComponent({
   name: "kt-subscription-list",
   components: {
     KTDatatable,
-    Dropdown1
   },
   setup() {
     const data = ref<Array<ISubscription>>([
       {
         id: 1,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터",
+        status: "2024.08.01.",
         color: "success",
         billing: "MODI",
-        product: "상세보기",
-        createdDate: "Oct 25, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 2,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터",
+        status: "2024.08.01.",
         color: "success",
         billing: "MODI",
-        product: "상세보기",
-        createdDate: "Mar 10, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 3,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터(단기)",
+        status: "2024.08.17.",
         color: "primary",
         billing: "드론",
-        product: "상세보기",
-        createdDate: "Jul 25, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 4,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(도우리반)",
+        status: "2024.08.08.",
         color: "warning",
         billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 5,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(나누리반)",
+        status: "2024.08.09.",
         color: "warning",
         billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "May 05, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 6,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(동아리)",
+        status: "2024.08.06.",
         color: "success",
         billing: "3D 모델링",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 7,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터",
+        status: "2024.08.06.",
         color: "success",
         billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "Jun 20, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 8,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터",
+        status: "2024.08.07.",
         color: "danger",
         billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "Jun 24, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 9,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터(단기)",
+        status: "2024.08.03.",
         color: "warning",
         billing: "프로보커넥트",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 10,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터(동아리)",
+        status: "2024.08.03.",
         color: "success",
         billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "Feb 21, 2021",
+        product: "신청하기",
+        createdDate: "",
       },
       {
         id: 11,
@@ -380,23 +370,23 @@ export default defineComponent({
         columnLabel: "billing",
         sortEnabled: true,
       },
+      // {
+      //   columnName: "강사명",
+      //   columnLabel: "createdDate",
+      //   sortEnabled: true,
+      // },
       {
-        columnName: "프로그램 생성날짜",
-        columnLabel: "createdDate",
-        sortEnabled: true,
-      },
-      {
-        columnName: "출석부",
+        columnName: "교육기관명",
         columnLabel: "customer",
         sortEnabled: true,
       },
       {
-        columnName: "교육일지",
+        columnName: "교육날짜",
         columnLabel: "status",
         sortEnabled: true,
       },
       {
-        columnName: "강의확인서",
+        columnName: "신청",
         columnLabel: "product",
         sortEnabled: true,
       },

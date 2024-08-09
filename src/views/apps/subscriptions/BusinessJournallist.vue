@@ -3,7 +3,7 @@
   <div class="card" :class="widgetClasses">
     <!--begin::Header-->
     <div class="card-header border-0">
-      <h3 class="card-title fw-bold text-gray-900">강사목록</h3>
+      <h3 class="card-title fw-bold text-gray-900">권정미 강사님의 업무일지 목록</h3>
       <div class="card-toolbar">
         <!--begin::Menu-->
         <button
@@ -31,9 +31,9 @@
           <!--begin::Left side: Avatar and Text-->
           <div class="d-flex align-items-center">
             <!--begin::Avatar-->
-            <div class="symbol symbol-50px me-5">
+            <!-- <div class="symbol symbol-50px me-5">
               <img :src="item.avatar" alt="" />
-            </div>
+            </div> -->
             <!--end::Avatar-->
             <!--begin::Text-->
             <div class="flex-grow-1">
@@ -52,8 +52,8 @@
             <!-- <router-link to="WorkSituation" class="btn btn-light-primary me-2">
               근무상황부
             </router-link> -->
-            <router-link to="BusinessJournalList" class="btn btn-light-primary">
-              업무일지
+            <router-link to="BusinessJournal" class="btn btn-light-primary">
+              자세히보기
             </router-link>
           </div>
           <!--end::Right side-->
@@ -83,48 +83,48 @@ export default defineComponent({
     const list = ref([
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "권정미",
-        description: "010-6504-6273",
+        name: "오조봇 실습",
+        description: "24.08.09.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "권혜경",
-        description: "010-3277-7797",
+        name: "어썸봇 실습",
+        description: "24.07.09.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김미",
-        description: "010-7180-3858",
+        name: "오조봇을 활용한 코딩 실습",
+        description: "24.06.15.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김미령",
-        description: "010-6835-3608",
+        name: "오조봇 실습",
+        description: "24.08.02.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김보미",
-        description: "010-3317-0584",
+        name: "어썸카 실습",
+        description: "24.03.09.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김은희",
-        description: "010-9606-6060",
+        name: "오조봇 실습",
+        description: "24.05.09.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김인경",
-        description: "010-5561-2578",
+        name: "어썸키트 실습",
+        description: "24.08.01.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김지숙",
-        description: "010-6366-5542",
+        name: "오조봇 실습",
+        description: "24.08.09.",
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "김희정",
-        description: "010-8508-6017",
+        name: "오조봇 실습",
+        description: "24.07.09.",
       },
     ]);
 

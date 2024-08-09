@@ -5,9 +5,9 @@
         <h2 class="fw-bold">교육일지</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="/subscriptions/add" class="btn btn-light-primary"
-          >서명하기</router-link
-        >
+        <!-- <router-link to="/subscriptions/add" class="btn btn-light-primary"
+          ></router-link
+        > -->
       </div>
     </div>
     <div class="card-body pt-3">
@@ -18,12 +18,14 @@
               <tr>
                 <td class="text-gray-500 min-w-175px w-175px">강사명 :</td>
                 <td class="text-gray-800 min-w-200px">
-                  박강명
+                  <input type="text" v-model="instructorName" class="form-control" />
                 </td>
               </tr>
               <tr>
                 <td class="text-gray-500">교육명 :</td>
-                <td class="text-gray-800">오조봇 실습</td>
+                <td class="text-gray-800">
+                  <input type="text" v-model="educationName" class="form-control" />
+                </td>
               </tr>
             </table>
           </div>
@@ -44,20 +46,14 @@
       <div class="mb-0">
         <h5 class="mb-4">교육내용</h5>
         <div class="table-responsive" style="height: 400px;">
-          □ 혜인학교 수업을 위한 오조봇 수업 준비
-          <br><br>
-          - 수업날짜 : 2024.08.09 (금)<br>
-          - 수업 주제 : 오조봇 "도전! 볼링왕", "분리수거 하는 똑똑한 오조봇"<br>
-          - 수업준비<br>
-          1. 차시별 지도안 작성<br>
-          2. 활동지 준비 및 출력<br>
-          3. 수업내용 파악 및 진행순서 확인
+          <textarea v-model="educationContent" class="form-control" rows="10"></textarea>
         </div>
-        <img alt="Pic" :src="getAssetPath('media/avatars/test1.png')" style="width: 390px; height: 250px;" />
-        <img alt="Pic" :src="getAssetPath('media/avatars/test2.png')"  style="width: 390px; height: 250px; float: right;"/>
+        <button> 이미지 업로드</button>
+        <!-- <img alt="Pic" :src="getAssetPath('media/avatars/test1.png')" style="width: 390px; height: 250px;" />
+        <img alt="Pic" :src="getAssetPath('media/avatars/test2.png')"  style="width: 390px; height: 250px; float: right;"/> -->
       </div>
       
-      <div style="margin-top: 50px;" class="signature-section">
+      <!-- <div style="margin-top: 50px;" class="signature-section">
           <h5 class="mb-4">서명란</h5>
           <table class="table table-bordered">
             <thead>
@@ -75,7 +71,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
         <!-- 서명란 끝 -->
     </div>
   </div>
@@ -83,7 +79,7 @@
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import UserMenu from "@/layouts/default-layout/components/menus/UserAccountMenu.vue";
 
 export default defineComponent({
@@ -92,8 +88,15 @@ export default defineComponent({
     UserMenu,
   },
   setup() {
+    const instructorName = ref("");
+    const educationName = ref("");
+    const educationContent = ref("");
+
     return {
       getAssetPath,
+      instructorName,
+      educationName,
+      educationContent,
     };
   },
 });

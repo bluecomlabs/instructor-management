@@ -66,13 +66,41 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "마이페이지",
           breadcrumbs: ["마이페이지"],
         },
-      },{
-        path: "CompleteList",
-        name: "user-CompleteList",
-        component: () => import("@/views/apps/customers/CompleteList.vue"),
+      },
+      {
+        path: "MyEdu",
+        name: "user-MyEdu",
+        component: () => import("@/views/apps/user/MyEdu.vue"),
         meta: {
           pageTitle: "배정완료 목록",
           breadcrumbs: ["교육 관리", "배정완료 목록"],
+        },
+      },
+      {
+        path: "EduAppl",
+        name: "user-EduAppl",
+        component: () => import("@/views/apps/user/EduAppl.vue"),
+        meta: {
+          pageTitle: "배정완료 목록",
+          breadcrumbs: ["교육 관리", "배정완료 목록"],
+        },
+      },
+      {
+        path: "BusinessJournaLlist",
+        name: "user-BusinessJournaLlist",
+        component: () => import("@/views/apps/user/BusinessJournalLlist.vue"),
+        meta: {
+          pageTitle: "업무일지",
+          breadcrumbs: ["서류 관리", "업무일지"],
+        },
+      },
+      {
+        path: "WorkSituation",
+        name: "user-WorkSituation",
+        component: () => import("@/views/apps/user/WorkSituation.vue"),
+        meta: {
+          pageTitle: "근무상황부",
+          breadcrumbs: ["서류 관리", "근무상황부"],
         },
       },
       {
@@ -147,15 +175,15 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["캘린더"],
         },
       },
-      {
-        path: "lists",
-        name: "user-lists",
-        component: () => import("@/views/apps/subscriptions/Lists.vue"),
-        meta: {
-          pageTitle: "강사관리",
-          breadcrumbs: ["교육 리소스 관리", "강사관리"],
-        },
-      },
+      // {
+      //   path: "lists",
+      //   name: "user-lists",
+      //   component: () => import("@/views/apps/subscriptions/Lists.vue"),
+      //   meta: {
+      //     pageTitle: "강사관리",
+      //     breadcrumbs: ["교육 리소스 관리", "강사관리"],
+      //   },
+      // },
       {
         path: "WorkSituation",
         name: "user-WorkSituation",
@@ -169,6 +197,15 @@ const routes: Array<RouteRecordRaw> = [
         path: "BusinessJournal",
         name: "user-BusinessJournal",
         component: () => import("@/views/apps/subscriptions/BusinessJournal.vue"),
+        meta: {
+          pageTitle: "업무일지",
+          breadcrumbs: ["강사 관리", "업무일지"],
+        },
+      },
+      {
+        path: "BusinessJournalAdd",
+        name: "user-BusinessJournalAdd",
+        component: () => import("@/views/apps/user/BusinessJournalAdd.vue"),
         meta: {
           pageTitle: "업무일지",
           breadcrumbs: ["강사 관리", "업무일지"],
@@ -370,6 +407,15 @@ const routes: Array<RouteRecordRaw> = [
         path: "BusinessJournal",
         name: "admin-BusinessJournal",
         component: () => import("@/views/apps/subscriptions/BusinessJournal.vue"),
+        meta: {
+          pageTitle: "업무일지",
+          breadcrumbs: ["강사 관리", "업무일지"],
+        },
+      },
+      {
+        path: "BusinessJournalList",
+        name: "admin-BusinessJournalList",
+        component: () => import("@/views/apps/subscriptions/BusinessJournallist.vue"),
         meta: {
           pageTitle: "업무일지",
           breadcrumbs: ["강사 관리", "업무일지"],

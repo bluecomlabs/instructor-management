@@ -5,7 +5,7 @@
         <h2>서명 이미지</h2>
       </div>
     </div>
-    <div style="display: block; margin-left: auto; margin-right: 20px; text-align: right; padding: 0;" class="card-body py-0">
+    <div style="display: block; margin-left: 30px; margin-right: auto; text-align: left; padding: 0;" class="card-body py-0">
       <div class="fs-5 fw-semibold text-gray-500 mb-4">
         <p style="color: red;">*서명은 배경을 투명하게 한 PNG,JPG파일만 가능합니다.</p>
         <a style="margin-bottom: 20px;" href="#" class="btn btn-sm btn-light-primary flex-shrink-0"

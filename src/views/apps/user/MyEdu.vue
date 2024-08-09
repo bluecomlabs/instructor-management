@@ -191,7 +191,7 @@ export default defineComponent({
         color: "success",
         billing: "MODI",
         product: "상세보기",
-        createdDate: "Oct 25, 2021",
+        createdDate: "2024.08.01.",
       },
       {
         id: 2,
@@ -200,7 +200,7 @@ export default defineComponent({
         color: "success",
         billing: "MODI",
         product: "상세보기",
-        createdDate: "Mar 10, 2021",
+        createdDate: "2024.08.01.",
       },
       {
         id: 3,
@@ -209,7 +209,7 @@ export default defineComponent({
         color: "primary",
         billing: "드론",
         product: "상세보기",
-        createdDate: "Jul 25, 2021",
+        createdDate: "2024.08.17.",
       },
       {
         id: 4,
@@ -218,7 +218,7 @@ export default defineComponent({
         color: "warning",
         billing: "코스페이시스",
         product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        createdDate: "2024.08.08.",
       },
       {
         id: 5,
@@ -227,7 +227,7 @@ export default defineComponent({
         color: "warning",
         billing: "코스페이시스",
         product: "상세보기",
-        createdDate: "May 05, 2021",
+        createdDate: "2024.08.08.",
       },
       {
         id: 6,
@@ -236,7 +236,7 @@ export default defineComponent({
         color: "success",
         billing: "3D 모델링",
         product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        createdDate: "2024.08.09.",
       },
       {
         id: 7,
@@ -245,7 +245,7 @@ export default defineComponent({
         color: "success",
         billing: "스택버거, 엔트리",
         product: "상세보기",
-        createdDate: "Jun 20, 2021",
+        createdDate: "2024.08.06.",
       },
       {
         id: 8,
@@ -254,7 +254,7 @@ export default defineComponent({
         color: "danger",
         billing: "스택버거, 엔트리",
         product: "상세보기",
-        createdDate: "Jun 24, 2021",
+        createdDate: "2024.08.06.",
       },
       {
         id: 9,
@@ -263,7 +263,7 @@ export default defineComponent({
         color: "warning",
         billing: "프로보커넥트",
         product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        createdDate: "2024.08.07.",
       },
       {
         id: 10,
@@ -272,7 +272,7 @@ export default defineComponent({
         color: "success",
         billing: "코스페이시스",
         product: "상세보기",
-        createdDate: "Feb 21, 2021",
+        createdDate: "2024.08.03.",
       },
       {
         id: 11,
@@ -381,7 +381,7 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "프로그램 생성날짜",
+        columnName: "수업날짜",
         columnLabel: "createdDate",
         sortEnabled: true,
       },

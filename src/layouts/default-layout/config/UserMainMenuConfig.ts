@@ -4,7 +4,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
   {
     pages: [
       {
-        heading: "dashboard",
+        heading: "대시보드",
         route: "/user/dashboard",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
@@ -12,17 +12,23 @@ const UserMainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
-    heading: "apps",
+    heading: "강의관리",
     route: "/apps",
     pages: [
       {
-        heading: "completeList",
-        route: "/user/completeList",
+        heading: "나의강의",
+        route: "/user/MyEdu",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "calendarApp",
+        heading: "교육신청",
+        route: "/user/EduAppl",
+        keenthemesIcon: "element-11",
+        bootstrapIcon: "bi-app-indicator",
+      },
+      {
+        heading: "캘린더",
         route: "/apps/calendar",
         keenthemesIcon: "calendar-8",
         bootstrapIcon: "bi-calendar3-event",
@@ -30,33 +36,27 @@ const UserMainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
-    heading: "resources",
+    heading: "서류관리",
     route: "/resources",
     pages: [
+      {
+        heading: "업무일지",
+        route: "/user/BusinessJournaLlist",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "근무상황부",
+        route: "/user/WorkSituation",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-printer",
+      },
       // {
-      //   heading: "ResearchNote",
-      //   route: "/apps/customers/getting-started",
-      //   keenthemesIcon: "abstract-38",
-      //   bootstrapIcon: "bi-printer",
+      //   heading: "lists",
+      //   route: "/user/lists",
+      //   keenthemesIcon: "element-7",
+      //   bootstrapIcon: "bi-layers",
       // },
-      {
-        heading: "programdetails",
-        route: "/user/ProgramDetails",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "educationaldetails",
-        route: "/user/EducationalDetails",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "lists",
-        route: "/user/lists",
-        keenthemesIcon: "element-7",
-        bootstrapIcon: "bi-layers",
-      },
     ],
   },
 ];

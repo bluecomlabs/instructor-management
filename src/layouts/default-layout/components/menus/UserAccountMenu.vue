@@ -16,13 +16,13 @@
         <!--begin::Username-->
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
-            이곳에 사용자 이름이 들어갑니다
+            박강명
             <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
               >관리자/강사님</span
             >
           </div>
           <a href="#" class="fw-semibold text-muted text-hover-primary fs-7"
-            >이곳에 이메일이 들어갑니다</a
+            >test@bluecom.kr</a
           >
         </div>
         <!--end::Username-->

@@ -33,7 +33,7 @@
           data-kt-subscription-table-toolbar="base"
         >
           <!--begin::Export-->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-light-primary me-3"
             data-bs-toggle="modal"
@@ -41,18 +41,7 @@
           >
             <KTIcon icon-name="exit-up" icon-class="fs-2" />
             Export
-          </button>
-          <!--end::Export-->
-
-          <!--begin::Add subscription-->
-          <router-link
-            to="/apps/subscriptions/add-subscription"
-            class="btn btn-primary"
-          >
-            <KTIcon icon-name="plus" icon-class="fs-2" />
-            Add Subscription
-          </router-link>
-          <!--end::Add subscription-->
+          </button> -->
         </div>
         <!--end::Toolbar-->
 
@@ -97,13 +86,11 @@
         </template>
         <template v-slot:status="{ row: customer }">
           <a href="#" class="text-gray-600 text-hover-primary mb-1">
-            <div :class="`badge badge-light-${customer.color}`">
               {{ customer.status }}
-            </div>
           </a>
         </template>
         <template v-slot:billing="{ row: customer }">
-          <div class="badge badge-light">{{ customer.billing }}</div>
+          {{ customer.billing }}
         </template>
         <template v-slot:product="{ row: customer }">
           {{ customer.product }}
@@ -179,93 +166,93 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([
       {
         id: 1,
-        customer: "Emma Smith",
-        status: "Active",
+        customer: "성남청소년센터",
+        status: "중구",
         color: "success",
-        billing: "Auto-debit",
+        billing: "010-4125-8381",
         product: "Basic",
-        createdDate: "Oct 25, 2021",
+        createdDate: "이가영",
       },
       {
         id: 2,
-        customer: "Melody Macy",
-        status: "Active",
+        customer: "성남청소년센터",
+        status: "중구",
         color: "success",
-        billing: "Manual - Credit Card",
+        billing: "010-4125-8381",
         product: "Basic",
-        createdDate: "Mar 10, 2021",
+        createdDate: "이가영",
       },
       {
         id: 3,
-        customer: "Max Smith",
-        status: "Active",
+        customer: "성남청소년센터(단기)",
+        status: "중구",
         color: "primary",
-        billing: "Manual - Cash",
+        billing: "010-4641-0270",
         product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
+        createdDate: "정호경",
       },
       {
         id: 4,
-        customer: "Sean Bean",
-        status: "Expiring",
+        customer: "남목청소년센터(도우리반)",
+        status: "중구",
         color: "warning",
-        billing: "Manual - Paypal",
+        billing: "010-8634-9556",
         product: "Enterprise",
-        createdDate: "Aug 19, 2021",
+        createdDate: "이기은",
       },
       {
         id: 5,
-        customer: "Brian Cox",
-        status: "Expiring",
+        customer: "남목청소년센터(나누리반)",
+        status: "중구",
         color: "warning",
-        billing: "Auto-debit",
+        billing: "010-8634-9556",
         product: "Basic",
-        createdDate: "May 05, 2021",
+        createdDate: "이기은",
       },
       {
         id: 6,
-        customer: "Mikaela Collins",
-        status: "Active",
+        customer: "남목청소년센터(동아리)",
+        status: "중구",
         color: "success",
-        billing: "Auto-debit",
+        billing: "010-8634-9556",
         product: "Enterprise Bundle",
-        createdDate: "Aug 19, 2021",
+        createdDate: "이기은",
       },
       {
         id: 7,
-        customer: "Francis Mitcham",
-        status: "Active",
+        customer: "북구청소년센터",
+        status: "북구",
         color: "success",
-        billing: "Auto-debit",
+        billing: "",
         product: "Teams",
-        createdDate: "Jun 20, 2021",
+        createdDate: "",
       },
       {
         id: 8,
-        customer: "Olivia Wild",
-        status: "Suspended",
+        customer: "북구청소년센터",
+        status: "북구",
         color: "danger",
-        billing: "--",
+        billing: "",
         product: "Enterprise",
-        createdDate: "Jun 24, 2021",
+        createdDate: "",
       },
       {
         id: 9,
-        customer: "Neil Owen",
-        status: "Expiring",
+        customer: "북구청소년센터(단기)",
+        status: "북구",
         color: "warning",
-        billing: "Auto-debit",
+        billing: "010-9905-2520",
         product: "Basic",
-        createdDate: "Aug 19, 2021",
+        createdDate: "신명재",
       },
       {
         id: 10,
-        customer: "Dan Wilson",
-        status: "Active",
+        customer: "북구청소년센터(동아리)",
+        status: "북구",
         color: "success",
-        billing: "Auto-debit",
+        billing: "010-9905-2520",
         product: "Enterprise Bundle",
-        createdDate: "Feb 21, 2021",
+        createdDate: "신명재",
       },
       {
         id: 11,
@@ -369,34 +356,34 @@ export default defineComponent({
     ]);
     const headerConfig = ref([
       {
-        columnName: "프로그램명",
+        columnName: "교육기관명",
         columnLabel: "customer",
         sortEnabled: true,
       },
       {
-        columnName: "상태",
+        columnName: "교육기관 지역",
         columnLabel: "status",
         sortEnabled: true,
       },
       {
-        columnName: "Billing",
+        columnName: "교육기관 연락처",
         columnLabel: "billing",
         sortEnabled: true,
       },
+      // {
+      //   columnName: "교육기관 주소",
+      //   columnLabel: "product",
+      //   sortEnabled: true,
+      // },
       {
-        columnName: "총 차시",
-        columnLabel: "product",
-        sortEnabled: true,
-      },
-      {
-        columnName: "프로그램 생성날짜",
+        columnName: "교육기관 담당자",
         columnLabel: "createdDate",
         sortEnabled: true,
       },
-      {
-        columnName: "설정",
-        columnLabel: "actions",
-      },
+      // {
+      //   columnName: "설정",
+      //   columnLabel: "actions",
+      // },
     ]);
 
     const initData = ref<Array<ISubscription>>([]);

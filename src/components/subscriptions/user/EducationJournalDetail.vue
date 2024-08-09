@@ -44,17 +44,59 @@
       <div class="mb-0">
         <h5 class="mb-4">교육내용</h5>
         <div class="table-responsive" style="height: 400px;">
-          □ 혜인학교 수업을 위한 오조봇 수업 준비
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
           <br><br>
-          - 수업날짜 : 2024.08.09 (금)<br>
-          - 수업 주제 : 오조봇 "도전! 볼링왕", "분리수거 하는 똑똑한 오조봇"<br>
-          - 수업준비<br>
-          1. 차시별 지도안 작성<br>
-          2. 활동지 준비 및 출력<br>
-          3. 수업내용 파악 및 진행순서 확인
+          
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          <br><br>
+          
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          <br><br>
+          
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
+          업무내용 업무내용
         </div>
-        <img alt="Pic" :src="getAssetPath('media/avatars/test1.png')" />
-        <img alt="Pic" :src="getAssetPath('media/avatars/test2.png')"  style="float: right;"/>
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')" />
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')"  style="float: right;"/>
       </div>
       
       <div class="flex-equal me-5">

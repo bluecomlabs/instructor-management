@@ -33,7 +33,7 @@
           data-kt-subscription-table-toolbar="base"
         >
           <!--begin::Export-->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-light-primary me-3"
             data-bs-toggle="modal"
@@ -41,18 +41,7 @@
           >
             <KTIcon icon-name="exit-up" icon-class="fs-2" />
             Export
-          </button>
-          <!--end::Export-->
-
-          <!--begin::Add subscription-->
-          <router-link
-            to="/apps/subscriptions/add-subscription"
-            class="btn btn-primary"
-          >
-            <KTIcon icon-name="plus" icon-class="fs-2" />
-            Add Subscription
-          </router-link>
-          <!--end::Add subscription-->
+          </button> -->
         </div>
         <!--end::Toolbar-->
 
@@ -103,7 +92,7 @@
           </a>
         </template>
         <template v-slot:billing="{ row: customer }">
-          <div class="badge badge-light">{{ customer.billing }}</div>
+          {{ customer.billing }}
         </template>
         <template v-slot:product="{ row: customer }">
           {{ customer.product }}
@@ -179,98 +168,98 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([
       {
         id: 1,
-        customer: "Emma Smith",
-        status: "Active",
+        customer: "MODI",
+        status: "교육 종료",
         color: "success",
-        billing: "Auto-debit",
-        product: "Basic",
-        createdDate: "Oct 25, 2021",
+        billing: "오후 6시 20분  ~ 오후 7시 10분",
+        product: "1",
+        createdDate: "2024.08.01.",
       },
       {
         id: 2,
-        customer: "Melody Macy",
-        status: "Active",
+        customer: "MODI",
+        status: "교육 종료",
         color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Mar 10, 2021",
+        billing: "오후 7시 20분 ~ 오후 8시 10분",
+        product: "1",
+        createdDate: "2024.08.01.",
       },
       {
         id: 3,
-        customer: "Max Smith",
-        status: "Active",
-        color: "primary",
-        billing: "Manual - Cash",
-        product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
+        customer: "드론",
+        status: "교육 전",
+        color: "warning",
+        billing: "오전 10시 30분 ~ 오후 12시 30분",
+        product: "2",
+        createdDate: "2024.08.17.",
       },
       {
         id: 4,
-        customer: "Sean Bean",
-        status: "Expiring",
+        customer: "코스페이시스",
+        status: "교육 전",
         color: "warning",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "Aug 19, 2021",
+        billing: "오후 5시 30분 ~ 오후 6시 40분",
+        product: "1.5",
+        createdDate: "2024.08.08.",
       },
       {
         id: 5,
-        customer: "Brian Cox",
-        status: "Expiring",
+        customer: "코스페이시스",
+        status: "교육 전",
         color: "warning",
-        billing: "Auto-debit",
-        product: "Basic",
-        createdDate: "May 05, 2021",
+        billing: "오후 6시 50분 ~ 오후 8시 00분",
+        product: "1.5",
+        createdDate: "2024.08.08.",
       },
       {
         id: 6,
-        customer: "Mikaela Collins",
-        status: "Active",
+        customer: "3D 모델링",
+        status: "교육 종료",
         color: "success",
-        billing: "Auto-debit",
-        product: "Enterprise Bundle",
-        createdDate: "Aug 19, 2021",
+        billing: "오후 6시 20분 ~ 오후 7시 20분",
+        product: "1",
+        createdDate: "2024.08.09.",
       },
       {
         id: 7,
-        customer: "Francis Mitcham",
-        status: "Active",
+        customer: "스택버거, 엔트리",
+        status: "교육 종료",
         color: "success",
-        billing: "Auto-debit",
-        product: "Teams",
-        createdDate: "Jun 20, 2021",
+        billing: "오후 5시 30분 ~ 오후 6시 45분",
+        product: "1.5",
+        createdDate: "2024.08.06.",
       },
       {
         id: 8,
-        customer: "Olivia Wild",
-        status: "Suspended",
+        customer: "스택버거, 엔트리",
+        status: "보류(취소)",
         color: "danger",
-        billing: "--",
-        product: "Enterprise",
-        createdDate: "Jun 24, 2021",
+        billing: "오후 6시 55분 ~ 오후 8시 10분",
+        product: "1.5",
+        createdDate: "2024.08.06.",
       },
       {
         id: 9,
-        customer: "Neil Owen",
-        status: "Expiring",
+        customer: "프로보커넥트",
+        status: "교육 전",
         color: "warning",
-        billing: "Auto-debit",
-        product: "Basic",
-        createdDate: "Aug 19, 2021",
+        billing: "오후 3시 00분 ~ 오후 4시 30분",
+        product: "2",
+        createdDate: "2024.08.07.",
       },
       {
         id: 10,
-        customer: "Dan Wilson",
-        status: "Active",
+        customer: "코스페이시스",
+        status: "교육 종료",
         color: "success",
-        billing: "Auto-debit",
-        product: "Enterprise Bundle",
-        createdDate: "Feb 21, 2021",
+        billing: "오전 10시 00분 ~ 오전 11시 30분",
+        product: "2",
+        createdDate: "2024.08.03.",
       },
       {
         id: 11,
         customer: "Emma Bold",
-        status: "Active",
+        status: "교육 전",
         color: "success",
         billing: "Manual - Credit Card",
         product: "Enterprise",
@@ -379,24 +368,24 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "Billing",
-        columnLabel: "billing",
-        sortEnabled: true,
-      },
-      {
         columnName: "총 차시",
         columnLabel: "product",
         sortEnabled: true,
       },
       {
-        columnName: "프로그램 생성날짜",
+        columnName: "수업날짜",
         columnLabel: "createdDate",
         sortEnabled: true,
       },
       {
-        columnName: "설정",
-        columnLabel: "actions",
+        columnName: "수업시간",
+        columnLabel: "billing",
+        sortEnabled: true,
       },
+      // {
+      //   columnName: "설정",
+      //   columnLabel: "actions",
+      // },
     ]);
 
     const initData = ref<Array<ISubscription>>([]);

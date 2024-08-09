@@ -1,7 +1,7 @@
 <template>
   <div class="row g-5 g-xl-8">
     <div class="col-xl-12">
-      <ListsWidget2 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget2>
+      <ListsWidget1 widget-classes="card-xl-stretch mb-xl-8"></ListsWidget1>
     </div>
   </div>
 </template>

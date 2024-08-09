@@ -56,13 +56,13 @@
             <a
               href="#"
               class="fs-4 fw-bold text-gray-900 text-hover-primary me-2"
-              >박강명</a
+              >권정미</a
             >
             <!--end::Name-->
 
             <!--begin::Email-->
             <a href="#" class="fw-semibold text-gray-600 text-hover-primary"
-              >test@bluecom.kr</a
+              >kjm0142@gmail.com</a
             >
             <!--end::Email-->
           </div>
@@ -93,7 +93,7 @@
           <!--begin::Row-->
           <tr class="">
             <td class="text-gray-500">성별:</td>
-            <td class="text-gray-800">남자</td>
+            <td class="text-gray-800">여자</td>
           </tr>
           <!--end::Row-->
 

@@ -33,7 +33,7 @@
           data-kt-subscription-table-toolbar="base"
         >
           <!--begin::Export-->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-light-primary me-3"
             data-bs-toggle="modal"
@@ -41,18 +41,7 @@
           >
             <KTIcon icon-name="exit-up" icon-class="fs-2" />
             Export
-          </button>
-          <!--end::Export-->
-
-          <!--begin::Add subscription-->
-          <router-link
-            to="/apps/subscriptions/add-subscription"
-            class="btn btn-primary"
-          >
-            <KTIcon icon-name="plus" icon-class="fs-2" />
-            Add Subscription
-          </router-link>
-          <!--end::Add subscription-->
+          </button> -->
         </div>
         <!--end::Toolbar-->
 

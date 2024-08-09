@@ -52,9 +52,9 @@
             <router-link to="WorkSituation" class="btn btn-light-primary me-2">
               근무상황부
             </router-link>
-            <router-link to="BusinessJournal" class="btn btn-light-primary">
+            <!-- <router-link to="BusinessJournal" class="btn btn-light-primary">
               업무일지
-            </router-link>
+            </router-link> -->
           </div>
           <!--end::Right side-->
         </div>
@@ -82,49 +82,49 @@ export default defineComponent({
   setup() {
     const list = ref([
       {
-        avatar: getAssetPath("media/avatars/300-1.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "권정미",
+        description: "010-6504-6273",
       },
       {
-        avatar: getAssetPath("media/avatars/300-5.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "권혜경",
+        description: "010-3277-7797",
       },
       {
-        avatar: getAssetPath("media/avatars/300-10.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김미",
+        description: "010-7180-3858",
       },
       {
-        avatar: getAssetPath("media/avatars/300-9.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김미령",
+        description: "010-6835-3608",
       },
       {
-        avatar: getAssetPath("media/avatars/300-23.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김보미",
+        description: "010-3317-0584",
       },
       {
-        avatar: getAssetPath("media/avatars/300-27.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김은희",
+        description: "010-9606-6060",
       },
       {
-        avatar: getAssetPath("media/avatars/300-6.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김인경",
+        description: "010-5561-2578",
       },
       {
-        avatar: getAssetPath("media/avatars/300-15.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김지숙",
+        description: "010-6366-5542",
       },
       {
-        avatar: getAssetPath("media/avatars/300-11.jpg"),
-        name: "박강명",
-        description: "010-1234-5678",
+        avatar: getAssetPath("media/avatars/blank.png"),
+        name: "김희정",
+        description: "010-8508-6017",
       },
     ]);
 

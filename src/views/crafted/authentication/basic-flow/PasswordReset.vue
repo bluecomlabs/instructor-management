@@ -8,7 +8,7 @@
         id="kt_login_password_reset_form"
         :validation-schema="forgotPassword"
       >
-        <div class="text-center mb-10">
+        <div v-if="!isCodeSent" class="text-center mb-10">
           <h1 class="text-gray-900 mb-3">이메일 인증이 필요한 서비스입니다.</h1>
           <div class="text-gray-500 fw-semibold fs-4">
             등록하신 이메일을 입력해주세요.
@@ -30,6 +30,12 @@
           </div>
         </div>
 
+        <div v-if="isCodeSent" class="text-center mb-10">
+          <h1 class="text-gray-900 mb-3">등록하신 이메일로 인증번호가 발송되었습니다.</h1>
+          <div class="text-gray-500 fw-semibold fs-4">
+            등록하신 이메일을 입력해주세요.
+          </div>
+        </div>
         <div v-if="isCodeSent" class="fv-row mb-10">
           <label class="form-label fw-bold text-gray-900 fs-6">인증번호</label>
           <Field
@@ -90,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref, onUnmounted, computed } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { useAuthStore } from "@/stores/auth";
 import * as Yup from "yup";
@@ -111,7 +117,7 @@ export default defineComponent({
 
     const submitButton = ref<HTMLButtonElement | null>(null);
     const isCodeSent = ref(false);
-    const timer = ref(5); // 테스트라 5초 배포땐 5분으로할듯
+    const timer = ref(300);
 
     let interval: number;
     const startTimer = () => {
@@ -140,13 +146,14 @@ export default defineComponent({
       clearInterval(interval);
     });
 
-    const forgotPassword = Yup.object().shape({
-      email: Yup.string().email().required().label("Email"),
-      code: Yup.string().when("isCodeSent", {
-        is: true,
-        then: Yup.string().required().label("Code"),
-      }),
-    });
+    const forgotPassword = computed(() =>
+      Yup.object().shape({
+        email: Yup.string().email().required().label("Email"),
+        code: isCodeSent.value
+          ? Yup.string().required().label("Code")
+          : Yup.string(),
+      })
+    );
 
     const onSubmitForgotPassword = async (values: any) => {
       values = values as string;

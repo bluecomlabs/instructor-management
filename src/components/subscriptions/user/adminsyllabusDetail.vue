@@ -2,12 +2,12 @@
   <div class="card card-flush pt-3 mb-5 mb-xl-10">
     <div class="card-header">
       <div class="card-title">
-        <h2 class="fw-bold">교육일지</h2>
+        <h2 class="fw-bold">강의계획서</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="/subscriptions/add" class="btn btn-light-primary"
-          >Update Product</router-link
-        >
+        <router-link to="syllabus" class="btn btn-light-primary"
+          >강의확인서 보기
+        </router-link>
       </div>
     </div>
     <div class="card-body pt-3">
@@ -25,6 +25,10 @@
                 <td class="text-gray-500">교육명 :</td>
                 <td class="text-gray-800">오조봇 실습</td>
               </tr>
+              <tr>
+                <td class="text-gray-500">교육차시 :</td>
+                <td class="text-gray-800">총 8차시</td>
+              </tr>
             </table>
           </div>
           <div class="flex-equal">
@@ -34,55 +38,48 @@
                   일시 :
                 </td>
                 <td class="text-gray-800 min-w-200px">
-                    2024.08.01.
+                    2024.08.01. (목) ~ 2024.08.08 (목) (매주 목요일)
                 </td>
+              </tr>
+              <tr>
+                <td class="text-gray-500">신청기관 :</td>
+                <td class="text-gray-800">오조봇 실습</td>
+              </tr>
+              <tr>
+                <td class="text-gray-500">학년 :</td>
+                <td class="text-gray-800">초등학교 4학년 ~ 초등학교 6학년</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
       <div class="mb-0">
-        <h5 class="mb-4">교육내용</h5>
-        <div class="table-responsive" style="height: 400px;">
-          □ 혜인학교 수업을 위한 오조봇 수업 준비
-          <br><br>
-          - 수업날짜 : 2024.08.09 (금)<br>
-          - 수업 주제 : 오조봇 "도전! 볼링왕", "분리수거 하는 똑똑한 오조봇"<br>
-          - 수업준비<br>
-          1. 차시별 지도안 작성<br>
-          2. 활동지 준비 및 출력<br>
-          3. 수업내용 파악 및 진행순서 확인
+        <h5 class="mb-4">2024.08.01. (목) 강의확인서</h5>
+        <div class="table-responsive" style="height: 200px;">
+          이곳에 업무내용이 들어갑니다.
         </div>
-        <img alt="Pic" :src="getAssetPath('media/avatars/test1.png')" />
-        <img alt="Pic" :src="getAssetPath('media/avatars/test2.png')"  style="float: right;"/>
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')" />
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')"  style="float: right;"/>
+      </div>
+      <div class="mb-0" style="margin-top: 50px;">
+        <h5 class="mb-4">2024.08.01. (목) 강의확인서</h5>
+        <div class="table-responsive" style="height: 200px;">
+          이곳에 업무내용이 들어갑니다.
+        </div>
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')" />
+        <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')"  style="float: right;"/>
       </div>
       
-      <div class="flex-equal me-5">
+      <!-- <div class="flex-equal me-5" style="margin-top: 50px;">
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
               <tr>
-                <td class="text-gray-500 min-w-175px w-175px">강사명 :</td>
+                <td class="text-gray-500 min-w-175px w-175px">담당자 확인 :</td>
                 <td class="text-gray-800 min-w-200px">
-                  박강명
-                </td>
-              </tr>
-              <tr>
-                <td class="text-gray-500">교육명 :</td>
-                <td class="text-gray-800">오조봇 실습</td>
-              </tr>
-            </table>
-          </div>
-          <div class="flex-equal">
-            <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
-              <tr>
-                <td class="text-gray-500 min-w-175px w-175px">
-                  일시 :
-                </td>
-                <td class="text-gray-800 min-w-200px">
-                    2024.08.01.
+                  박강명(서명이미지)
                 </td>
               </tr>
             </table>
-          </div>
+          </div> -->
     </div>
   </div>
 </template>

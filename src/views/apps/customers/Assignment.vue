@@ -33,7 +33,7 @@
           data-kt-subscription-table-toolbar="base"
         >
           <!--begin::Export-->
-          <button
+          <!-- <button
             type="button"
             class="btn btn-light-primary me-3"
             data-bs-toggle="modal"
@@ -41,18 +41,7 @@
           >
             <KTIcon icon-name="exit-up" icon-class="fs-2" />
             Export
-          </button>
-          <!--end::Export-->
-
-          <!--begin::Add subscription-->
-          <router-link
-            to="/apps/subscriptions/add-subscription"
-            class="btn btn-primary"
-          >
-            <KTIcon icon-name="plus" icon-class="fs-2" />
-            Add Subscription
-          </router-link>
-          <!--end::Add subscription-->
+          </button> -->
         </div>
         <!--end::Toolbar-->
 
@@ -86,8 +75,8 @@
         :header="headerConfig"
         :checkbox-enabled="true"
       >
-        <template v-slot:product="{ row: customer }">
-          {{ customer.product }}
+        <template v-slot:billing="{ row: customer }">
+          {{ customer.billing }}
         </template>
         <template v-slot:createdDate="{ row: customer }">
           {{ customer.createdDate }}
@@ -110,7 +99,7 @@
             {{ customer.status }}
           </router-link>
         </template>
-        <template v-slot:billing="{ row: customer }">
+        <template v-slot:product="{ row: customer }">
           <router-link
             to="syllabus"
             href=""
@@ -187,93 +176,93 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([
       {
         id: 1,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터",
+        status: "2024.08.01.",
         color: "success",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "Oct 25, 2021",
+        billing: "MODI",
+        product: "최종배정",
+        createdDate: "권정미",
       },
       {
         id: 2,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터",
+        status: "2024.08.01.",
         color: "success",
-        billing: "Manual - Credit Card",
-        product: "상세보기",
-        createdDate: "Mar 10, 2021",
+        billing: "MODI",
+        product: "최종배정",
+        createdDate: "권혜경",
       },
       {
         id: 3,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "성남청소년센터(단기)",
+        status: "2024.08.17.",
         color: "primary",
-        billing: "Manual - Cash",
-        product: "상세보기",
-        createdDate: "Jul 25, 2021",
+        billing: "드론",
+        product: "최종배정",
+        createdDate: "김미",
       },
       {
         id: 4,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(도우리반)",
+        status: "2024.08.08.",
         color: "warning",
-        billing: "Manual - Paypal",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        billing: "코스페이시스",
+        product: "탈락",
+        createdDate: "김미령",
       },
       {
         id: 5,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(나누리반)",
+        status: "2024.08.09.",
         color: "warning",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "May 05, 2021",
+        billing: "코스페이시스",
+        product: "최종배정",
+        createdDate: "김보미",
       },
       {
         id: 6,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "남목청소년센터(동아리)",
+        status: "2024.08.06.",
         color: "success",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        billing: "3D 모델링",
+        product: "탈락",
+        createdDate: "김은희",
       },
       {
         id: 7,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터",
+        status: "2024.08.06.",
         color: "success",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "Jun 20, 2021",
+        billing: "스택버거, 엔트리",
+        product: "최종배정",
+        createdDate: "김인경",
       },
       {
         id: 8,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터",
+        status: "2024.08.07.",
         color: "danger",
-        billing: "--",
-        product: "상세보기",
-        createdDate: "Jun 24, 2021",
+        billing: "스택버거, 엔트리",
+        product: "최종배정",
+        createdDate: "김지숙",
       },
       {
         id: 9,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터(단기)",
+        status: "2024.08.03.",
         color: "warning",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "Aug 19, 2021",
+        billing: "프로보커넥트",
+        product: "최종배정",
+        createdDate: "김희정",
       },
       {
         id: 10,
-        customer: "상세보기",
-        status: "상세보기",
+        customer: "북구청소년센터(동아리)",
+        status: "2024.08.03.",
         color: "success",
-        billing: "Auto-debit",
-        product: "상세보기",
-        createdDate: "Feb 21, 2021",
+        billing: "코스페이시스",
+        product: "탈락",
+        createdDate: "나성자",
       },
       {
         id: 11,
@@ -378,33 +367,33 @@ export default defineComponent({
     const headerConfig = ref([
       {
         columnName: "프로그램명",
-        columnLabel: "product",
-        sortEnabled: true,
-      },
-      {
-        columnName: "프로그램 생성날짜",
-        columnLabel: "createdDate",
-        sortEnabled: true,
-      },
-      {
-        columnName: "출석부",
-        columnLabel: "customer",
-        sortEnabled: true,
-      },
-      {
-        columnName: "교육일지",
-        columnLabel: "status",
-        sortEnabled: true,
-      },
-      {
-        columnName: "강의확인서",
         columnLabel: "billing",
         sortEnabled: true,
       },
       {
-        columnName: "설정",
-        columnLabel: "actions",
+        columnName: "강사명",
+        columnLabel: "createdDate",
+        sortEnabled: true,
       },
+      {
+        columnName: "교육기관명",
+        columnLabel: "customer",
+        sortEnabled: true,
+      },
+      {
+        columnName: "교육날짜",
+        columnLabel: "status",
+        sortEnabled: true,
+      },
+      {
+        columnName: "최종배정 여부",
+        columnLabel: "product",
+        sortEnabled: true,
+      },
+      // {
+      //   columnName: "설정",
+      //   columnLabel: "actions",
+      // },
     ]);
 
     const initData = ref<Array<ISubscription>>([]);
