@@ -22,7 +22,7 @@
         </div>
         <!--end::Search-->
       </div>
-      <!--begin::Card title-->
+      <!--end::Card title-->
 
       <!--begin::Card toolbar-->
       <div class="card-toolbar">
@@ -33,15 +33,13 @@
           data-kt-subscription-table-toolbar="base"
         >
           <!--begin::Export-->
-          <!-- <button
+          <button
             type="button"
-            class="btn btn-light-primary me-3"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_subscriptions_export_modal"
+            class="btn btn-primary pastel-primary"
+            @click="finalizeAssignments"
           >
-            <KTIcon icon-name="exit-up" icon-class="fs-2" />
-            Export
-          </button> -->
+            최종배정완료
+          </button>
         </div>
         <!--end::Toolbar-->
 
@@ -53,7 +51,7 @@
           </div>
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-danger pastel-danger"
             @click="deleteFewSubscriptions()"
           >
             Delete Selected
@@ -68,6 +66,7 @@
     <!--begin::Card body-->
     <div class="card-body pt-0">
       <KTDatatable
+        class="text-center"
         @on-sort="sort"
         @on-items-select="onItemSelect"
         @on-items-per-page-change="onItemsPerPageChange"
@@ -100,13 +99,30 @@
           </router-link>
         </template>
         <template v-slot:product="{ row: customer }">
-          <router-link
-            to="syllabus"
-            href=""
-            class="text-gray-800 text-hover-primary mb-1"
+          <button
+            v-if="customer.product === '최종배정'"
+            class="btn btn-success pastel-success fade-transition"
           >
-            {{ customer.product }}
-          </router-link>
+            최종배정
+          </button>
+          <button
+            v-else-if="customer.product === '탈락'"
+            class="btn btn-danger pastel-danger fade-transition"
+          >
+            탈락
+          </button>
+          <button
+            v-else-if="customer.product === '신청완료'"
+            class="btn btn-primary pastel-primary fade-transition"
+          >
+            신청완료
+          </button>
+          <button
+            v-else
+            class="btn btn-secondary pastel-secondary fade-transition"
+          >
+            미신청
+          </button>
         </template>
         <template v-slot:actions="{ row: customer }">
           <a
@@ -180,7 +196,7 @@ export default defineComponent({
         status: "2024.08.01.",
         color: "success",
         billing: "MODI",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "권정미",
       },
       {
@@ -189,7 +205,7 @@ export default defineComponent({
         status: "2024.08.01.",
         color: "success",
         billing: "MODI",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "권혜경",
       },
       {
@@ -198,7 +214,7 @@ export default defineComponent({
         status: "2024.08.17.",
         color: "primary",
         billing: "드론",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "김미",
       },
       {
@@ -207,7 +223,7 @@ export default defineComponent({
         status: "2024.08.08.",
         color: "warning",
         billing: "코스페이시스",
-        product: "탈락",
+        product: "미신청",
         createdDate: "김미령",
       },
       {
@@ -216,7 +232,7 @@ export default defineComponent({
         status: "2024.08.09.",
         color: "warning",
         billing: "코스페이시스",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "김보미",
       },
       {
@@ -225,7 +241,7 @@ export default defineComponent({
         status: "2024.08.06.",
         color: "success",
         billing: "3D 모델링",
-        product: "탈락",
+        product: "미신청",
         createdDate: "김은희",
       },
       {
@@ -234,7 +250,7 @@ export default defineComponent({
         status: "2024.08.06.",
         color: "success",
         billing: "스택버거, 엔트리",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "김인경",
       },
       {
@@ -243,7 +259,7 @@ export default defineComponent({
         status: "2024.08.07.",
         color: "danger",
         billing: "스택버거, 엔트리",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "김지숙",
       },
       {
@@ -252,7 +268,7 @@ export default defineComponent({
         status: "2024.08.03.",
         color: "warning",
         billing: "프로보커넥트",
-        product: "최종배정",
+        product: "신청완료",
         createdDate: "김희정",
       },
       {
@@ -261,109 +277,11 @@ export default defineComponent({
         status: "2024.08.03.",
         color: "success",
         billing: "코스페이시스",
-        product: "탈락",
+        product: "미신청",
         createdDate: "나성자",
       },
-      {
-        id: 11,
-        customer: "Emma Bold",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-      },
-      {
-        id: 12,
-        customer: "Ana Crown",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Jun 24, 2021",
-      },
-      {
-        id: 13,
-        customer: "Robert Doe",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
-      },
-      {
-        id: 14,
-        customer: "John Miller",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "Sep 22, 2021",
-      },
-      {
-        id: 15,
-        customer: "Lucy Kunic",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Nov 10, 2021",
-      },
-      {
-        id: 16,
-        customer: "Neil Owen",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Jun 20, 2021",
-      },
-      {
-        id: 17,
-        customer: "Dan Wilson",
-        status: "Expiring",
-        color: "warning",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-      },
-      {
-        id: 18,
-        customer: "Emma Smith",
-        status: "Active",
-        color: "success",
-        billing: "Auto-debit",
-        product: "Teams",
-        createdDate: "Apr 15, 2021",
-      },
-      {
-        id: 19,
-        customer: "Melody Macy",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Oct 25, 2021",
-      },
-      {
-        id: 20,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-      },
-      {
-        id: 21,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-      },
     ]);
+
     const headerConfig = ref([
       {
         columnName: "프로그램명",
@@ -390,15 +308,12 @@ export default defineComponent({
         columnLabel: "product",
         sortEnabled: true,
       },
-      // {
-      //   columnName: "설정",
-      //   columnLabel: "actions",
-      // },
     ]);
 
     const initData = ref<Array<ISubscription>>([]);
 
     onMounted(() => {
+      loadFromLocalStorage();
       initData.value.splice(0, data.value.length, ...data.value);
     });
 
@@ -416,12 +331,14 @@ export default defineComponent({
         }
       }
     };
+
     const sort = (sort: Sort) => {
       const reverse: boolean = sort.order === "asc";
       if (sort.label) {
         arraySort(data.value, sort.label, { reverse });
       }
     };
+
     const onItemSelect = (selectedItems: Array<number>) => {
       selectedIds.value = selectedItems;
     };
@@ -458,6 +375,38 @@ export default defineComponent({
       }, 0);
     };
 
+    const finalizeAssignments = () => {
+      data.value.forEach((item) => {
+        if (item.product === "신청완료") {
+          item.product = "최종배정";
+        } else if (item.product === "미신청") {
+          item.product = "탈락";
+        }
+      });
+      saveToLocalStorage();
+    };
+
+    const saveToLocalStorage = () => {
+      const dataToSave = data.value.map((item) => ({
+        id: item.id,
+        product: item.product,
+      }));
+      localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
+    };
+
+    const loadFromLocalStorage = () => {
+      const savedData = localStorage.getItem("subscriptions");
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        parsedData.forEach((savedItem: { id: number; product: string }) => {
+          const item = data.value.find((d) => d.id === savedItem.id);
+          if (item) {
+            item.product = savedItem.product;
+          }
+        });
+      }
+    };
+
     return {
       search,
       searchItems,
@@ -468,9 +417,53 @@ export default defineComponent({
       selectedIds,
       deleteFewSubscriptions,
       deleteSubscription,
+      finalizeAssignments,
       getAssetPath,
       onItemsPerPageChange,
     };
   },
 });
 </script>
+
+<style scoped>
+.text-center {
+  text-align: center;
+}
+
+.pastel-primary {
+  background-color: #a8d5e2;
+  border-color: #a8d5e2;
+  color: #fff;
+}
+
+.pastel-success {
+  background-color: #c8e6c9;
+  border-color: #c8e6c9;
+  color: #fff;
+}
+
+.pastel-danger {
+  background-color: #ffcdd2;
+  border-color: #ffcdd2;
+  color: #fff;
+}
+
+.pastel-secondary {
+  background-color: #d7ccc8;
+  border-color: #d7ccc8;
+  color: #fff;
+}
+
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.btn[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+tr {
+  text-align: center !important;
+}
+</style>

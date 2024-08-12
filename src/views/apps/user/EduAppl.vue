@@ -100,13 +100,20 @@
           </router-link>
         </template>
         <template v-slot:product="{ row: customer }">
-          <router-link
-            to="syllabus"
-            href=""
-            class="text-gray-800 text-hover-primary mb-1"
+          <button
+            v-if="customer.product === '신청하기'"
+            class="btn btn-primary fade-transition"
+            @click="applyForProduct(customer)"
           >
-            {{ customer.product }}
-          </router-link>
+            신청하기
+          </button>
+          <button
+            v-else
+            class="btn btn-danger fade-transition"
+            @click="cancelProduct(customer)"
+          >
+            신청취소
+          </button>
         </template>
         <template v-slot:actions="{ row: customer }">
           <a
@@ -398,79 +405,129 @@ export default defineComponent({
 
     const initData = ref<Array<ISubscription>>([]);
 
-    onMounted(() => {
-      initData.value.splice(0, data.value.length, ...data.value);
+onMounted(() => {
+  loadFromLocalStorage();
+  initData.value.splice(0, data.value.length, ...data.value);
+});
+
+const selectedIds = ref<Array<number>>([]);
+const deleteFewSubscriptions = () => {
+  selectedIds.value.forEach((item) => {
+    deleteSubscription(item);
+  });
+  selectedIds.value.length = 0;
+};
+const deleteSubscription = (id: number) => {
+  for (let i = 0; i < data.value.length; i++) {
+    if (data.value[i].id === id) {
+      data.value.splice(i, 1);
+    }
+  }
+  saveToLocalStorage();
+};
+const sort = (sort: Sort) => {
+  const reverse: boolean = sort.order === "asc";
+  if (sort.label) {
+    arraySort(data.value, sort.label, { reverse });
+  }
+};
+const onItemSelect = (selectedItems: Array<number>) => {
+  selectedIds.value = selectedItems;
+};
+
+const search = ref<string>("");
+const searchItems = () => {
+  data.value.splice(0, data.value.length, ...initData.value);
+  if (search.value !== "") {
+    let results: Array<ISubscription> = [];
+    for (let j = 0; j < initData.value.length; j++) {
+      if (searchingFunc(initData.value[j], search.value)) {
+        results.push(initData.value[j]);
+      }
+    }
+    data.value.splice(0, data.value.length, ...results);
+  }
+  MenuComponent.reinitialization();
+};
+
+const searchingFunc = (obj: any, value: string): boolean => {
+  for (let key in obj) {
+    if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
+      if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+const onItemsPerPageChange = () => {
+  setTimeout(() => {
+    MenuComponent.reinitialization();
+  }, 0);
+};
+
+const applyForProduct = (customer: ISubscription) => {
+  if (customer.product === "신청하기") {
+    customer.product = "신청완료";
+    saveToLocalStorage();
+  }
+};
+
+const cancelProduct = (customer: ISubscription) => {
+  if (customer.product === "신청완료") {
+    customer.product = "신청하기";
+    saveToLocalStorage();
+  }
+};
+
+const saveToLocalStorage = () => {
+  const dataToSave = data.value.map((item) => ({
+    id: item.id,
+    product: item.product,
+  }));
+  localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
+};
+
+const loadFromLocalStorage = () => {
+  const savedData = localStorage.getItem("subscriptions");
+  if (savedData) {
+    const parsedData = JSON.parse(savedData);
+    parsedData.forEach((savedItem: { id: number; product: string }) => {
+      const item = data.value.find((d) => d.id === savedItem.id);
+      if (item) {
+        item.product = savedItem.product;
+      }
     });
+  }
+};
 
-    const selectedIds = ref<Array<number>>([]);
-    const deleteFewSubscriptions = () => {
-      selectedIds.value.forEach((item) => {
-        deleteSubscription(item);
-      });
-      selectedIds.value.length = 0;
-    };
-    const deleteSubscription = (id: number) => {
-      for (let i = 0; i < data.value.length; i++) {
-        if (data.value[i].id === id) {
-          data.value.splice(i, 1);
-        }
-      }
-    };
-    const sort = (sort: Sort) => {
-      const reverse: boolean = sort.order === "asc";
-      if (sort.label) {
-        arraySort(data.value, sort.label, { reverse });
-      }
-    };
-    const onItemSelect = (selectedItems: Array<number>) => {
-      selectedIds.value = selectedItems;
-    };
-
-    const search = ref<string>("");
-    const searchItems = () => {
-      data.value.splice(0, data.value.length, ...initData.value);
-      if (search.value !== "") {
-        let results: Array<ISubscription> = [];
-        for (let j = 0; j < initData.value.length; j++) {
-          if (searchingFunc(initData.value[j], search.value)) {
-            results.push(initData.value[j]);
-          }
-        }
-        data.value.splice(0, data.value.length, ...results);
-      }
-      MenuComponent.reinitialization();
-    };
-
-    const searchingFunc = (obj: any, value: string): boolean => {
-      for (let key in obj) {
-        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
-            return true;
-          }
-        }
-      }
-      return false;
-    };
-
-    const onItemsPerPageChange = () => {
-      setTimeout(() => {
-        MenuComponent.reinitialization();
-      }, 0);
-    };
-
-    return {
-      search,
-      searchItems,
-      data,
-      headerConfig,
-      sort,
-      onItemSelect,
-      selectedIds,
-      deleteFewSubscriptions,
-      deleteSubscription,
-      getAssetPath,
-      onItemsPerPageChange,
-    };
-  },
+return {
+  search,
+  searchItems,
+  data,
+  headerConfig,
+  sort,
+  onItemSelect,
+  selectedIds,
+  deleteFewSubscriptions,
+  deleteSubscription,
+  getAssetPath,
+  onItemsPerPageChange,
+  applyForProduct,
+  cancelProduct,
+};
+},
 });
 </script>
+
+<style scoped>
+.fade-transition {
+transition: opacity 0.5s ease-in-out;
+}
+
+.btn[disabled] {
+pointer-events: none;
+opacity: 0.5;
+}
+</style>
