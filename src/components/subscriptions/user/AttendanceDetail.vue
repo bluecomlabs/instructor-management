@@ -2,10 +2,10 @@
   <div class="card card-flush pt-3 mb-5 mb-xl-10">
     <div class="card-header">
       <div class="card-title">
-        <h2 class="fw-bold">업무일지</h2>
+        <h2 class="fw-bold">출석부</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="/subscriptions/add" class="btn btn-light-primary">수정하기</router-link>
+        <router-link to="EditAttendance" class="btn btn-light-primary">수정하기</router-link>
       </div>
     </div>
     <div class="card-body pt-3">
@@ -15,7 +15,7 @@
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
               <tr>
                 <td class="text-gray-500 min-w-175px w-175px">강사명:</td>
-                <td class="text-gray-800 min-w-200px">박강명</td>
+                <td class="text-gray-800 min-w-200px">홍길동</td>
               </tr>
               <tr>
                 <td class="text-gray-500">교육명:</td>

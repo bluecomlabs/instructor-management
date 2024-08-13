@@ -6,20 +6,20 @@
       </div>
     </div>
       <div class="card-body">
-          <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">박강명</a>
+          <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">홍길동</a>
           <div class="fs-5 fw-semibold text-muted mb-6">SW울산미래채움</div>
         <div id="kt_customer_view_details" class="collapse show">
           <div class="fs-6">
             <div class="fw-bold mt-5">주소</div>
-            <div class="text-gray-600">SW23A_03</div>
+            <div class="text-gray-600">울산광역시 ~</div>
             <div class="fw-bold mt-5">나이</div>
             <div class="text-gray-600">
-              <a href="#" class="text-gray-600 text-hover-primary">rkdaud2944@naver.com</a>
+              <a href="#" class="text-gray-600 text-hover-primary">30</a>
             </div>
             <div class="fw-bold mt-5">특이사항</div>
-            <div class="text-gray-600">남자</div>
-            <div class="fw-bold mt-5">프로그램</div>
-            <div class="text-gray-600">4기</div>
+            <div class="text-gray-600">교사경력있음</div>
+            <div class="fw-bold mt-5">메모</div>
+            <div class="text-gray-600">교사경력있음</div>
           </div>
         </div>
       </div>

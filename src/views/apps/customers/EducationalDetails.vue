@@ -76,18 +76,12 @@
         :checkbox-enabled="true"
       >
         <template v-slot:customer="{ row: customer }">
-          <router-link
-            to="/apps/subscriptions/view-subscription"
-            href=""
-            class="text-gray-800 text-hover-primary mb-1"
-          >
-            {{ customer.customer }}
-          </router-link>
+          <span class="text-gray-800 mb-1">
+            {{ customer.customer }}</span>
         </template>
         <template v-slot:status="{ row: customer }">
-          <a href="#" class="text-gray-600 text-hover-primary mb-1">
-              {{ customer.status }}
-          </a>
+          <span class="text-gray-600 mb-1">
+            {{ customer.status }}</span>
         </template>
         <template v-slot:billing="{ row: customer }">
           {{ customer.billing }}
@@ -166,7 +160,7 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([
       {
         id: 1,
-        customer: "성남청소년센터",
+        customer: "어썸초등학교",
         status: "중구",
         color: "success",
         billing: "010-4125-8381",
@@ -229,7 +223,7 @@ export default defineComponent({
       },
       {
         id: 8,
-        customer: "북구청소년센터",
+        customer: "어썸중학교",
         status: "북구",
         color: "danger",
         billing: "",

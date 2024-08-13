@@ -5,9 +5,7 @@
         <h2 class="fw-bold">교육일지</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="/subscriptions/add" class="btn btn-light-primary"
-          >서명하기</router-link
-        >
+        <button @click="showModal = true" class="btn btn-light-primary">서명하기</button>
       </div>
     </div>
     <div class="card-body pt-3">
@@ -18,7 +16,7 @@
               <tr>
                 <td class="text-gray-500 min-w-175px w-175px">강사명 :</td>
                 <td class="text-gray-800 min-w-200px">
-                  박강명
+                  홍길동
                 </td>
               </tr>
               <tr>
@@ -30,9 +28,7 @@
           <div class="flex-equal">
             <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2 m-0">
               <tr>
-                <td class="text-gray-500 min-w-175px w-175px">
-                  일시 :
-                </td>
+                <td class="text-gray-500 min-w-175px w-175px">일시 :</td>
                 <td class="text-gray-800 min-w-200px">
                     2024.08.09.
                 </td>
@@ -43,7 +39,7 @@
       </div>
       <div class="mb-0">
         <h5 class="mb-4">교육내용</h5>
-        <div class="table-responsive" style="height: 400px;">
+        <div class="table-responsive" style="height: 300px;">
           □ 혜인학교 수업을 위한 오조봇 수업 준비
           <br><br>
           - 수업날짜 : 2024.08.09 (금)<br>
@@ -58,43 +54,92 @@
       </div>
       
       <div style="margin-top: 50px;" class="signature-section">
-          <h5 class="mb-4">서명란</h5>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>교육담당자</th>
-                <th>사업담당자</th>
-                <th>총괄책임자</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>서명대기중</td>
-                <td>서명대기중</td>
-                <td>서명대기중</td>
-              </tr>
-            </tbody>
-          </table>
+        <h5 class="mb-4">서명란</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>교육담당자</th>
+              <th>사업담당자</th>
+              <th>총괄책임자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>서명대기중</td>
+              <td>서명대기중</td>
+              <td>서명대기중</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 모달 -->
+      <div v-if="showModal" class="modal-backdrop">
+        <div class="modal-content">
+          <h3>준비 중입니다</h3>
+          <p>이 기능은 현재 준비 중입니다. 나중에 다시 시도해 주세요.</p>
+          <button @click="showModal = false" class="btn btn-light-primary">닫기</button>
         </div>
-        <!-- 서명란 끝 -->
+      </div>
+      <!-- 모달 끝 -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent } from "vue";
-import UserMenu from "@/layouts/default-layout/components/menus/UserAccountMenu.vue";
 
 export default defineComponent({
   name: "kt-details",
-  components: {
-    UserMenu,
-  },
+  components: {},
   setup() {
+    const showModal = ref(false);
+
     return {
       getAssetPath,
+      showModal,
     };
   },
 });
 </script>
+
+<style>
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.btn-light-primary {
+  background-color: #e7f1ff;
+  color: #1a73e8;
+  border-color: #d1e5ff;
+}
+
+.btn-light-primary:hover {
+  background-color: #d1e5ff;
+}
+</style>

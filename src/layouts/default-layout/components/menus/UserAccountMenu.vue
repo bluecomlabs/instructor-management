@@ -16,13 +16,13 @@
         <!--begin::Username-->
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
-            박강명
+            홍길동
             <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
-              >관리자/강사님</span
+              >사용자</span
             >
           </div>
           <a href="#" class="fw-semibold text-muted text-hover-primary fs-7"
-            >test@bluecom.kr</a
+            >HGD@gmail.com</a
           >
         </div>
         <!--end::Username-->

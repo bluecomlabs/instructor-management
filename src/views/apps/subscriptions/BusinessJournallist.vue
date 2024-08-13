@@ -3,9 +3,8 @@
   <div class="card" :class="widgetClasses">
     <!--begin::Header-->
     <div class="card-header border-0">
-      <h3 class="card-title fw-bold text-gray-900">권정미 강사님의 업무일지 목록</h3>
+      <h3 class="card-title fw-bold text-gray-900">홍길동 강사님의 업무일지 목록</h3>
       <div class="card-toolbar">
-        <!--begin::Menu-->
         <button
           type="button"
           class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -16,7 +15,6 @@
           <KTIcon icon-name="category" icon-class="fs-2" />
         </button>
         <Dropdown2></Dropdown2>
-        <!--end::Menu-->
       </div>
     </div>
     <!--end::Header-->

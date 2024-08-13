@@ -18,7 +18,7 @@
               <tr>
                 <td class="text-gray-500 min-w-175px w-175px">강사명:</td>
                 <td class="text-gray-800 min-w-200px">
-                  박강명
+                  홍길동
                 </td>
               </tr>
               <tr>

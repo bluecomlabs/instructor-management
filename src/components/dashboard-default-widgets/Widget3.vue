@@ -8,18 +8,18 @@
         <div class="d-flex align-items-center">
           <!--begin::Currency-->
           <span class="fs-4 fw-semibold text-gray-500 me-1 align-self-start"
-            >$</span
+            >교육 수</span
           >
           <!--end::Currency-->
 
           <!--begin::Amount-->
-          <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">69,700</span>
+          <span class="fs-2hx fw-bold text-gray-900 me-2 lh-1 ls-n2">{{ totalPrograms }}</span>
           <!--end::Amount-->
 
           <!--begin::Badge-->
           <span class="badge badge-light-success fs-base">
             <KTIcon icon-name="arrow-up" icon-class="fs-5 text-success ms-n1" />
-            2.2%
+            {{ growthRate }}%
           </span>
           <!--end::Badge-->
         </div>
@@ -27,7 +27,7 @@
 
         <!--begin::Subtitle-->
         <span class="text-gray-500 pt-1 fw-semibold fs-6"
-          >Projects Earnings in April</span
+          >8월의 프로그램 완료율</span
         >
         <!--end::Subtitle-->
       </div>
@@ -60,11 +60,11 @@
           <!--end::Bullet-->
 
           <!--begin::Label-->
-          <div class="text-gray-500 flex-grow-1 me-4">Leaf CRM</div>
+          <div class="text-gray-500 flex-grow-1 me-4">성남청소년센터</div>
           <!--end::Label-->
 
           <!--begin::Stats-->
-          <div class="fw-bolder text-gray-700 text-xxl-end">$7,660</div>
+          <div class="fw-bolder text-gray-700 text-xxl-end">12회</div>
           <!--end::Stats-->
         </div>
         <!--end::Label-->
@@ -76,11 +76,11 @@
           <!--end::Bullet-->
 
           <!--begin::Label-->
-          <div class="text-gray-500 flex-grow-1 me-4">Mivy App</div>
+          <div class="text-gray-500 flex-grow-1 me-4">남목청소년센터</div>
           <!--end::Label-->
 
           <!--begin::Stats-->
-          <div class="fw-bolder text-gray-700 text-xxl-end">$2,820</div>
+          <div class="fw-bolder text-gray-700 text-xxl-end">8회</div>
           <!--end::Stats-->
         </div>
         <!--end::Label-->
@@ -95,11 +95,11 @@
           <!--end::Bullet-->
 
           <!--begin::Label-->
-          <div class="text-gray-500 flex-grow-1 me-4">Others</div>
+          <div class="text-gray-500 flex-grow-1 me-4">북구청소년센터</div>
           <!--end::Label-->
 
           <!--begin::Stats-->
-          <div class="fw-bolder text-gray-700 text-xxl-end">$45,257</div>
+          <div class="fw-bolder text-gray-700 text-xxl-end">15회</div>
           <!--end::Stats-->
         </div>
         <!--end::Label-->
@@ -123,6 +123,9 @@ export default defineComponent({
     chartSize: { type: Number, required: true },
   },
   setup(props, { expose }) {
+    const totalPrograms = 35;
+    const growthRate = 3.5; // 예시로 3.5% 성장률
+
     const initChart = () => {
       expose();
       var el = document.getElementById("kt_card_widget_17_chart");
@@ -141,7 +144,6 @@ export default defineComponent({
         rotate: el.getAttribute("data-kt-rotate")
           ? parseInt(el.getAttribute("data-kt-rotate") as string)
           : 145,
-        //percent:  el.getAttribute('data-kt-percent') ,
       };
 
       var canvas = document.createElement("canvas");
@@ -156,7 +158,6 @@ export default defineComponent({
       ctx.translate(options.size / 2, options.size / 2); // change center
       ctx.rotate((-1 / 2 + options.rotate / 180) * Math.PI); // rotate -90 deg
 
-      //imd = ctx.getImageData(0, 0, 240, 240);
       var radius = (options.size - options.lineWidth) / 2;
 
       var drawCircle = function (
@@ -168,7 +169,7 @@ export default defineComponent({
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2 * percent, false);
         ctx.strokeStyle = color;
-        ctx.lineCap = "round"; // butt, round or square
+        ctx.lineCap = "round";
         ctx.lineWidth = lineWidth;
         ctx.stroke();
       };
@@ -193,6 +194,8 @@ export default defineComponent({
 
     return {
       getAssetPath,
+      totalPrograms,
+      growthRate,
     };
   },
 });

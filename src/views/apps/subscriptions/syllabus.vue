@@ -9,11 +9,11 @@
     <!--end::Content-->
 
     <!--begin::Sidebar-->
-    <div
+    <!-- <div
       class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2"
     >
       <ViewSummary></ViewSummary>
-    </div>
+    </div> -->
     <!--end::Sidebar-->
   </div>
   <!--end::Layout-->

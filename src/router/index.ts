@@ -54,8 +54,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "user-dashboard",
         component: () => import("@/views/UserDashboard.vue"),
         meta: {
-          pageTitle: "배정완료 목록",
-          breadcrumbs: ["배정완료 목록"],
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
         },
       },
       {
@@ -72,8 +72,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "user-MyEdu",
         component: () => import("@/views/apps/user/MyEdu.vue"),
         meta: {
-          pageTitle: "배정완료 목록",
-          breadcrumbs: ["교육 관리", "배정완료 목록"],
+          pageTitle: "내 출강 리스트",
+          breadcrumbs: ["강의관리", "내 출강 리스트"],
         },
       },
       {
@@ -81,8 +81,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "user-EduAppl",
         component: () => import("@/views/apps/user/EduAppl.vue"),
         meta: {
-          pageTitle: "배정완료 목록",
-          breadcrumbs: ["교육 관리", "배정완료 목록"],
+          pageTitle: "교육 신청하기",
+          breadcrumbs: ["강의관리", "교육 신청하기"],
         },
       },
       {
@@ -109,16 +109,34 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/Attendance.vue"),
         meta: {
           pageTitle: "출석부",
-          breadcrumbs: ["배정완료 목록", "출석부"],
+          breadcrumbs: ["강의관리", "출석부"],
+        },
+      },
+      {
+        path: "EditAttendance",
+        name: "user-EditAttendance",
+        component: () => import("@/views/apps/subscriptions/EditAttendance.vue"),
+        meta: {
+          pageTitle: "출석부",
+          breadcrumbs: ["강의관리", "출석부 수정"],
         },
       },
       {
         path: "EducationJournal",
         name: "user-EducationJournal",
-        component: () => import("@/views/apps/subscriptions/EducationJournal.vue"),
+        component: () => import("@/views/apps/user/EducationJournal.vue"),
         meta: {
           pageTitle: "교육일지",
-          breadcrumbs: ["배정완료 목록", "교육일지"],
+          breadcrumbs: ["강의관리", "교육일지"],
+        },
+      },
+      {
+        path: "EditEducationJournal",
+        name: "user-EditEducationJournal",
+        component: () => import("@/views/apps/subscriptions/EditEducationJournal.vue"),
+        meta: {
+          pageTitle: "교육일지",
+          breadcrumbs: ["강의관리", "교육일지 수정"],
         },
       },
       {
@@ -127,7 +145,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/syllabus.vue"),
         meta: {
           pageTitle: "강의확인서",
-          breadcrumbs: ["배정완료 목록", "강의확인서"],
+          breadcrumbs: ["강의관리", "강의확인서"],
         },
       },
       {
@@ -184,22 +202,22 @@ const routes: Array<RouteRecordRaw> = [
       //     breadcrumbs: ["교육 리소스 관리", "강사관리"],
       //   },
       // },
-      {
-        path: "WorkSituation",
-        name: "user-WorkSituation",
-        component: () => import("@/views/apps/subscriptions/WorkSituation.vue"),
-        meta: {
-          pageTitle: "근무상황부",
-          breadcrumbs: ["강사 관리", "근무상황부"],
-        },
-      },
+      // {
+      //   path: "WorkSituation",
+      //   name: "user-WorkSituation",
+      //   component: () => import("@/views/apps/subscriptions/WorkSituation.vue"),
+      //   meta: {
+      //     pageTitle: "근무상황부",
+      //     breadcrumbs: ["서류관리", "근무상황부"],
+      //   },
+      // },
       {
         path: "BusinessJournal",
         name: "user-BusinessJournal",
         component: () => import("@/views/apps/subscriptions/BusinessJournal.vue"),
         meta: {
           pageTitle: "업무일지",
-          breadcrumbs: ["강사 관리", "업무일지"],
+          breadcrumbs: ["서류관리", "업무일지"],
         },
       },
       {
@@ -296,12 +314,12 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "Attendance",
-        name: "admin-Attendance",
-        component: () => import("@/views/apps/subscriptions/Attendance.vue"),
+        path: "AdminAttendance",
+        name: "admin-AdminAttendance",
+        component: () => import("@/views/apps/subscriptions/AdminAttendance.vue"),
         meta: {
-          pageTitle: "출석부",
-          breadcrumbs: ["배정완료 목록", "출석부"],
+          pageTitle: "교육일지",
+          breadcrumbs: ["배정완료 목록", "교육일지"],
         },
       },
       {

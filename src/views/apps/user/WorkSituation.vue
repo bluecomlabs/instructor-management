@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import WorkSituationDetail from "@/components/subscriptions/admin/WorkSituationDetail.vue";
+import WorkSituationDetail from "@/components/subscriptions/user/WorkSituationDetail.vue";
 import Events from "@/components/subscriptions/view/Events.vue";
 import Invoices from "@/components/subscriptions/view/Invoices.vue";
 import ViewSummary from "@/components/subscriptions/view/Summary.vue";

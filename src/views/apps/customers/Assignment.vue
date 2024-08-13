@@ -81,45 +81,33 @@
           {{ customer.createdDate }}
         </template>
         <template v-slot:customer="{ row: customer }">
-          <router-link
-            to="Attendance"
-            href=""
-            class="text-gray-800 text-hover-primary mb-1"
-          >
-            {{ customer.customer }}
-          </router-link>
+          <span class="text-gray-800 mb-1">{{ customer.customer }}</span>
         </template>
         <template v-slot:status="{ row: customer }">
-          <router-link
-            to="EducationJournal"
-            href=""
-            class="text-gray-800 text-hover-primary mb-1"
-          >
-            {{ customer.status }}
-          </router-link>
+          <span class="text-gray-800 mb-1">{{ customer.status }}</span>
         </template>
         <template v-slot:product="{ row: customer }">
           <button
             v-if="customer.product === '최종배정'"
-            class="btn btn-success pastel-success fade-transition"
+            class="btn btn-success pastel-success fade-transition no-hover"
           >
             최종배정
           </button>
           <button
             v-else-if="customer.product === '탈락'"
-            class="btn btn-danger pastel-danger fade-transition"
+            class="btn btn-danger pastel-danger fade-transition no-hover"
           >
             탈락
           </button>
           <button
             v-else-if="customer.product === '신청완료'"
-            class="btn btn-primary pastel-primary fade-transition"
+            class="btn btn-primary pastel-primary fade-transition no-hover"
           >
             신청완료
           </button>
           <button
             v-else
-            class="btn btn-secondary pastel-secondary fade-transition"
+            class="btn btn-secondary pastel-secondary fade-transition no-hover"
           >
             미신청
           </button>
@@ -141,11 +129,7 @@
           >
             <!--begin::Menu item-->
             <div class="menu-item px-3">
-              <router-link
-                to="/apps/customers/customer-details"
-                class="menu-link px-3"
-                >View</router-link
-              >
+              <a href="#" class="menu-link px-3">View</a>
             </div>
             <!--end::Menu item-->
             <!--begin::Menu item-->
@@ -166,7 +150,6 @@
 </template>
 
 <script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, onMounted, ref } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
@@ -288,11 +271,11 @@ export default defineComponent({
         columnLabel: "billing",
         sortEnabled: true,
       },
-      {
-        columnName: "강사명",
-        columnLabel: "createdDate",
-        sortEnabled: true,
-      },
+      // {
+      //   columnName: "강사명",
+      //   columnLabel: "createdDate",
+      //   sortEnabled: true,
+      // },
       {
         columnName: "교육기관명",
         columnLabel: "customer",
@@ -418,7 +401,6 @@ export default defineComponent({
       deleteFewSubscriptions,
       deleteSubscription,
       finalizeAssignments,
-      getAssetPath,
       onItemsPerPageChange,
     };
   },
@@ -431,31 +413,44 @@ export default defineComponent({
 }
 
 .pastel-primary {
-  background-color: #a8d5e2;
-  border-color: #a8d5e2;
+  background-color: #4da6b2;
+  border-color: #4da6b2;
   color: #fff;
+  font-size: 1rem; /* 폰트 크기 더 작게 */
+  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
 }
 
 .pastel-success {
-  background-color: #c8e6c9;
-  border-color: #c8e6c9;
+  background-color: #70ab74;
+  border-color: #70ab74;
   color: #fff;
+  font-size: 0.75rem; /* 폰트 크기 더 작게 */
+  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
 }
 
 .pastel-danger {
-  background-color: #ffcdd2;
-  border-color: #ffcdd2;
+  background-color: #c77a7d;
+  border-color: #c77a7d;
   color: #fff;
+  font-size: 0.75rem; /* 폰트 크기 더 작게 */
+  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
 }
 
 .pastel-secondary {
-  background-color: #d7ccc8;
-  border-color: #d7ccc8;
+  background-color: #8f7168;
+  border-color: #8f7168;
   color: #fff;
+  font-size: 0.75rem; /* 폰트 크기 더 작게 */
+  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
 }
+
 
 .fade-transition {
   transition: opacity 0.5s ease-in-out;
+}
+
+.no-hover {
+  pointer-events: none;
 }
 
 .btn[disabled] {

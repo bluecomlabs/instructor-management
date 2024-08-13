@@ -83,7 +83,7 @@ export default defineComponent({
     const list = ref([
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "권정미",
+        name: "홍길동",
         description: "010-6504-6273",
       },
       {

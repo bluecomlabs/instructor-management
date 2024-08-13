@@ -3,17 +3,17 @@
   <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
-      <AttendanceDetail></AttendanceDetail>
+      <EditEducationJournalDetail></EditEducationJournalDetail>
 
     </div>
     <!--end::Content-->
 
     <!--begin::Sidebar-->
-    <div
+    <!-- <div
       class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2"
     >
       <ViewSummary></ViewSummary>
-    </div>
+    </div> -->
     <!--end::Sidebar-->
   </div>
   <!--end::Layout-->
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import AttendanceDetail from "@/components/subscriptions/user/AttendanceDetail.vue";
+import EditEducationJournalDetail from "@/components/subscriptions/admin/EditEducationJournalDetail.vue";
 import Events from "@/components/subscriptions/view/Events.vue";
 import Invoices from "@/components/subscriptions/view/Invoices.vue";
 import ViewSummary from "@/components/subscriptions/view/Summary.vue";
@@ -29,7 +29,7 @@ import ViewSummary from "@/components/subscriptions/view/Summary.vue";
 export default defineComponent({
   name: "kt-view-subscription",
   components: {
-    AttendanceDetail,
+    EditEducationJournalDetail,
     Events,
     Invoices,
     ViewSummary,

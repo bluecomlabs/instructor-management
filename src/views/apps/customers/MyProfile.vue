@@ -11,7 +11,7 @@
               href="#"
               class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1"
             >
-              박강명
+              홍길동
             </a>
             <div class="fs-5 fw-semibold text-muted mb-6">SW울산미래채움</div>
           </div>
@@ -23,7 +23,7 @@
               <div class="text-gray-600">SW23A_03</div>
               <div class="fw-bold mt-5">이메일</div>
               <div class="text-gray-600">
-                <a href="#" class="text-gray-600 text-hover-primary">rkdaud2944@naver.com</a>
+                <a href="#" class="text-gray-600 text-hover-primary">HGD@gmail.com</a>
               </div>
               <div class="fw-bold mt-5">성별</div>
               <div class="text-gray-600">남자</div>

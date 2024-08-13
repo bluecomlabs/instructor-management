@@ -4,9 +4,9 @@
       <div class="card-title">
         <h2 class="fw-bold">8월 근무상황부</h2>
       </div>
-      <div class="card-toolbar">
+      <!-- <div class="card-toolbar">
         <router-link to="/subscriptions/add" class="btn btn-light-primary">수정하기</router-link>
-      </div>
+      </div> -->
     </div>
     <div class="card-body pt-3">
       <div class="mb-10">
@@ -19,7 +19,7 @@
               </tr>
               <tr>
                 <td class="text-gray-500">근무자명:</td>
-                <td class="text-gray-800">권정미</td>
+                <td class="text-gray-800">홍길동</td>
               </tr>
               <tr>
                 <td class="text-gray-500">근무기간:</td>

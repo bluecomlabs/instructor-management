@@ -19,7 +19,7 @@
               </tr>
               <tr>
                 <td class="text-gray-500">근무자명:</td>
-                <td class="text-gray-800">권정미</td>
+                <td class="text-gray-800">홍길동</td>
               </tr>
               <tr>
                 <td class="text-gray-500">근무기간:</td>

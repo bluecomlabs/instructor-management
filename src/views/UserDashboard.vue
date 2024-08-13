@@ -17,6 +17,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import events, { TODAY } from "@/core/data/events";
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
 import { Modal } from "bootstrap";
+import koLocale from "@fullcalendar/core/locales/ko";
 
 export default defineComponent({
   name: "calendar-app-1",
@@ -57,11 +58,12 @@ export default defineComponent({
         timeGridDay: { buttonText: "day" },
       },
 
-      editable: true,
-      dayMaxEvents: true,
+      editable: false,
+      dayMaxEvents: false,
       events: events,
       dateClick: newEvent,
       eventClick: newEvent,
+      locale: koLocale, 
     };
 
     return {

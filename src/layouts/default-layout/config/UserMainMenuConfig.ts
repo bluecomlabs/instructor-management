@@ -16,23 +16,23 @@ const UserMainMenuConfig: Array<MenuItem> = [
     route: "/apps",
     pages: [
       {
-        heading: "나의강의",
+        heading: "내 출강 리스트",
         route: "/user/MyEdu",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "교육신청",
+        heading: "교육 신청하기",
         route: "/user/EduAppl",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
-      {
-        heading: "캘린더",
-        route: "/apps/calendar",
-        keenthemesIcon: "calendar-8",
-        bootstrapIcon: "bi-calendar3-event",
-      },
+      // {
+      //   heading: "캘린더",
+      //   route: "/apps/calendar",
+      //   keenthemesIcon: "calendar-8",
+      //   bootstrapIcon: "bi-calendar3-event",
+      // },
     ],
   },
   {
