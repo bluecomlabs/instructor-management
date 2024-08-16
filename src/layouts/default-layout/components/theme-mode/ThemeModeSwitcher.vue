@@ -50,6 +50,20 @@
       </router-link>
     </div>
     <!--end::Menu item-->
+    <!--begin::Menu item-->
+    <div class="menu-item px-3 my-0">
+      <router-link
+        :to="path"
+        class="menu-link px-3 py-2"
+        @click="resetSubscriptions"
+      >
+        <span class="menu-icon" data-kt-element="icon">
+          <KTIcon icon-name="refresh" icon-class="fs-2" />
+        </span>
+        <span class="menu-title">hidden</span>
+      </router-link>
+    </div>
+    <!--end::Menu item-->
   </div>
   <!--end::Menu-->
 </template>
@@ -83,11 +97,16 @@ export default defineComponent({
       storeTheme.setThemeMode(configMode);
     };
 
+    const resetSubscriptions = () => {
+      localStorage.setItem("subscriptions", JSON.stringify([]));
+    };
+
     return {
       themeMode,
       setMode,
       path,
       getAssetPath,
+      resetSubscriptions,
     };
   },
 });

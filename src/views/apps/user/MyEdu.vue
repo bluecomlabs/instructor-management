@@ -92,6 +92,9 @@
         <template v-slot:billing="{ row: customer }">
           {{ customer.billing }}
         </template>
+        <template v-slot:INST_NM="{ row: customer }">
+          {{ customer.INST_NM }}
+        </template>
         <template v-slot:createdDate="{ row: customer }">
           {{ customer.createdDate }}
         </template>
@@ -174,6 +177,7 @@ interface ISubscription {
   billing: string;
   product: string;
   createdDate: string;
+  INST_NM: string;
 }
 
 export default defineComponent({
@@ -192,6 +196,7 @@ export default defineComponent({
         billing: "MODI",
         product: "상세보기",
         createdDate: "2024.08.01.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 2,
@@ -201,6 +206,7 @@ export default defineComponent({
         billing: "MODI",
         product: "상세보기",
         createdDate: "2024.08.01.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 3,
@@ -210,6 +216,7 @@ export default defineComponent({
         billing: "드론",
         product: "상세보기",
         createdDate: "2024.08.17.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 4,
@@ -219,6 +226,7 @@ export default defineComponent({
         billing: "코스페이시스",
         product: "상세보기",
         createdDate: "2024.08.08.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 5,
@@ -228,6 +236,7 @@ export default defineComponent({
         billing: "코스페이시스",
         product: "상세보기",
         createdDate: "2024.08.08.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 6,
@@ -237,6 +246,7 @@ export default defineComponent({
         billing: "3D 모델링",
         product: "상세보기",
         createdDate: "2024.08.09.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 7,
@@ -246,6 +256,7 @@ export default defineComponent({
         billing: "스택버거, 엔트리",
         product: "상세보기",
         createdDate: "2024.08.06.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 8,
@@ -255,6 +266,7 @@ export default defineComponent({
         billing: "스택버거, 엔트리",
         product: "상세보기",
         createdDate: "2024.08.06.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 9,
@@ -264,6 +276,7 @@ export default defineComponent({
         billing: "프로보커넥트",
         product: "상세보기",
         createdDate: "2024.08.07.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 10,
@@ -273,6 +286,7 @@ export default defineComponent({
         billing: "코스페이시스",
         product: "상세보기",
         createdDate: "2024.08.03.",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 11,
@@ -282,6 +296,7 @@ export default defineComponent({
         billing: "Manual - Credit Card",
         product: "Enterprise",
         createdDate: "May 05, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 12,
@@ -291,6 +306,7 @@ export default defineComponent({
         billing: "Manual - Credit Card",
         product: "Basic",
         createdDate: "Jun 24, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 13,
@@ -300,6 +316,7 @@ export default defineComponent({
         billing: "--",
         product: "Teams Bundle",
         createdDate: "Jul 25, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 14,
@@ -309,6 +326,7 @@ export default defineComponent({
         billing: "Manual - Paypal",
         product: "Enterprise",
         createdDate: "Sep 22, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 15,
@@ -318,6 +336,7 @@ export default defineComponent({
         billing: "Manual - Credit Card",
         product: "Basic",
         createdDate: "Nov 10, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 16,
@@ -327,6 +346,7 @@ export default defineComponent({
         billing: "--",
         product: "Basic Bundle",
         createdDate: "Jun 20, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 17,
@@ -336,6 +356,7 @@ export default defineComponent({
         billing: "Manual - Paypal",
         product: "Enterprise",
         createdDate: "May 05, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 18,
@@ -345,6 +366,7 @@ export default defineComponent({
         billing: "Auto-debit",
         product: "Teams",
         createdDate: "Apr 15, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 19,
@@ -354,6 +376,7 @@ export default defineComponent({
         billing: "Manual - Credit Card",
         product: "Basic",
         createdDate: "Oct 25, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 20,
@@ -363,6 +386,7 @@ export default defineComponent({
         billing: "--",
         product: "Basic Bundle",
         createdDate: "Feb 21, 2021",
+        INST_NM: "어썸초등학교",
       },
       {
         id: 21,
@@ -372,12 +396,18 @@ export default defineComponent({
         billing: "--",
         product: "Basic Bundle",
         createdDate: "Feb 21, 2021",
+        INST_NM: "어썸초등학교",
       },
     ]);
     const headerConfig = ref([
       {
         columnName: "프로그램명",
         columnLabel: "billing",
+        sortEnabled: true,
+      },
+      {
+        columnName: "교육기관",
+        columnLabel: "INST_NM",
         sortEnabled: true,
       },
       {

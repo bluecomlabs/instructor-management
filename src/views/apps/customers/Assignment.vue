@@ -87,30 +87,30 @@
           <span class="text-gray-800 mb-1">{{ customer.status }}</span>
         </template>
         <template v-slot:product="{ row: customer }">
-          <button
+          <span
             v-if="customer.product === '최종배정'"
-            class="btn btn-success pastel-success fade-transition no-hover"
+            class="badge badge-success"
           >
             최종배정
-          </button>
-          <button
+          </span>
+          <span
             v-else-if="customer.product === '탈락'"
-            class="btn btn-danger pastel-danger fade-transition no-hover"
+            class="badge badge-danger"
           >
             탈락
-          </button>
-          <button
+          </span>
+          <span
             v-else-if="customer.product === '신청완료'"
-            class="btn btn-primary pastel-primary fade-transition no-hover"
+            class="badge badge-primary"
           >
             신청완료
-          </button>
-          <button
+          </span>
+          <span
             v-else
-            class="btn btn-secondary pastel-secondary fade-transition no-hover"
+            class="badge badge-secondary"
           >
             미신청
-          </button>
+          </span>
         </template>
         <template v-slot:actions="{ row: customer }">
           <a
@@ -271,11 +271,6 @@ export default defineComponent({
         columnLabel: "billing",
         sortEnabled: true,
       },
-      // {
-      //   columnName: "강사명",
-      //   columnLabel: "createdDate",
-      //   sortEnabled: true,
-      // },
       {
         columnName: "교육기관명",
         columnLabel: "customer",
@@ -416,34 +411,33 @@ export default defineComponent({
   background-color: #4da6b2;
   border-color: #4da6b2;
   color: #fff;
-  font-size: 1rem; /* 폰트 크기 더 작게 */
-  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
 }
 
 .pastel-success {
   background-color: #70ab74;
   border-color: #70ab74;
   color: #fff;
-  font-size: 0.75rem; /* 폰트 크기 더 작게 */
-  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
 }
 
 .pastel-danger {
   background-color: #c77a7d;
   border-color: #c77a7d;
   color: #fff;
-  font-size: 0.75rem; /* 폰트 크기 더 작게 */
-  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
 }
 
 .pastel-secondary {
   background-color: #8f7168;
   border-color: #8f7168;
   color: #fff;
-  font-size: 0.75rem; /* 폰트 크기 더 작게 */
-  padding: 0.2rem 0.4rem; /* 패딩 줄임 */
+  font-size: 0.75rem;
+  padding: 0.2rem 0.4rem;
 }
-
 
 .fade-transition {
   transition: opacity 0.5s ease-in-out;
@@ -460,5 +454,32 @@ export default defineComponent({
 
 tr {
   text-align: center !important;
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5em 0.75em;
+  border-radius: 0.375rem;
+  text-align: center;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.badge-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+  color: #fff;
 }
 </style>

@@ -300,8 +300,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-CompleteList",
         component: () => import("@/views/apps/customers/CompleteList.vue"),
         meta: {
-          pageTitle: "강사 출강관리",
-          breadcrumbs: ["교육 관리", "강사 출강관리"],
+          pageTitle: "출강정보 목록",
+          breadcrumbs: ["배정 정보 관리", "출강정보 목록"],
         },
       },
       {
@@ -309,8 +309,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-Assignment",
         component: () => import("@/views/apps/customers/Assignment.vue"),
         meta: {
-          pageTitle: "강사 출강관리",
-          breadcrumbs: ["교육 관리", "강사 출강관리"],
+          pageTitle: "배정 신청 및 결과",
+          breadcrumbs: ["배정 정보 관리", "배정 신청 및 결과"],
         },
       },
       {
@@ -319,7 +319,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/AdminAttendance.vue"),
         meta: {
           pageTitle: "교육일지",
-          breadcrumbs: ["배정완료 목록", "교육일지"],
+          breadcrumbs: ["배정 정보 관리", "교육일지"],
         },
       },
       {
@@ -328,7 +328,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/EducationJournal.vue"),
         meta: {
           pageTitle: "교육일지",
-          breadcrumbs: ["배정완료 목록", "교육일지"],
+          breadcrumbs: ["배정 정보 관리", "교육일지"],
         },
       },
       {
@@ -337,7 +337,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/syllabus.vue"),
         meta: {
           pageTitle: "강의확인서",
-          breadcrumbs: ["배정완료 목록", "강의확인서"],
+          breadcrumbs: ["배정 정보 관리", "강의확인서"],
         },
       },
       {
@@ -346,7 +346,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/adminsyllabus.vue"),
         meta: {
           pageTitle: "강의계획서",
-          breadcrumbs: ["배정완료 목록", "강의계획서"],
+          breadcrumbs: ["배정 정보 관리", "강의계획서"],
         },
       },
       {
@@ -355,7 +355,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/customers/EducationalDetails.vue"),
         meta: {
           pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 리소스 관리", "교육기관 관리"],
+          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
         },
       },
       {
@@ -364,7 +364,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/customers/ProgramDetails.vue"),
         meta: {
           pageTitle: "교육 프로그램 관리",
-          breadcrumbs: ["교육 리소스 관리", "교육 프로그램 관리"],
+          breadcrumbs: ["교육 정보 관리", "교육 프로그램 관리"],
         },
       },
       {
@@ -391,7 +391,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/Lists.vue"),
         meta: {
           pageTitle: "강사관리",
-          breadcrumbs: ["교육 리소스 관리", "강사관리"],
+          breadcrumbs: ["강사 정보 관리", "강사관리"],
         },
       },
       {
@@ -400,7 +400,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/Business.vue"),
         meta: {
           pageTitle: "업무일지",
-          breadcrumbs: ["교육 리소스 관리", "업무일지"],
+          breadcrumbs: ["강사 정보 관리", "업무일지"],
         },
       },
       {
@@ -409,7 +409,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/Work.vue"),
         meta: {
           pageTitle: "근무상황부",
-          breadcrumbs: ["강사 리소스 관리", "강사관리"],
+          breadcrumbs: ["강사 정보 관리", "강사관리"],
         },
       },
       {
@@ -418,7 +418,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/WorkSituation.vue"),
         meta: {
           pageTitle: "근무상황부",
-          breadcrumbs: ["강사 관리", "근무상황부"],
+          breadcrumbs: ["강사 정보 관리", "근무상황부"],
         },
       },
       {
@@ -427,7 +427,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/BusinessJournal.vue"),
         meta: {
           pageTitle: "업무일지",
-          breadcrumbs: ["강사 관리", "업무일지"],
+          breadcrumbs: ["강사 정보 관리", "업무일지"],
         },
       },
       {
@@ -436,7 +436,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/BusinessJournallist.vue"),
         meta: {
           pageTitle: "업무일지",
-          breadcrumbs: ["강사 관리", "업무일지"],
+          breadcrumbs: ["강사 정보 관리", "업무일지"],
         },
       },
     ],
