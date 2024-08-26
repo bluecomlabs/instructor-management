@@ -85,7 +85,7 @@
           <router-link
             to="Attendance"
             href=""
-            class="text-gray-800 text-hover-primary mb-1"
+            class="text-gray-800 text-hover-primary mb-1 customer-name"
           >
             {{ customer.customer }}
           </router-link>
@@ -102,14 +102,14 @@
         <template v-slot:product="{ row: customer }">
           <button
             v-if="customer.product === '신청하기'"
-            class="btn btn-primary fade-transition"
+            class="btn btn-primary custom-button fade-transition"
             @click="applyForProduct(customer)"
           >
             신청하기
           </button>
           <button
             v-else
-            class="btn btn-danger fade-transition"
+            class="btn btn-danger custom-button fade-transition"
             @click="cancelProduct(customer)"
           >
             신청취소
@@ -184,7 +184,7 @@ export default defineComponent({
       {
         id: 1,
         customer: "성남청소년센터",
-        status: "2024.08.01.",
+        status: "미배정",
         color: "success",
         billing: "MODI",
         product: "신청하기",
@@ -193,7 +193,7 @@ export default defineComponent({
       {
         id: 2,
         customer: "성남청소년센터",
-        status: "2024.08.01.",
+        status: "미배정",
         color: "success",
         billing: "MODI",
         product: "신청하기",
@@ -202,7 +202,7 @@ export default defineComponent({
       {
         id: 3,
         customer: "성남청소년센터(단기)",
-        status: "2024.08.17.",
+        status: "미배정",
         color: "primary",
         billing: "드론",
         product: "신청하기",
@@ -211,7 +211,7 @@ export default defineComponent({
       {
         id: 4,
         customer: "남목청소년센터(도우리반)",
-        status: "2024.08.08.",
+        status: "미배정",
         color: "warning",
         billing: "코스페이시스",
         product: "신청하기",
@@ -220,7 +220,7 @@ export default defineComponent({
       {
         id: 5,
         customer: "남목청소년센터(나누리반)",
-        status: "2024.08.09.",
+        status: "미배정",
         color: "warning",
         billing: "코스페이시스",
         product: "신청하기",
@@ -229,7 +229,7 @@ export default defineComponent({
       {
         id: 6,
         customer: "남목청소년센터(동아리)",
-        status: "2024.08.06.",
+        status: "미배정",
         color: "success",
         billing: "3D 모델링",
         product: "신청하기",
@@ -238,7 +238,7 @@ export default defineComponent({
       {
         id: 7,
         customer: "북구청소년센터",
-        status: "2024.08.06.",
+        status: "미배정",
         color: "success",
         billing: "스택버거, 엔트리",
         product: "신청하기",
@@ -247,7 +247,7 @@ export default defineComponent({
       {
         id: 8,
         customer: "북구청소년센터",
-        status: "2024.08.07.",
+        status: "미배정",
         color: "danger",
         billing: "스택버거, 엔트리",
         product: "신청하기",
@@ -256,7 +256,7 @@ export default defineComponent({
       {
         id: 9,
         customer: "북구청소년센터(단기)",
-        status: "2024.08.03.",
+        status: "미배정",
         color: "warning",
         billing: "프로보커넥트",
         product: "신청하기",
@@ -265,7 +265,7 @@ export default defineComponent({
       {
         id: 10,
         customer: "북구청소년센터(동아리)",
-        status: "2024.08.03.",
+        status: "미배정",
         color: "success",
         billing: "코스페이시스",
         product: "신청하기",
@@ -372,11 +372,11 @@ export default defineComponent({
       },
     ]);
     const headerConfig = ref([
-      {
-        columnName: "프로그램명",
-        columnLabel: "billing",
-        sortEnabled: true,
-      },
+      // {
+      //   columnName: "프로그램명",
+      //   columnLabel: "billing",
+      //   sortEnabled: true,
+      // },
       // {
       //   columnName: "강사명",
       //   columnLabel: "createdDate",
@@ -388,7 +388,7 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "교육날짜",
+        columnName: "배정강사",
         columnLabel: "status",
         sortEnabled: true,
       },
@@ -523,11 +523,150 @@ return {
 
 <style scoped>
 .fade-transition {
-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .btn[disabled] {
-pointer-events: none;
-opacity: 0.5;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+.customer-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.custom-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+  width: 100px;
+  text-align: center;
+  margin-left: auto;
+}
+
+.custom-button.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-button.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.custom-button.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.custom-button.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.kTDatatable {
+  table-layout: fixed;
+}
+
+.kTDatatable th, .kTDatatable td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kTDatatable th:first-child, .kTDatatable td:first-child {
+  width: 30px;
+}
+
+.kTDatatable th:nth-child(2), .kTDatatable td:nth-child(2) {
+  width: 200px;
+}
+
+.kTDatatable th:nth-child(3), .kTDatatable td:nth-child(3) {
+  width: 100px;
+}
+
+.kTDatatable th:nth-child(4), .kTDatatable td:nth-child(4) {
+  width: 100px;
+}
+
+/* 모바일 반응형 스타일 (너비 430px 이하) */
+@media (max-width: 430px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-title {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .card-toolbar {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .btn-danger {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .fw-bold {
+    font-size: 12px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .form-control {
+    width: 100% !important;
+    padding: 10px;
+  }
+
+  .text-hover-primary {
+    font-size: 14px;
+  }
+
+  .menu-link {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  .menu-sub {
+    width: 100px;
+  }
+
+  .w-250px {
+    width: 100% !important;
+  }
+
+  .customer-name {
+    max-width: 100px;
+  }
+
+  .custom-button {
+    width: 80px;
+    font-size: 10px;
+  }
+
+  .kTDatatable th:nth-child(2), .kTDatatable td:nth-child(2) {
+    width: 120px;
+  }
 }
 </style>
