@@ -73,7 +73,21 @@
         </table>
       </div>
 
-      <!-- 모달 -->
+      <div class="remark-section" style="margin-top: 30px;">
+        <h5 class="mb-4">비고</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+              <tr>
+                <td>비고내용</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div v-if="showModal" class="modal-backdrop">
         <div class="modal-content">
           <h3>준비 중입니다</h3>
@@ -81,7 +95,6 @@
           <button @click="showModal = false" class="btn btn-light-primary">닫기</button>
         </div>
       </div>
-      <!-- 모달 끝 -->
     </div>
   </div>
 </template>

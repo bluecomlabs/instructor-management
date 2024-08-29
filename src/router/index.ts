@@ -104,6 +104,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "EditWorkSituation",
+        name: "user-EditWorkSituation",
+        component: () => import("@/views/apps/user/EditWorkSituation.vue"),
+        meta: {
+          pageTitle: "출석부",
+          breadcrumbs: ["강의관리", "출석부 수정"],
+        },
+      },
+      {
         path: "Attendance",
         name: "user-Attendance",
         component: () => import("@/views/apps/subscriptions/Attendance.vue"),

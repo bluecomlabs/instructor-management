@@ -31,24 +31,13 @@
           class="d-flex justify-content-end"
           data-kt-subscription-table-toolbar="base"
         >
-          <!--begin::Export-->
-          <!-- <button
-            type="button"
-            class="btn btn-light-primary me-3"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_subscriptions_export_modal"
-          >
-            <KTIcon icon-name="exit-up" icon-class="fs-2" />
-            Export
-          </button> -->
         </div>
         <!--end::Toolbar-->
 
         <!--begin::Group actions-->
         <div v-else class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span
-            >Selected
+            <span class="me-2">{{ selectedIds.length }}</span> Selected
           </div>
           <button
             type="button"
@@ -58,7 +47,7 @@
             Delete Selected
           </button>
         </div>
-      <!--begin::Card header-->
+        <!--begin::Card header-->
         <div class="card-toolbar">
           <!--begin::Menu-->
           <button
@@ -90,25 +79,28 @@
         :checkbox-enabled="true"
       >
         <template v-slot:billing="{ row: customer }">
-          {{ customer.billing }}
+          <div>
+            <div>{{ customer.billing }}</div>
+            <small class="text-muted">
+              {{ customer.createdDate }} | {{ customer.INST_NM }}
+            </small>
+          </div>
         </template>
-        <template v-slot:createdDate="{ row: customer }">
-          {{ customer.createdDate }}
-        </template>
-        <template v-slot:INST_NM="{ row: customer }">
-          {{ customer.INST_NM }}
-        </template>
+
         <template v-slot:ST_NM="{ row: customer }">
-          {{ customer.ST_NM }}
+          <div>
+            <small class="text-muted">
+              {{ customer.ST_NM }} | {{ customer.AT_NM }}
+            </small>
+          </div>
         </template>
-        <template v-slot:AT_NM="{ row: customer }">
-          {{ customer.AT_NM }}
-        </template>
+
         <template v-slot:customer="{ row: customer }">
           <router-link
             to="AdminAttendance"
             href=""
-            class="btn btn-light-primary me-2"
+            class="btn"
+            :style="getLecturePlanButtonStyle(customer.customer)"
           >
             {{ customer.customer }}
           </router-link>
@@ -117,7 +109,8 @@
           <router-link
             to="EducationJournal"
             href=""
-            class="btn btn-light-primary me-2"
+            class="btn me-2"
+            :style="getLecturePlanButtonStyle(customer.status)"
           >
             {{ customer.status }}
           </router-link>
@@ -126,10 +119,28 @@
           <router-link
             to="syllabus"
             href=""
-            class="btn btn-light-primary me-2"
+            class="btn me-2"
+            :style="getLecturePlanButtonStyle(customer.product)"
           >
             {{ customer.product }}
           </router-link>
+        </template>
+        <template v-slot:lecturePlan="{ row: customer }">
+          <div class="d-flex flex-column align-items-center">
+            <!-- Center-aligned Status indicator with distinct text colors -->
+            <span :style="getLecturePlanStatusStyle(customer.lecturePlan)">
+              {{ customer.lecturePlan }}
+            </span>
+            
+            <!-- "바로가기" link with original button design -->
+            <router-link
+              :to="getLecturePlanLink(customer)"
+              class="btn me-2"
+              :style="getLecturePlanButtonStyle(customer.lecturePlan)"
+            >
+              바로가기
+            </router-link>
+          </div>
         </template>
         <template v-slot:actions="{ row: customer }">
           <a
@@ -186,6 +197,7 @@ interface ISubscription {
   INST_NM: string;
   ST_NM: string;
   AT_NM: string;
+  lecturePlan: string;
 }
 
 export default defineComponent({
@@ -196,259 +208,242 @@ export default defineComponent({
   },
   setup() {
     const data = ref<Array<ISubscription>>([
-      {
-        id: 1,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "MODI",
-        product: "상세보기",
-        createdDate: "2024-08-01",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 2,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "MODI",
-        product: "상세보기",
-        createdDate: "2024-08-01",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "이희재",
-      },
-      {
-        id: 3,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "primary",
-        billing: "드론",
-        product: "상세보기",
-        createdDate: "2024-08-15",
-        INST_NM: "어썸초등학교",
-        ST_NM: "김만수",
-        AT_NM: "이희재",
-      },
-      {
-        id: 4,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024-08-03",
-        INST_NM: "어썸초등학교",
-        ST_NM: "이희재",
-        AT_NM: "김만수",
-      },
-      {
-        id: 5,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024-08-01",
-        INST_NM: "어썸초등학교",
-        ST_NM: "이희재",
-        AT_NM: "홍길동",
-      },
-      {
-        id: 6,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "3D 모델링",
-        product: "상세보기",
-        createdDate: "2024-08-01",
-        INST_NM: "어썸초등학교",
-        ST_NM: "정준혁",
-        AT_NM: "오지원",
-      },
-      {
-        id: 7,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "2024-08-05",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "이재홍",
-      },
-      {
-        id: 8,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "danger",
-        billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "2024-08-01",
-        INST_NM: "어썸초등학교",
-        ST_NM: "김지섭",
-        AT_NM: "김만수",
-      },
-      {
-        id: 9,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "프로보커넥트",
-        product: "상세보기",
-        createdDate: "2024-08-06",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "배주원",
-      },
-      {
-        id: 10,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024-08-10",
-        INST_NM: "어썸초등학교",
-        ST_NM: "이상혁",
-        AT_NM: "김만수",
-      },
-      {
-        id: 11,
-        customer: "Emma Bold",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 12,
-        customer: "Ana Crown",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Jun 24, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 13,
-        customer: "Robert Doe",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 14,
-        customer: "John Miller",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "Sep 22, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 15,
-        customer: "Lucy Kunic",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Nov 10, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 16,
-        customer: "Neil Owen",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Jun 20, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 17,
-        customer: "Dan Wilson",
-        status: "Expiring",
-        color: "warning",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 18,
-        customer: "Emma Smith",
-        status: "Active",
-        color: "success",
-        billing: "Auto-debit",
-        product: "Teams",
-        createdDate: "Apr 15, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 19,
-        customer: "Melody Macy",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Oct 25, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 20,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
-      {
-        id: 21,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-        INST_NM: "어썸초등학교",
-        ST_NM: "홍길동",
-        AT_NM: "김만수",
-      },
+    {
+      id: 1,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "success",
+      billing: "MODI",
+      product: "상세보기",
+      createdDate: "2024-08-01",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "관리자 승인완료", 
+    },
+    {
+      id: 2,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "success",
+      billing: "MODI",
+      product: "상세보기",
+      createdDate: "2024-08-01",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "이희재",
+      lecturePlan: "관리자 승인완료", 
+    },
+    {
+      id: 3,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "primary",
+      billing: "드론",
+      product: "상세보기",
+      createdDate: "2024-08-15",
+      INST_NM: "어썸초등학교",
+      ST_NM: "김만수",
+      AT_NM: "이희재",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 4,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "warning",
+      billing: "코스페이시스",
+      product: "상세보기",
+      createdDate: "2024-08-03",
+      INST_NM: "어썸초등학교",
+      ST_NM: "이희재",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 5,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "warning",
+      billing: "코스페이시스",
+      product: "상세보기",
+      createdDate: "2024-08-01",
+      INST_NM: "어썸초등학교",
+      ST_NM: "이희재",
+      AT_NM: "홍길동",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 6,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "success",
+      billing: "3D 모델링",
+      product: "상세보기",
+      createdDate: "2024-08-01",
+      INST_NM: "어썸초등학교",
+      ST_NM: "정준혁",
+      AT_NM: "오지원",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 7,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "success",
+      billing: "스택버거, 엔트리",
+      product: "상세보기",
+      createdDate: "2024-08-05",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "이재홍",
+      lecturePlan: "제출완료", 
+    },
+    {
+      id: 8,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "danger",
+      billing: "스택버거, 엔트리",
+      product: "상세보기",
+      createdDate: "2024-08-01",
+      INST_NM: "어썸초등학교",
+      ST_NM: "김지섭",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 9,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "warning",
+      billing: "프로보커넥트",
+      product: "상세보기",
+      createdDate: "2024-08-06",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "배주원",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 10,
+      customer: "상세보기",
+      status: "상세보기",
+      color: "success",
+      billing: "코스페이시스",
+      product: "상세보기",
+      createdDate: "2024-08-10",
+      INST_NM: "어썸초등학교",
+      ST_NM: "이상혁",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 11,
+      customer: "Emma Bold",
+      status: "Active",
+      color: "success",
+      billing: "Manual - Credit Card",
+      product: "Enterprise",
+      createdDate: "May 05, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 12,
+      customer: "Ana Crown",
+      status: "Active",
+      color: "success",
+      billing: "Manual - Credit Card",
+      product: "Basic",
+      createdDate: "Jun 24, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 13,
+      customer: "Robert Doe",
+      status: "Suspended",
+      color: "danger",
+      billing: "--",
+      product: "Teams Bundle",
+      createdDate: "Jul 25, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 14,
+      customer: "John Miller",
+      status: "Active",
+      color: "success",
+      billing: "Manual - Paypal",
+      product: "Enterprise",
+      createdDate: "Sep 22, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 15,
+      customer: "Lucy Kunic",
+      status: "Active",
+      color: "success",
+      billing: "Manual - Credit Card",
+      product: "Basic",
+      createdDate: "Nov 10, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 16,
+      customer: "Neil Owen",
+      status: "Suspended",
+      color: "danger",
+      billing: "--",
+      product: "Basic Bundle",
+      createdDate: "Jun 20, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 17,
+      customer: "Dan Wilson",
+      status: "Expiring",
+      color: "warning",
+      billing: "Manual - Paypal",
+      product: "Enterprise",
+      createdDate: "May 05, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
+    {
+      id: 18,
+      customer: "Emma Smith",
+      status: "Active",
+      color: "success",
+      billing: "Auto-debit",
+      product: "Teams",
+      createdDate: "Apr 15, 2021",
+      INST_NM: "어썸초등학교",
+      ST_NM: "홍길동",
+      AT_NM: "김만수",
+      lecturePlan: "상세보기", 
+    },
     ]);
+
     const headerConfig = ref([
       {
         columnName: "프로그램명",
@@ -456,23 +451,8 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "교육기관",
-        columnLabel: "INST_NM",
-        sortEnabled: true,
-      },
-      {
-        columnName: "주강사",
+        columnName: "강사",
         columnLabel: "ST_NM",
-        sortEnabled: true,
-      },
-      {
-        columnName: "보조강사",
-        columnLabel: "AT_NM",
-        sortEnabled: true,
-      },
-      {
-        columnName: "프로그램 생성날짜",
-        columnLabel: "createdDate",
         sortEnabled: true,
       },
       {
@@ -490,13 +470,80 @@ export default defineComponent({
         columnLabel: "product",
         sortEnabled: true,
       },
-      // {
-      //   columnName: "설정",
-      //   columnLabel: "actions",
-      // },
+      {
+        columnName: "강의계획서",
+        columnLabel: "lecturePlan",
+        sortEnabled: true,
+      },
     ]);
 
+    const getLecturePlanStatusStyle = (lecturePlan: string) => {
+      switch (lecturePlan) {
+        case "제출완료":
+          return {
+            color: "#ff8c00", // Orange text for 제출완료
+            fontWeight: "bold",
+          };
+        case "관리자 승인완료":
+          return {
+            color: "#008000", // Green text for 관리자 승인완료
+            fontWeight: "bold",
+          };
+        default:
+          return {
+            color: "#8000ff", // Purple text for 상세보기
+            fontWeight: "bold",
+          };
+      }
+    };
     const initData = ref<Array<ISubscription>>([]);
+      const getLecturePlanStatusClass = (lecturePlan: string) => {
+        return "text-center fw-bold";
+    };
+
+    const getLecturePlanLink = (customer: ISubscription) => {
+      switch (customer.lecturePlan) {
+        case "제출완료":
+          return `/lecture-plan/${customer.id}/제출완료`;
+        case "관리자 승인완료":
+          return `/lecture-plan/${customer.id}/관리자승인완료`;
+        default:
+          return `/lecture-plan/${customer.id}/상세보기`;
+      }
+    };
+
+    const uniformButtonStyle = {
+      padding: "4px 10px",
+      margin: "0px !important",
+      fontSize: "14px",
+      borderRadius: "4px",
+      fontWeight: "bold",
+      minWidth: "140px",
+      textAlign: "center",
+      backgroundColor: "rgba(0, 123, 255, 0.1)", 
+      color: "#007bff", 
+    };
+
+    const getLecturePlanButtonStyle = (lecturePlan: string) => {
+      const baseStyle = {
+        padding: "4px 10px",
+        fontSize: "14px",
+        borderRadius: "10px",
+        fontWeight: "bold",
+        minWidth: "140px",
+        textAlign: "center",
+        backgroundColor: "#ffffff",
+        border: "1px solid #ddd",
+      };
+      switch (lecturePlan) {
+        default:
+          return {
+            ...baseStyle,
+            color: "#000000",
+            margin: "0px !important",
+          };
+      }
+    };
 
     onMounted(() => {
       initData.value.splice(0, data.value.length, ...data.value);
@@ -570,7 +617,18 @@ export default defineComponent({
       deleteSubscription,
       getAssetPath,
       onItemsPerPageChange,
+      getLecturePlanLink, 
+      getLecturePlanButtonStyle,
+      getLecturePlanStatusClass,
+      uniformButtonStyle,getLecturePlanStatusStyle
     };
   },
 });
 </script>
+
+<style>
+
+.no-margin {
+  margin: 0px !important;
+}
+</style>

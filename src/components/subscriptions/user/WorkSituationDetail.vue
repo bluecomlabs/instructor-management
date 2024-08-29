@@ -5,7 +5,7 @@
         <h2 class="fw-bold">8월 근무상황부</h2>
       </div>
       <div class="card-toolbar">
-        <router-link to="/subscriptions/add" class="btn btn-light-primary">수정하기</router-link>
+        <router-link to="EditWorkSituation" class="btn btn-light-primary">수정하기</router-link>
       </div>
     </div>
     <div class="card-body pt-3">
