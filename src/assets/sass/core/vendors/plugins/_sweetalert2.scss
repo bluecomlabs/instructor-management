@@ -19,16 +19,16 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown):not(.modal-open
 	@include border-radius($border-radius);
 
 	.swal2-title {
-		font-weight: 500;
-		font-size: 1.3rem;
+		padding: 0px !important;
+		font-weight: 700;
+		font-size: 2rem;
 		color: var(--#{$prefix}dark);
 	}
 
 	.swal2-html-container,
 	.swal2-content {
 		font-weight: normal;
-		font-size: 1.1rem;
-		margin-top: 1.5rem;
+		font-size: 1.2rem;
 		color: var(--#{$prefix}gray-800);
 	}
 
@@ -109,4 +109,5 @@ body.swal2-height-auto {
     	border-color: var(--#{$prefix}primary);
     	color: var(--#{$prefix}primary);
 	}
+	margin: 2.5em auto 2.5em !important;
 }

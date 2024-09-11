@@ -136,6 +136,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
+import { SuccessAlert, WarningAlert, ErrorAlert } from '@/assets/ts/_utils/swal';
 
 interface Sort {
   order: "asc" | "desc";
@@ -356,7 +357,7 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "신청",
+        columnName: "신청 및 취소",
         columnLabel: "product",
         sortEnabled: true,
       },
@@ -428,17 +429,31 @@ export default defineComponent({
 
     const applyForProduct = (customer: ISubscription) => {
       if (customer.product === "신청하기") {
-        customer.product = "신청완료";
-        saveToLocalStorage();
+        WarningAlert('강의 신청', '해당 강의를 신청하시겠습니까?')
+          .then((result) => {
+            if (result.isConfirmed) {
+              customer.product = "신청완료";
+              saveToLocalStorage();
+              SuccessAlert('신청 완료', '성공적으로 강의를 신청하였습니다!');
+            }
+          });
       }
     };
 
     const cancelProduct = (customer: ISubscription) => {
       if (customer.product === "신청완료") {
-        customer.product = "신청하기";
-        saveToLocalStorage();
+        WarningAlert('강의 취소', '해당 강의를 취소하시겠습니까?')
+          .then((result) => {
+            if (result.isConfirmed) {
+              customer.product = "신청하기";
+              saveToLocalStorage();
+              // SuccessAlert('신청 취소', '성공적으로 강의를 취소하였습니다!');
+              ErrorAlert('신청 실패', '(오류메세지)')
+            }
+          });
       }
     };
+
 
     const saveToLocalStorage = () => {
       const dataToSave = data.value.map((item) => ({
@@ -495,5 +510,60 @@ export default defineComponent({
   
 }
 
-/* Add your existing styles here */
+.btn-primary.custom-button {
+  width: auto;
+  height: 50%;
+  background-color: #4A90E2;
+  border: none;
+  color: white;
+  padding: 8px 18px !important;
+  text-align: center;
+  font-size: 14px;
+  /* font-weight: bold; */
+  /* border-radius: 30px; */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary.custom-button:hover {
+  background-color: #357ABD;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.btn-primary.custom-button:active {
+  background-color: #2C5A8A;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+}
+
+.btn-danger.custom-button {
+  width: auto;
+  background-color: #E74C3C;
+  border: none;
+  color: white;
+  padding: 8px 18px !important;
+  text-align: center;
+  font-size: 14px;
+  /* font-weight: bold;
+  border-radius: 30px; */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger.custom-button:hover {
+  background-color: #C0392B;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.btn-danger.custom-button:active {
+  background-color: #A93226;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+}
+
+
 </style>

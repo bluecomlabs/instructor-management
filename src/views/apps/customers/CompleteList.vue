@@ -245,7 +245,7 @@ export default defineComponent({
       INST_NM: "어썸초등학교",
       ST_NM: "김만수",
       AT_NM: "이희재",
-      lecturePlan: "상세보기", 
+      lecturePlan: "미제출", 
     },
     {
       id: 4,
@@ -258,7 +258,7 @@ export default defineComponent({
       INST_NM: "어썸초등학교",
       ST_NM: "이희재",
       AT_NM: "김만수",
-      lecturePlan: "상세보기", 
+      lecturePlan: "미제출", 
     },
     {
       id: 5,
@@ -284,7 +284,7 @@ export default defineComponent({
       INST_NM: "어썸초등학교",
       ST_NM: "정준혁",
       AT_NM: "오지원",
-      lecturePlan: "상세보기", 
+      lecturePlan: "미제출", 
     },
     {
       id: 7,
@@ -297,7 +297,7 @@ export default defineComponent({
       INST_NM: "어썸초등학교",
       ST_NM: "홍길동",
       AT_NM: "이재홍",
-      lecturePlan: "제출완료", 
+      lecturePlan: "미제출", 
     },
     {
       id: 8,
@@ -481,17 +481,17 @@ export default defineComponent({
       switch (lecturePlan) {
         case "제출완료":
           return {
-            color: "#ff8c00", // Orange text for 제출완료
+            color: "#ff8c00",
             fontWeight: "bold",
           };
         case "관리자 승인완료":
           return {
-            color: "#008000", // Green text for 관리자 승인완료
+            color: "#008000",
             fontWeight: "bold",
           };
         default:
           return {
-            color: "#8000ff", // Purple text for 상세보기
+            color: "#8000ff",
             fontWeight: "bold",
           };
       }
@@ -508,7 +508,7 @@ export default defineComponent({
         case "관리자 승인완료":
           return `/lecture-plan/${customer.id}/관리자승인완료`;
         default:
-          return `/lecture-plan/${customer.id}/상세보기`;
+          return `/lecture-plan/${customer.id}/미제출`;
       }
     };
 
@@ -534,6 +534,7 @@ export default defineComponent({
         textAlign: "center",
         backgroundColor: "#ffffff",
         border: "1px solid #ddd",
+        class: "hover-effect",
       };
       switch (lecturePlan) {
         default:
@@ -630,5 +631,11 @@ export default defineComponent({
 
 .no-margin {
   margin: 0px !important;
+}
+
+.btn:hover {
+  background-color: #9c9c9c !important;
+  color: #ffffff !important;
+  border-color: #9c9c9c !important;
 }
 </style>
