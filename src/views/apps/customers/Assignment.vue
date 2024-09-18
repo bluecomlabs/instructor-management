@@ -83,8 +83,8 @@
           <span class="text-gray-800 mb-1">{{ customer.institutionName }}</span><br />
           <small class="text-gray-500">{{ customer.customer }}</small>
         </template>
-        <template v-slot:status="{ row: customer }">
-          <span class="text-gray-800 mb-1">{{ customer.status }}</span>
+        <template v-slot:date="{ row: customer }">
+          <span class="text-gray-800 mb-1">{{ customer.date }}</span>
         </template>
         <template v-slot:product="{ row: customer }">
           <div
@@ -143,10 +143,12 @@ import axios from "axios";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
+import Swal from "sweetalert2";
 
 interface ISubscription {
   id: number;
   customer: string;
+  date: string;
   status: string;
   color: string;
   billing: string;
@@ -174,7 +176,7 @@ export default defineComponent({
       },
       {
         columnName: "교육날짜",
-        columnLabel: "status",
+        columnLabel: "date",
         sortEnabled: true,
       },
       {
@@ -186,8 +188,8 @@ export default defineComponent({
 
     const initData = ref<Array<ISubscription>>([]);
 
-      const statusMap = ref<Record<number, string>>({});
-        const fetchData = async () => {
+    const statusMap = ref<Record<number, string>>({});
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
@@ -203,7 +205,8 @@ export default defineComponent({
           id: item.confirmedProgramId,
           institutionName: item.institutionName || "미정",
           customer: item.instructorName || "미정",
-          status: item.date.split("T")[0],
+          status: item.status,
+          date: item.date.split("T")[0], // 시간 생략
           color: item.status === "COMPLETE" ? "success" : "warning",
           billing: item.programName,
           product: item.status === "COMPLETE" ? "최종배정" : "미신청",
@@ -284,33 +287,69 @@ export default defineComponent({
       return false;
     };
     const finalizeAssignments = async () => {
+      // status가 'OPEN'인 레코드들의 confirmedProgramId 수집
       const openProgramIds = data.value
-        .filter((item) => item.status === "OPEN")
+        .filter((item) => item.status === "OPEN") // API에서 받은 status를 직접 필터링
         .map((item) => item.id);
 
-      console.log("Open Program IDs: ", openProgramIds);
+      console.log("Open Program IDs: ", openProgramIds); // 로그 추가
 
+      // OPEN 상태의 프로그램이 없을 경우
       if (openProgramIds.length === 0) {
-        console.log("No OPEN programs found");
-        return;
+        Swal.fire({
+          title: "모든 강의가 최종배정됨",
+          text: "모든 강의가 최종배정된 상태입니다.",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+        return; // 더 이상 처리하지 않음
       }
 
-      try {
-        const token = localStorage.getItem("token");
-        await axios.post("http://localhost:8081/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors",
-          { confirmedProgramIds: openProgramIds },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+      // SweetAlert2로 사용자에게 확인 팝업 띄움
+      Swal.fire({
+        title: "최종배정 하시겠습니까?",
+        text: "강사들이 강의를 신청/취소할 수 없습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const token = localStorage.getItem("token");
+            await axios.post(
+              "http://localhost:8081/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors",
+              { confirmedProgramIds: openProgramIds },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            Swal.fire({
+              title: "성공!",
+              text: "모든 강의가 최종배정 되었습니다.",
+              icon: "success",
+              confirmButtonText: "확인",
+            }).then(() => {
+              // 데이터를 다시 가져와 테이블을 리빌딩
+              fetchData();
+            });
+          } catch (error) {
+            console.error("Error finalizing assignments:", error);
+
+            // 에러 메시지 출력
+            Swal.fire(
+              "Error!",
+              "There was an issue finalizing the assignments.",
+              "error"
+            );
           }
-        );
-        console.log(
-          "Programs successfully completed and assistant instructors added"
-        );
-      } catch (error) {
-        console.error("Error finalizing assignments:", error);
-      }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire("Cancelled", "The process was cancelled.", "info");
+        }
+      });
     };
 
     const loadFromLocalStorage = () => {
