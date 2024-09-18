@@ -27,6 +27,12 @@ const UserMainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
       },
+      {
+        heading: "교육 신청내역",
+        route: "/user/MyApplEdu",
+        keenthemesIcon: "element-11",
+        bootstrapIcon: "bi-app-indicator",
+      },
       // {
       //   heading: "캘린더",
       //   route: "/apps/calendar",

@@ -37,7 +37,8 @@
         <!--begin::Group actions-->
         <div v-else class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span>Selected
+            <span class="me-2">{{ selectedIds.length }}</span
+            >Selected
           </div>
           <button
             type="button"
@@ -67,44 +68,31 @@
         :header="headerConfig"
         :checkbox-enabled="true"
       >
-        <template v-slot:customer="{ row: customer }">
-          <div>
-            <div class="text-gray-800 text-hover-primary mb-1">
-              {{ customer.customer }}
-            </div>
-            <div class="text-muted small">
-              <!-- 강사명 나열 -->
-              <span v-if="customer.status.length > 0" v-for="(teacher, index) in customer.status" :key="index">
-                {{ teacher }}<span v-if="index < customer.status.length - 1">, </span>
-              </span>
-
-              <!-- 강사 수 / 최대 강사 수 혹은 마감 표시 -->
-              <span class="ms-2">
-                <!-- 강사 수가 0이거나 강사가 없는 경우 처리 -->
-                <template v-if="!customer.status || customer.status.length === 0 || customer.status.includes(null)">
-                  (0 / {{ customer.maxInstructors }})
-                </template>
-                <template v-else-if="customer.status.length === customer.maxInstructors">
-                  <span class="text-danger">(마감)</span>
-                </template>
-                <template v-else>
-                  ({{ customer.status.length }} / {{ customer.maxInstructors }})
-                </template>
-              </span>
-            </div>
+      <template v-slot:customer="{ row: customer }">
+        <div>
+          <div class="text-gray-800 text-hover-primary mb-1">
+            {{ customer.customer }}
           </div>
-        </template>
+          <div class="text-muted small">
+            <!-- <span v-for="(teacher, index) in customer.status" :key="index">
+              {{ teacher }}<span v-if="index < customer.status.length - 1">, </span>
+            </span>
+            
+            <span class="ms-2">
+              <template v-if="customer.status.length === customer.maxInstructors">
+                <span class="text-danger">(마감)</span>
+              </template>
+              <template v-else>
+                ({{ customer.status.length }} / {{ customer.maxInstructors }})
+              </template>
+            </span> -->
+          </div>
+        </div>
+      </template>
 
+        <!-- 변경된 버튼 렌더링 -->
         <template v-slot:product="{ row: customer }">
           <button
-            v-if="customer.product === '신청하기'"
-            class="btn btn-primary custom-button fade-transition"
-            @click="applyForProduct(customer)"
-          >
-            신청
-          </button>
-          <button
-            v-else
             class="btn btn-danger custom-button fade-transition"
             @click="cancelProduct(customer)"
           >
@@ -119,7 +107,7 @@
             data-kt-menu-trigger="click"
             data-kt-menu-placement="bottom-end"
             data-kt-menu-flip="top-end"
-          >Actions
+            >Actions
             <KTIcon icon-name="down" icon-class="fs-5 m-0" />
           </a>
           <!--begin::Menu-->
@@ -132,12 +120,15 @@
               <router-link
                 to="/apps/customers/customer-details"
                 class="menu-link px-3"
-              >View</router-link>
+                >View</router-link
+              >
             </div>
             <!--end::Menu item-->
             <!--begin::Menu item-->
             <div class="menu-item px-3">
-              <a @click="deleteSubscription(customer.id)" class="menu-link px-3">Delete</a>
+              <a @click="deleteSubscription(customer.id)" class="menu-link px-3"
+                >Delete</a
+              >
             </div>
             <!--end::Menu item-->
           </div>
@@ -166,7 +157,7 @@ interface Sort {
 interface ISubscription {
   id: number;
   customer: string;
-  status: Array<string | null>; // 강사명 배열 (null 포함 가능)
+  status: string[]; // 강사명들을 나열하는 배열
   product: string;
   maxInstructors: number; // 최대 강사 수
 }
@@ -180,12 +171,12 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([]);
     const headerConfig = ref([
       {
-        columnName: "프로그램명 및 강사명",
+        columnName: "신청 프로그램명",
         columnLabel: "customer",
         sortEnabled: true,
       },
       {
-        columnName: "신청 및 취소",
+        columnName: "취소하기",
         columnLabel: "product",
         sortEnabled: true,
       },
@@ -194,15 +185,20 @@ export default defineComponent({
     const isLoading = ref(false);
     const initData = ref<Array<ISubscription>>([]);
 
-    // API 호출 함수
+    // API 호출 함수 추가
     const loadDataFromApi = async () => {
       try {
         isLoading.value = true;
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error("Token이 없습니다.");
 
-        const response = await axios.get('http://localhost:8081/api/v1/user/instructor-applications/all', {
-          headers: { Authorization: `Bearer ${token}` }
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token이 없습니다.");
+        }
+
+        const response = await axios.get('http://localhost:8081/api/v1/user/instructor-applications/my-applications', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
 
         const programMap = new Map();
@@ -213,10 +209,10 @@ export default defineComponent({
             existingProgram.status.push(item.instructorName);
           } else {
             programMap.set(item.confirmedProgramId, {
-              id: item.confirmedProgramId,
+              id: item.id,
               customer: item.programName,
               status: [item.instructorName],
-              product: "신청하기",
+              product: "신청완료",
               maxInstructors: item.numberOfInstructors
             });
           }
@@ -238,26 +234,40 @@ export default defineComponent({
 
     const selectedIds = ref<Array<number>>([]);
     const deleteFewSubscriptions = () => {
-      selectedIds.value.forEach((item) => deleteSubscription(item));
+      selectedIds.value.forEach((item) => {
+        deleteSubscription(item);
+      });
       selectedIds.value.length = 0;
     };
     const deleteSubscription = (id: number) => {
-      data.value = data.value.filter((item) => item.id !== id);
+      for (let i = 0; i < data.value.length; i++) {
+        if (data.value[i].id === id) {
+          data.value.splice(i, 1);
+        }
+      }
       saveToLocalStorage();
     };
     const sort = (sort: Sort) => {
-      const reverse = sort.order === "asc";
-      arraySort(data.value, sort.label, { reverse });
+      const reverse: boolean = sort.order === "asc";
+      if (sort.label) {
+        arraySort(data.value, sort.label, { reverse });
+      }
     };
     const onItemSelect = (selectedItems: Array<number>) => {
       selectedIds.value = selectedItems;
     };
 
     const search = ref<string>("");
+
     const searchItems = () => {
       data.value.splice(0, data.value.length, ...initData.value);
       if (search.value !== "") {
-        const results = initData.value.filter(item => searchingFunc(item, search.value));
+        let results: Array<ISubscription> = [];
+        for (let j = 0; j < initData.value.length; j++) {
+          if (searchingFunc(initData.value[j], search.value)) {
+            results.push(initData.value[j]);
+          }
+        }
         data.value.splice(0, data.value.length, ...results);
       }
       MenuComponent.reinitialization();
@@ -266,56 +276,53 @@ export default defineComponent({
     const searchingFunc = (obj: any, value: string): boolean => {
       for (let key in obj) {
         if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) !== -1) return true;
+          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
+            return true;
+          }
         }
       }
       return false;
     };
 
     const onItemsPerPageChange = () => {
-      setTimeout(() => MenuComponent.reinitialization(), 0);
+      setTimeout(() => {
+        MenuComponent.reinitialization();
+      }, 0);
     };
 
-    const applyForProduct = async (customer: ISubscription) => {
-      if (customer.product === "신청하기") {
-        try {
-          const result = await WarningAlert('강의 신청', '해당 강의를 신청하시겠습니까?');
-          if (result.isConfirmed) {
-            const token = localStorage.getItem('token');
-            if (!token) throw new Error("Token이 없습니다.");
-
-            const requestData = { confirmedProgramId: customer.id };
-            const response = await axios.post('http://localhost:8081/api/v1/user/instructor-applications', requestData, {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-
-            if (response.status === 200 || response.status === 201) {
-              await loadDataFromApi();
-              SuccessAlert('신청 완료', '성공적으로 강의를 신청하였습니다!');
-            }
-          }
-        } catch (error) {
-          console.error('신청하는 중 오류가 발생했습니다.', error);
-          ErrorAlert('신청 실패', '강의 신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+    const cancelProduct = async (customer: ISubscription) => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token이 없습니다.");
         }
-      }
-    };
 
-    const cancelProduct = (customer: ISubscription) => {
-      if (customer.product === "신청완료") {
         WarningAlert('강의 취소', '해당 강의를 취소하시겠습니까?')
-          .then((result) => {
+          .then(async (result) => {
             if (result.isConfirmed) {
-              customer.product = "신청하기";
-              saveToLocalStorage();
-              ErrorAlert('신청 실패', '(오류메세지)');
+              // API 호출
+              await axios.delete(`http://localhost:8081/api/v1/user/instructor-applications/${customer.id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+
+              // 취소 성공시 데이터 로드
+              await loadDataFromApi(); // 테이블 데이터를 다시 불러옴
+              SuccessAlert('취소 완료', '강의 신청을 취소하였습니다.');
             }
           });
+      } catch (error) {
+        ErrorAlert('취소 실패', '강의 취소 중 오류가 발생했습니다.');
       }
     };
 
+
     const saveToLocalStorage = () => {
-      const dataToSave = data.value.map((item) => ({ id: item.id, product: item.product }));
+      const dataToSave = data.value.map((item) => ({
+        id: item.id,
+        product: item.product,
+      }));
       localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
     };
 
@@ -325,7 +332,9 @@ export default defineComponent({
         const parsedData = JSON.parse(savedData);
         parsedData.forEach((savedItem: { id: number; product: string }) => {
           const item = data.value.find((d) => d.id === savedItem.id);
-          if (item) item.product = savedItem.product;
+          if (item) {
+            item.product = savedItem.product;
+          }
         });
       }
     };
@@ -341,13 +350,13 @@ export default defineComponent({
       deleteFewSubscriptions,
       deleteSubscription,
       onItemsPerPageChange,
-      applyForProduct,
       cancelProduct,
       isLoading,
     };
   },
 });
 </script>
+
 
 <style scoped>
 .fade-transition {
@@ -374,6 +383,8 @@ export default defineComponent({
   padding: 8px 18px !important;
   text-align: center;
   font-size: 14px;
+  /* font-weight: bold; */
+  /* border-radius: 30px; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -399,6 +410,8 @@ export default defineComponent({
   padding: 8px 18px !important;
   text-align: center;
   font-size: 14px;
+  /* font-weight: bold;
+  border-radius: 30px; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -414,6 +427,10 @@ export default defineComponent({
   background-color: #A93226;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   transform: scale(0.95);
+}
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+  width: 70px;
 }
 
 .overlay {
@@ -446,4 +463,5 @@ export default defineComponent({
     transform: rotate(360deg);
   }
 }
+
 </style>
