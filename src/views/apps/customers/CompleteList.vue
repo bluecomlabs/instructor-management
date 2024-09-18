@@ -309,13 +309,13 @@ export default defineComponent({
             product: "상세보기",
             createdDate: new Date(item.date).toISOString().split("T")[0],
             INST_NM: item.institutionName,
-            ST_NM: item.instructorName,
+            ST_NM: item.assistantInstructorName,
             lecturePlan: "상세보기",
-            instructors: new Set([item.instructorName]), // 강사 이름을 Set에 저장
+            instructors: new Set([item.assistantInstructorName]), // 강사 이름을 Set에 저장
           };
         } else {
           // 동일한 confirmedProgramId가 있다면 강사 이름을 Set에 추가
-          mergedData[item.confirmedProgramId].instructors.add(item.instructorName);
+          mergedData[item.confirmedProgramId].instructors.add(item.assistantInstructorName);
         }
       });
 
