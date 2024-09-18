@@ -46,7 +46,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/user/sign-in",
     component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
     meta: {
-      middleware: "auth",
+      // middleware: "auth",
     },
     children: [
       {
@@ -72,8 +72,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "user-MyEdu",
         component: () => import("@/views/apps/user/MyEdu.vue"),
         meta: {
-          pageTitle: "내 출강 리스트",
-          breadcrumbs: ["강의관리", "내 출강 리스트"],
+          pageTitle: "출강 리스트",
+          breadcrumbs: ["강의관리", "출강 리스트"],
         },
       },
       {
@@ -83,6 +83,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "교육 신청하기",
           breadcrumbs: ["강의관리", "교육 신청하기"],
+        },
+      },
+      {
+        path: "MyApplEdu",
+        name: "user-MyApplEdu",
+        component: () => import("@/views/apps/user/MyApplEdu.vue"),
+        meta: {
+          pageTitle: "교육 신청내역",
+          breadcrumbs: ["강의관리", "교육 신청내역"],
         },
       },
       {
@@ -283,7 +292,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/admin/dashboard",
     component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
     meta: {
-      middleware: "auth",
+      // middleware: "auth",
     },
     children: [
       {

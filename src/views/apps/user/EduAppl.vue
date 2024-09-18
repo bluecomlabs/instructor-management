@@ -22,6 +22,9 @@
 
       <!--begin::Card toolbar-->
       <div class="card-toolbar">
+        <div class="d-flex justify-content-end align-items-center">
+          <!-- 로딩 버튼 -->
+        </div>
         <!--begin::Toolbar-->
         <div
           v-if="selectedIds.length === 0"
@@ -53,6 +56,10 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-0">
+      <!-- 로딩 오버레이 -->
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
       <KTDatatable
         @on-sort="sort"
         @on-items-select="onItemSelect"
@@ -67,12 +74,26 @@
             {{ customer.customer }}
           </div>
           <div class="text-muted small">
+            <!-- 강사명 나열 -->
             <span v-for="(teacher, index) in customer.status" :key="index">
               {{ teacher }}<span v-if="index < customer.status.length - 1">, </span>
+            </span>
+            
+            <!-- 강사 수 / 최대 강사 수 혹은 마감 표시 -->
+            <span class="ms-2">
+              <template v-if="customer.status.length === customer.maxInstructors">
+                <span class="text-danger">(마감)</span>
+              </template>
+              <template v-else>
+                ({{ customer.status.length }} / {{ customer.maxInstructors }})
+              </template>
             </span>
           </div>
         </div>
       </template>
+
+
+
 
         <template v-slot:product="{ row: customer }">
           <button
@@ -130,10 +151,10 @@
   </div>
   <!--end::Card-->
 </template>
-
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import { SuccessAlert, WarningAlert, ErrorAlert } from '@/assets/ts/_utils/swal';
@@ -146,11 +167,9 @@ interface Sort {
 interface ISubscription {
   id: number;
   customer: string;
-  status: string[];
-  color: string;
-  billing: string;
+  status: string[]; // 강사명들을 나열하는 배열
   product: string;
-  createdDate: string;
+  maxInstructors: number; // 최대 강사 수
 }
 
 export default defineComponent({
@@ -159,200 +178,10 @@ export default defineComponent({
     KTDatatable,
   },
   setup() {
-    const data = ref<Array<ISubscription>>([
-      {
-        id: 1,
-        customer: "성남청소년센터",
-        status: ["홍길동","홍길동","홍길동","홍길동"],
-        color: "success",
-        billing: "MODI",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 2,
-        customer: "성남청소년센터",
-        status: [],
-        color: "success",
-        billing: "MODI",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 3,
-        customer: "성남청소년센터(단기)",
-        status: [],
-        color: "primary",
-        billing: "드론",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 4,
-        customer: "남목청소년센터(도우리반)",
-        status: [],
-        color: "warning",
-        billing: "코스페이시스",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 5,
-        customer: "남목청소년센터(나누리반)",
-        status: [],
-        color: "warning",
-        billing: "코스페이시스",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 6,
-        customer: "남목청소년센터(동아리)",
-        status: [],
-        color: "success",
-        billing: "3D 모델링",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 7,
-        customer: "북구청소년센터",
-        status: ["홍길동"],
-        color: "success",
-        billing: "스택버거, 엔트리",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 8,
-        customer: "북구청소년센터",
-        status: ["홍길동"],
-        color: "danger",
-        billing: "스택버거, 엔트리",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 9,
-        customer: "북구청소년센터(단기)",
-        status: ["홍길동"],
-        color: "warning",
-        billing: "프로보커넥트",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 10,
-        customer: "북구청소년센터(동아리)",
-        status: ["홍길동"],
-        color: "success",
-        billing: "코스페이시스",
-        product: "신청하기",
-        createdDate: "",
-      },
-      {
-        id: 11,
-        customer: "Emma Bold",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-      },
-      {
-        id: 12,
-        customer: "Ana Crown",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Jun 24, 2021",
-      },
-      {
-        id: 13,
-        customer: "Robert Doe",
-        status: ["홍길동"],
-        color: "danger",
-        billing: "--",
-        product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
-      },
-      {
-        id: 14,
-        customer: "John Miller",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "Sep 22, 2021",
-      },
-      {
-        id: 15,
-        customer: "Lucy Kunic",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Nov 10, 2021",
-      },
-      {
-        id: 16,
-        customer: "Neil Owen",
-        status: ["홍길동"],
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Jun 20, 2021",
-      },
-      {
-        id: 17,
-        customer: "Dan Wilson",
-        status: ["홍길동"],
-        color: "warning",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-      },
-      {
-        id: 18,
-        customer: "Emma Smith",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Auto-debit",
-        product: "Teams",
-        createdDate: "Apr 15, 2021",
-      },
-      {
-        id: 19,
-        customer: "Melody Macy",
-        status: ["홍길동"],
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Oct 25, 2021",
-      },
-      {
-        id: 20,
-        customer: "Max Smith",
-        status: ["홍길동"],
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-      },
-      {
-        id: 21,
-        customer: "Max Smith",
-        status: ["홍길동"],
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-      },
-    ]);
+    const data = ref<Array<ISubscription>>([]);
     const headerConfig = ref([
       {
-        columnName: "교육기관명 및 강사명",
+        columnName: "프로그램명 및 강사명",
         columnLabel: "customer",
         sortEnabled: true,
       },
@@ -363,11 +192,61 @@ export default defineComponent({
       },
     ]);
 
+    const isLoading = ref(false);
     const initData = ref<Array<ISubscription>>([]);
 
+    // API 호출 함수 추가
+    const loadDataFromApi = async () => {
+      try {
+        isLoading.value = true;
+
+        // 로컬스토리지에서 토큰을 가져옴
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token이 없습니다.");
+        }
+
+        // Axios로 API 호출
+        const response = await axios.get('http://localhost:8081/api/v1/user/instructor-applications/all', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        // 응답 데이터를 confirmedProgramId를 기준으로 통합
+        const programMap = new Map();
+
+        response.data.forEach((item: any) => {
+          const existingProgram = programMap.get(item.confirmedProgramId);
+          if (existingProgram) {
+            // 이미 존재하는 프로그램이면 강사명을 추가
+            existingProgram.status.push(item.instructorName);
+          } else {
+            // 새로운 프로그램이면 맵에 추가
+            programMap.set(item.confirmedProgramId, {
+              id: item.id,
+              customer: item.programName, // 프로그램명
+              status: [item.instructorName], // 강사명을 배열로 저장
+              product: "신청하기", // 기본적으로 신청하기 버튼 활성화
+              maxInstructors: item.numberOfInstructors // 최대 강사 수 추가
+            });
+          }
+        });
+
+        // 맵을 배열로 변환하여 데이터에 할당
+        const apiData = Array.from(programMap.values());
+        data.value.splice(0, data.value.length, ...apiData);
+        initData.value.splice(0, initData.value.length, ...apiData);
+        isLoading.value = false;
+      } catch (error) {
+        console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+        isLoading.value = false;
+      }
+    };
+
+    // 초기 API 호출
     onMounted(() => {
-      loadFromLocalStorage();
-      initData.value.splice(0, data.value.length, ...data.value);
+      loadDataFromApi(); // 컴포넌트 마운트 시 API 데이터 로드
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -447,13 +326,11 @@ export default defineComponent({
             if (result.isConfirmed) {
               customer.product = "신청하기";
               saveToLocalStorage();
-              // SuccessAlert('신청 취소', '성공적으로 강의를 취소하였습니다!');
-              ErrorAlert('신청 실패', '(오류메세지)')
+              ErrorAlert('신청 실패', '(오류메세지)');
             }
           });
       }
     };
-
 
     const saveToLocalStorage = () => {
       const dataToSave = data.value.map((item) => ({
@@ -489,10 +366,12 @@ export default defineComponent({
       onItemsPerPageChange,
       applyForProduct,
       cancelProduct,
+      isLoading, // 로딩 상태
     };
   },
 });
 </script>
+
 
 <style scoped>
 .fade-transition {
@@ -564,6 +443,40 @@ export default defineComponent({
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   transform: scale(0.95);
 }
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+  width: 70px;
+}
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 </style>

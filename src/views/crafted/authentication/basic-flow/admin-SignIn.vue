@@ -4,152 +4,78 @@
   <div class="form-wrapper">
     <!--begin::Form-->
     <img src="../../../../../public/logo.png" style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 30px;">
-    
-    <VForm
-      class="form w-100"
-      id="kt_login_signin_form"
-      @submit="onSubmitLogin"
-      :validation-schema="login"
-      :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
-    >
+
+    <form @submit.prevent="login">
       <div class="text-center mb-10">
         <h1 class="text-gray-900 mb-3" style="font-size: 35px;">관리자 로그인</h1>
       </div>
 
       <div class="fv-row mb-10">
         <label class="form-label fs-6 fw-bold text-gray-900">ID</label>
-
-        <Field
-          tabindex="1"
-          class="form-control form-control-lg form-control-solid"
-          type="text"
-          name="ADMN_ACC"
-          placeholder="관리자 ID"
-          autocomplete="on"
-        />
-        <!--end::Input-->
-        <div class="fv-plugins-message-container">
-          <div class="fv-help-block">
-            <ErrorMessage name="ADMN_ACC" />
-          </div>
-        </div>
+        <input v-model="username" tabindex="1" class="form-control form-control-lg form-control-solid" type="text" name="ADMN_ACC" placeholder="관리자 ID" autocomplete="on" />
       </div>
-      <!--end::Input group-->
 
-      <!--begin::Input group-->
       <div class="fv-row mb-10">
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-stack mb-2">
-          <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6 mb-0">비밀번호</label>
-          <!--end::Label-->
-        </div>
-        <!--end::Wrapper-->
-
-        <!--begin::Input-->
-        <Field
-          tabindex="2"
-          class="form-control form-control-lg form-control-solid"
-          type="password"
-          name="ADMN_PWD"
-          placeholder="비밀번호"
-          autocomplete="off"
-        />
-        <!--end::Input-->
-        <div class="fv-plugins-message-container">
-          <div class="fv-help-block">
-            <ErrorMessage name="ADMN_PWD" />
-          </div>
-        </div>
+        <label class="form-label fw-bold text-gray-900 fs-6 mb-0">비밀번호</label>
+        <input v-model="password" tabindex="2" class="form-control form-control-lg form-control-solid" type="password" name="ADMN_PWD" placeholder="비밀번호" autocomplete="off" />
       </div>
-      <!--end::Input group-->
 
-      <!--begin::Actions-->
       <div class="text-center">
-        <!--begin::Submit button-->
-        <button
-          tabindex="3"
-          type="submit"
-          ref="submitButton"
-          id="kt_sign_in_submit"
-          class="btn btn-lg btn-primary w-100 mb-5"
-        >
+        <button tabindex="3" type="submit" ref="submitButton" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
           <span class="indicator-label"> 로그인 </span>
-
-          <span class="indicator-progress">
-            잠시만 기다려주세요
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
-          </span>
+          <span class="indicator-progress"> 잠시만 기다려주세요 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
         </button>
-        <!--end::Submit button-->
 
-        <!--begin::Separator-->
         <div class="text-center text-muted text-uppercase fw-bold mb-5">or</div>
-        <!--end::Separator-->
 
-        <button
-          tabindex="3"
-          type="button"
-          @click="onAdminLogin"
-          class="btn btn-lg w-100 mb-5" style="border: 1px solid black;"
-        >
+        <button tabindex="3" type="button" @click="onAdminLogin" class="btn btn-lg w-100 mb-5" style="border: 1px solid black;">
           <span class="indicator-label"> 강사로 로그인 </span>
         </button>
       </div>
-      <!--end::Actions-->
-    </VForm>
+    </form>
     <!--end::Form-->
   </div>
   <!--end::Wrapper-->
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 import { defineComponent, ref } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import * as Yup from "yup";
 
 export default defineComponent({
   name: "sign-in",
-  components: {
-    Field,
-    VForm,
-    ErrorMessage,
-  },
   setup() {
-    const store = useAuthStore();
     const router = useRouter();
-
     const submitButton = ref<HTMLButtonElement | null>(null);
+    const username = ref('');
+    const password = ref('');
 
-    //Create form validation object
-    const login = Yup.object().shape({
-      email: Yup.string().email().required().label("Email"),
-      password: Yup.string().min(4).required().label("Password"),
-    });
-
-    //Form submit function
-    const onSubmitLogin = async (values: any) => {
-      values = values as User;
-      // Clear existing errors
-      store.logout();
-
+    const login = async () => {
       if (submitButton.value) {
-        // eslint-disable-next-line
-        submitButton.value!.disabled = true;
-        // Activate indicator
+        submitButton.value.disabled = true;
         submitButton.value.setAttribute("data-kt-indicator", "on");
       }
 
-      // Send login request
-      await store.login(values);
-      const error = Object.values(store.errors);
+      try {
+        const response = await axios.post("http://localhost:8081/login", {
+          username: username.value,
+          password: password.value,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
 
-      if (error.length === 0) {
+        const token = response.headers['authorization'];
+        console.log(response);
+        console.log(token);
+        const tokenWithoutBearer = token.replace('Bearer ', '');
+
+        localStorage.setItem('token', tokenWithoutBearer);
+
         Swal.fire({
           text: "방문을 환영합니다.",
           icon: "success",
@@ -160,12 +86,12 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-light-primary",
           },
         }).then(() => {
-          // Go to page after successfully login
           router.push({ name: "admin-dashboard" });
         });
-      } else {
+
+      } catch (error: unknown) {
         Swal.fire({
-          text: error[0] as string,
+          text: "아이디와 비밀번호가 틀렸습니다.",
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "확인",
@@ -173,15 +99,13 @@ export default defineComponent({
           customClass: {
             confirmButton: "btn fw-semibold btn-light-danger",
           },
-        }).then(() => {
-          store.errors = {};
         });
+      } finally {
+        if (submitButton.value) {
+          submitButton.value.removeAttribute("data-kt-indicator");
+          submitButton.value.disabled = false;
+        }
       }
-
-      //Deactivate indicator
-      submitButton.value?.removeAttribute("data-kt-indicator");
-      // eslint-disable-next-line
-        submitButton.value!.disabled = false;
     };
 
     const onAdminLogin = () => {
@@ -189,14 +113,16 @@ export default defineComponent({
     };
 
     return {
-      onSubmitLogin,
-      onAdminLogin,
       login,
+      onAdminLogin,
+      username,
+      password,
       submitButton,
     };
   },
 });
 </script>
+
 
 <style scoped>
 .background-container {

@@ -87,31 +87,18 @@
           <span class="text-gray-800 mb-1">{{ customer.status }}</span>
         </template>
         <template v-slot:product="{ row: customer }">
-          <span
-            v-if="customer.product === '최종배정'"
-            class="badge badge-success"
+          <div
+            :class="{
+              'badge py-3 px-4 fs-7 badge-light-success': customer.product === '최종배정',
+              'badge py-3 px-4 fs-7 badge-light-danger': customer.product === '탈락',
+              'badge py-3 px-4 fs-7 badge-light-primary': customer.product === '신청완료',
+              'badge py-3 px-4 fs-7 badge-light-secondary': customer.product === '미신청',
+            }"
           >
-            최종배정
-          </span>
-          <span
-            v-else-if="customer.product === '탈락'"
-            class="badge badge-danger"
-          >
-            탈락
-          </span>
-          <span
-            v-else-if="customer.product === '신청완료'"
-            class="badge badge-primary"
-          >
-            신청완료
-          </span>
-          <span
-            v-else
-            class="badge badge-secondary"
-          >
-            미신청
-          </span>
+            {{ customer.product }}
+          </div>
         </template>
+
         <template v-slot:actions="{ row: customer }">
           <a
             href="#"
