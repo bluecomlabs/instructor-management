@@ -83,7 +83,6 @@
     <div class="card-body pt-0">
       <KTDatatable
         @on-sort="sort"
-        @on-items-select="onItemSelect"
         @on-items-per-page-change="onItemsPerPageChange"
         :data="data"
         :header="headerConfig"
@@ -165,6 +164,7 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, onMounted, ref } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
@@ -187,218 +187,9 @@ export default defineComponent({
     Dropdown1
   },
   setup() {
-    const data = ref<Array<ISubscription>>([
-      {
-        id: 1,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "MODI",
-        product: "상세보기",
-        createdDate: "2024.08.01.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 2,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "MODI",
-        product: "상세보기",
-        createdDate: "2024.08.01.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 3,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "primary",
-        billing: "드론",
-        product: "상세보기",
-        createdDate: "2024.08.17.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 4,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024.08.08.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 5,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024.08.08.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 6,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "3D 모델링",
-        product: "상세보기",
-        createdDate: "2024.08.09.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 7,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "2024.08.06.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 8,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "danger",
-        billing: "스택버거, 엔트리",
-        product: "상세보기",
-        createdDate: "2024.08.06.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 9,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "warning",
-        billing: "프로보커넥트",
-        product: "상세보기",
-        createdDate: "2024.08.07.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 10,
-        customer: "상세보기",
-        status: "상세보기",
-        color: "success",
-        billing: "코스페이시스",
-        product: "상세보기",
-        createdDate: "2024.08.03.",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 11,
-        customer: "Emma Bold",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 12,
-        customer: "Ana Crown",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Jun 24, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 13,
-        customer: "Robert Doe",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Teams Bundle",
-        createdDate: "Jul 25, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 14,
-        customer: "John Miller",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "Sep 22, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 15,
-        customer: "Lucy Kunic",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Nov 10, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 16,
-        customer: "Neil Owen",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Jun 20, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 17,
-        customer: "Dan Wilson",
-        status: "Expiring",
-        color: "warning",
-        billing: "Manual - Paypal",
-        product: "Enterprise",
-        createdDate: "May 05, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 18,
-        customer: "Emma Smith",
-        status: "Active",
-        color: "success",
-        billing: "Auto-debit",
-        product: "Teams",
-        createdDate: "Apr 15, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 19,
-        customer: "Melody Macy",
-        status: "Active",
-        color: "success",
-        billing: "Manual - Credit Card",
-        product: "Basic",
-        createdDate: "Oct 25, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 20,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-        INST_NM: "어썸초등학교",
-      },
-      {
-        id: 21,
-        customer: "Max Smith",
-        status: "Suspended",
-        color: "danger",
-        billing: "--",
-        product: "Basic Bundle",
-        createdDate: "Feb 21, 2021",
-        INST_NM: "어썸초등학교",
-      },
-    ]);
+    const data = ref<Array<ISubscription>>([]);
+    const initData = ref<Array<ISubscription>>([]);
+
     const headerConfig = ref([
       {
         columnName: "프로그램명",
@@ -430,16 +221,41 @@ export default defineComponent({
         columnLabel: "product",
         sortEnabled: true,
       },
-      // {
-      //   columnName: "설정",
-      //   columnLabel: "actions",
-      // },
     ]);
 
-    const initData = ref<Array<ISubscription>>([]);
+    // Fetching data from API and processing it
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token이 없습니다.");
+        }
+
+        const response = await axios.get('http://localhost:8081/api/v1/user/assistant-instructors', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const apiData = response.data.map((item: any) => ({
+          id: item.id,
+          customer: "상세보기", // 출석부는 상세보기로
+          status: "상세보기", // 교육일지도 상세보기
+          color: "success", // 상태에 따라 변경할 수 있음
+          billing: item.programName, // 프로그램명
+          product: "상세보기", // 강의확인서
+          createdDate: new Date(item.createdAt).toISOString().split("T")[0], // 날짜에서 시간 제거
+          INST_NM: item.institutionName, // 교육기관
+        }));
+
+        data.value = apiData;
+        initData.value = [...apiData]; // 초기 데이터 복사
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
 
     onMounted(() => {
-      initData.value.splice(0, data.value.length, ...data.value);
+      fetchData();
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -449,47 +265,30 @@ export default defineComponent({
       });
       selectedIds.value.length = 0;
     };
+
     const deleteSubscription = (id: number) => {
-      for (let i = 0; i < data.value.length; i++) {
-        if (data.value[i].id === id) {
-          data.value.splice(i, 1);
-        }
-      }
+      data.value = data.value.filter((item) => item.id !== id);
     };
+
     const sort = (sort: Sort) => {
       const reverse: boolean = sort.order === "asc";
       if (sort.label) {
         arraySort(data.value, sort.label, { reverse });
       }
     };
-    const onItemSelect = (selectedItems: Array<number>) => {
-      selectedIds.value = selectedItems;
-    };
 
     const search = ref<string>("");
     const searchItems = () => {
-      data.value.splice(0, data.value.length, ...initData.value);
-      if (search.value !== "") {
-        let results: Array<ISubscription> = [];
-        for (let j = 0; j < initData.value.length; j++) {
-          if (searchingFunc(initData.value[j], search.value)) {
-            results.push(initData.value[j]);
-          }
-        }
-        data.value.splice(0, data.value.length, ...results);
-      }
+      data.value = initData.value.filter((item) =>
+        searchingFunc(item, search.value)
+      );
       MenuComponent.reinitialization();
     };
 
     const searchingFunc = (obj: any, value: string): boolean => {
-      for (let key in obj) {
-        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
-            return true;
-          }
-        }
-      }
-      return false;
+      return Object.keys(obj).some((key) =>
+        obj[key].toString().toLowerCase().includes(value.toLowerCase())
+      );
     };
 
     const onItemsPerPageChange = () => {
@@ -504,7 +303,6 @@ export default defineComponent({
       data,
       headerConfig,
       sort,
-      onItemSelect,
       selectedIds,
       deleteFewSubscriptions,
       deleteSubscription,
@@ -514,3 +312,4 @@ export default defineComponent({
   },
 });
 </script>
+
