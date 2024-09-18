@@ -287,14 +287,12 @@ export default defineComponent({
       return false;
     };
     const finalizeAssignments = async () => {
-      // status가 'OPEN'인 레코드들의 confirmedProgramId 수집
       const openProgramIds = data.value
-        .filter((item) => item.status === "OPEN") // API에서 받은 status를 직접 필터링
+        .filter((item) => item.status === "OPEN") 
         .map((item) => item.id);
 
-      console.log("Open Program IDs: ", openProgramIds); // 로그 추가
+      console.log("Open Program IDs: ", openProgramIds); 
 
-      // OPEN 상태의 프로그램이 없을 경우
       if (openProgramIds.length === 0) {
         Swal.fire({
           title: "모든 강의가 최종배정됨",
@@ -302,10 +300,9 @@ export default defineComponent({
           icon: "info",
           confirmButtonText: "OK",
         });
-        return; // 더 이상 처리하지 않음
+        return;
       }
 
-      // SweetAlert2로 사용자에게 확인 팝업 띄움
       Swal.fire({
         title: "최종배정 하시겠습니까?",
         text: "강사들이 강의를 신청/취소할 수 없습니다.",
@@ -333,13 +330,10 @@ export default defineComponent({
               icon: "success",
               confirmButtonText: "확인",
             }).then(() => {
-              // 데이터를 다시 가져와 테이블을 리빌딩
               fetchData();
             });
           } catch (error) {
             console.error("Error finalizing assignments:", error);
-
-            // 에러 메시지 출력
             Swal.fire(
               "Error!",
               "There was an issue finalizing the assignments.",

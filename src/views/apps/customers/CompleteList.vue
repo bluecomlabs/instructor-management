@@ -72,7 +72,6 @@
     <div class="card-body pt-0">
       <KTDatatable
         @on-sort="sort"
-        @on-items-select="onItemSelect"
         @on-items-per-page-change="onItemsPerPageChange"
         :data="data"
         :header="headerConfig"
@@ -90,7 +89,7 @@
         <template v-slot:ST_NM="{ row: customer }">
           <div>
             <small class="text-muted">
-              {{ customer.ST_NM }} | {{ customer.AT_NM }}
+              {{ customer.ST_NM }} {{ customer.AT_NM }}
             </small>
           </div>
         </template>
@@ -128,9 +127,9 @@
         <template v-slot:lecturePlan="{ row: customer }">
           <div class="d-flex flex-column align-items-center">
             <!-- Center-aligned Status indicator with distinct text colors -->
-            <span :style="getLecturePlanStatusStyle(customer.lecturePlan)">
+            <!-- <span :style="getLecturePlanStatusStyle(customer.lecturePlan)">
               {{ customer.lecturePlan }}
-            </span>
+            </span> -->
             
             <!-- "바로가기" link with original button design -->
             <router-link
@@ -182,6 +181,7 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, onMounted, ref } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
@@ -207,242 +207,8 @@ export default defineComponent({
     Dropdown1
   },
   setup() {
-    const data = ref<Array<ISubscription>>([
-    {
-      id: 1,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "success",
-      billing: "MODI",
-      product: "상세보기",
-      createdDate: "2024-08-01",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "관리자 승인완료", 
-    },
-    {
-      id: 2,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "success",
-      billing: "MODI",
-      product: "상세보기",
-      createdDate: "2024-08-01",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "이희재",
-      lecturePlan: "관리자 승인완료", 
-    },
-    {
-      id: 3,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "primary",
-      billing: "드론",
-      product: "상세보기",
-      createdDate: "2024-08-15",
-      INST_NM: "어썸초등학교",
-      ST_NM: "김만수",
-      AT_NM: "이희재",
-      lecturePlan: "미제출", 
-    },
-    {
-      id: 4,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "warning",
-      billing: "코스페이시스",
-      product: "상세보기",
-      createdDate: "2024-08-03",
-      INST_NM: "어썸초등학교",
-      ST_NM: "이희재",
-      AT_NM: "김만수",
-      lecturePlan: "미제출", 
-    },
-    {
-      id: 5,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "warning",
-      billing: "코스페이시스",
-      product: "상세보기",
-      createdDate: "2024-08-01",
-      INST_NM: "어썸초등학교",
-      ST_NM: "이희재",
-      AT_NM: "홍길동",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 6,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "success",
-      billing: "3D 모델링",
-      product: "상세보기",
-      createdDate: "2024-08-01",
-      INST_NM: "어썸초등학교",
-      ST_NM: "정준혁",
-      AT_NM: "오지원",
-      lecturePlan: "미제출", 
-    },
-    {
-      id: 7,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "success",
-      billing: "스택버거, 엔트리",
-      product: "상세보기",
-      createdDate: "2024-08-05",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "이재홍",
-      lecturePlan: "미제출", 
-    },
-    {
-      id: 8,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "danger",
-      billing: "스택버거, 엔트리",
-      product: "상세보기",
-      createdDate: "2024-08-01",
-      INST_NM: "어썸초등학교",
-      ST_NM: "김지섭",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 9,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "warning",
-      billing: "프로보커넥트",
-      product: "상세보기",
-      createdDate: "2024-08-06",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "배주원",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 10,
-      customer: "상세보기",
-      status: "상세보기",
-      color: "success",
-      billing: "코스페이시스",
-      product: "상세보기",
-      createdDate: "2024-08-10",
-      INST_NM: "어썸초등학교",
-      ST_NM: "이상혁",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 11,
-      customer: "Emma Bold",
-      status: "Active",
-      color: "success",
-      billing: "Manual - Credit Card",
-      product: "Enterprise",
-      createdDate: "May 05, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 12,
-      customer: "Ana Crown",
-      status: "Active",
-      color: "success",
-      billing: "Manual - Credit Card",
-      product: "Basic",
-      createdDate: "Jun 24, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 13,
-      customer: "Robert Doe",
-      status: "Suspended",
-      color: "danger",
-      billing: "--",
-      product: "Teams Bundle",
-      createdDate: "Jul 25, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 14,
-      customer: "John Miller",
-      status: "Active",
-      color: "success",
-      billing: "Manual - Paypal",
-      product: "Enterprise",
-      createdDate: "Sep 22, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 15,
-      customer: "Lucy Kunic",
-      status: "Active",
-      color: "success",
-      billing: "Manual - Credit Card",
-      product: "Basic",
-      createdDate: "Nov 10, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 16,
-      customer: "Neil Owen",
-      status: "Suspended",
-      color: "danger",
-      billing: "--",
-      product: "Basic Bundle",
-      createdDate: "Jun 20, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 17,
-      customer: "Dan Wilson",
-      status: "Expiring",
-      color: "warning",
-      billing: "Manual - Paypal",
-      product: "Enterprise",
-      createdDate: "May 05, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    {
-      id: 18,
-      customer: "Emma Smith",
-      status: "Active",
-      color: "success",
-      billing: "Auto-debit",
-      product: "Teams",
-      createdDate: "Apr 15, 2021",
-      INST_NM: "어썸초등학교",
-      ST_NM: "홍길동",
-      AT_NM: "김만수",
-      lecturePlan: "상세보기", 
-    },
-    ]);
+    const data = ref<Array<ISubscription>>([]);
+    const initData = ref<Array<ISubscription>>([]);
 
     const headerConfig = ref([
       {
@@ -496,10 +262,6 @@ export default defineComponent({
           };
       }
     };
-    const initData = ref<Array<ISubscription>>([]);
-      const getLecturePlanStatusClass = (lecturePlan: string) => {
-        return "text-center fw-bold";
-    };
 
     const getLecturePlanLink = (customer: ISubscription) => {
       switch (customer.lecturePlan) {
@@ -510,18 +272,6 @@ export default defineComponent({
         default:
           return `/lecture-plan/${customer.id}/미제출`;
       }
-    };
-
-    const uniformButtonStyle = {
-      padding: "4px 10px",
-      margin: "0px !important",
-      fontSize: "14px",
-      borderRadius: "4px",
-      fontWeight: "bold",
-      minWidth: "140px",
-      textAlign: "center",
-      backgroundColor: "rgba(0, 123, 255, 0.1)", 
-      color: "#007bff", 
     };
 
     const getLecturePlanButtonStyle = (lecturePlan: string) => {
@@ -536,18 +286,70 @@ export default defineComponent({
         border: "1px solid #ddd",
         class: "hover-effect",
       };
-      switch (lecturePlan) {
-        default:
-          return {
-            ...baseStyle,
-            color: "#000000",
-            margin: "0px !important",
+      return {
+        ...baseStyle,
+        color: "#000000",
+        margin: "0px !important",
+      };
+    };
+
+    // 데이터 병합 함수
+    const mergeDataByProgram = (rawData: any[]) => {
+      const mergedData: any = {};
+
+      rawData.forEach((item) => {
+        // confirmedProgramId로 데이터 병합
+        if (!mergedData[item.confirmedProgramId]) {
+          mergedData[item.confirmedProgramId] = {
+            id: item.id,
+            customer: "상세보기",
+            status: "상세보기",
+            color: "success",
+            billing: item.programName,
+            product: "상세보기",
+            createdDate: new Date(item.date).toISOString().split("T")[0],
+            INST_NM: item.institutionName,
+            ST_NM: item.instructorName,
+            lecturePlan: "상세보기",
+            instructors: new Set([item.instructorName]), // 강사 이름을 Set에 저장
           };
+        } else {
+          // 동일한 confirmedProgramId가 있다면 강사 이름을 Set에 추가
+          mergedData[item.confirmedProgramId].instructors.add(item.instructorName);
+        }
+      });
+
+      // instructors를 배열로 변환하여 출력
+      return Object.values(mergedData).map((item: any) => ({
+        ...item,
+        ST_NM: Array.from(item.instructors).join(", "), // 강사 이름들을 열거
+      }));
+    };
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error("Token이 없습니다.");
+        }
+        const response = await axios.get(
+          "http://localhost:8081/api/v1/admin/assistant-instructors" ,{
+            headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        // API 데이터 병합
+        const mergedApiData = mergeDataByProgram(response.data);
+
+        data.value = mergedApiData;
+        initData.value = [...mergedApiData]; // 초기 데이터 복사
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
       }
     };
 
     onMounted(() => {
-      initData.value.splice(0, data.value.length, ...data.value);
+      fetchData();
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -557,47 +359,30 @@ export default defineComponent({
       });
       selectedIds.value.length = 0;
     };
+
     const deleteSubscription = (id: number) => {
-      for (let i = 0; i < data.value.length; i++) {
-        if (data.value[i].id === id) {
-          data.value.splice(i, 1);
-        }
-      }
+      data.value = data.value.filter((item) => item.id !== id);
     };
+
     const sort = (sort: Sort) => {
       const reverse: boolean = sort.order === "asc";
       if (sort.label) {
         arraySort(data.value, sort.label, { reverse });
       }
     };
-    const onItemSelect = (selectedItems: Array<number>) => {
-      selectedIds.value = selectedItems;
-    };
 
     const search = ref<string>("");
     const searchItems = () => {
-      data.value.splice(0, data.value.length, ...initData.value);
-      if (search.value !== "") {
-        let results: Array<ISubscription> = [];
-        for (let j = 0; j < initData.value.length; j++) {
-          if (searchingFunc(initData.value[j], search.value)) {
-            results.push(initData.value[j]);
-          }
-        }
-        data.value.splice(0, data.value.length, ...results);
-      }
+      data.value = initData.value.filter((item) =>
+        searchingFunc(item, search.value)
+      );
       MenuComponent.reinitialization();
     };
 
     const searchingFunc = (obj: any, value: string): boolean => {
-      for (let key in obj) {
-        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
-            return true;
-          }
-        }
-      }
-      return false;
+      return Object.keys(obj).some((key) =>
+        obj[key].toString().toLowerCase().includes(value.toLowerCase())
+      );
     };
 
     const onItemsPerPageChange = () => {
@@ -612,20 +397,19 @@ export default defineComponent({
       data,
       headerConfig,
       sort,
-      onItemSelect,
       selectedIds,
       deleteFewSubscriptions,
       deleteSubscription,
-      getAssetPath,
-      onItemsPerPageChange,
-      getLecturePlanLink, 
+      getLecturePlanLink,
       getLecturePlanButtonStyle,
-      getLecturePlanStatusClass,
-      uniformButtonStyle,getLecturePlanStatusStyle
+      getLecturePlanStatusStyle,
+      onItemsPerPageChange,
     };
   },
 });
 </script>
+
+
 
 <style>
 
