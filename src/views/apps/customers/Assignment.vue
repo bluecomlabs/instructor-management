@@ -69,7 +69,6 @@
         class="text-center"
         @on-sort="sort"
         @on-items-select="onItemSelect"
-        @on-items-per-page-change="onItemsPerPageChange"
         :data="data"
         :header="headerConfig"
         :checkbox-enabled="true"
@@ -81,7 +80,8 @@
           {{ customer.createdDate }}
         </template>
         <template v-slot:customer="{ row: customer }">
-          <span class="text-gray-800 mb-1">{{ customer.customer }}</span>
+          <span class="text-gray-800 mb-1">{{ customer.institutionName }}</span><br />
+          <small class="text-gray-500">{{ customer.customer }}</small>
         </template>
         <template v-slot:status="{ row: customer }">
           <span class="text-gray-800 mb-1">{{ customer.status }}</span>
@@ -139,6 +139,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import axios from "axios";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
@@ -159,99 +160,7 @@ export default defineComponent({
     KTDatatable,
   },
   setup() {
-    const data = ref<Array<ISubscription>>([
-      {
-        id: 1,
-        customer: "성남청소년센터",
-        status: "2024.08.01.",
-        color: "success",
-        billing: "MODI",
-        product: "신청완료",
-        createdDate: "권정미",
-      },
-      {
-        id: 2,
-        customer: "성남청소년센터",
-        status: "2024.08.01.",
-        color: "success",
-        billing: "MODI",
-        product: "신청완료",
-        createdDate: "권혜경",
-      },
-      {
-        id: 3,
-        customer: "성남청소년센터(단기)",
-        status: "2024.08.17.",
-        color: "primary",
-        billing: "드론",
-        product: "신청완료",
-        createdDate: "김미",
-      },
-      {
-        id: 4,
-        customer: "남목청소년센터(도우리반)",
-        status: "2024.08.08.",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "미신청",
-        createdDate: "김미령",
-      },
-      {
-        id: 5,
-        customer: "남목청소년센터(나누리반)",
-        status: "2024.08.09.",
-        color: "warning",
-        billing: "코스페이시스",
-        product: "신청완료",
-        createdDate: "김보미",
-      },
-      {
-        id: 6,
-        customer: "남목청소년센터(동아리)",
-        status: "2024.08.06.",
-        color: "success",
-        billing: "3D 모델링",
-        product: "미신청",
-        createdDate: "김은희",
-      },
-      {
-        id: 7,
-        customer: "북구청소년센터",
-        status: "2024.08.06.",
-        color: "success",
-        billing: "스택버거, 엔트리",
-        product: "신청완료",
-        createdDate: "김인경",
-      },
-      {
-        id: 8,
-        customer: "북구청소년센터",
-        status: "2024.08.07.",
-        color: "danger",
-        billing: "스택버거, 엔트리",
-        product: "신청완료",
-        createdDate: "김지숙",
-      },
-      {
-        id: 9,
-        customer: "북구청소년센터(단기)",
-        status: "2024.08.03.",
-        color: "warning",
-        billing: "프로보커넥트",
-        product: "신청완료",
-        createdDate: "김희정",
-      },
-      {
-        id: 10,
-        customer: "북구청소년센터(동아리)",
-        status: "2024.08.03.",
-        color: "success",
-        billing: "코스페이시스",
-        product: "미신청",
-        createdDate: "나성자",
-      },
-    ]);
-
+    const data = ref<Array<ISubscription>>([]);
     const headerConfig = ref([
       {
         columnName: "프로그램명",
@@ -277,9 +186,56 @@ export default defineComponent({
 
     const initData = ref<Array<ISubscription>>([]);
 
+      const statusMap = ref<Record<number, string>>({});
+        const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:8081/api/v1/admin/instructor-applications/all",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const apiData = response.data.map((item: any) => ({
+          id: item.confirmedProgramId,
+          institutionName: item.institutionName || "미정",
+          customer: item.instructorName || "미정",
+          status: item.date.split("T")[0],
+          color: item.status === "COMPLETE" ? "success" : "warning",
+          billing: item.programName,
+          product: item.status === "COMPLETE" ? "최종배정" : "미신청",
+          createdDate: item.instructorName || "미정",
+        }));
+
+        const mergedData: Array<ISubscription> = [];
+
+        apiData.forEach((item: ISubscription) => {
+          const existingItem = mergedData.find(
+            (mergedItem) => mergedItem.id === item.id
+          );
+
+          if (existingItem) {
+            if (!existingItem.customer.includes(item.customer)) {
+              existingItem.customer += `, ${item.customer}`;
+            }
+          } else {
+            mergedData.push(item);
+          }
+        });
+
+        data.value = mergedData;
+        initData.value = [...mergedData];
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+
     onMounted(() => {
-      loadFromLocalStorage();
-      initData.value.splice(0, data.value.length, ...data.value);
+      fetchData();
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -289,12 +245,9 @@ export default defineComponent({
       });
       selectedIds.value.length = 0;
     };
+
     const deleteSubscription = (id: number) => {
-      for (let i = 0; i < data.value.length; i++) {
-        if (data.value[i].id === id) {
-          data.value.splice(i, 1);
-        }
-      }
+      data.value = data.value.filter((item) => item.id !== id);
     };
 
     const sort = (sort: Sort) => {
@@ -312,12 +265,9 @@ export default defineComponent({
     const searchItems = () => {
       data.value.splice(0, data.value.length, ...initData.value);
       if (search.value !== "") {
-        let results: Array<ISubscription> = [];
-        for (let j = 0; j < initData.value.length; j++) {
-          if (searchingFunc(initData.value[j], search.value)) {
-            results.push(initData.value[j]);
-          }
-        }
+        const results = initData.value.filter((item) =>
+          searchingFunc(item, search.value)
+        );
         data.value.splice(0, data.value.length, ...results);
       }
       MenuComponent.reinitialization();
@@ -325,38 +275,42 @@ export default defineComponent({
 
     const searchingFunc = (obj: any, value: string): boolean => {
       for (let key in obj) {
-        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) != -1) {
+        if (!Number.isInteger(obj[key]) && typeof obj[key] === "string") {
+          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) !== -1) {
             return true;
           }
         }
       }
       return false;
     };
+    const finalizeAssignments = async () => {
+      const openProgramIds = data.value
+        .filter((item) => item.status === "OPEN")
+        .map((item) => item.id);
 
-    const onItemsPerPageChange = () => {
-      setTimeout(() => {
-        MenuComponent.reinitialization();
-      }, 0);
-    };
+      console.log("Open Program IDs: ", openProgramIds);
 
-    const finalizeAssignments = () => {
-      data.value.forEach((item) => {
-        if (item.product === "신청완료") {
-          item.product = "최종배정";
-        } else if (item.product === "미신청") {
-          item.product = "탈락";
-        }
-      });
-      saveToLocalStorage();
-    };
+      if (openProgramIds.length === 0) {
+        console.log("No OPEN programs found");
+        return;
+      }
 
-    const saveToLocalStorage = () => {
-      const dataToSave = data.value.map((item) => ({
-        id: item.id,
-        product: item.product,
-      }));
-      localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
+      try {
+        const token = localStorage.getItem("token");
+        await axios.post("http://localhost:8081/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors",
+          { confirmedProgramIds: openProgramIds },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(
+          "Programs successfully completed and assistant instructors added"
+        );
+      } catch (error) {
+        console.error("Error finalizing assignments:", error);
+      }
     };
 
     const loadFromLocalStorage = () => {
@@ -383,7 +337,7 @@ export default defineComponent({
       deleteFewSubscriptions,
       deleteSubscription,
       finalizeAssignments,
-      onItemsPerPageChange,
+      loadFromLocalStorage,
     };
   },
 });
