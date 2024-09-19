@@ -70,6 +70,11 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-0">
+      <!-- 로딩 오버레이 -->
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
       <KTDatatable
         @on-sort="sort"
         @on-items-per-page-change="onItemsPerPageChange"
@@ -126,12 +131,6 @@
         </template>
         <template v-slot:lecturePlan="{ row: customer }">
           <div class="d-flex flex-column align-items-center">
-            <!-- Center-aligned Status indicator with distinct text colors -->
-            <!-- <span :style="getLecturePlanStatusStyle(customer.lecturePlan)">
-              {{ customer.lecturePlan }}
-            </span> -->
-            
-            <!-- "바로가기" link with original button design -->
             <router-link
               :to="getLecturePlanLink(customer)"
               class="btn me-2"
@@ -209,6 +208,7 @@ export default defineComponent({
   setup() {
     const data = ref<Array<ISubscription>>([]);
     const initData = ref<Array<ISubscription>>([]);
+    const isLoading = ref(false);  // 로딩 상태 추가
 
     const headerConfig = ref([
       {
@@ -328,6 +328,7 @@ export default defineComponent({
 
     const fetchData = async () => {
       try {
+        isLoading.value = true;  // 로딩 시작
         const token = localStorage.getItem('token');
         if (!token) {
           throw new Error("Token이 없습니다.");
@@ -345,6 +346,8 @@ export default defineComponent({
         initData.value = [...mergedApiData]; // 초기 데이터 복사
       } catch (error) {
         console.error("Failed to fetch data:", error);
+      } finally {
+        isLoading.value = false;  // 로딩 종료
       }
     };
 
@@ -404,15 +407,13 @@ export default defineComponent({
       getLecturePlanButtonStyle,
       getLecturePlanStatusStyle,
       onItemsPerPageChange,
+      isLoading,  // 로딩 상태 반환
     };
   },
 });
 </script>
 
-
-
 <style>
-
 .no-margin {
   margin: 0px !important;
 }
@@ -421,5 +422,32 @@ export default defineComponent({
   background-color: #9c9c9c !important;
   color: #ffffff !important;
   border-color: #9c9c9c !important;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

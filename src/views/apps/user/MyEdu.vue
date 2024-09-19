@@ -30,25 +30,13 @@
           v-if="selectedIds.length === 0"
           class="d-flex justify-content-end"
           data-kt-subscription-table-toolbar="base"
-        >
-          <!--begin::Export-->
-          <!-- <button
-            type="button"
-            class="btn btn-light-primary me-3"
-            data-bs-toggle="modal"
-            data-bs-target="#kt_subscriptions_export_modal"
-          >
-            <KTIcon icon-name="exit-up" icon-class="fs-2" />
-            Export
-          </button> -->
-        </div>
+        ></div>
         <!--end::Toolbar-->
 
         <!--begin::Group actions-->
         <div v-else class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span
-            >Selected
+            <span class="me-2">{{ selectedIds.length }}</span>Selected
           </div>
           <button
             type="button"
@@ -58,7 +46,7 @@
             Delete Selected
           </button>
         </div>
-      <!--begin::Card header-->
+        <!--begin::Card header-->
         <div class="card-toolbar">
           <!--begin::Menu-->
           <button
@@ -81,6 +69,11 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-0">
+      <!-- 로딩 오버레이 -->
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
       <KTDatatable
         @on-sort="sort"
         @on-items-per-page-change="onItemsPerPageChange"
@@ -131,7 +124,7 @@
             data-kt-menu-trigger="click"
             data-kt-menu-placement="bottom-end"
             data-kt-menu-flip="top-end"
-            >Actions
+          >Actions
             <KTIcon icon-name="down" icon-class="fs-5 m-0" />
           </a>
           <div
@@ -190,6 +183,8 @@ export default defineComponent({
     const data = ref<Array<ISubscription>>([]);
     const initData = ref<Array<ISubscription>>([]);
 
+    const isLoading = ref(false); // 로딩 상태 관리
+
     const headerConfig = ref([
       {
         columnName: "프로그램명",
@@ -226,6 +221,7 @@ export default defineComponent({
     // Fetching data from API and processing it
     const fetchData = async () => {
       try {
+        isLoading.value = true; // 로딩 시작
         const token = localStorage.getItem('token');
         if (!token) {
           throw new Error("Token이 없습니다.");
@@ -249,8 +245,10 @@ export default defineComponent({
 
         data.value = apiData;
         initData.value = [...apiData]; // 초기 데이터 복사
+        isLoading.value = false; // 로딩 완료
       } catch (error) {
         console.error("Failed to fetch data:", error);
+        isLoading.value = false; // 로딩 완료
       }
     };
 
@@ -278,6 +276,7 @@ export default defineComponent({
     };
 
     const search = ref<string>("");
+
     const searchItems = () => {
       data.value = initData.value.filter((item) =>
         searchingFunc(item, search.value)
@@ -308,8 +307,106 @@ export default defineComponent({
       deleteSubscription,
       getAssetPath,
       onItemsPerPageChange,
+      isLoading, // 로딩 상태 반환
     };
   },
 });
 </script>
 
+<style scoped>
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+  width: 70px;
+}
+
+.customer-name {
+  font-weight: bold;
+}
+
+.text-muted {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.btn-primary.custom-button {
+  width: auto;
+  height: 50%;
+  background-color: #4A90E2;
+  border: none;
+  color: white;
+  padding: 8px 18px !important;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary.custom-button:hover {
+  background-color: #357ABD;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.btn-primary.custom-button:active {
+  background-color: #2C5A8A;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+}
+
+.btn-danger.custom-button {
+  width: auto;
+  background-color: #E74C3C;
+  border: none;
+  color: white;
+  padding: 8px 18px !important;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger.custom-button:hover {
+  background-color: #C0392B;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.btn-danger.custom-button:active {
+  background-color: #A93226;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

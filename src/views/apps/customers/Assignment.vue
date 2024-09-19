@@ -65,6 +65,11 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-0">
+      <!-- 로딩 오버레이 -->
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
       <KTDatatable
         class="text-center"
         @on-sort="sort"
@@ -92,7 +97,7 @@
               'badge py-3 px-4 fs-7 badge-light-success': customer.product === '최종배정',
               'badge py-3 px-4 fs-7 badge-light-danger': customer.product === '탈락',
               'badge py-3 px-4 fs-7 badge-light-primary': customer.product === '신청완료',
-              'badge py-3 px-4 fs-7 badge-light-secondary': customer.product === '미신청',
+              'badge py-3 px-4 fs-7 badge-light-secondary': customer.product === '미배정',
             }"
           >
             {{ customer.product }}
@@ -187,10 +192,12 @@ export default defineComponent({
     ]);
 
     const initData = ref<Array<ISubscription>>([]);
+    const isLoading = ref(false);  // 로딩 상태 추가
 
     const statusMap = ref<Record<number, string>>({});
     const fetchData = async () => {
       try {
+        isLoading.value = true;  // 로딩 시작
         const token = localStorage.getItem("token");
         const response = await axios.get(
           "http://localhost:8081/api/v1/admin/instructor-applications/all",
@@ -209,7 +216,7 @@ export default defineComponent({
           date: item.date.split("T")[0], // 시간 생략
           color: item.status === "COMPLETE" ? "success" : "warning",
           billing: item.programName,
-          product: item.status === "COMPLETE" ? "최종배정" : "미신청",
+          product: item.status === "COMPLETE" ? "최종배정" : "미배정",
           createdDate: item.instructorName || "미정",
         }));
 
@@ -233,6 +240,8 @@ export default defineComponent({
         initData.value = [...mergedData];
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        isLoading.value = false;  // 로딩 종료
       }
     };
 
@@ -371,6 +380,7 @@ export default defineComponent({
       deleteSubscription,
       finalizeAssignments,
       loadFromLocalStorage,
+      isLoading,  // 로딩 상태 반환
     };
   },
 });
@@ -455,5 +465,32 @@ tr {
 .badge-secondary {
   background-color: #6c757d;
   color: #fff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
