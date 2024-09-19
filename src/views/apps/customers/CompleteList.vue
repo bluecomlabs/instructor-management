@@ -103,8 +103,7 @@
           <router-link
             to="AdminAttendance"
             href=""
-            class="btn"
-            :style="getLecturePlanButtonStyle(customer.customer)"
+            class="btn btn-light-primary me-2"
           >
             {{ customer.customer }}
           </router-link>
@@ -113,8 +112,7 @@
           <router-link
             to="EducationJournal"
             href=""
-            class="btn me-2"
-            :style="getLecturePlanButtonStyle(customer.status)"
+            class="btn btn-light-primary me-2"
           >
             {{ customer.status }}
           </router-link>
@@ -123,23 +121,23 @@
           <router-link
             to="syllabus"
             href=""
-            class="btn me-2"
-            :style="getLecturePlanButtonStyle(customer.product)"
+            class="btn btn-light-primary me-2"
           >
             {{ customer.product }}
           </router-link>
         </template>
+
         <template v-slot:lecturePlan="{ row: customer }">
           <div class="d-flex flex-column align-items-center">
             <router-link
               :to="getLecturePlanLink(customer)"
-              class="btn me-2"
-              :style="getLecturePlanButtonStyle(customer.lecturePlan)"
+              class="btn btn-light-primary me-2"
             >
               바로가기
             </router-link>
           </div>
         </template>
+
         <template v-slot:actions="{ row: customer }">
           <a
             href="#"
@@ -449,5 +447,22 @@ export default defineComponent({
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+.btn {
+  border-radius: 0.42rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+}
+
+.btn-light-primary {
+  color: #009EF7;
+  background-color: #E1F0FF;
+  border: 1px solid #009EF7;
+}
+
+.btn-light-primary:hover {
+  background-color: #009EF7;
+  color: white;
 }
 </style>
