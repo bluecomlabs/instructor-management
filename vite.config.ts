@@ -7,7 +7,12 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [vue()],
   server: {
-    port: 8001,
+    host: '0.0.0.0', // 외부에서 접근할 수 있도록 설정
+    port: 8001, // 개발 서버의 포트
+    hmr: {
+      host: 'ulsan.sweduhub.com', // HMR 웹소켓 연결을 위한 호스트
+      protocol: 'wss', // HTTPS 환경에서 WebSocket을 사용
+    },
   },
   resolve: {
     alias: {
