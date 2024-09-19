@@ -42,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: "/",
+    path: "/user",
     redirect: "/user/sign-in",
     component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
     meta: {

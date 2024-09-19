@@ -18,13 +18,13 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "출강정보 목록",
         route: "/admin/completeList",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "brifecase-tick",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "배정 신청 및 결과",
         route: "/admin/Assignment",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "brifecase-timer",
         bootstrapIcon: "bi-app-indicator",
       },
     ],
@@ -36,13 +36,13 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "교육 프로그램 관리",
         route: "/admin/ProgramDetails",
-        keenthemesIcon: "abstract-38",
+        keenthemesIcon: "cube-2",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "교육 기관 관리",
         route: "/admin/EducationalDetails",
-        keenthemesIcon: "abstract-38",
+        keenthemesIcon: "book",
         bootstrapIcon: "bi-printer",
       }
     ],
@@ -54,19 +54,19 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "강사 정보 목록",
         route: "/admin/lists",
-        keenthemesIcon: "element-7",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-layers",
       },
       {
         heading: "강사 근무상황부",
         route: "/admin/work",
-        keenthemesIcon: "element-7",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-layers",
       },
       {
         heading: "강사 업무일지",
         route: "/admin/Business",
-        keenthemesIcon: "element-7",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-layers",
       },
     ],

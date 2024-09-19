@@ -18,19 +18,19 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "내 출강 리스트",
         route: "/user/MyEdu",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "questionnaire-tablet",
         bootstrapIcon: "bi-app-indicator",
       },
       {
         heading: "교육 신청하기",
         route: "/user/EduAppl",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "add-item",
         bootstrapIcon: "bi-app-indicator",
       },
       {
         heading: "교육 신청내역",
         route: "/user/MyApplEdu",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "notification-status",
         bootstrapIcon: "bi-app-indicator",
       },
       // {
@@ -48,13 +48,13 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "업무일지",
         route: "/user/BusinessJournaLlist",
-        keenthemesIcon: "abstract-38",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "근무상황부",
         route: "/user/WorkSituation",
-        keenthemesIcon: "abstract-38",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
       },
       // {
