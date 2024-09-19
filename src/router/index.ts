@@ -7,6 +7,10 @@ import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/",
+    redirect: "/user/sign-in",  // 루트 경로에 접근 시 /user/sign-in으로 리다이렉트
+  },
   // 사용자 로그인
   {
     path: "/user",
