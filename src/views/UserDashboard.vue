@@ -1,23 +1,27 @@
 <template>
-  <FullCalendar
-    ref="calendarRef"
-    class="demo-app-calendar"
-    :options="calendarOptions"
-  ></FullCalendar>
-</template>
+  <div>
+    <div v-if="isMobile" class="mobile-buttons">
+      <button @click="goToEduAppl" class="btn btn-primary">교육 신청하기</button>
+    </div>
 
+    <FullCalendar
+      ref="calendarRef"
+      class="demo-app-calendar"
+      :options="calendarOptions"
+    ></FullCalendar>
+  </div>
+</template>
 <script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, nextTick, onMounted, ref, type Ref } from "vue";
+import { defineComponent, ref, nextTick, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import events, { TODAY } from "@/core/data/events";
-import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
-import { Modal } from "bootstrap";
 import koLocale from "@fullcalendar/core/locales/ko";
+import { Modal } from "bootstrap";
 
 export default defineComponent({
   name: "calendar-app-1",
@@ -25,7 +29,9 @@ export default defineComponent({
     FullCalendar,
   },
   setup() {
-    const calendarRef: Ref<null | typeof FullCalendar> = ref(null);
+    const router = useRouter();
+    const calendarRef = ref(null);
+    const isMobile = ref(window.innerWidth <= 768);
 
     const newEvent = () => {
       const modal = new Modal(
@@ -34,9 +40,21 @@ export default defineComponent({
       modal.show();
     };
 
+    const goToMyEdu = () => {
+      router.push({ name: "user-MyEdu" });
+    };
+
+    const goToEduAppl = () => {
+      router.push({ name: "user-EduAppl" });
+    };
+
     onMounted(() => {
-      nextTick(function () {
+      nextTick(() => {
         window.dispatchEvent(new Event("resize"));
+      });
+
+      window.addEventListener("resize", () => {
+        isMobile.value = window.innerWidth <= 768;
       });
     });
 
@@ -51,26 +69,25 @@ export default defineComponent({
       navLinks: true,
       selectable: true,
       selectMirror: true,
-
       views: {
         dayGridMonth: { buttonText: "month" },
         timeGridWeek: { buttonText: "week" },
         timeGridDay: { buttonText: "day" },
       },
-
       editable: false,
       dayMaxEvents: false,
       events: events,
       dateClick: newEvent,
       eventClick: newEvent,
-      locale: koLocale, 
+      locale: koLocale,
     };
 
     return {
       calendarOptions,
       newEvent,
-      getAssetPath,
-      calendarRef,
+      goToMyEdu,
+      goToEduAppl,
+      isMobile,
     };
   },
 });
@@ -85,5 +102,17 @@ export default defineComponent({
   vertical-align: middle;
   font-weight: 500;
   text-transform: capitalize;
+}
+
+.mobile-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.mobile-buttons button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
 }
 </style>

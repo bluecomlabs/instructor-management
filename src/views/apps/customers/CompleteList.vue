@@ -459,6 +459,7 @@ export default defineComponent({
   color: #009EF7;
   background-color: #E1F0FF;
   border: 1px solid #009EF7;
+  margin: 0px !important;
 }
 
 .btn-light-primary:hover {

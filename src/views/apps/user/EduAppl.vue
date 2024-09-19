@@ -1,6 +1,13 @@
 <template>
   <!--begin::Card-->
   <div class="card">
+
+  <div class="d-flex justify-content-end my-3">
+    <button @click="goToDashboard" class="btn btn-primary custom-button top-button">
+      <KTIcon icon-name="element-11" icon-class="fs-2 me-2" />
+      대시보드
+    </button>
+  </div>
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <div class="card-title">
@@ -152,6 +159,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import axios from "axios";
 import arraySort from "array-sort";
@@ -177,6 +185,8 @@ export default defineComponent({
     KTDatatable,
   },
   setup() {
+
+    const router = useRouter();
     const data = ref<Array<ISubscription>>([]);
     const headerConfig = ref([
       {
@@ -319,6 +329,9 @@ export default defineComponent({
       localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
     };
 
+    const goToDashboard = () => {
+      router.push({ path: "/user/dashboard" });
+    };
     const loadFromLocalStorage = () => {
       const savedData = localStorage.getItem("subscriptions");
       if (savedData) {
@@ -344,6 +357,7 @@ export default defineComponent({
       applyForProduct,
       cancelProduct,
       isLoading,
+      goToDashboard
     };
   },
 });
@@ -377,6 +391,11 @@ export default defineComponent({
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.top-button {
+
+  margin-right: 10px
 }
 
 .btn-primary.custom-button:hover {
