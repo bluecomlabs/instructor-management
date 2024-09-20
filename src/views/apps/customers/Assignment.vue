@@ -149,6 +149,7 @@ import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Swal from "sweetalert2";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface ISubscription {
   id: number;
@@ -192,16 +193,14 @@ export default defineComponent({
     ]);
 
     const initData = ref<Array<ISubscription>>([]);
-    const isLoading = ref(false);  // 로딩 상태 추가
+    const isLoading = ref(false); 
 
     const statusMap = ref<Record<number, string>>({});
-    const apiUrl = import.meta.env.VITE_API_URL;
     const fetchData = async () => {
       try {
-        isLoading.value = true;  // 로딩 시작
+        isLoading.value = true; 
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `${apiUrl}/api/v1/admin/instructor-applications/all`,
+        const response = await axios.post(ApiUrl('/api/v1/admin/instructor-applications/all'),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -322,12 +321,13 @@ export default defineComponent({
         cancelButtonText: "아니오",
       }).then(async (result) => {
         if (result.isConfirmed) {
+
           try {
             const token = localStorage.getItem("token");
-            const apiUrl = import.meta.env.VITE_API_URL;
-            await axios.post(
-              `${apiUrl}/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors`,
-              { confirmedProgramIds: openProgramIds },
+            await axios.post(ApiUrl('/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors'),
+              { 
+                confirmedProgramIds: openProgramIds
+              },
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -343,6 +343,7 @@ export default defineComponent({
             }).then(() => {
               fetchData();
             });
+            
           } catch (error) {
             console.error("Error finalizing assignments:", error);
             Swal.fire(

@@ -182,6 +182,7 @@ import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface ISubscription {
   id: number;
@@ -320,33 +321,32 @@ export default defineComponent({
       // instructors를 배열로 변환하여 출력
       return Object.values(mergedData).map((item: any) => ({
         ...item,
-        ST_NM: Array.from(item.instructors).join(", "), // 강사 이름들을 열거
+        ST_NM: Array.from(item.instructors).join(", "),
       }));
     };
 
     const fetchData = async () => {
       try {
-        isLoading.value = true;  // 로딩 시작
+        isLoading.value = true;
         const token = localStorage.getItem('token');
         if (!token) {
           throw new Error("Token이 없습니다.");
         }
-        const apiUrl = import.meta.env.VITE_API_URL;
-        const response = await axios.get(
-          `${apiUrl}/api/v1/admin/assistant-instructors` ,{
+        const response = await axios.get(ApiUrl('/api/v1/admin/assistant-instructors'),
+          {
             headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        // API 데이터 병합
+              Authorization: `Bearer ${token}`
+            }
+          });
+        
         const mergedApiData = mergeDataByProgram(response.data);
 
         data.value = mergedApiData;
-        initData.value = [...mergedApiData]; // 초기 데이터 복사
+        initData.value = [...mergedApiData];
       } catch (error) {
         console.error("Failed to fetch data:", error);
       } finally {
-        isLoading.value = false;  // 로딩 종료
+        isLoading.value = false;
       }
     };
 

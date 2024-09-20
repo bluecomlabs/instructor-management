@@ -148,6 +148,7 @@ import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import { SuccessAlert, WarningAlert, ErrorAlert } from '@/assets/ts/_utils/swal';
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Sort {
   order: "asc" | "desc";
@@ -194,9 +195,9 @@ export default defineComponent({
         if (!token) {
           throw new Error("Token이 없습니다.");
         }
-        const apiUrl = import.meta.env.VITE_API_URL;
 
-        const response = await axios.get(`${apiUrl}/api/v1/user/instructor-applications/my-applications`, {
+        const response = await axios.get(ApiUrl('/api/v1/user/instructor-applications/my-applications') ,
+        {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -298,12 +299,12 @@ export default defineComponent({
           throw new Error("Token이 없습니다.");
         }
 
-        const apiUrl = import.meta.env.VITE_API_URL;
         WarningAlert('강의 취소', '해당 강의를 취소하시겠습니까?')
           .then(async (result) => {
             if (result.isConfirmed) {
               // API 호출
-              await axios.delete(`${apiUrl}/api/v1/user/instructor-applications/${customer.id}`, {
+              await axios.delete(ApiUrl(`/api/v1/user/instructor-applications/${customer.id}`),
+              {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }

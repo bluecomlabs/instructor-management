@@ -161,6 +161,7 @@ import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface ISubscription {
   id: number;
@@ -227,8 +228,8 @@ export default defineComponent({
           throw new Error("Token이 없습니다.");
         }
 
-        const apiUrl = import.meta.env.VITE_API_URL;
-        const response = await axios.get(`${apiUrl}/api/v1/user/assistant-instructors`, {
+        const response = await axios.get(ApiUrl(`/api/v1/user/assistant-instructors`),
+        {
           headers: {
             Authorization: `Bearer ${token}`
           }

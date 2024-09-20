@@ -166,6 +166,7 @@ import axios from "axios";
 import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import { SuccessAlert, WarningAlert, ErrorAlert } from '@/assets/ts/_utils/swal';
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Sort {
   order: "asc" | "desc";
@@ -204,17 +205,18 @@ export default defineComponent({
 
     const isLoading = ref(false);
     const initData = ref<Array<ISubscription>>([]);
-    const apiUrl = import.meta.env.VITE_API_URL;
 
-    // API 호출 함수
     const loadDataFromApi = async () => {
       try {
         isLoading.value = true;
         const token = localStorage.getItem('token');
         if (!token) throw new Error("Token이 없습니다.");
 
-        const response = await axios.get(`${apiUrl}/api/v1/user/instructor-applications/all`, {
-          headers: { Authorization: `Bearer ${token}` }
+        const response = await axios.get(ApiUrl('/api/v1/user/instructor-applications/all'),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
 
         const programMap = new Map();
@@ -297,7 +299,8 @@ export default defineComponent({
             if (!token) throw new Error("Token이 없습니다.");
 
             const requestData = { confirmedProgramId: customer.id };
-            const response = await axios.post(`${apiUrl}/api/v1/user/instructor-applications`, requestData, {
+            const response = await axios.post(ApiUrl('/login'), requestData,
+            {
               headers: { Authorization: `Bearer ${token}` }
             });
 

@@ -43,6 +43,7 @@ import axios from 'axios';
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 export default defineComponent({
   name: "sign-in",
@@ -58,9 +59,8 @@ export default defineComponent({
         submitButton.value.setAttribute("data-kt-indicator", "on");
       }
 
-      const apiUrl = import.meta.env.VITE_API_URL;
       try {
-        const response = await axios.post(`${apiUrl}/login`, {
+        const response = await axios.post(ApiUrl('/login'), {
           username: username.value,
           password: password.value,
         },
