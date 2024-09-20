@@ -299,7 +299,7 @@ export default defineComponent({
             if (!token) throw new Error("Token이 없습니다.");
 
             const requestData = { confirmedProgramId: customer.id };
-            const response = await axios.post(ApiUrl('/login'), requestData,
+            const response = await axios.post(ApiUrl('/api/v1/user/instructor-applications'), requestData,
             {
               headers: { Authorization: `Bearer ${token}` }
             });
