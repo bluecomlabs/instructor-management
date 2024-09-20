@@ -331,8 +331,9 @@ export default defineComponent({
         if (!token) {
           throw new Error("Token이 없습니다.");
         }
+        const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(
-          "http://localhost:8081/api/v1/admin/assistant-instructors" ,{
+          `${apiUrl}/api/v1/admin/assistant-instructors` ,{
             headers: {
             Authorization: `Bearer ${token}`
           }

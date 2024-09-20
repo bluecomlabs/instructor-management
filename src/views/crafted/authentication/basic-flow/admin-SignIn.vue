@@ -58,8 +58,9 @@ export default defineComponent({
         submitButton.value.setAttribute("data-kt-indicator", "on");
       }
 
+      const apiUrl = import.meta.env.VITE_API_URL;
       try {
-        const response = await axios.post("http://localhost:8081/login", {
+        const response = await axios.post(`${apiUrl}:8081/login`, {
           username: username.value,
           password: password.value,
         },

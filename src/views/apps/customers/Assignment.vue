@@ -195,12 +195,13 @@ export default defineComponent({
     const isLoading = ref(false);  // 로딩 상태 추가
 
     const statusMap = ref<Record<number, string>>({});
+    const apiUrl = import.meta.env.VITE_API_URL;
     const fetchData = async () => {
       try {
         isLoading.value = true;  // 로딩 시작
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:8081/api/v1/admin/instructor-applications/all",
+          `${apiUrl}/api/v1/admin/instructor-applications/all`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -323,8 +324,9 @@ export default defineComponent({
         if (result.isConfirmed) {
           try {
             const token = localStorage.getItem("token");
+            const apiUrl = import.meta.env.VITE_API_URL;
             await axios.post(
-              "http://localhost:8081/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors",
+              `${apiUrl}/api/v1/admin/confirmed-programs/complete-and-add-assistant-instructors`,
               { confirmedProgramIds: openProgramIds },
               {
                 headers: {

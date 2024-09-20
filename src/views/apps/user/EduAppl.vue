@@ -204,6 +204,7 @@ export default defineComponent({
 
     const isLoading = ref(false);
     const initData = ref<Array<ISubscription>>([]);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     // API 호출 함수
     const loadDataFromApi = async () => {
@@ -212,7 +213,7 @@ export default defineComponent({
         const token = localStorage.getItem('token');
         if (!token) throw new Error("Token이 없습니다.");
 
-        const response = await axios.get('http://localhost:8081/api/v1/user/instructor-applications/all', {
+        const response = await axios.get(`${apiUrl}/api/v1/user/instructor-applications/all`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -296,7 +297,7 @@ export default defineComponent({
             if (!token) throw new Error("Token이 없습니다.");
 
             const requestData = { confirmedProgramId: customer.id };
-            const response = await axios.post('http://localhost:8081/api/v1/user/instructor-applications', requestData, {
+            const response = await axios.post(`${apiUrl}/api/v1/user/instructor-applications`, requestData, {
               headers: { Authorization: `Bearer ${token}` }
             });
 
