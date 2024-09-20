@@ -103,6 +103,14 @@
           </div>
         </template>
 
+        <template v-slot:institutionName="{ row: customer }">
+          <div>{{ customer.institutionName }}</div>
+        </template>
+
+        <template v-slot:date="{ row: customer }">
+          <div>{{ customer.date }}</div>
+        </template>
+        
         <template v-slot:product="{ row: customer }">
           <button
             v-if="customer.product === '신청하기'"
@@ -197,6 +205,16 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
+        columnName: "교육기관명",
+        columnLabel: "institutionName",
+        sortEnabled: true,
+      },
+      {
+        columnName: "날짜",
+        columnLabel: "date",
+        sortEnabled: true,
+      },
+      {
         columnName: "신청 및 취소",
         columnLabel: "product",
         sortEnabled: true,
@@ -231,7 +249,9 @@ export default defineComponent({
               customer: item.programName,
               status: [item.instructorName],
               product: "신청하기",
-              maxInstructors: item.numberOfInstructors
+              maxInstructors: item.numberOfInstructors,
+              institutionName: item.institutionName,
+              date: item.date.split("T")[0],
             });
           }
         });
