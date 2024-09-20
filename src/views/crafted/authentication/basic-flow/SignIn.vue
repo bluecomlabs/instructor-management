@@ -69,12 +69,19 @@ export default defineComponent({
           },
         });
 
-        const token = response.headers['authorization'];
+        const token = response.data['token'];
+        const user = response.data['user'];
         console.log(response);
         console.log(token);
         const tokenWithoutBearer = token.replace('Bearer ', '');
-
         localStorage.setItem('token', tokenWithoutBearer);
+
+        localStorage.setItem('user', JSON.stringify({
+          name: user.name,
+          id: user.id,
+          email: user.email,
+          username: user.username
+        }));
 
         Swal.fire({
           text: "방문을 환영합니다.",

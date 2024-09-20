@@ -2,12 +2,13 @@
   <!--begin::Card-->
   <div class="card">
 
-  <div class="d-flex justify-content-end my-3">
-    <button @click="goToDashboard" class="btn btn-primary custom-button top-button">
-      <KTIcon icon-name="element-11" icon-class="fs-2 me-2" />
-      대시보드
-    </button>
-  </div>
+    <div class="d-flex justify-content-end my-3">
+      <button @click="goToDashboard" class="btn btn-primary custom-button top-button">
+        <KTIcon icon-name="element-11" icon-class="fs-2 me-2" />
+        대시보드
+      </button>
+    </div>
+
     <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
       <div class="card-title">
@@ -465,4 +466,16 @@ export default defineComponent({
     transform: rotate(360deg);
   }
 }
+@media (min-width: 768px) {
+  .top-button {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .top-button {
+    display: block;
+  }
+}
+
 </style>
