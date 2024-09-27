@@ -390,6 +390,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "ProgramAdd",
+        name: "admin-ProgramAdd",
+        component: () => import("@/views/apps/customers/ProgramAdd.vue"),
+        meta: {
+          pageTitle: "교육 프로그램 관리",
+          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
+        },
+      },
+      {
         path: "MyProfile",
         name: "admin-MyProfile",
         component: () => import("@/views/apps/customers/MyProfile.vue"),

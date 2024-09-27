@@ -2,7 +2,7 @@
   <div
     class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"
   >
-    <label for="items-per-page">
+    <!-- <label for="items-per-page">
       <select
         class="form-select form-select-sm form-select-solid"
         v-if="itemsPerPageDropdownEnabled"
@@ -14,7 +14,7 @@
         <option :value="25">25</option>
         <option :value="50">50</option>
       </select>
-    </label>
+    </label> -->
   </div>
 </template>
 

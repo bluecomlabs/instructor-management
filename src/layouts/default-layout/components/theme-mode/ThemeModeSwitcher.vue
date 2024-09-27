@@ -51,7 +51,7 @@
     </div>
     <!--end::Menu item-->
     <!--begin::Menu item-->
-    <div class="menu-item px-3 my-0">
+    <!-- <div class="menu-item px-3 my-0">
       <router-link
         :to="path"
         class="menu-link px-3 py-2"
@@ -62,7 +62,7 @@
         </span>
         <span class="menu-title">hidden</span>
       </router-link>
-    </div>
+    </div> -->
     <!--end::Menu item-->
   </div>
   <!--end::Menu-->

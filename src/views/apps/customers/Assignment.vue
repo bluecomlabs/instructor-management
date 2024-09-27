@@ -200,7 +200,7 @@ export default defineComponent({
       try {
         isLoading.value = true; 
         const token = localStorage.getItem("token");
-        const response = await axios.post(ApiUrl('/api/v1/admin/instructor-applications/all'),
+        const response = await axios.get(ApiUrl('/api/v1/admin/instructor-applications/all'),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -213,7 +213,7 @@ export default defineComponent({
           institutionName: item.institutionName || "미정",
           customer: item.instructorName || "미정",
           status: item.status,
-          date: item.date.split("T")[0], // 시간 생략
+          date: item.date.split("T")[0],
           color: item.status === "COMPLETE" ? "success" : "warning",
           billing: item.programName,
           product: item.status === "COMPLETE" ? "최종배정" : "미배정",
