@@ -327,8 +327,8 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "Assignment",
-        name: "admin-Assignment",
+        path: "assignment",
+        name: "admin-assignment",
         component: () => import("@/views/apps/customers/Assignment.vue"),
         meta: {
           pageTitle: "배정 신청 및 결과",
