@@ -17,7 +17,7 @@ const MainMenuConfig: Array<MenuItem> = [
     pages: [
       {
         heading: "출강정보 목록",
-        route: "/admin/complete-list",
+        route: "/admin/completelist",
         keenthemesIcon: "brifecase-tick",
         bootstrapIcon: "bi-printer",
       },
@@ -35,7 +35,7 @@ const MainMenuConfig: Array<MenuItem> = [
     pages: [
       {
         heading: "교육 프로그램 관리",
-        route: "/admin/programdetails",
+        route: "/admin/programlist",
         keenthemesIcon: "cube-2",
         bootstrapIcon: "bi-printer",
       },

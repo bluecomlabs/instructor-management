@@ -189,9 +189,9 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "ProgramDetails",
-        name: "user-ProgramDetails",
-        component: () => import("@/views/apps/customers/ProgramDetails.vue"),
+        path: "ProgramList",
+        name: "user-ProgramList",
+        component: () => import("@/views/apps/customers/ProgramList.vue"),
         meta: {
           pageTitle: "교육 프로그램 관리",
           breadcrumbs: ["교육 리소스 관리", "교육 프로그램 관리"],
@@ -381,9 +381,9 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "ProgramDetails",
-        name: "admin-ProgramDetails",
-        component: () => import("@/views/apps/customers/ProgramDetails.vue"),
+        path: "ProgramList",
+        name: "admin-ProgramList",
+        component: () => import("@/views/apps/customers/ProgramList.vue"),
         meta: {
           pageTitle: "교육 프로그램 관리",
           breadcrumbs: ["교육 정보 관리", "교육 프로그램 관리"],
@@ -393,6 +393,24 @@ const routes: Array<RouteRecordRaw> = [
         path: "ProgramAdd",
         name: "admin-ProgramAdd",
         component: () => import("@/views/apps/customers/ProgramAdd.vue"),
+        meta: {
+          pageTitle: "교육 프로그램 관리",
+          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
+        },
+      },
+      {
+        path: "ProgramDetails",
+        name: "admin-ProgramDetails",
+        component: () => import("@/views/apps/customers/ProgramDetails.vue"),
+        meta: {
+          pageTitle: "교육 프로그램 관리",
+          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
+        },
+      },
+      {
+        path: "ProgramEdit",
+        name: "admin-ProgramEdit",
+        component: () => import("@/views/apps/customers/ProgramEdit.vue"),
         meta: {
           pageTitle: "교육 프로그램 관리",
           breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
