@@ -264,31 +264,28 @@ export default defineComponent({
       }
     };
 
-
-    // 프로그램 업데이트를 위한 PUT 요청 함수
     const goEdit = () => {
       router.push({ name: "admin-ProgramEdit" })
     };
 
-    // 컴포넌트가 마운트될 때 프로그램 데이터를 불러오기
     onMounted(() => {
       fetchProgramData();
     });
 
     const goBack = () => {
-      router.back(); // 뒤로가기 함수
+      router.back();
     };
 
     return {
       id,
       programName,
       product,
-      chapter, // 챕터 상태 리턴
+      chapter,
       submitButton,
       goEdit,
       deleteData,
       goBack,
-      errorMessage, // 에러 메시지 상태 리턴
+      errorMessage,
     };
   },
 });

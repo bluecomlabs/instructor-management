@@ -17,7 +17,6 @@
         </div>
       </div>
       <div class="card-title">
-        <!-- 선택된 아이템이 없을 때만 '프로그램 등록' 버튼 표시 -->
         <button
           v-if="selectedIds.length === 0"
           tabindex="3"
@@ -30,21 +29,12 @@
         </button>
 
         <div class="card-toolbar">
-          <!--begin::Toolbar-->
-          <div
-            v-if="selectedIds.length === 0"
-            class="d-flex justify-content-end"
-            data-kt-subscription-table-toolbar="base"
-          >
-          </div>
-          <!--end::Toolbar-->
+          <div v-if="selectedIds.length === 0" class="d-flex justify-content-end"></div>
 
-          <!--begin::Group actions-->
           <div v-else class="d-flex justify-content-end align-items-center">
             <div class="fw-bold me-5">
               <span class="me-2">{{ selectedIds.length }}</span> Selected
             </div>
-            <!-- 프로그램 삭제 버튼 -->
             <button
               type="button"
               class="btn btn-danger"
@@ -54,13 +44,16 @@
               프로그램 삭제
             </button>
           </div>
-          <!--end::Group actions-->
         </div>
       </div>
-
     </div>
 
     <div class="card-body pt-0">
+      <!-- Loading Spinner Overlay -->
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
       <KTDatatable
         @on-sort="sort"
         @on-items-select="onItemSelect"
@@ -69,7 +62,6 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <!-- Header slots for setting column width -->
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
@@ -83,26 +75,19 @@
           <div>생성 날짜</div>
         </template>
 
-        <!-- Body slots for setting column width -->
         <template v-slot:programName="{ row: customer }">
           <div @click="onProgramClick(customer)" style="cursor: pointer;">
             {{ customer.programName }}
           </div>
         </template>
         <template v-slot:chapter="{ row: customer }">
-          <div>
-            {{ customer.chapter }}
-          </div>
+          <div>{{ customer.chapter }}</div>
         </template>
         <template v-slot:product="{ row: customer }">
-          <div>
-            {{ customer.product }}
-          </div>
+          <div>{{ customer.product }}</div>
         </template>
         <template v-slot:createdAt="{ row: customer }">
-          <div>
-            {{ customer.createdAt }}
-          </div>
+          <div>{{ customer.createdAt }}</div>
         </template>
       </KTDatatable>
 
@@ -116,7 +101,6 @@
             >
               <a class="page-link" href="#">◀</a>
             </li>
-
             <li
               class="page-item"
               :class="{ disabled: currentPage === 0 }"
@@ -124,7 +108,6 @@
             >
               <a class="page-link" href="#">◁</a>
             </li>
-
             <li
               class="page-item"
               v-for="page in visiblePages"
@@ -134,7 +117,6 @@
             >
               <a class="page-link" href="#">{{ page }}</a>
             </li>
-
             <li
               class="page-item"
               :class="{ disabled: currentPage + 1 === totalPages }"
@@ -142,7 +124,6 @@
             >
               <a class="page-link" href="#">▷</a>
             </li>
-
             <li
               class="page-item"
               :class="{ disabled: currentPage + 1 === totalPages }"
@@ -157,13 +138,14 @@
   </div>
 </template>
 
+
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import arraySort from "array-sort";
-import Swal from "sweetalert2";  // SweetAlert2 모듈 추가
+import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 
 interface IProgram {
@@ -188,6 +170,7 @@ export default defineComponent({
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
     const search = ref<string>("");
+    const isLoading = ref<boolean>(false);  // Loading state
 
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
@@ -241,6 +224,7 @@ export default defineComponent({
 
     const fetchPrograms = async (page: number = 0) => {
       try {
+        isLoading.value = true;  // Show loading spinner
         const token = localStorage.getItem("token");
         const response = await axios.get(
           `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}`,
@@ -257,14 +241,17 @@ export default defineComponent({
           programName: program.programName,
           chapter: program.chapter ? program.chapter : "/",
           product: program.product ? program.product : "/",
-          createdAt: new Date(program.createdAt * 1000).toLocaleDateString().replace(/\.$/, ""),
+          createdAt: new Date(program.createdAt * 1000)
+            .toLocaleDateString()
+            .replace(/\.$/, ""),
         }));
-
 
         totalElements.value = responseData.totalElements;
         totalPages.value = responseData.totalPages;
       } catch (error) {
         console.error("Error fetching data: ", error);
+      } finally {
+        isLoading.value = false;  // Hide loading spinner after fetching data
       }
     };
 
@@ -280,16 +267,13 @@ export default defineComponent({
             Authorization: `Bearer ${token}`,
           },
         });
-        // 성공적으로 삭제한 후 선택된 데이터 목록에서 해당 프로그램 제거
         data.value = data.value.filter((program) => program.id !== id);
       } catch (error) {
         console.error("Error deleting program: ", error);
       }
     };
 
-    // 여러 개의 프로그램 삭제
     const deleteFewSubscriptions = async () => {
-      // 삭제 확인 모달을 띄움
       const result = await Swal.fire({
         title: "프로그램 삭제 확인",
         text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
@@ -304,13 +288,11 @@ export default defineComponent({
         buttonsStyling: false,
       });
 
-      // 삭제를 확인하면 진행
       if (result.isConfirmed) {
         selectedIds.value.forEach(async (id) => {
           await deleteSubscription(id);
         });
 
-        // 삭제 후 선택된 ID 초기화
         selectedIds.value.length = 0;
 
         Swal.fire({
@@ -358,7 +340,6 @@ export default defineComponent({
       }
     };
 
-    // 프로그램 삭제 버튼 클릭 시
     const onDeletePrograms = () => {
       if (selectedIds.value.length > 0) {
         deleteFewSubscriptions();
@@ -388,7 +369,25 @@ export default defineComponent({
       sort,
       deleteFewSubscriptions,
       onItemSelect,
+      isLoading,  // Return loading state
     };
   },
 });
 </script>
+
+<style>
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+</style>

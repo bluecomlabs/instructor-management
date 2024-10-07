@@ -228,7 +228,7 @@ export default defineComponent({
           throw new Error("Token이 없습니다.");
         }
 
-        const response = await axios.get(ApiUrl(`/api/v1/user/assistant-instructors`),
+        const response = await axios.get(ApiUrl('/api/v1/user/assistant-instructors'),
         {
           headers: {
             Authorization: `Bearer ${token}`
