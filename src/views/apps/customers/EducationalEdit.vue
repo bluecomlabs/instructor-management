@@ -13,7 +13,7 @@
                 aria-controls="kt_account_toturprofile_details"
             >
               <div class="card-title m-0">
-                <h2 class="fw-bold m-0">교육기관 조회</h2>
+                <h2 class="fw-bold m-0">프로그램 수정</h2>
               </div>
             </div>
 
@@ -25,41 +25,20 @@
               >
                 <div class="card-body border-top p-9">
                   <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      ID
+                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                      프로그램명
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="id"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        v-model="programName"
+                        style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
                         placeholder="프로그램명을 입력하세요"
-                        disabled
                       />
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">
-                          <ErrorMessage name="id"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      교육기관명
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="institutionName"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        placeholder="/"
-                        disabled
-                      />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="institutionName"/>
+                          <ErrorMessage name="programName"/>
                         </div>
                       </div>
                     </div>
@@ -67,41 +46,19 @@
 
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      지역
+                      총 차시 (챕터)
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="region"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        placeholder="/"
-                        disabled
-                      />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="region"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      주소
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="address"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        v-model="chapter"
+                        style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="number"
-                        placeholder="/"
-                        disabled
+                        placeholder="총 차시를 입력하세요"
                       />
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">
-                          <ErrorMessage name="address"/>
+                          <ErrorMessage name="chapter"/>
                         </div>
                       </div>
                     </div>
@@ -109,12 +66,12 @@
 
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      번호
+                      교구
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="phoneNumber"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        v-model="product"
+                        style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
                         placeholder="/"
@@ -122,13 +79,12 @@
                       />
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">
-                          <ErrorMessage name="phoneNumber"/>
+                          <ErrorMessage name="chapter"/>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  
                   <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                 </div>
               </VForm>
@@ -137,30 +93,30 @@
 
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
-          <button
+          <!-- <button
               type="button"
               class="btn btn-left btn-active-left-primary me-2"
               style="margin-right: auto !important; background-color: red; color: white;"
               @click="deleteData()"
               >
             삭제
-          </button>
+          </button> -->
           <button
               type="button"
               class="btn btn-light btn-active-light-primary me-2"
               @click="goBack"
               >
-            뒤로가기
+            취소
           </button>
           <button
               type="submit"
               id="kt_account_detaiprofile_details_submit"
               ref="submitButton1"
               class="btn btn-primary"
-              @click="goEdit()"
+              @click="fetchData()"
              >
             <span class="indicator-label">
-              수정하기
+              수정
             </span>
             <span class="indicator-progress">
               잠시만 기다려주세요...
@@ -188,11 +144,9 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const id = ref(''); // 프로그램명 입력 필드 상태
-    const institutionName = ref(''); // 프로그램명 입력 필드 상태
-    const region = ref(''); // 프로그램명 입력 필드 상태
-    const address = ref(''); // 프로그램명 입력 필드 상태
-    const phoneNumber = ref<number | null>(null); // 챕터 입력 필드 상태
+    const programName = ref(''); // 프로그램명 입력 필드 상태
+    const product = ref(''); // 프로그램명 입력 필드 상태
+    const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
     const errorMessage = ref(''); // 에러 메시지 상태
 
     // API 응답으로 프로그램 데이터를 가져오는 함수
@@ -205,25 +159,21 @@ export default defineComponent({
 
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/api/v1/admin/institutions/${programId}`), {
+        const response = await axios.get(ApiUrl(`/api/v1/admin/programs/${programId}`), {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
-        const institutionsData = response.data;
-        
-        // 프로그램명과 챕터 값을 인풋 필드에 반영
-        id.value = institutionsData.id;
-        institutionName.value = institutionsData.institutionName;
-        region.value = institutionsData.region;
-        address.value = institutionsData.address;
-        phoneNumber.value = institutionsData.phoneNumber;
+        const programData = response.data;
 
-        
+        // 프로그램명과 챕터 값을 인풋 필드에 반영
+        programName.value = programData.programName;
+        product.value = programData.product;
+        chapter.value = programData.chapter;
       } catch (error) {
         console.error('Error fetching program data:', error);
-        errorMessage.value = '교육기관 정보를 불러오는 데 실패했습니다.';
+        errorMessage.value = '프로그램 정보를 불러오는 데 실패했습니다.';
       }
     };
     
@@ -250,7 +200,7 @@ export default defineComponent({
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem("token");
-          const response = await axios.delete(ApiUrl(`/api/v1/admin/institutions/${programId}`), {
+          const response = await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -258,7 +208,7 @@ export default defineComponent({
           });
 
           Swal.fire({
-            text: "교육기관 정보가 성공적으로 삭제되었습니다.",
+            text: "프로그램이 성공적으로 삭제되었습니다.",
             icon: "success",
             buttonsStyling: false,
             confirmButtonText: "확인",
@@ -267,7 +217,7 @@ export default defineComponent({
               confirmButton: "btn fw-semibold btn-light-primary",
             },
           }).then(() => {
-            router.push({ name: "admin-EducationalList" });
+            router.push({ name: "admin-ProgramList" });
           });
 
         } catch (error: unknown) {
@@ -290,29 +240,97 @@ export default defineComponent({
       }
     };
 
-    const goEdit = () => {
-      router.push({ name: "admin-EducationalEdit" })
+
+    // 프로그램 업데이트를 위한 PUT 요청 함수
+    const fetchData = async () => {
+      const programId = localStorage.getItem('selectedProgramId'); // 로컬스토리지에서 ID 가져오기
+
+      // 입력값 검증
+      if (!programName.value) {
+        errorMessage.value = "프로그램명을 입력하세요.";
+        return;
+      }
+      // if (!product.value) {
+      //   errorMessage.value = "교구명을 입력하세요.";
+      //   return;
+      // }
+      // if (!chapter.value) {
+      //   errorMessage.value = "총 차시(챕터)를 입력하세요.";
+      //   return;
+      // }
+      errorMessage.value = ''; // 입력이 있으면 에러 메시지 초기화
+
+      if (submitButton.value) {
+        submitButton.value.disabled = true;
+        submitButton.value.setAttribute("data-kt-indicator", "on");
+      }
+
+      try {
+        const token = localStorage.getItem("token");
+        // PUT 요청으로 프로그램 업데이트
+        const response = await axios.put(ApiUrl(`/api/v1/admin/programs/${programId}`),
+        JSON.stringify({
+            programName: programName.value,
+            productSn: product.value,
+            chapter: chapter.value
+        }),
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        Swal.fire({
+          text: "프로그램이 성공적으로 업데이트되었습니다.",
+          icon: "success",
+          buttonsStyling: false,
+          confirmButtonText: "확인",
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn fw-semibold btn-light-primary",
+          },
+        }).then(() => {
+          router.push({ name: "admin-ProgramList" });
+        });
+
+      } catch (error: unknown) {
+        Swal.fire({
+          text: "프로그램 업데이트에 실패했습니다.",
+          icon: "error",
+          buttonsStyling: false,
+          confirmButtonText: "확인",
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn fw-semibold btn-light-danger",
+          },
+        });
+      } finally {
+        if (submitButton.value) {
+          submitButton.value.removeAttribute("data-kt-indicator");
+          submitButton.value.disabled = false;
+        }
+      }
     };
 
+    // 컴포넌트가 마운트될 때 프로그램 데이터를 불러오기
     onMounted(() => {
       fetchProgramData();
     });
 
     const goBack = () => {
-      router.back();
+      router.back(); // 뒤로가기 함수
     };
 
     return {
-      id,
-      institutionName,
-      region,
-      address,
+      programName,
+      product,
+      chapter, // 챕터 상태 리턴
       submitButton,
-      phoneNumber,
-      goEdit,
+      fetchData,
       deleteData,
       goBack,
-      errorMessage,
+      errorMessage, // 에러 메시지 상태 리턴
     };
   },
 });

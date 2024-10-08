@@ -41,7 +41,7 @@ const MainMenuConfig: Array<MenuItem> = [
       },
       {
         heading: "교육 기관 관리",
-        route: "/admin/educationaldetails",
+        route: "/admin/EducationalList",
         keenthemesIcon: "book",
         bootstrapIcon: "bi-printer",
       }

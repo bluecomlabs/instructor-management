@@ -196,39 +196,31 @@ export default defineComponent({
           throw new Error("Token이 없습니다.");
         }
 
-        const response = await axios.get(ApiUrl('/api/v1/user/instructor-applications/my-applications') ,
-        {
+        const response = await axios.get(ApiUrl('/api/v1/user/instructor-applications/my-applications'), {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        const programMap = new Map();
+        const apiData: ISubscription[] = response.data.map((item: any) => ({
+          id: item.id,
+          customer: item.programName,
+          status: [item.instructorName],
+          product: "신청완료",
+          maxInstructors: item.numberOfInstructors
+        }));
 
-        response.data.forEach((item: any) => {
-          const existingProgram = programMap.get(item.confirmedProgramId);
-          if (existingProgram) {
-            existingProgram.status.push(item.instructorName);
-          } else {
-            programMap.set(item.confirmedProgramId, {
-              id: item.id,
-              customer: item.programName,
-              status: [item.instructorName],
-              product: "신청완료",
-              maxInstructors: item.numberOfInstructors
-            });
-          }
-        });
-
-        const apiData = Array.from(programMap.values());
+        // 데이터를 그대로 테이블에 적용
         data.value.splice(0, data.value.length, ...apiData);
         initData.value.splice(0, initData.value.length, ...apiData);
+        
         isLoading.value = false;
       } catch (error) {
         console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
         isLoading.value = false;
       }
     };
+
 
     onMounted(() => {
       loadDataFromApi();

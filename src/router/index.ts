@@ -180,9 +180,9 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "EducationalDetails",
-        name: "user-EducationalDetails",
-        component: () => import("@/views/apps/customers/EducationalDetails.vue"),
+        path: "EducationalList",
+        name: "user-EducationalList",
+        component: () => import("@/views/apps/customers/EducationalList.vue"),
         meta: {
           pageTitle: "교육기관 관리",
           breadcrumbs: ["교육 리소스 관리", "교육기관 관리"],
@@ -375,6 +375,24 @@ const routes: Array<RouteRecordRaw> = [
         path: "EducationalDetails",
         name: "admin-EducationalDetails",
         component: () => import("@/views/apps/customers/EducationalDetails.vue"),
+        meta: {
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
+        },
+      },
+      {
+        path: "EducationalEdit",
+        name: "admin-EducationalEdit",
+        component: () => import("@/views/apps/customers/EducationalEdit.vue"),
+        meta: {
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
+        },
+      },
+      {
+        path: "EducationalList",
+        name: "admin-EducationalList",
+        component: () => import("@/views/apps/customers/EducationalList.vue"),
         meta: {
           pageTitle: "교육기관 관리",
           breadcrumbs: ["교육 정보 관리", "교육기관 관리"],

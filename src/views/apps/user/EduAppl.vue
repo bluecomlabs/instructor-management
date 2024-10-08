@@ -321,10 +321,13 @@ export default defineComponent({
             const token = localStorage.getItem('token');
             if (!token) throw new Error("Token이 없습니다.");
 
-            const requestData = { confirmedProgramId: customer.id };
-            const response = await axios.post(ApiUrl('/api/v1/user/instructor-applications'), requestData,
+            const requestData = { confirmedProgram: customer.id };
+            console.log(requestData)
+            const response = await axios.post(ApiUrl('/api/v1/user/instructor-applications'),
+            JSON.stringify(requestData), 
             {
-              headers: { Authorization: `Bearer ${token}` }
+              headers: { Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'  }
             });
 
             if (response.status === 200 || response.status === 201) {
@@ -334,7 +337,7 @@ export default defineComponent({
           }
         } catch (error) {
           console.error('신청하는 중 오류가 발생했습니다.', error);
-          ErrorAlert('신청 실패', '강의 신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+          ErrorAlert('신청 실패', error);
         }
       }
     };
