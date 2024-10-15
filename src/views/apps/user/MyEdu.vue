@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="card-title">
-        <div class="d-flex align-items-center position-relative my-1">
+        <!-- <div class="d-flex align-items-center position-relative my-1">
           <KTIcon
             icon-name="magnifier"
             icon-class="fs-1 position-absolute ms-6"
@@ -15,7 +15,7 @@
             class="form-control form-control-solid w-250px ps-14"
             placeholder="Search Subscriptions"
           />
-        </div>
+        </div> -->
       </div>
       <div class="card-toolbar">
         <div
@@ -33,7 +33,7 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown1></Dropdown1>
+          <Dropdown1 @apply-filter="handleFilter"></Dropdown1>
         </div>
       </div>
     </div>
@@ -198,6 +198,18 @@ export default defineComponent({
     Dropdown1
   },
   setup() {
+    const filters = ref({
+      status: "",
+      startDate: "",
+      endDate: "",
+      programName: "",
+      institutionName: "",
+    });
+    const handleFilter = (filterData) => {
+      filters.value = filterData;
+      currentPage.value = 0; // 첫 페이지로 리셋
+      fetchData(currentPage.value, currentSortBy.value, filters.value);
+    };
     const statusColor = {
       INIT: "primary",
       PROGRESS: "info",
@@ -263,16 +275,22 @@ export default defineComponent({
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
 
-    const fetchData = async (page: number = 0, sortBy: string = currentSortBy.value) => {
+    const fetchData = async (
+      page: number = 0,
+      sortBy: string = currentSortBy.value,
+      filtersData = filters.value
+    ) => {
       try {
-        isLoading.value = true;
+        if (page === 0 && sortBy === "") isLoading.value = true;
         const token = localStorage.getItem("token");
         if (!token) {
           throw new Error("Token이 없습니다.");
         }
 
+        const filterQuery = buildFilterQuery(filtersData);
+
         const url = ApiUrl(
-          `/api/v1/user/assistant-instructors?page=${page}&size=${pageSize.value}${sortBy}`
+          `/api/v1/user/assistant-instructors?page=${page}&size=${pageSize.value}${sortBy}${filterQuery}`
         );
 
         console.log("API 호출 URL:", url);
@@ -293,7 +311,7 @@ export default defineComponent({
           PRGN_NM: item.programName,
           status: item.status,
           product: "상세보기",
-          createdDate: new Date(item.date).toISOString().split("T")[0],
+          createdDate: new Date(item.createdAt).toISOString().split("T")[0],
           INST_NM: item.institutionName,
         }));
 
@@ -307,8 +325,27 @@ export default defineComponent({
         isLoading.value = false;
       }
     };
+    const buildFilterQuery = (filtersData) => {
+      let query = '';
+      if (filtersData.status) {
+        query += `&status=${filtersData.status}`;
+      }
+      if (filtersData.startDate) {
+        query += `&startDate=${filtersData.startDate}`;
+      }
+      if (filtersData.endDate) {
+        query += `&endDate=${filtersData.endDate}`;
+      }
+      if (filtersData.programName) {
+        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
+      }
+      if (filtersData.institutionName) {
+        query += `&institutionName=${encodeURIComponent(filtersData.institutionName)}`;
+      }
+      return query;
+    };
     onMounted(() => {
-      fetchData(currentPage.value);
+      fetchData(currentPage.value, currentSortBy.value, filters.value);
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -332,12 +369,12 @@ export default defineComponent({
 
     const search = ref<string>("");
 
-    const searchItems = () => {
-      data.value = initData.value.filter((item) =>
-        searchingFunc(item, search.value)
-      );
-      MenuComponent.reinitialization();
-    };
+    // const searchItems = () => {
+    //   data.value = initData.value.filter((item) =>
+    //     searchingFunc(item, search.value)
+    //   );
+    //   MenuComponent.reinitialization();
+    // };
 
     const searchingFunc = (obj: any, value: string): boolean => {
       return Object.keys(obj).some((key) =>
@@ -378,7 +415,7 @@ export default defineComponent({
         isAscending.value.status = !isAscending.value.status;
       }
       currentSortBy.value = sortBy;
-      fetchData(currentPage.value, sortBy);
+      fetchData(currentPage.value, sortBy, filters.value);
     };
 
     const visiblePages = computed<Array<number>>(() => {
@@ -403,12 +440,12 @@ export default defineComponent({
 
     const onPageChange = async (page: number) => {
       currentPage.value = page;
-      await fetchData(page, currentSortBy.value);
+      await fetchData(page, currentSortBy.value, filters.value);
     };
 
     return {
       search,
-      searchItems,
+      // searchItems,
       data,
       headerConfig,
       sort,
@@ -424,7 +461,9 @@ export default defineComponent({
       onPageChange,
       handleSort,
       statusColor,
-      statusLabel
+      statusLabel,
+      handleFilter,
+      filters,
     };
   },
 });
