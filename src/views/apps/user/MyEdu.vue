@@ -129,14 +129,20 @@
               :class="{ disabled: currentPage === 0 }"
               @click="onPageChange(0)"
             >
-              <a class="page-link" href="#">◀</a>
+            <a class="page-link">
+              <i class="ki-duotone ki-double-left fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+              </i>
+            </a>
             </li>
             <li
               class="page-item"
               :class="{ disabled: currentPage === 0 }"
               @click="onPageChange(currentPage - 1)"
             >
-              <a class="page-link" href="#">◁</a>
+            <i class="page-link ki-duotone ki-left fs-2">
+            </i>
             </li>
             <li
               class="page-item"
@@ -152,14 +158,20 @@
               :class="{ disabled: currentPage + 1 === totalPages }"
               @click="onPageChange(currentPage + 1)"
             >
-              <a class="page-link" href="#">▷</a>
+              <i class="page-link ki-duotone ki-right fs-2">
+              </i>
             </li>
             <li
               class="page-item"
               :class="{ disabled: currentPage + 1 === totalPages }"
               @click="onPageChange(totalPages - 1)"
             >
-              <a class="page-link" href="#">▶</a>
+            <a class="page-link">
+              <i class="ki-duotone ki-double-right fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+              </i>
+            </a>
             </li>
           </ul>
         </nav>
