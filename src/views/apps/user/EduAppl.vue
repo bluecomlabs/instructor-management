@@ -241,16 +241,14 @@ export default defineComponent({
         response.data.forEach((item: any) => {
           const existingProgram = programMap.get(item.confirmedProgram);
           if (existingProgram) {
-            // 기존에 있는 프로그램일 경우 강사명 추가
             if (item.instructorName) {
               existingProgram.status.push(item.instructorName);
             }
           } else {
-            // 처음 추가하는 프로그램일 경우
             programMap.set(item.confirmedProgram, {
               id: item.confirmedProgram,
               customer: item.programName,
-              status: item.instructorName ? [item.instructorName] : [], // 강사명이 있으면 배열에 넣기
+              status: item.instructorName ? [item.instructorName] : [],
               product: "신청하기",
               maxInstructors: item.numberOfInstructors,
               institutionName: item.institutionName,
@@ -259,9 +257,9 @@ export default defineComponent({
           }
         });
 
-        const apiData = Array.from(programMap.values()); // Map에서 배열로 변환
-        data.value.splice(0, data.value.length, ...apiData); // Vue 데이터 업데이트
-        initData.value.splice(0, initData.value.length, ...apiData); // 초기 데이터 업데이트
+        const apiData = Array.from(programMap.values());
+        data.value.splice(0, data.value.length, ...apiData);
+        initData.value.splice(0, initData.value.length, ...apiData);
         isLoading.value = false;
       } catch (error) {
         console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);

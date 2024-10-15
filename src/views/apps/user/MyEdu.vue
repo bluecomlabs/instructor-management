@@ -1,10 +1,7 @@
 <template>
-  <!--begin::Card-->
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <!--begin::Card title-->
       <div class="card-title">
-        <!--begin::Search-->
         <div class="d-flex align-items-center position-relative my-1">
           <KTIcon
             icon-name="magnifier"
@@ -19,36 +16,14 @@
             placeholder="Search Subscriptions"
           />
         </div>
-        <!--end::Search-->
       </div>
-      <!--begin::Card title-->
-
-      <!--begin::Card toolbar-->
       <div class="card-toolbar">
-        <!--begin::Toolbar-->
         <div
           v-if="selectedIds.length === 0"
           class="d-flex justify-content-end"
-          data-kt-subscription-table-toolbar="base"
-        ></div>
-        <!--end::Toolbar-->
-
-        <!--begin::Group actions-->
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span>Selected
-          </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="deleteFewSubscriptions()"
-          >
-            Delete Selected
-          </button>
+          data-kt-subscription-table-toolbar="base">
         </div>
-        <!--begin::Card header-->
         <div class="card-toolbar">
-          <!--begin::Menu-->
           <button
             type="button"
             class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -59,15 +34,10 @@
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
           <Dropdown1></Dropdown1>
-          <!--end::Menu-->
         </div>
-        <!--end::Group actions-->
       </div>
-      <!--end::Card toolbar-->
     </div>
-    <!--end::Card header-->
 
-    <!--begin::Card body-->
     <div class="card-body pt-0">
       <!-- 로딩 오버레이 -->
       <div v-if="isLoading" class="overlay">
@@ -75,14 +45,17 @@
       </div>
 
       <KTDatatable
-        @on-sort="sort"
+        @on-sort="handleSort"
         @on-items-per-page-change="onItemsPerPageChange"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
       >
-        <template v-slot:billing="{ row: customer }">
-          {{ customer.billing }}
+        <template v-slot:status="{ row: customer }">
+          <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">{{ statusLabel[customer.status] }}</span>
+        </template>
+        <template v-slot:PRGN_NM="{ row: customer }">
+          {{ customer.PRGN_NM }}
         </template>
         <template v-slot:INST_NM="{ row: customer }">
           {{ customer.INST_NM }}
@@ -99,13 +72,13 @@
             {{ customer.customer }}
           </router-link>
         </template>
-        <template v-slot:status="{ row: customer }">
+        <template v-slot:educationjournal="{ row: customer }">
           <router-link
             to="EducationJournal"
             href=""
             class="btn btn-light-primary me-2"
           >
-            {{ customer.status }}
+            {{ customer.educationjournal }}
           </router-link>
         </template>
         <template v-slot:product="{ row: customer }">
@@ -146,15 +119,58 @@
           </div>
         </template>
       </KTDatatable>
+
+      <!-- Pagination Controls -->
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link" href="#">◀</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <a class="page-link" href="#">◁</a>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <a class="page-link" href="#">▷</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link" href="#">▶</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <!--end::Card body-->
   </div>
-  <!--end::Card-->
 </template>
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import axios from "axios";
@@ -165,13 +181,14 @@ import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface ISubscription {
   id: number;
-  customer: string;
   status: string;
-  color: string;
-  billing: string;
-  product: string;
-  createdDate: string;
+  PRGN_NM: string;
   INST_NM: string;
+  createdDate: string;
+  customer: string;
+  educationjournal: string;
+  color: string;
+  product: string;
 }
 
 export default defineComponent({
@@ -181,15 +198,37 @@ export default defineComponent({
     Dropdown1
   },
   setup() {
+    const statusColor = {
+      INIT: "primary",
+      PROGRESS: "info",
+      COMPLETE: "success",
+      PAUSE: "warning",
+      CANCEL: "danger",
+    };
+
+    const statusLabel = {
+      INIT: "신청완료",
+      PROGRESS: "진행 중",
+      COMPLETE: "수업완료",
+      PAUSE: "수업중지",
+      CANCEL: "수업취소",
+    };
+
     const data = ref<Array<ISubscription>>([]);
     const initData = ref<Array<ISubscription>>([]);
-
-    const isLoading = ref(false); // 로딩 상태 관리
+    const isAscending = ref({ PRGN_NM: true, INST_NM: true, status: true, createdDate: true });
+    const isLoading = ref(false);
+    const currentSortBy = ref<string>("");
 
     const headerConfig = ref([
       {
+        columnName: "상태",
+        columnLabel: "status",
+        sortEnabled: true,
+      },
+      {
         columnName: "프로그램명",
-        columnLabel: "billing",
+        columnLabel: "PRGN_NM",
         sortEnabled: true,
       },
       {
@@ -209,7 +248,7 @@ export default defineComponent({
       },
       {
         columnName: "교육일지",
-        columnLabel: "status",
+        columnLabel: "educationjournal",
         sortEnabled: true,
       },
       {
@@ -219,43 +258,57 @@ export default defineComponent({
       },
     ]);
 
-    // Fetching data from API and processing it
-    const fetchData = async () => {
+    const totalElements = ref<number>(0);
+    const totalPages = ref<number>(0);
+    const currentPage = ref<number>(0);
+    const pageSize = ref<number>(10);
+
+    const fetchData = async (page: number = 0, sortBy: string = currentSortBy.value) => {
       try {
-        isLoading.value = true; // 로딩 시작
-        const token = localStorage.getItem('token');
+        isLoading.value = true;
+        const token = localStorage.getItem("token");
         if (!token) {
           throw new Error("Token이 없습니다.");
         }
 
-        const response = await axios.get(ApiUrl('/api/v1/user/assistant-instructors'),
-        {
+        const url = ApiUrl(
+          `/api/v1/user/assistant-instructors?page=${page}&size=${pageSize.value}${sortBy}`
+        );
+
+        console.log("API 호출 URL:", url);
+
+        const response = await axios.get(url, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        const apiData = response.data.map((item: any) => ({
+
+        console.log("API 응답:", response.data);
+
+        const apiData = response.data.content.map((item) => ({
           id: item.id,
-          customer: "상세보기", // 출석부는 상세보기로
-          status: "상세보기", // 교육일지도 상세보기
-          color: "success", // 상태에 따라 변경할 수 있음
-          billing: item.programName, // 프로그램명
-          product: "상세보기", // 강의확인서
-          createdDate: new Date(item.createdAt).toISOString().split("T")[0], // 날짜에서 시간 제거
-          INST_NM: item.institutionName, // 교육기관
+          customer: "상세보기",
+          educationjournal: "상세보기",
+          color: "success",
+          PRGN_NM: item.programName,
+          status: item.status,
+          product: "상세보기",
+          createdDate: new Date(item.date).toISOString().split("T")[0],
+          INST_NM: item.institutionName,
         }));
 
         data.value = apiData;
-        initData.value = [...apiData]; // 초기 데이터 복사
-        isLoading.value = false; // 로딩 완료
+        initData.value = [...apiData];
+        totalElements.value = response.data.totalElements;
+        totalPages.value = response.data.totalPages;
+        isLoading.value = false;
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        isLoading.value = false; // 로딩 완료
+        isLoading.value = false;
       }
     };
-
     onMounted(() => {
-      fetchData();
+      fetchData(currentPage.value);
     });
 
     const selectedIds = ref<Array<number>>([]);
@@ -298,6 +351,61 @@ export default defineComponent({
       }, 0);
     };
 
+    const handleSort = (sort: Sort) => {
+      let sortBy = "";
+      if (sort.label === "PRGN_NM") {
+        sortBy = isAscending.value.PRGN_NM
+          ? "&sortBy=programName&direction=asc"
+          : "&sortBy=programName&direction=desc";
+        isAscending.value.PRGN_NM = !isAscending.value.PRGN_NM;
+      } 
+      else if (sort.label === "INST_NM") {
+        sortBy = isAscending.value.INST_NM
+          ? "&sortBy=institutionName&direction=asc"
+          : "&sortBy=institutionName&direction=desc";
+        isAscending.value.INST_NM = !isAscending.value.INST_NM;
+      } 
+      else if (sort.label === "createdDate") {
+        sortBy = isAscending.value.createdDate
+          ? "&sortBy=date&direction=asc"
+          : "&sortBy=date&direction=desc";
+        isAscending.value.createdDate = !isAscending.value.createdDate;
+      } 
+      else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
+      }
+      currentSortBy.value = sortBy;
+      fetchData(currentPage.value, sortBy);
+    };
+
+    const visiblePages = computed<Array<number>>(() => {
+      const range = 2;
+      let startPage = Math.max(1, currentPage.value + 1 - range);
+      let endPage = Math.min(totalPages.value, currentPage.value + 1 + range);
+
+      if (endPage - startPage < range * 2) {
+        if (startPage === 1) {
+          endPage = Math.min(totalPages.value, startPage + range * 2);
+        } else if (endPage === totalPages.value) {
+          startPage = Math.max(1, endPage - range * 2);
+        }
+      }
+
+      const pages: Array<number> = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    });
+
+    const onPageChange = async (page: number) => {
+      currentPage.value = page;
+      await fetchData(page, currentSortBy.value);
+    };
+
     return {
       search,
       searchItems,
@@ -309,7 +417,14 @@ export default defineComponent({
       deleteSubscription,
       getAssetPath,
       onItemsPerPageChange,
-      isLoading, // 로딩 상태 반환
+      isLoading,
+      visiblePages,
+      currentPage,
+      totalPages,
+      onPageChange,
+      handleSort,
+      statusColor,
+      statusLabel
     };
   },
 });

@@ -25,7 +25,7 @@
           class="menu-link px-3 btn btn-light-primary"
           style="width: 140px; height: 45px"
         >
-          <span class="indicator-label">프로그램 등록</span>
+          <span class="indicator-label">교육기관 등록</span>
         </button>
 
         <div class="card-toolbar">
@@ -41,7 +41,7 @@
               @click="onDeletePrograms"
               style="width: 140px; height: 45px"
             >
-              프로그램 삭제
+              교육기관 삭제
             </button>
           </div>
         </div>
@@ -336,7 +336,7 @@ export default defineComponent({
       if (selectedItems.value.length > 0) {
         console.log("선택된 프로그램 삭제:", selectedItems.value);
       } else {
-        router.push({ name: "admin-ProgramAdd" });
+        router.push({ name: "admin-EducationalAdd" });
       }
     };
 

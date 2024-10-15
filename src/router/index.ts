@@ -90,6 +90,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "EduView",
+        name: "user-EduView",
+        component: () => import("@/views/apps/user/EduView.vue"),
+        meta: {
+          pageTitle: "교육 신청하기",
+          breadcrumbs: ["강의관리", "교육 신청하기"],
+        },
+      },
+      {
         path: "MyApplEdu",
         name: "user-MyApplEdu",
         component: () => import("@/views/apps/user/MyApplEdu.vue"),
@@ -393,6 +402,15 @@ const routes: Array<RouteRecordRaw> = [
         path: "EducationalList",
         name: "admin-EducationalList",
         component: () => import("@/views/apps/customers/EducationalList.vue"),
+        meta: {
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
+        },
+      },
+      {
+        path: "EducationalAdd",
+        name: "admin-EducationalAdd",
+        component: () => import("@/views/apps/customers/EducationalAdd.vue"),
         meta: {
           pageTitle: "교육기관 관리",
           breadcrumbs: ["교육 정보 관리", "교육기관 관리"],

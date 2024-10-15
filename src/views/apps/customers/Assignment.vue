@@ -208,6 +208,7 @@ export default defineComponent({
           }
         );
 
+        // 데이터 매핑
         const apiData = response.data.map((item: any) => ({
           id: item.confirmedProgramId,
           institutionName: item.institutionName || "미정",
@@ -220,30 +221,16 @@ export default defineComponent({
           createdDate: item.instructorName || "미정",
         }));
 
-        const mergedData: Array<ISubscription> = [];
-
-        apiData.forEach((item: ISubscription) => {
-          const existingItem = mergedData.find(
-            (mergedItem) => mergedItem.id === item.id
-          );
-
-          if (existingItem) {
-            if (!existingItem.customer.includes(item.customer)) {
-              existingItem.customer += `, ${item.customer}`;
-            }
-          } else {
-            mergedData.push(item);
-          }
-        });
-
-        data.value = mergedData;
-        initData.value = [...mergedData];
+        // 기존 데이터를 그대로 유지
+        data.value = [...apiData];
+        initData.value = [...apiData]; // 검색을 위해 복사본 저장
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         isLoading.value = false;  // 로딩 종료
       }
     };
+
 
 
     onMounted(() => {
