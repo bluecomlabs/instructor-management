@@ -28,15 +28,15 @@ const UserMainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "교육 조회하기",
-        route: "/user/EduView",
-        keenthemesIcon: "add-item",
-        bootstrapIcon: "bi-app-indicator",
-      },
-      {
         heading: "교육 신청내역",
         route: "/user/MyApplEdu",
         keenthemesIcon: "notification-status",
+        bootstrapIcon: "bi-app-indicator",
+      },
+      {
+        heading: "다가오는 교육",
+        route: "/user/EduView",
+        keenthemesIcon: "add-item",
         bootstrapIcon: "bi-app-indicator",
       },
       // {

@@ -23,6 +23,19 @@
       </div>
       
       <div class="mb-10">
+        <label class="form-label fw-semibold">프로그램명</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="프로그램명을 입력해주세요." v-model="data.programName" />
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="form-label fw-semibold">교육기관</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="교육기관을 입력해주세요." v-model="data.institutionName" />
+        </div>
+      </div>
+            
+      <div class="mb-10">
         <label class="form-label fw-semibold">신청날짜</label>
         <div>
           <label
@@ -38,19 +51,6 @@
             class="form-check form-check-sm form-check-custom form-check-solid"
           >
           </label>
-        </div>
-      </div>
-      
-      <div class="mb-10">
-        <label class="form-label fw-semibold">프로그램명</label>
-        <div>
-          <input type="text" class="form-control form-control-solid" placeholder="프로그램명을 입력해주세요." v-model="data.programName" />
-        </div>
-      </div>
-      <div class="mb-10">
-        <label class="form-label fw-semibold">교육기관</label>
-        <div>
-          <input type="text" class="form-control form-control-solid" placeholder="교육기관을 입력해주세요." v-model="data.institutionName" />
         </div>
       </div>
       
