@@ -52,72 +52,49 @@
         :checkbox-enabled="false"
       >
         <template v-slot:status="{ row: customer }">
-          <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">{{ statusLabel[customer.status] }}</span>
-        </template>
-        <template v-slot:PRGN_NM="{ row: customer }">
-          {{ customer.PRGN_NM }}
-        </template>
-        <template v-slot:INST_NM="{ row: customer }">
-          {{ customer.INST_NM }}
-        </template>
-        <template v-slot:createdDate="{ row: customer }">
-          {{ customer.createdDate }}
-        </template>
-        <template v-slot:customer="{ row: customer }">
-          <router-link
-            to="Attendance"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.customer }}
-          </router-link>
-        </template>
-        <template v-slot:educationjournal="{ row: customer }">
-          <router-link
-            to="EducationJournal"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.educationjournal }}
-          </router-link>
-        </template>
-        <template v-slot:product="{ row: customer }">
-          <router-link
-            to="syllabus"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.product }}
-          </router-link>
-        </template>
-        <template v-slot:actions="{ row: customer }">
-          <a
-            href="#"
-            class="btn btn-sm btn-light btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >Actions
-            <KTIcon icon-name="down" icon-class="fs-5 m-0" />
-          </a>
-          <div
-            class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-            data-kt-menu="true"
-          >
-            <div class="menu-item px-3">
-              <router-link
-                to="/apps/customers/customer-details"
-                class="menu-link px-3"
-                >View</router-link
-              >
-            </div>
-            <div class="menu-item px-3">
-              <a @click="deleteSubscription(customer.id)" class="menu-link px-3"
-                >Delete</a
-              >
-            </div>
+          <div class="column-status">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">
+              {{ statusLabel[customer.status] }}
+            </span>
           </div>
         </template>
+        <template v-slot:PRGN_NM="{ row: customer }">
+          <div class="column-PRGN_NM">
+            {{ customer.PRGN_NM }}
+          </div>
+        </template>
+        <template v-slot:INST_NM="{ row: customer }">
+          <div class="column-INST_NM">
+            {{ customer.INST_NM }}
+          </div>
+        </template>
+        <template v-slot:createdDate="{ row: customer }">
+          <div class="column-createdDate">
+            {{ customer.createdDate }}
+          </div>
+        </template>
+        <template v-slot:customer="{ row: customer }">
+          <div class="column-customer">
+            <router-link to="Attendance" class="btn btn-light-primary me-2">
+              {{ customer.customer }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:educationjournal="{ row: customer }">
+          <div class="column-educationjournal">
+            <router-link to="EducationJournal" class="btn btn-light-primary me-2">
+              {{ customer.educationjournal }}
+            </router-link>
+          </div>
+        </template>
+        <template v-slot:product="{ row: customer }">
+          <div class="column-product">
+            <router-link to="syllabus" class="btn btn-light-primary me-2">
+              {{ customer.product }}
+            </router-link>
+          </div>
+        </template>
+        <!-- 나머지 템플릿 그대로 유지 -->
       </KTDatatable>
 
       <!-- Pagination Controls -->
@@ -249,21 +226,25 @@ export default defineComponent({
         columnName: "상태",
         columnLabel: "status",
         sortEnabled: true,
+        columnWidth: 100,
       },
       {
         columnName: "프로그램명",
         columnLabel: "PRGN_NM",
         sortEnabled: true,
+        columnWidth: 200,
       },
       {
         columnName: "교육기관",
         columnLabel: "INST_NM",
         sortEnabled: true,
+        columnWidth: 170,
       },
       {
         columnName: "수업날짜",
         columnLabel: "createdDate",
         sortEnabled: true,
+        columnWidth: 120,
       },
       {
         columnName: "출석부",
@@ -577,4 +558,57 @@ export default defineComponent({
     transform: rotate(360deg);
   }
 }
+
+.column-status,
+.column-PRGN_NM,
+.column-INST_NM,
+.column-createdDate,
+.column-customer,
+.column-educationjournal,
+.column-product {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.column-status {
+  width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-PRGN_NM {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-INST_NM {
+  width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-createdDate {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 </style>
