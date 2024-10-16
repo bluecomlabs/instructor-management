@@ -291,8 +291,8 @@ export default defineComponent({
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
           programName: program.programName,
-          chapter: program.chapter ? program.chapter : "/",
-          product: program.product ? program.product : "/",
+          chapter: program.chapter ? program.chapter : "-",
+          product: program.product ? program.product : "-",
           createdAt: new Date(program.createdAt * 1000)
             .toLocaleDateString()
             .replace(/\.$/, ""),

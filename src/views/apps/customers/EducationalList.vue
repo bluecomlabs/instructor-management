@@ -224,7 +224,7 @@ export default defineComponent({
 
     const fetchPrograms = async (page: number = 0) => {
       try {
-        isLoading.value = true;  // Show loading spinner
+        if (page === 0) isLoading.value = true;
         const token = localStorage.getItem("token");
         const response = await axios.get(
           `http://localhost:8081/api/v1/admin/institutions?page=${page}&size=${pageSize.value}&search=${search.value}`,
@@ -239,8 +239,8 @@ export default defineComponent({
         data.value = responseData.content.map((institution: Iinstitution) => ({
           ...institution,
           institutionName: institution.institutionName,
-          address: institution.address ? institution.address : "/",
-          phoneNumber: institution.phoneNumber ? institution.phoneNumber : "/",
+          address: institution.address ? institution.address : "-",
+          phoneNumber: institution.phoneNumber ? institution.phoneNumber : "-",
           createdAt: new Date(institution.createdAt * 1000)
             .toLocaleDateString()
             .replace(/\.$/, ""),
