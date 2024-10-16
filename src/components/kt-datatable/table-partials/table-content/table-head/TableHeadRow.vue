@@ -1,6 +1,6 @@
 <template>
   <thead>
-    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0" style="text-align: center !important;">
+    <tr class="text-start text-gray-750 fw-bold fs-7 text-uppercase gs-0" style="text-align: center !important;">
       <th v-if="checkboxEnabled" :style="{ width: '30px' }">
         <div
           class="form-check form-check-sm form-check-custom form-check-solid me-3"
