@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/userdashboard",
         name: "userdashboard",
-        component: () => import("@/views/UserDashboard.vue"),
+        component: () => import("@/views/teacher/dashborad/UserDashboard.vue"),
         meta: {
           pageTitle: "Dashboard",
           breadcrumbs: ["Dashboards"],
@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/sign-in",
         name: "sign-in",
         component: () =>
-          import("@/views/crafted/authentication/basic-flow/SignIn.vue"),
+          import("@/views/teacher/login/SignIn.vue"),
         meta: {
           pageTitle: "Sign In",
         },
