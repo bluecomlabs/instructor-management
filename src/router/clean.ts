@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/admin-sign-in",
         name: "admin-sign-in",
         component: () =>
-          import("@/views/crafted/authentication/basic-flow/admin-SignIn.vue"),
+          import("@/views/admin/login/admin-SignIn.vue"),
         meta: {
           pageTitle: "admin-Sign In",
         },

@@ -191,7 +191,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "EducationalList",
         name: "user-EducationalList",
-        component: () => import("@/views/apps/customers/EducationalList.vue"),
+        component: () => import("@/views/admin/userSettings/InstitutionList.vue"),
         meta: {
           pageTitle: "교육기관 관리",
           breadcrumbs: ["교육 리소스 관리", "교육기관 관리"],
@@ -200,7 +200,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "ProgramList",
         name: "user-ProgramList",
-        component: () => import("@/views/apps/customers/ProgramList.vue"),
+        component: () => import("@/views/admin/program/ProgramList.vue"),
         meta: {
           pageTitle: "교육 프로그램 관리",
           breadcrumbs: ["교육 리소스 관리", "교육 프로그램 관리"],
@@ -273,7 +273,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "sign-in",
         name: "admin-sign-in",
         component: () =>
-          import("@/views/crafted/authentication/basic-flow/admin-SignIn.vue"),
+          import("@/views/admin/login/admin-SignIn.vue"),
         meta: {
           pageTitle: "Sign In",
         },
@@ -308,40 +308,249 @@ const routes: Array<RouteRecordRaw> = [
       // middleware: "auth",
     },
     children: [
+      // 대시보드
       {
-        path: "dashboard",
-        name: "admin-dashboard",
-        component: () => import("@/views/AdminDashboard.vue"),
+        path: "AllProgramStatusList",
+        name: "admin-AllProgramStatusList",
+        component: () => import("@/views/admin/dashboard/AllProgramStatusList.vue"),
         meta: {
-          pageTitle: "대시보드",
-          breadcrumbs: ["대시보드"],
+          pageTitle: "전체 프로그램 현황",
+          breadcrumbs: ["전체 프로그램 현황"],
         },
       },
       {
-        path: "/builder",
-        name: "builder",
-        component: () => import("@/views/LayoutBuilder.vue"),
+        path: "EduScheduleProgramStatusList",
+        name: "admin-EduScheduleProgramStatusList",
+        component: () => import("@/views/admin/dashboard/EduScheduleProgramStatusList.vue"),
         meta: {
-          pageTitle: "Layout Builder",
-          breadcrumbs: ["Layout"],
+          pageTitle: "교육 일정 프로그램 현황",
+          breadcrumbs: ["교육 일정 프로그램 현황"],
+        },
+      },
+      // 프로그램 관리
+      {
+        path: "ProgramList",
+        name: "admin-ProgramList",
+        component: () => import("@/views/admin/program/ProgramList.vue"),
+        meta: {
+          pageTitle: "프로그램 관리",
+          breadcrumbs: ["프로그램 관리", "프로그램 조회"],
         },
       },
       {
-        path: "CompleteList",
-        name: "admin-CompleteList",
-        component: () => import("@/views/apps/customers/CompleteList.vue"),
+        path: "ProgramAdd",
+        name: "admin-ProgramAdd",
+        component: () => import("@/views/admin/program/ProgramAdd.vue"),
+        meta: {
+          pageTitle: "프로그램 관리",
+          breadcrumbs: ["프로그램 관리", "프로그램 생성"],
+        },
+      },
+      {
+        path: "ProgramDetails",
+        name: "admin-ProgramDetails",
+        component: () => import("@/views/admin/program/ProgramDetails.vue"),
+        meta: {
+          pageTitle: "프로그램 관리",
+          breadcrumbs: ["프로그램 관리", "프로그램 상세보기"],
+        },
+      },
+      {
+        path: "ProgramEdit",
+        name: "admin-ProgramEdit",
+        component: () => import("@/views/admin/program/ProgramEdit.vue"),
+        meta: {
+          pageTitle: "프로그램 관리",
+          breadcrumbs: ["프로그램 관리", "프로그램 수정"],
+        },
+      },
+      // 기관 신청 관리
+      {
+        path: "InstApplList",
+        name: "admin-InstApplList",
+        component: () => import("@/views/admin/instAppl/InstApplList.vue"),
+        meta: {
+          pageTitle: "기관 신청 관리",
+          breadcrumbs: ["기관 신청 관리", "기관별 신청 조회"],
+        },
+      },
+      {
+        path: "ApplReviewList",
+        name: "admin-ApplReviewList",
+        component: () => import("@/views/admin/instAppl/ApplReviewList.vue"),
+        meta: {
+          pageTitle: "기관 신청 관리",
+          breadcrumbs: ["기관 신청 관리", "신청 검토 및 확정"],
+        },
+      },
+      {
+        path: "ApplStatusChange",
+        name: "admin-ApplStatusChange",
+        component: () => import("@/views/admin/instAppl/ApplStatusChange.vue"),
+        meta: {
+          pageTitle: "기관 신청 관리",
+          breadcrumbs: ["기관 신청 관리", "신청 상태 변경"],
+        },
+      },
+      {
+        path: "InstApplPassivity",
+        name: "admin-InstApplPassivity",
+        component: () => import("@/views/admin/instAppl/InstApplPassivity.vue"),
+        meta: {
+          pageTitle: "기관 신청 관리",
+          breadcrumbs: ["기관 신청 관리", "기관 수기 신청"],
+        },
+      },
+      // 강사 배정 관리
+      {
+        path: "TeacherApplList",
+        name: "admin-TeacherApplList",
+        component: () => import("@/views/admin/teacherAllo/TeacherApplList.vue"),
+        meta: {
+          pageTitle: "강사 배정 관리",
+          breadcrumbs: ["강사 배정 관리", "강사 신청 목록 조회"],
+        },
+      },
+      {
+        path: "TeacherAlloList",
+        name: "admin-TeacherAlloList",
+        component: () => import("@/views/admin/teacherAllo/TeacherAlloList.vue"),
+        meta: {
+          pageTitle: "강사 배정 관리",
+          breadcrumbs: ["강사 배정 관리", "강사 배정 관리"],
+        },
+      },
+      {
+        path: "TeacherAlloPassivity",
+        name: "admin-TeacherAlloPassivity",
+        component: () => import("@/views/admin/teacherAllo/TeacherAlloPassivity.vue"),
+        meta: {
+          pageTitle: "강사 배정 관리",
+          breadcrumbs: ["강사 배정 관리", "강사 수기 배정"],
+        },
+      },
+      {
+        path: "TeacherAlloschedule",
+        name: "admin-TeacherAlloschedule",
+        component: () => import("@/views/admin/teacherAllo/TeacherAlloschedule.vue"),
         meta: {
           pageTitle: "출강정보 목록",
           breadcrumbs: ["배정 정보 관리", "출강정보 목록"],
         },
       },
+      // 보고서 관리
       {
-        path: "assignment",
-        name: "admin-assignment",
-        component: () => import("@/views/apps/customers/Assignment.vue"),
+        path: "TeacherReportList",
+        name: "admin-TeacherReportList",
+        component: () => import("@/views/admin/report/TeacherReportList.vue"),
         meta: {
-          pageTitle: "배정 신청 및 결과",
-          breadcrumbs: ["배정 정보 관리", "배정 신청 및 결과"],
+          pageTitle: "보고서 관리",
+          breadcrumbs: ["보고서 관리", "강사 업무 일지"],
+        },
+      },
+      {
+        path: "EducationalReportList",
+        name: "admin-EducationalReportList",
+        component: () => import("@/views/admin/report/EducationalReportList.vue"),
+        meta: {
+          pageTitle: "보고서 관리",
+          breadcrumbs: ["보고서 관리", "교육일지 일지"],
+        },
+      },
+      {
+        path: "WorkSchedule",
+        name: "admin-WorkSchedule",
+        component: () => import("@/views/admin/report/WorkSchedule.vue"),
+        meta: {
+          pageTitle: "근무상황부",
+          breadcrumbs: ["보고서 관리", "강사관리"],
+        },
+      },
+      {
+        path: "SignCheck",
+        name: "admin-SignCheck",
+        component: () => import("@/views/admin/report/SignCheck.vue"),
+        meta: {
+          pageTitle: "보고서 관리",
+          breadcrumbs: ["보고서 관리", "서명 확인"],
+        },
+      },
+      // 설정 및 사용자 관리
+      // 설정 및 사용자 관리 - 관리자 관련
+      {
+        path: "adminList",
+        name: "admin-adminList",
+        component: () => import("@/views/admin/userSettings/AdminList.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "관리자 관리"],
+        },
+      },
+      // 설정 및 사용자 관리 - 기관 관련
+      {
+        path: "InstitutionList",
+        name: "admin-InstitutionList",
+        component: () => import("@/views/admin/userSettings/InstitutionList.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 관리"],
+        },
+      },
+      {
+        path: "InstitutionDetails",
+        name: "admin-InstitutionDetails",
+        component: () => import("@/views/admin/userSettings/InstitutionDetails.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
+        },
+      },
+      {
+        path: "InstitutionEdit",
+        name: "admin-InstitutionEdit",
+        component: () => import("@/views/admin/userSettings/InstitutionEdit.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 수정"],
+        },
+      },
+      {
+        path: "InstitutionAdd",
+        name: "admin-InstitutionAdd",
+        component: () => import("@/views/admin/userSettings/InstitutionAdd.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 생성"],
+        },
+      },
+      // 설정 및 사용자 관리 - 강사 관련
+      {
+        path: "TeacherList",
+        name: "admin-TeacherList",
+        component: () => import("@/views/admin/userSettings/TeacherList.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "강사 관리"],
+        },
+      },
+      // 설정 및 사용자 관리 - 시스템 설정 관련
+      {
+        path: "SystemSettings",
+        name: "admin-SystemSettings",
+        component: () => import("@/views/admin/userSettings/SystemSettings.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "시스템 설정"],
+        },
+      },
+      // 10월 22일 이전 작업페이지(정리예정)
+      {
+        path: "EducationList",
+        name: "admin-EducationList",
+        component: () => import("@/views/apps/customers/EducationList.vue"),
+        meta: {
+          pageTitle: "보고서 관리",
+          breadcrumbs: ["보고서 관리", "교육 목록"],
         },
       },
       {
@@ -381,78 +590,6 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "EducationalDetails",
-        name: "admin-EducationalDetails",
-        component: () => import("@/views/apps/customers/EducationalDetails.vue"),
-        meta: {
-          pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
-        },
-      },
-      {
-        path: "EducationalEdit",
-        name: "admin-EducationalEdit",
-        component: () => import("@/views/apps/customers/EducationalEdit.vue"),
-        meta: {
-          pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
-        },
-      },
-      {
-        path: "EducationalList",
-        name: "admin-EducationalList",
-        component: () => import("@/views/apps/customers/EducationalList.vue"),
-        meta: {
-          pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
-        },
-      },
-      {
-        path: "EducationalAdd",
-        name: "admin-EducationalAdd",
-        component: () => import("@/views/apps/customers/EducationalAdd.vue"),
-        meta: {
-          pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 정보 관리", "교육기관 관리"],
-        },
-      },
-      {
-        path: "ProgramList",
-        name: "admin-ProgramList",
-        component: () => import("@/views/apps/customers/ProgramList.vue"),
-        meta: {
-          pageTitle: "교육 프로그램 관리",
-          breadcrumbs: ["교육 정보 관리", "교육 프로그램 관리"],
-        },
-      },
-      {
-        path: "ProgramAdd",
-        name: "admin-ProgramAdd",
-        component: () => import("@/views/apps/customers/ProgramAdd.vue"),
-        meta: {
-          pageTitle: "교육 프로그램 관리",
-          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
-        },
-      },
-      {
-        path: "ProgramDetails",
-        name: "admin-ProgramDetails",
-        component: () => import("@/views/apps/customers/ProgramDetails.vue"),
-        meta: {
-          pageTitle: "교육 프로그램 관리",
-          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
-        },
-      },
-      {
-        path: "ProgramEdit",
-        name: "admin-ProgramEdit",
-        component: () => import("@/views/apps/customers/ProgramEdit.vue"),
-        meta: {
-          pageTitle: "교육 프로그램 관리",
-          breadcrumbs: ["교육 정보 관리", "교육 프로그램 생성"],
-        },
-      },
-      {
         path: "MyProfile",
         name: "admin-MyProfile",
         component: () => import("@/views/apps/customers/MyProfile.vue"),
@@ -476,24 +613,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/apps/subscriptions/Lists.vue"),
         meta: {
           pageTitle: "강사관리",
-          breadcrumbs: ["강사 정보 관리", "강사관리"],
-        },
-      },
-      {
-        path: "Business",
-        name: "admin-Business",
-        component: () => import("@/views/apps/subscriptions/Business.vue"),
-        meta: {
-          pageTitle: "업무일지",
-          breadcrumbs: ["강사 정보 관리", "업무일지"],
-        },
-      },
-      {
-        path: "work",
-        name: "admin-work",
-        component: () => import("@/views/apps/subscriptions/Work.vue"),
-        meta: {
-          pageTitle: "근무상황부",
           breadcrumbs: ["강사 정보 관리", "강사관리"],
         },
       },

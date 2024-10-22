@@ -1,4 +1,4 @@
-import EducationalDetails from "@/views/apps/customers/EducationalDetails.vue";
+import EducationalDetails from "@/views/admin/userSettings/InstitutionDetails.vue";
 import { createI18n } from "vue-i18n";
 
 const messages = {

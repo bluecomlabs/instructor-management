@@ -96,7 +96,7 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-light-primary",
           },
         }).then(() => {
-          router.push({ name: "admin-dashboard" });
+          router.push({ name: "admin-AllProgramStatusList" });
         });
 
       } catch (error: unknown) {
