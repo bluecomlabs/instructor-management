@@ -6,7 +6,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
     route: "/교육 관리",
     pages: [
       {
-        heading: "캘린더@",
+        heading: "캘린더",
         route: "/user/Dashboard",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-app-indicator",
@@ -30,19 +30,19 @@ const UserMainMenuConfig: Array<MenuItem> = [
     route: "/resources",
     pages: [
       {
-        heading: "오픈 예정 교육@",
+        heading: "오픈 예정 교육",
         route: "/user/EduView",
         keenthemesIcon: "add-item",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "출강 신청@",
+        heading: "출강 신청",
         route: "/user/EduAppl",
         keenthemesIcon: "add-item",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "출강 신청 내역@",
+        heading: "출강 신청 내역",
         route: "/user/MyApplEdu",
         keenthemesIcon: "notification-status",
         bootstrapIcon: "bi-app-indicator",
@@ -60,7 +60,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "업무일지@",
+        heading: "업무일지",
         route: "/user/BusinessJournalLlist",
         keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
@@ -72,7 +72,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "근무상황부@",
+        heading: "근무상황부",
         route: "/user/WorkSituation",
         keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
