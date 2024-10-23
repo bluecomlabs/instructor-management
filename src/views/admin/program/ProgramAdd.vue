@@ -24,6 +24,8 @@
                   novalidate
               >
                 <div class="card-body border-top p-9">
+                  
+                  <!-- 프로그램명 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">
                       프로그램명
@@ -87,6 +89,48 @@
                     </div>
                   </div>
 
+                  <!-- Level 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      난이도
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="level"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="number"
+                        placeholder="레벨을 입력하세요"
+                      />
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="level"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Remark 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      메모
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="remark"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="text"
+                        placeholder="메모를 입력하세요"
+                      />
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="remark"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                 </div>
               </VForm>
@@ -125,6 +169,7 @@
   </div>
 </template>
 
+
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent, ref } from "vue";
@@ -140,6 +185,8 @@ export default defineComponent({
     const programName = ref(''); // 프로그램명 입력 필드 상태
     const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
     const product = ref(''); // 교구 입력 필드 상태
+    const level = ref<number | null>(null); // level 상태 추가
+    const remark = ref(''); // remark 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태 추가
 
     const fetchData = async () => {
@@ -148,16 +195,8 @@ export default defineComponent({
         errorMessage.value = "프로그램명을 입력하세요."; // 에러 메시지 설정
         return;
       }
-      // if (!chapter.value) {
-      //   errorMessage.value = "총 차시를 입력하세요."; // 챕터 입력 여부 검증
-      //   return;
-      // }
-      // if (!product.value) {
-      //   errorMessage.value = "교구명을 입력하세요."; // 교구 입력 여부 검증
-      //   return;
-      // }
-      
-      errorMessage.value = ''; // 입력이 있으면 에러 메시지 초기화
+
+      errorMessage.value = '';
 
       if (submitButton.value) {
         submitButton.value.disabled = true;
@@ -170,7 +209,9 @@ export default defineComponent({
         JSON.stringify({
             "programName": programName.value,
             "chapter": chapter.value,
-            "productSn": product.value
+            "productSn": product.value,
+            "level": level.value, // level 값 추가
+            "remark": remark.value // remark 값 추가
         }),
         {
           headers: {
@@ -214,18 +255,21 @@ export default defineComponent({
     };
 
     const goBack = () => {
-      router.back(); // 뒤로가기 함수
+      router.back();
     };
 
     return {
       programName,
       chapter,
-      product, // 교구 상태 리턴
+      product,
+      level, // level 상태 반환
+      remark, // remark 상태 반환
       submitButton,
       fetchData,
       goBack,
-      errorMessage, // 에러 메시지 상태 리턴
+      errorMessage,
     };
   },
 });
 </script>
+

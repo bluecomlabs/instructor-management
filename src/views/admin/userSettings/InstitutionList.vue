@@ -336,7 +336,7 @@ export default defineComponent({
       if (selectedItems.value.length > 0) {
         console.log("선택된 프로그램 삭제:", selectedItems.value);
       } else {
-        router.push({ name: "admin-EducationalAdd" });
+        router.push({ name: "admin-InstitutionAdd" });
       }
     };
 

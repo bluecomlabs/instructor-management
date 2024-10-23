@@ -24,6 +24,8 @@
                   novalidate
               >
                 <div class="card-body border-top p-9">
+                  
+                  <!-- 프로그램명 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">
                       프로그램명
@@ -36,14 +38,10 @@
                         type="text"
                         placeholder="프로그램명을 입력하세요"
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="programName"/>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
+                  <!-- 총 차시 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       총 차시 (챕터)
@@ -56,14 +54,10 @@
                         type="number"
                         placeholder="총 차시를 입력하세요"
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="chapter"/>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
+                  <!-- 교구 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       교구
@@ -77,11 +71,38 @@
                         placeholder="/"
                         disabled
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="chapter"/>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Level 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      난이도
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="level"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="number"
+                        placeholder="레벨을 입력하세요"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Remark 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      메모
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="remark"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="text"
+                        placeholder="비고를 입력하세요"
+                      />
                     </div>
                   </div>
 
@@ -93,14 +114,6 @@
 
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
-          <!-- <button
-              type="button"
-              class="btn btn-left btn-active-left-primary me-2"
-              style="margin-right: auto !important; background-color: red; color: white;"
-              @click="deleteData()"
-              >
-            삭제
-          </button> -->
           <button
               type="button"
               class="btn btn-light btn-active-light-primary me-2"
@@ -132,6 +145,7 @@
 </template>
 
 
+
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent, ref, onMounted } from "vue";
@@ -147,6 +161,8 @@ export default defineComponent({
     const programName = ref(''); // 프로그램명 입력 필드 상태
     const product = ref(''); // 프로그램명 입력 필드 상태
     const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
+    const level = ref<number | null>(null); // level 입력 필드 상태 추가
+    const remark = ref(''); // remark 입력 필드 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태
 
     // API 응답으로 프로그램 데이터를 가져오는 함수
@@ -167,79 +183,17 @@ export default defineComponent({
 
         const programData = response.data;
 
-        // 프로그램명과 챕터 값을 인풋 필드에 반영
+        // 프로그램명과 챕터, level, remark 값을 인풋 필드에 반영
         programName.value = programData.programName;
         product.value = programData.product;
         chapter.value = programData.chapter;
+        level.value = programData.level; // level 값 반영
+        remark.value = programData.remark; // remark 값 반영
       } catch (error) {
         console.error('Error fetching program data:', error);
         errorMessage.value = '프로그램 정보를 불러오는 데 실패했습니다.';
       }
     };
-    
-    const deleteData = async () => {
-      const programId = localStorage.getItem('selectedProgramId');
-
-      // 삭제 확인 프롬프트
-      const result = await Swal.fire({
-        title: "삭제하시겠습니까?",
-        text: "삭제된 교육은 복구할 수 없습니다.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-danger",
-          cancelButton: "btn fw-semibold btn-light"
-        },
-        buttonsStyling: false,
-        heightAuto: false,
-      });
-
-      // 확인을 눌렀을 때만 삭제 실행
-      if (result.isConfirmed) {
-        try {
-          const token = localStorage.getItem("token");
-          const response = await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-
-          Swal.fire({
-            text: "프로그램이 성공적으로 삭제되었습니다.",
-            icon: "success",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-primary",
-            },
-          }).then(() => {
-            router.push({ name: "admin-ProgramList" });
-          });
-
-        } catch (error: unknown) {
-          Swal.fire({
-            text: "오류가 발생하였습니다.",
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-danger",
-            },
-          });
-        } finally {
-          if (submitButton.value) {
-            submitButton.value.removeAttribute("data-kt-indicator");
-            submitButton.value.disabled = false;
-          }
-        }
-      }
-    };
-
 
     // 프로그램 업데이트를 위한 PUT 요청 함수
     const fetchData = async () => {
@@ -250,14 +204,7 @@ export default defineComponent({
         errorMessage.value = "프로그램명을 입력하세요.";
         return;
       }
-      // if (!product.value) {
-      //   errorMessage.value = "교구명을 입력하세요.";
-      //   return;
-      // }
-      // if (!chapter.value) {
-      //   errorMessage.value = "총 차시(챕터)를 입력하세요.";
-      //   return;
-      // }
+      
       errorMessage.value = ''; // 입력이 있으면 에러 메시지 초기화
 
       if (submitButton.value) {
@@ -272,7 +219,9 @@ export default defineComponent({
         JSON.stringify({
             programName: programName.value,
             productSn: product.value,
-            chapter: chapter.value
+            chapter: chapter.value,
+            level: level.value, // level 값 추가
+            remark: remark.value // remark 값 추가
         }),
         {
           headers: {
@@ -325,14 +274,15 @@ export default defineComponent({
     return {
       programName,
       product,
-      chapter, // 챕터 상태 리턴
+      chapter,
+      level, // level 상태 리턴
+      remark, // remark 상태 리턴
       submitButton,
       fetchData,
-      deleteData,
       goBack,
       errorMessage, // 에러 메시지 상태 리턴
     };
   },
 });
-
 </script>
+

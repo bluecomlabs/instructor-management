@@ -24,6 +24,8 @@
                   novalidate
               >
                 <div class="card-body border-top p-9">
+                  
+                  <!-- ID 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       ID
@@ -34,16 +36,12 @@
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
-                        placeholder="프로그램명을 입력하세요"
                         disabled
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="id"/>
-                        </div>
-                      </div>
                     </div>
                   </div>
+
+                  <!-- 프로그램명 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       프로그램명
@@ -54,17 +52,12 @@
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
-                        placeholder="프로그램명을 입력하세요"
                         disabled
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="programName"/>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
+                  <!-- 총 차시 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       총 차시 (챕터)
@@ -75,17 +68,12 @@
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="number"
-                        placeholder="총 차시를 입력하세요"
                         disabled
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="chapter"/>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
+                  <!-- 교구 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       교구
@@ -96,14 +84,40 @@
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
-                        placeholder="/"
                         disabled
                       />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="chapter"/>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Level 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      난이도
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="level"
+                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="number"
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Remark 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      메모
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="remark"
+                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="text"
+                        disabled
+                      />
                     </div>
                   </div>
 
@@ -112,7 +126,6 @@
               </VForm>
             </div>
           </div>
-
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
           <button
@@ -128,7 +141,7 @@
               class="btn btn-light btn-active-light-primary me-2"
               @click="goBack"
               >
-            뒤로가기
+            뒤로
           </button>
           <button
               type="submit"
@@ -138,7 +151,7 @@
               @click="goEdit()"
              >
             <span class="indicator-label">
-              수정하기
+              수정
             </span>
             <span class="indicator-progress">
               잠시만 기다려주세요...
@@ -166,10 +179,12 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const id = ref(''); // 프로그램명 입력 필드 상태
-    const programName = ref(''); // 프로그램명 입력 필드 상태
-    const product = ref(''); // 프로그램명 입력 필드 상태
-    const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
+    const id = ref(''); // 프로그램 ID 상태
+    const programName = ref(''); // 프로그램명 상태
+    const product = ref(''); // 교구 상태
+    const chapter = ref<number | null>(null); // 총 차시 상태
+    const level = ref<number | null>(null); // level 상태 추가
+    const remark = ref(''); // remark 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태
 
     // API 응답으로 프로그램 데이터를 가져오는 함수
@@ -190,21 +205,22 @@ export default defineComponent({
 
         const programData = response.data;
         
-        // 프로그램명과 챕터 값을 인풋 필드에 반영
+        // 프로그램명, 교구, 차시, level, remark 값을 인풋 필드에 반영
         id.value = programData.id;
         programName.value = programData.programName;
         product.value = programData.product;
         chapter.value = programData.chapter;
+        level.value = programData.level; // level 값 반영
+        remark.value = programData.remark; // remark 값 반영
       } catch (error) {
         console.error('Error fetching program data:', error);
         errorMessage.value = '프로그램 정보를 불러오는 데 실패했습니다.';
       }
     };
-    
+
     const deleteData = async () => {
       const programId = localStorage.getItem('selectedProgramId');
 
-      // 삭제 확인 프롬프트
       const result = await Swal.fire({
         title: "삭제하시겠습니까?",
         text: "삭제된 교육은 복구할 수 없습니다.",
@@ -220,11 +236,10 @@ export default defineComponent({
         heightAuto: false,
       });
 
-      // 확인을 눌렀을 때만 삭제 실행
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem("token");
-          const response = await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
+          await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -255,11 +270,6 @@ export default defineComponent({
               confirmButton: "btn fw-semibold btn-light-danger",
             },
           });
-        } finally {
-          if (submitButton.value) {
-            submitButton.value.removeAttribute("data-kt-indicator");
-            submitButton.value.disabled = false;
-          }
         }
       }
     };
@@ -281,6 +291,8 @@ export default defineComponent({
       programName,
       product,
       chapter,
+      level, // level 상태 반환
+      remark, // remark 상태 반환
       submitButton,
       goEdit,
       deleteData,
@@ -289,5 +301,5 @@ export default defineComponent({
     };
   },
 });
-
 </script>
+
