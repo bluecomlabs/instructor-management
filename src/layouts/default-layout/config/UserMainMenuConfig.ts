@@ -8,7 +8,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "캘린더",
         route: "/user/Dashboard",
-        keenthemesIcon: "element-11",
+        keenthemesIcon: "calendar",
         bootstrapIcon: "bi-app-indicator",
       },
     ],
@@ -18,7 +18,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
     route: "/apps",
     pages: [
       {
-        heading: "내 출강 리스트@",
+        heading: "내 출강 리스트",
         route: "/user/MyEdu",
         keenthemesIcon: "questionnaire-tablet",
         bootstrapIcon: "bi-app-indicator",
@@ -32,19 +32,19 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "오픈 예정 교육",
         route: "/user/EduView",
-        keenthemesIcon: "add-item",
+        keenthemesIcon: "brifecase-timer",
         bootstrapIcon: "bi-app-indicator",
       },
       {
         heading: "출강 신청",
         route: "/user/EduAppl",
-        keenthemesIcon: "add-item",
+        keenthemesIcon: "click",
         bootstrapIcon: "bi-app-indicator",
       },
       {
         heading: "출강 신청 내역",
         route: "/user/MyApplEdu",
-        keenthemesIcon: "notification-status",
+        keenthemesIcon: "clipboard",
         bootstrapIcon: "bi-app-indicator",
       },
     ],
@@ -62,19 +62,19 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "업무일지",
         route: "/user/BusinessJournalLlist",
-        keenthemesIcon: "note-2",
+        keenthemesIcon: "notepad",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "교육 일지",
         route: "/user/EducationalReportList",
-        keenthemesIcon: "note-2",
+        keenthemesIcon: "people",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "근무상황부",
         route: "/user/WorkSituation",
-        keenthemesIcon: "note-2",
+        keenthemesIcon: "calendar-2",
         bootstrapIcon: "bi-printer",
       },
     ],
@@ -86,13 +86,13 @@ const UserMainMenuConfig: Array<MenuItem> = [
       {
         heading: "서명 리스트",
         route: "/user/SignList",
-        keenthemesIcon: "note-2",
+        keenthemesIcon: "tablet-text-up",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "내 서명 관리",
         route: "/user/MySign",
-        keenthemesIcon: "note-2",
+        keenthemesIcon: "brush",
         bootstrapIcon: "bi-printer",
       },
     ],
