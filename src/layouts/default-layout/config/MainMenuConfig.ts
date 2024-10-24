@@ -41,20 +41,20 @@ const MainMenuConfig: Array<MenuItem> = [
     heading: "기관 신청 관리",
     route: "/resources",
     pages: [
+      // {
+      //   heading: "기관별 신청 조회",
+      //   route: "/admin/InstApplList",
+      //   keenthemesIcon: "cheque",
+      //   bootstrapIcon: "bi-printer",
+      // },
       {
-        heading: "기관별 신청 조회",
-        route: "/admin/InstApplList",
-        keenthemesIcon: "cheque",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "신청 검토 및 확정",
+        heading: "신청 조회 및 확정",
         route: "/admin/ApplReviewList",
         keenthemesIcon: "eye",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "신청 상태 변경",
+        heading: "교육 상태 변경",
         route: "/admin/ApplStatusChange",
         keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
@@ -72,19 +72,19 @@ const MainMenuConfig: Array<MenuItem> = [
     route: "/교육 관리",
     pages: [
       {
-        heading: "강사 신청 목록 조회",
+        heading: "신청 조회 및 확정",
         route: "/admin/TeacherApplList",
         keenthemesIcon: "archive-tick",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "강사 배정 관리",
+        heading: "배정 결과 및 상태 관리",
         route: "/admin/TeacherAlloList",
         keenthemesIcon: "calendar-tick",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "강사 수기 배정",
+        heading: "교육별 조회",
         route: "/admin/TeacherAlloPassivity",
         keenthemesIcon: "calendar-edit",
         bootstrapIcon: "bi-printer",
@@ -150,7 +150,7 @@ const MainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-layers",
       },
       {
-        heading: "시스템 설정",
+        heading: "시스템 이력 조회",
         route: "/admin/SystemSettings",
         keenthemesIcon: "setting-2",
         bootstrapIcon: "bi-layers",

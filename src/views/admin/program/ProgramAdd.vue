@@ -100,7 +100,7 @@
                         style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="number"
-                        placeholder="레벨을 입력하세요"
+                        placeholder="난이도를 입력하세요 (1~10 단계)"
                       />
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">

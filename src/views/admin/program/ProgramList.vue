@@ -75,24 +75,24 @@
         </template>
 
         <template v-slot:programName="{ row: customer }">
-          <div @click="onProgramClick(customer)" style="cursor: pointer;">
+          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
             {{ customer.programName }}
           </div>
         </template>
         <template v-slot:chapter="{ row: customer }">
-          <div>{{ customer.chapter }}</div>
+          <div class="column-chapter">{{ customer.chapter }}</div>
         </template>
         <template v-slot:product="{ row: customer }">
-          <div>{{ customer.product }}</div>
+          <div class="column-product">{{ customer.product }}</div>
         </template>
         <template v-slot:level="{ row: customer }">
-          <div>{{ customer.level }}</div>
+          <div class="column-level">{{ customer.level }}</div>
         </template>
         <template v-slot:remark="{ row: customer }">
-          <div>{{ customer.remark }}</div>
+          <div class="column-remark">{{ customer.remark }}</div>
         </template>
         <template v-slot:createdAt="{ row: customer }">
-          <div>{{ customer.createdAt }}</div>
+          <div class="column-createdAt">{{ customer.createdAt }}</div>
         </template>
       </KTDatatable>
 
@@ -166,6 +166,7 @@ import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 
 interface IProgram {
   id: number;
+  status: string;
   programName: string;
   chapter: number | null;
   product: number | null;
@@ -189,7 +190,6 @@ export default defineComponent({
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
     const search = ref<string>("");
-
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
 
@@ -234,6 +234,7 @@ export default defineComponent({
 
     const isLoading = ref<boolean>(false);
     const isAscending = ref({
+      status: true,
       programName: true,
       chapter: true,
       product: true,
@@ -243,6 +244,7 @@ export default defineComponent({
     const currentSortBy = ref<string>("");
 
     const filters = ref({
+      status: "",
       programName: "",
       chapter: "",
       product: "",
@@ -288,7 +290,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}&status=OPEN`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -298,20 +300,19 @@ export default defineComponent({
         const responseData = response.data;
         console.log(
           "API 호출 URL:",
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}&status=OPEN`
         );
         console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
+          status: program.status,
           programName: program.programName,
           chapter: program.chapter ? program.chapter : "-",
           product: program.product ? program.product : "-",
           level: program.level ? program.level : "-",
           remark: program.remark ? program.remark : "-",
-          createdAt: new Date(program.createdAt * 1000)
-            .toLocaleDateString()
-            .replace(/\.$/, ""),
+          createdAt: new Date(program.createdAt * 1000).toISOString().split("T")[0], 
         }));
 
         totalElements.value = responseData.totalElements;
@@ -325,6 +326,9 @@ export default defineComponent({
 
     const buildFilterQuery = (filtersData) => {
       let query = "";
+      if (filtersData.status) {
+        query += `&status=${encodeURIComponent(filtersData.status)}`;
+      }
       if (filtersData.programName) {
         query += `&programName=${encodeURIComponent(filtersData.programName)}`;
       }
@@ -354,7 +358,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
+        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}&status=OPEN`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -533,17 +537,41 @@ export default defineComponent({
 
 .column-programName {
   width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-chapter {
   width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-product {
   width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-createdAt {
   width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 </style>

@@ -291,7 +291,7 @@ export default defineComponent({
     };
 
     const goEdit = () => {
-      router.push({ name: "admin-EducationalEdit" })
+      router.push({ name: "admin-InstitutionEdit" })
     };
 
     onMounted(() => {

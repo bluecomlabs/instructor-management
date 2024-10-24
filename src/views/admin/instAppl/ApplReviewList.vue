@@ -1,21 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="card-title">
-        <!-- <div class="d-flex align-items-center position-relative my-1">
-          <KTIcon
-            icon-name="magnifier"
-            icon-class="fs-1 position-absolute ms-6"
-          />
-          <input
-            v-model="search"
-            @input="searchItems"
-            type="text"
-            class="form-control form-control-solid w-250px ps-14"
-            placeholder="Search Subscriptions"
-          />
-        </div> -->
-      </div>
+      <div class="card-title"></div>
       <div class="card-toolbar">
         <div v-if="selectedIds.length === 0" class="d-flex justify-content-end align-items-center">
           <button
@@ -41,23 +27,22 @@
             프로그램 삭제
           </button>
         </div>
-          <div class="card-toolbar">
-            <button
-              type="button"
-              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-              data-kt-menu-trigger="click"
-              data-kt-menu-placement="bottom-end"
-              data-kt-menu-flip="top-end"
-            >
-              <KTIcon icon-name="category" icon-class="fs-2" />
-            </button>
-            <Dropdown1 @apply-filter="handleFilter"></Dropdown1>
-          </div>
+        <div class="card-toolbar">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+            data-kt-menu-trigger="click"
+            data-kt-menu-placement="bottom-end"
+            data-kt-menu-flip="top-end"
+          >
+            <KTIcon icon-name="category" icon-class="fs-2" />
+          </button>
+          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
+        </div>
       </div>
     </div>
 
     <div class="card-body pt-0">
-      <!-- 로딩 스피너 오버레이 -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -70,7 +55,6 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <!-- 테이블 템플릿 -->
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
@@ -80,27 +64,38 @@
         <template v-slot:header-product>
           <div>교구</div>
         </template>
+        <template v-slot:header-level>
+          <div>레벨</div>
+        </template>
+        <template v-slot:header-remark>
+          <div>비고</div>
+        </template>
         <template v-slot:header-createdAt>
           <div>생성 날짜</div>
         </template>
 
         <template v-slot:programName="{ row: customer }">
-          <div @click="onProgramClick(customer)" style="cursor: pointer;">
+          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
             {{ customer.programName }}
           </div>
         </template>
         <template v-slot:chapter="{ row: customer }">
-          <div>{{ customer.chapter }}</div>
+          <div class="column-chapter">{{ customer.chapter }}</div>
         </template>
         <template v-slot:product="{ row: customer }">
-          <div>{{ customer.product }}</div>
+          <div class="column-product">{{ customer.product }}</div>
+        </template>
+        <template v-slot:level="{ row: customer }">
+          <div class="column-level">{{ customer.level }}</div>
+        </template>
+        <template v-slot:remark="{ row: customer }">
+          <div class="column-remark">{{ customer.remark }}</div>
         </template>
         <template v-slot:createdAt="{ row: customer }">
-          <div>{{ customer.createdAt }}</div>
+          <div class="column-createdAt">{{ customer.createdAt }}</div>
         </template>
       </KTDatatable>
 
-      <!-- 페이지네이션 -->
       <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
           <ul class="pagination">
@@ -121,8 +116,7 @@
               :class="{ disabled: currentPage === 0 }"
               @click="onPageChange(currentPage - 1)"
             >
-              <i class="page-link ki-duotone ki-left fs-2">
-              </i>
+              <i class="page-link ki-duotone ki-left fs-2"></i>
             </li>
             <li
               class="page-item"
@@ -138,8 +132,7 @@
               :class="{ disabled: currentPage + 1 === totalPages }"
               @click="onPageChange(currentPage + 1)"
             >
-              <i class="page-link ki-duotone ki-right fs-2">
-              </i>
+              <i class="page-link ki-duotone ki-right fs-2"></i>
             </li>
             <li
               class="page-item"
@@ -160,6 +153,8 @@
   </div>
 </template>
 
+
+
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
@@ -167,13 +162,16 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
+import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 
 interface IProgram {
   id: number;
+  status: string;
   programName: string;
   chapter: number | null;
   product: number | null;
+  level: number | null;
+  remark: string | null;
   createdAt: number;
 }
 
@@ -181,7 +179,7 @@ export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown1,
+    Dropdown3,
   },
 
   setup() {
@@ -192,8 +190,6 @@ export default defineComponent({
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
     const search = ref<string>("");
-    const isLoading = ref<boolean>(false);
-
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
 
@@ -217,27 +213,44 @@ export default defineComponent({
         columnWidth: 100,
       },
       {
+        columnName: "레벨",
+        columnLabel: "level",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "비고",
+        columnLabel: "remark",
+        sortEnabled: false,
+        columnWidth: 200,
+      },
+      {
         columnName: "생성 날짜",
         columnLabel: "createdAt",
-        sortEnabled: true,
+        sortEnabled: false,
         columnWidth: 150,
       },
     ]);
 
+    const isLoading = ref<boolean>(false);
     const isAscending = ref({
+      status: true,
       programName: true,
       chapter: true,
       product: true,
-      createdAt: true,
+      level: true,
     });
 
     const currentSortBy = ref<string>("");
 
     const filters = ref({
+      status: "",
       programName: "",
+      chapter: "",
       product: "",
       startDate: "",
       endDate: "",
+      level: "",
     });
 
     const handleFilter = (filterData) => {
@@ -277,7 +290,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -285,17 +298,21 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
-        console.log('API 호출 URL:', `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`);
-        console.log('API 응답 데이터:', response.data);
+        console.log(
+          "API 호출 URL:",
+          `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+        );
+        console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
+          status: program.status,
           programName: program.programName,
           chapter: program.chapter ? program.chapter : "-",
           product: program.product ? program.product : "-",
-          createdAt: new Date(program.createdAt * 1000)
-            .toLocaleDateString()
-            .replace(/\.$/, ""),
+          level: program.level ? program.level : "-",
+          remark: program.remark ? program.remark : "-",
+          createdAt: new Date(program.createdAt * 1000).toISOString().split("T")[0], 
         }));
 
         totalElements.value = responseData.totalElements;
@@ -308,19 +325,29 @@ export default defineComponent({
     };
 
     const buildFilterQuery = (filtersData) => {
-      let query = '';
+      let query = "";
+      if (filtersData.status) {
+        query += `&status=${encodeURIComponent(filtersData.status)}`;
+      }
       if (filtersData.programName) {
         query += `&programName=${encodeURIComponent(filtersData.programName)}`;
       }
       if (filtersData.product) {
         query += `&product=${encodeURIComponent(filtersData.product)}`;
       }
-      if (filtersData.startDate) {
-        query += `&startDate=${filtersData.startDate}`;
+      if (filtersData.chapter) {
+        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
       }
-      if (filtersData.endDate) {
-        query += `&endDate=${filtersData.endDate}`;
+      if (filtersData.level) {
+        query += `&level=${encodeURIComponent(filtersData.level)}`;
       }
+      // if (filtersData.startDate) {
+      //   query += `&startDate=${filtersData.startDate}`;
+      // }
+      // if (filtersData.endDate) {
+      //   query += `&endDate=${filtersData.endDate}`;
+      // }
+
       return query;
     };
 
@@ -331,7 +358,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
+        await axios.delete(`http://localhost:8081/api/v1/admin/apply-for-programs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -392,11 +419,13 @@ export default defineComponent({
           ? "&sortBy=product&direction=asc"
           : "&sortBy=product&direction=desc";
         isAscending.value.product = !isAscending.value.product;
-      } else if (sort.label === "createdAt") {
-        sortBy = isAscending.value.createdAt
-          ? "&sortBy=createdAt&direction=asc"
-          : "&sortBy=createdAt&direction=desc";
-        isAscending.value.createdAt = !isAscending.value.createdAt;
+      } else if (sort.label === "level") {
+        sortBy = isAscending.value.level
+          ? "&sortBy=level&direction=asc"
+          : "&sortBy=level&direction=desc";
+        isAscending.value.level = !isAscending.value.level;
+      } else {
+        return;
       }
       currentSortBy.value = sortBy;
       fetchPrograms(currentPage.value, sortBy, filters.value);
@@ -468,6 +497,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style scoped>
 .overlay {
   position: fixed;
@@ -507,17 +537,41 @@ export default defineComponent({
 
 .column-programName {
   width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-chapter {
   width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-product {
   width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-createdAt {
   width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 </style>

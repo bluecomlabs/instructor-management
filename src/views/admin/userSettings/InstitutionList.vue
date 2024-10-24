@@ -348,7 +348,7 @@ export default defineComponent({
 
     const onProgramClick = (program: Iinstitution) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-EducationalDetails", params: { id: program.id } });
+      router.push({ name: "admin-InstitutionDetails", params: { id: program.id } });
     };
 
     return {

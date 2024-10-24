@@ -3,8 +3,15 @@
     class="menu menu-sub menu-sub-dropdown w-250px w-md-450px"
     data-kt-menu="true"
   >
-    <div class="px-7 py-5">
-      <div class="fs-5 text-gray-900 fw-bold">내 출강 리스트 필터링</div>
+    <div class="px-7 py-5 d-flex justify-content-between align-items-center">
+      <div class="fs-5 text-gray-900 fw-bold">프로그램 필터링</div>
+      <button
+        type="button"
+        class="btn btn-sm btn-icon btn-light btn-hover-primary"
+        data-kt-menu-dismiss="true"
+      >
+      <i class="bi bi-x-lg"></i> 
+      </button>
     </div>
     <div class="separator border-gray-200"></div>
     <div class="px-7 py-5">
@@ -13,7 +20,7 @@
         <div>
           <select class="form-select form-select-solid select2-hidden-accessible" v-model="data.status">
             <option value="">전체</option>
-            <option value="INIT">신청 완료</option>
+            <option value="OPEN">오픈</option>
             <option value="PROGRESS">진행 중</option>
             <option value="COMPLETE">수업 완료</option>
             <option value="PAUSE">수업 중지</option>
