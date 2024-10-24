@@ -50,12 +50,12 @@
           <input type="text" class="form-control form-control-solid" placeholder="교구명을 입력해주세요." v-model="data.grade" />
         </div>
       </div>
-      <div class="mb-10">
+      <!-- <div class="mb-10">
         <label class="form-label fw-semibold">반</label>
         <div>
           <input type="number" class="form-control form-control-solid" placeholder="난이도를 입력해주세요." v-model="data.classNumber" />
         </div>
-      </div>
+      </div> -->
       <div class="mb-10">
         <label class="form-label fw-semibold">학생 수</label>
         <div>

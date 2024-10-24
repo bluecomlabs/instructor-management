@@ -4,7 +4,7 @@
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div v-if="selectedIds.length === 0" class="d-flex justify-content-end align-items-center">
-          <button
+          <!-- <button
             tabindex="3"
             type="button"
             @click="onButtonAction"
@@ -12,7 +12,7 @@
             style="width: 140px; height: 45px; margin-right: 10px"
           >
             <span class="indicator-label">프로그램 등록</span>
-          </button>
+          </button> -->
         </div>
         <div v-else class="d-flex justify-content-end align-items-center">
           <div class="fw-bold me-5">
@@ -55,65 +55,53 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <template v-slot:header-isConfirmed>
-          <div>확정</div>
-        </template>
-        <template v-slot:header-institutionName>
-          <div>기관명</div>
-        </template>
-        <template v-slot:header-programName>
-          <div>프로그램명</div>
-        </template>
-        <template v-slot:header-chapterNumber>
-          <div>총 차시</div>
-        </template>
-        <template v-slot:header-numberOfStudents>
-          <div>학생 수</div>
-        </template>
-        <template v-slot:header-grade>
-          <div>학년</div>
-        </template>
-        <template v-slot:header-classNumber>
-          <div>반</div>
-        </template>
-        <template v-slot:header-date>
-          <div>날짜</div>
-        </template>
-        <template v-slot:header-remark>
-          <div>메모</div>
-        </template>
 
         <template v-slot:isConfirmed="{ row: customer }">
           <div class="column-isConfirmed" @click="onProgramClick(customer)" style="cursor: pointer;">
-            
             <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
               {{ statusLabel[customer.isConfirmed] }}
             </span>
           </div>
         </template>
         <template v-slot:institutionName="{ row: customer }">
-          <div class="column-institutionName">{{ customer.institutionName }}</div>
+          <div class="column-institutionName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.institutionName }}
+          </div>
         </template>
         <template v-slot:programName="{ row: customer }">
-          <div class="column-programName">{{ customer.programName }}</div>
+          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.programName }}
+          </div>
         </template>
         <template v-slot:chapterNumber="{ row: customer }">
-          <div class="column-chapterNumber">{{ customer.chapterNumber }}</div>
+          <div class="column-chapterNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.chapterNumber }}
+          </div>
         </template>
         <template v-slot:numberOfStudents="{ row: customer }">
-          <div class="column-numberOfStudents">{{ customer.numberOfStudents }}</div>
+          <div class="column-numberOfStudents" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.numberOfStudents }}
+          </div>
         </template>
         <template v-slot:grade="{ row: customer }">
-          <div class="column-grade">{{ customer.grade }}</div>
+          <div class="column-grade" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.grade }}
+          </div>
         </template>
         <template v-slot:classNumber="{ row: customer }">
-          <div class="column-classNumber">{{ customer.classNumber }}</div>
+          <div class="column-classNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.classNumber }}
+          </div>
         </template>
         <template v-slot:date="{ row: customer }">
-          <div class="column-date">{{ customer.date }}</div>
+          <div class="column-date" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.date }}
+          </div>
         </template>
         <template v-slot:remark="{ row: customer }">
-          <div class="column-remark">{{ customer.remark }}</div>
+          <div class="column-remark" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.remark }}
+          </div>
         </template>
       </KTDatatable>
 
@@ -356,14 +344,14 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
-    console.log('Number of contents:', responseData.content.length);
-    console.log('Total elements:', responseData.totalElements);
-    console.log('Total pages from API:', responseData.totalPages);
-        console.log(
-          "API 호출 URL:",
-          `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
-        );
-        console.log("API 응답 데이터:", response.data);
+          console.log('Number of contents:', responseData.content.length);
+          console.log('Total elements:', responseData.totalElements);
+          console.log('Total pages from API:', responseData.totalPages);
+          console.log(
+            "API 호출 URL:",
+            `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+          );
+          console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
@@ -568,7 +556,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ProgramDetails", params: { id: program.id } });
+      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
     };
 
     return {
@@ -725,4 +713,5 @@ export default defineComponent({
   margin-right: auto;
   display: block;
 }
+
 </style>

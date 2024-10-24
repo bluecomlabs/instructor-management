@@ -407,22 +407,31 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       // 기관 신청 관리
-      {
-        path: "InstApplList",
-        name: "admin-InstApplList",
-        component: () => import("@/views/admin/instAppl/InstApplList.vue"),
-        meta: {
-          pageTitle: "기관 신청 관리",
-          breadcrumbs: ["기관 신청 관리", "기관별 신청 조회"],
-        },
-      },
+      // {
+      //   path: "InstApplList",
+      //   name: "admin-InstApplList",
+      //   component: () => import("@/views/admin/instAppl/InstApplList.vue"),
+      //   meta: {
+      //     pageTitle: "기관 신청 관리",
+      //     breadcrumbs: ["기관 신청 관리", "기관별 신청 조회"],
+      //   },
+      // },
       {
         path: "ApplReviewList",
         name: "admin-ApplReviewList",
         component: () => import("@/views/admin/instAppl/ApplReviewList.vue"),
         meta: {
-          pageTitle: "기관 신청 관리",
-          breadcrumbs: ["기관 신청 관리", "신청 검토 및 확정"],
+          pageTitle: "신청 조회 및 확정",
+          breadcrumbs: ["기관 신청 관리", "신청 조회 및 확정"],
+        },
+      },
+      {
+        path: "ApplReviewDetails",
+        name: "admin-ApplReviewDetails",
+        component: () => import("@/views/admin/instAppl/ApplReviewDetails.vue"),
+        meta: {
+          pageTitle: "신청 조회 및 확정 상세보기",
+          breadcrumbs: ["기관 신청 관리", "신청 조회 및 확정", "신청 조회 및 확정 상세보기"],
         },
       },
       {
