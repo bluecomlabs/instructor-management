@@ -94,7 +94,6 @@
             </router-link>
           </div>
         </template>
-        <!-- 나머지 템플릿 그대로 유지 -->
       </KTDatatable>
 
       <!-- Pagination Controls -->

@@ -37,7 +37,7 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
+          <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
         </div>
       </div>
     </div>
@@ -55,44 +55,65 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
+        <template v-slot:header-isConfirmed>
+          <div>확정</div>
+        </template>
+        <template v-slot:header-institutionName>
+          <div>기관명</div>
+        </template>
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
-        <template v-slot:header-chapter>
+        <template v-slot:header-chapterNumber>
           <div>총 차시</div>
         </template>
-        <template v-slot:header-product>
-          <div>교구</div>
+        <template v-slot:header-numberOfStudents>
+          <div>학생 수</div>
         </template>
-        <template v-slot:header-level>
-          <div>레벨</div>
+        <template v-slot:header-grade>
+          <div>학년</div>
+        </template>
+        <template v-slot:header-classNumber>
+          <div>반</div>
+        </template>
+        <template v-slot:header-date>
+          <div>날짜</div>
         </template>
         <template v-slot:header-remark>
-          <div>비고</div>
-        </template>
-        <template v-slot:header-createdAt>
-          <div>생성 날짜</div>
+          <div>메모</div>
         </template>
 
-        <template v-slot:programName="{ row: customer }">
-          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.programName }}
+        <template v-slot:isConfirmed="{ row: customer }">
+          <div class="column-isConfirmed" @click="onProgramClick(customer)" style="cursor: pointer;">
+            
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
+              {{ statusLabel[customer.isConfirmed] }}
+            </span>
           </div>
         </template>
-        <template v-slot:chapter="{ row: customer }">
-          <div class="column-chapter">{{ customer.chapter }}</div>
+        <template v-slot:institutionName="{ row: customer }">
+          <div class="column-institutionName">{{ customer.institutionName }}</div>
         </template>
-        <template v-slot:product="{ row: customer }">
-          <div class="column-product">{{ customer.product }}</div>
+        <template v-slot:programName="{ row: customer }">
+          <div class="column-programName">{{ customer.programName }}</div>
         </template>
-        <template v-slot:level="{ row: customer }">
-          <div class="column-level">{{ customer.level }}</div>
+        <template v-slot:chapterNumber="{ row: customer }">
+          <div class="column-chapterNumber">{{ customer.chapterNumber }}</div>
+        </template>
+        <template v-slot:numberOfStudents="{ row: customer }">
+          <div class="column-numberOfStudents">{{ customer.numberOfStudents }}</div>
+        </template>
+        <template v-slot:grade="{ row: customer }">
+          <div class="column-grade">{{ customer.grade }}</div>
+        </template>
+        <template v-slot:classNumber="{ row: customer }">
+          <div class="column-classNumber">{{ customer.classNumber }}</div>
+        </template>
+        <template v-slot:date="{ row: customer }">
+          <div class="column-date">{{ customer.date }}</div>
         </template>
         <template v-slot:remark="{ row: customer }">
           <div class="column-remark">{{ customer.remark }}</div>
-        </template>
-        <template v-slot:createdAt="{ row: customer }">
-          <div class="column-createdAt">{{ customer.createdAt }}</div>
         </template>
       </KTDatatable>
 
@@ -162,24 +183,28 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
 
 interface IProgram {
   id: number;
   status: string;
-  programName: string;
-  chapter: number | null;
-  product: number | null;
-  level: number | null;
+  isConfirmed: string;
+  institutionName: number | null;
+  programName: number | null;
+  chapterNumber: number | null;
+  numberOfStudents: string | null;
+  grade: number | null;
+  classNumber: number | null;
   remark: string | null;
-  createdAt: number;
+  date: number | null;
+  // createdAt: number;
 }
 
 export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown3,
+    Dropdown4,
   },
 
   setup() {
@@ -195,62 +220,95 @@ export default defineComponent({
 
     const headerConfig = ref([
       {
+        columnName: "확정",
+        columnLabel: "isConfirmed",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "교육기관명",
+        columnLabel: "institutionName",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
         columnName: "프로그램명",
         columnLabel: "programName",
         sortEnabled: true,
-        columnWidth: 200,
+        columnWidth: 100,
       },
       {
         columnName: "총 차시",
-        columnLabel: "chapter",
+        columnLabel: "chapterNumber",
         sortEnabled: true,
         columnWidth: 100,
       },
       {
-        columnName: "교구",
-        columnLabel: "product",
+        columnName: "학생 수",
+        columnLabel: "numberOfStudents",
         sortEnabled: true,
         columnWidth: 100,
       },
       {
-        columnName: "레벨",
-        columnLabel: "level",
+        columnName: "학년",
+        columnLabel: "grade",
         sortEnabled: true,
-        columnWidth: 100,
+        columnWidth: 50,
       },
       {
-        columnName: "비고",
+        columnName: "반",
+        columnLabel: "classNumber",
+        sortEnabled: false,
+        columnWidth: 50,
+      },
+      {
+        columnName: "날짜",
+        columnLabel: "date",
+        sortEnabled: true,
+        columnWidth: 300,
+      },
+      {
+        columnName: "메모",
         columnLabel: "remark",
         sortEnabled: false,
-        columnWidth: 200,
-      },
-      {
-        columnName: "생성 날짜",
-        columnLabel: "createdAt",
-        sortEnabled: false,
-        columnWidth: 150,
+        columnWidth: 300,
       },
     ]);
+
+    const statusColor = {
+      Y: "primary",
+      N: "danger"
+    };
+
+    const statusLabel = {
+      Y: "확정",
+      N: "미확정"
+    };
 
     const isLoading = ref<boolean>(false);
     const isAscending = ref({
       status: true,
+      isConfirmed: true,
+      institutionName: true,
       programName: true,
-      chapter: true,
-      product: true,
-      level: true,
+      chapterNumber: true,
+      grade: true,
+      numberOfStudents: true,
+      date: true,
     });
 
     const currentSortBy = ref<string>("");
 
     const filters = ref({
       status: "",
+      isConfirmed: "",
+      institutionName: "",
       programName: "",
-      chapter: "",
-      product: "",
       startDate: "",
       endDate: "",
-      level: "",
+      chapterNumber: "",
+      grade: "",
+      numberOfStudents: "",
     });
 
     const handleFilter = (filterData) => {
@@ -298,6 +356,9 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
+    console.log('Number of contents:', responseData.content.length);
+    console.log('Total elements:', responseData.totalElements);
+    console.log('Total pages from API:', responseData.totalPages);
         console.log(
           "API 호출 URL:",
           `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
@@ -307,16 +368,19 @@ export default defineComponent({
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
           status: program.status,
-          programName: program.programName,
-          chapter: program.chapter ? program.chapter : "-",
-          product: program.product ? program.product : "-",
-          level: program.level ? program.level : "-",
+          isConfirmed: program.isConfirmed,
+          institutionName: program.institutionName ? program.institutionName : "-",
+          programName: program.programName ? program.programName : "-",
+          chapterNumber: program.chapterNumber ? program.chapterNumber : "-",
+          numberOfStudents: program.numberOfStudents ? program.numberOfStudents : "-",
+          grade: program.grade ? program.grade : "-",
+          classNumber: program.classNumber ? program.classNumber : "-",
+          date: program.date ? program.date : "-",
           remark: program.remark ? program.remark : "-",
-          createdAt: new Date(program.createdAt * 1000).toISOString().split("T")[0], 
         }));
 
-        totalElements.value = responseData.totalElements;
-        totalPages.value = responseData.totalPages;
+        totalElements.value = responseData.content.length;
+        totalPages.value = Math.ceil(totalElements.value / pageSize.value); // totalPages를 직접 계산합니다.
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
@@ -324,22 +388,39 @@ export default defineComponent({
       }
     };
 
+
+
     const buildFilterQuery = (filtersData) => {
       let query = "";
-      if (filtersData.status) {
-        query += `&status=${encodeURIComponent(filtersData.status)}`;
+      if (filtersData.chapter) {
+        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
+      }
+      if (filtersData.isConfirmed) {
+        query += `&isConfirmed=${encodeURIComponent(filtersData.isConfirmed)}`;
       }
       if (filtersData.programName) {
         query += `&programName=${encodeURIComponent(filtersData.programName)}`;
       }
-      if (filtersData.product) {
-        query += `&product=${encodeURIComponent(filtersData.product)}`;
+      if (filtersData.institutionName) {
+        query += `&institutionName=${encodeURIComponent(filtersData.institutionName)}`;
       }
-      if (filtersData.chapter) {
-        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
+      if (filtersData.startDate) {
+        query += `&startDate=${encodeURIComponent(filtersData.startDate)}`;
       }
-      if (filtersData.level) {
-        query += `&level=${encodeURIComponent(filtersData.level)}`;
+      if (filtersData.endDate) {
+        query += `&endDate=${encodeURIComponent(filtersData.endDate)}`;
+      }
+      if (filtersData.numberOfStudents) {
+        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
+      }
+      if (filtersData.grade) {
+        query += `&grade=${encodeURIComponent(filtersData.grade)}`;
+      }
+      if (filtersData.classNumber) {
+        query += `&classNumber=${encodeURIComponent(filtersData.classNumber)}`;
+      }
+      if (filtersData.numberOfStudents) {
+        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
       }
       // if (filtersData.startDate) {
       //   query += `&startDate=${filtersData.startDate}`;
@@ -404,26 +485,46 @@ export default defineComponent({
 
     const sort = (sort: Sort) => {
       let sortBy = "";
-      if (sort.label === "programName") {
+      if (sort.label === "isConfirmed") {
+        sortBy = isAscending.value.isConfirmed
+          ? "&sortBy=isConfirmed&direction=asc"
+          : "&sortBy=isConfirmed&direction=desc";
+        isAscending.value.isConfirmed = !isAscending.value.isConfirmed;
+      } else if (sort.label === "institutionName") {
+        sortBy = isAscending.value.institutionName
+          ? "&sortBy=institutionName&direction=asc"
+          : "&sortBy=institutionName&direction=desc";
+        isAscending.value.institutionName = !isAscending.value.institutionName;
+      } else if (sort.label === "programName") {
         sortBy = isAscending.value.programName
           ? "&sortBy=programName&direction=asc"
           : "&sortBy=programName&direction=desc";
         isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "chapter") {
-        sortBy = isAscending.value.chapter
-          ? "&sortBy=chapter&direction=asc"
-          : "&sortBy=chapter&direction=desc";
-        isAscending.value.chapter = !isAscending.value.chapter;
-      } else if (sort.label === "product") {
-        sortBy = isAscending.value.product
-          ? "&sortBy=product&direction=asc"
-          : "&sortBy=product&direction=desc";
-        isAscending.value.product = !isAscending.value.product;
-      } else if (sort.label === "level") {
-        sortBy = isAscending.value.level
-          ? "&sortBy=level&direction=asc"
-          : "&sortBy=level&direction=desc";
-        isAscending.value.level = !isAscending.value.level;
+      } else if (sort.label === "chapterNumber") {
+        sortBy = isAscending.value.chapterNumber
+          ? "&sortBy=chapterNumber&direction=asc"
+          : "&sortBy=chapterNumber&direction=desc";
+        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
+      } else if (sort.label === "grade") {
+        sortBy = isAscending.value.grade
+          ? "&sortBy=grade&direction=asc"
+          : "&sortBy=grade&direction=desc";
+        isAscending.value.grade = !isAscending.value.grade;
+      } else if (sort.label === "numberOfStudents") {
+        sortBy = isAscending.value.numberOfStudents
+          ? "&sortBy=numberOfStudents&direction=asc"
+          : "&sortBy=numberOfStudents&direction=desc";
+        isAscending.value.numberOfStudents = !isAscending.value.numberOfStudents;
+      } else if (sort.label === "chapterNumber") {
+        sortBy = isAscending.value.chapterNumber
+          ? "&sortBy=chapterNumber&direction=asc"
+          : "&sortBy=chapterNumber&direction=desc";
+        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
+      } else if (sort.label === "date") {
+        sortBy = isAscending.value.date
+          ? "&sortBy=date&direction=asc"
+          : "&sortBy=date&direction=desc";
+        isAscending.value.date = !isAscending.value.date;
       } else {
         return;
       }
@@ -493,6 +594,8 @@ export default defineComponent({
       currentSortBy,
       filters,
       handleFilter,
+      statusColor,
+      statusLabel,
     };
   },
 });
@@ -526,13 +629,33 @@ export default defineComponent({
   100% { transform: rotate(360deg); }
 }
 
+.column-isConfirmed,
+.column-institutionName,
 .column-programName,
-.column-chapter,
-.column-product,
 .column-createdAt {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.column-isConfirmed {
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-institutionName {
+  width: 110x;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-programName {
@@ -545,28 +668,56 @@ export default defineComponent({
   display: block;
 }
 
-.column-chapter {
-  width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-product {
-  width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
 .column-createdAt {
-  width: 150px;
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-grade {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-classNumber {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-numberOfStudents {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-date {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-remark {
+  width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
