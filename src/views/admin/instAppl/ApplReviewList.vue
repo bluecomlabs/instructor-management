@@ -3,30 +3,61 @@
     <div class="card-header border-0 pt-6">
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div v-if="selectedIds.length === 0" class="d-flex justify-content-end align-items-center">
-          <!-- <button
-            tabindex="3"
-            type="button"
-            @click="onButtonAction"
-            class="menu-link px-3 btn btn-light-primary"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            <span class="indicator-label">프로그램 등록</span>
-          </button> -->
-        </div>
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span> Selected
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+                <div class="fw-bold me-5">
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <div class="dropdown me-2">
+                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
+                      <option value="Y">확정</option>
+                      <!-- <option value="N">미확정</option> -->
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary checkbox-button"
+                    @click="changeProgramStatus"
+                  >
+                    상태 변경
+                  </button>
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="ms-4" style="margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger checkbox-button"
+                    @click="onDeletePrograms"
+                  >
+                    프로그램 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3"></div>
+              </div>
+            </transition>
           </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="onDeletePrograms"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            프로그램 삭제
-          </button>
+
+          <div class="d-flex justify-content-end align-items-center">
+            <button
+              tabindex="3"
+              type="button"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
+            >
+              <span class="indicator-label">프로그램 등록</span>
+            </button>
+          </div>
         </div>
+
         <div class="card-toolbar">
           <button
             type="button"
@@ -205,6 +236,79 @@ export default defineComponent({
     const search = ref<string>("");
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
+    const selectedIsConfirmed = ref("Y");
+
+    const changeProgramStatus = async () => {
+      const token = localStorage.getItem("token");
+
+      if (selectedIds.value.length === 0) {
+        Swal.fire({
+          title: "선택된 항목 없음",
+          text: "상태를 변경할 항목을 선택하세요.",
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+      const result = await Swal.fire({
+        title: "상태 변경 확인",
+        text: "한번 결정하면 돌릴 수 없어요! 정말 확정 하실건가요?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+
+      try {
+        const requestBody = {
+          educationIds: selectedIds.value,
+          isConfirmed: selectedIsConfirmed.value,
+        };
+
+        await axios.post(
+          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmed`,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "선택된 프로그램의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error changing program status: ", error);
+
+        Swal.fire({
+          title: "오류",
+          text: "프로그램 상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
 
     const headerConfig = ref([
       {
@@ -584,6 +688,8 @@ export default defineComponent({
       handleFilter,
       statusColor,
       statusLabel,
+      changeProgramStatus,
+      selectedIsConfirmed,
     };
   },
 });
@@ -617,6 +723,28 @@ export default defineComponent({
   100% { transform: rotate(360deg); }
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.dropdown-button {
+  padding-left: 7px !important;
+}
 .column-isConfirmed,
 .column-institutionName,
 .column-programName,
