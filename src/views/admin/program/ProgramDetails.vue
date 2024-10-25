@@ -73,14 +73,14 @@
                     </div>
                   </div>
 
-                  <!-- 교구 입력 필드 -->
+                  <!-- 상태 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      교구
+                      상태
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="product"
+                        v-model="status"
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
@@ -100,6 +100,22 @@
                         style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
                         class="form-control form-control-lg form-control-solid" 
                         type="number"
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <!-- 교구 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      교구
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="product"
+                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(191, 191, 191);"
+                        class="form-control form-control-lg form-control-solid" 
+                        type="text"
                         disabled
                       />
                     </div>
@@ -184,6 +200,7 @@ export default defineComponent({
     const product = ref(''); // 교구 상태
     const chapter = ref<number | null>(null); // 총 차시 상태
     const level = ref<number | null>(null); // level 상태 추가
+    const status = ref(''); // status 상태 추가
     const remark = ref(''); // remark 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태
 
@@ -211,6 +228,7 @@ export default defineComponent({
         product.value = programData.product;
         chapter.value = programData.chapter;
         level.value = programData.level; // level 값 반영
+        status.value = programData.status; // status 값 반영
         remark.value = programData.remark; // remark 값 반영
       } catch (error) {
         console.error('Error fetching program data:', error);
@@ -293,6 +311,7 @@ export default defineComponent({
       chapter,
       level, // level 상태 반환
       remark, // remark 상태 반환
+      status,
       submitButton,
       goEdit,
       deleteData,

@@ -57,6 +57,51 @@
                     </div>
                   </div>
 
+                  <!-- Level 드롭다운 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      난이도
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <select 
+                        v-model="level"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-select form-select-lg form-select-solid"
+                      >
+                        <option disabled value="">난이도를 선택하세요</option>
+                        <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                      </select>
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="level"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 상태 드롭다운 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      상태
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <select 
+                        v-model="status"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-select form-select-lg form-select-solid"
+                      >
+                        <option value="">상태를 선택하세요</option>
+                        <option value="OPEN">OPEN</option>
+                        <option value="CLOSE">CLOSE</option>
+                      </select>
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="status"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- 교구 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
@@ -70,22 +115,6 @@
                         type="text"
                         placeholder="/"
                         disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Level 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      난이도
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="level"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
-                        placeholder="레벨을 입력하세요"
                       />
                     </div>
                   </div>
@@ -162,6 +191,7 @@ export default defineComponent({
     const product = ref(''); // 프로그램명 입력 필드 상태
     const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
     const level = ref<number | null>(null); // level 입력 필드 상태 추가
+    const status = ref(''); // status 상태 추가
     const remark = ref(''); // remark 입력 필드 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태
 
@@ -188,6 +218,7 @@ export default defineComponent({
         product.value = programData.product;
         chapter.value = programData.chapter;
         level.value = programData.level; // level 값 반영
+        status.value =  programData.status; // status 상태 추가
         remark.value = programData.remark; // remark 값 반영
       } catch (error) {
         console.error('Error fetching program data:', error);
@@ -221,6 +252,7 @@ export default defineComponent({
             productSn: product.value,
             chapter: chapter.value,
             level: level.value, // level 값 추가
+            status: status.value, // status 값 반영
             remark: remark.value // remark 값 추가
         }),
         {
@@ -277,6 +309,7 @@ export default defineComponent({
       chapter,
       level, // level 상태 리턴
       remark, // remark 상태 리턴
+      status,
       submitButton,
       fetchData,
       goBack,

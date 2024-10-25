@@ -33,8 +33,7 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="id"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
+                        class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
@@ -49,8 +48,7 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="programName"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
+                        class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
@@ -65,9 +63,8 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="chapterNumber"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
                         disabled
                       />
                     </div>
@@ -81,8 +78,7 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="institutionName"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
+                        class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
@@ -97,9 +93,8 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="grade"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
                         disabled
                       />
                     </div>
@@ -113,9 +108,8 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="classNumber"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
                         disabled
                       />
                     </div>
@@ -129,9 +123,8 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="numberOfStudents"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
                         disabled
                       />
                     </div>
@@ -145,8 +138,7 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="date"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
+                        class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
@@ -161,8 +153,7 @@
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="remark"
-                        style="font-weight: bold; font-size: 16px; float: left; background: rgb(240, 240, 240);"
-                        class="form-control form-control-lg form-control-solid" 
+                        class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
@@ -183,9 +174,10 @@
                           :data-bs-target="'#chapterContent' + index"
                           aria-expanded="false"
                           :aria-controls="'chapterContent' + index"
+                          style="margin-left: 10px;"
                         >
                           <h5 class="card-title m-0 p-3">
-                            {{ chapter.chapterNumber }}차시 상세보기
+                            {{ chapter.chapterNumber }} 차시 상세보기
                           </h5>
                         </div>
                         <div :id="'chapterContent' + index" class="collapse">
@@ -445,7 +437,7 @@ export default defineComponent({
       deleteData,
       goBack,
       errorMessage,
-      educationChapters, // Return educationChapters
+      educationChapters,
       isChapterOpen,
       toggleChapter,
     };
@@ -453,3 +445,12 @@ export default defineComponent({
 });
 </script>
 
+<style> 
+.disabled-input {
+  font-weight: bold;
+  font-size: 16px;
+  float: left;
+  text-align: center;
+  background-color: #F9F9F9;
+}
+</style>

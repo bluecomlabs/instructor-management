@@ -5,12 +5,12 @@
         <div class="card-body">
           <div class="card mb-5 mb-xl-10">
             <div
-                class="card-header border-0 cursor-pointer"
-                role="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#kt_account_toturprofile_details"
-                aria-expanded="true"
-                aria-controls="kt_account_toturprofile_details"
+              class="card-header border-0 cursor-pointer"
+              role="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#kt_account_toturprofile_details"
+              aria-expanded="true"
+              aria-controls="kt_account_toturprofile_details"
             >
               <div class="card-title m-0">
                 <h2 class="fw-bold m-0">프로그램 등록</h2>
@@ -19,12 +19,11 @@
 
             <div id="kt_account_toturprofile_details" class="collapse show">
               <VForm
-                  id="kt_account_toturprofile_details_form"
-                  class="form"
-                  novalidate
+                id="kt_account_toturprofile_details_form"
+                class="form"
+                novalidate
               >
                 <div class="card-body border-top p-9">
-                  
                   <!-- 프로그램명 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">
@@ -49,7 +48,7 @@
                   <!-- 총 차시 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      총 차시 (챕터)
+                      총 차시
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
@@ -62,6 +61,51 @@
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">
                           <ErrorMessage name="chapter"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Level 드롭다운 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      난이도
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <select 
+                        v-model="level"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-select form-select-lg form-select-solid"
+                      >
+                        <option disabled value="">난이도를 선택하세요</option>
+                        <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                      </select>
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="level"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 상태 드롭다운 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      상태
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <select 
+                        v-model="status"
+                        style="font-weight: bold; font-size: 16px; float: left;"
+                        class="form-select form-select-lg form-select-solid"
+                      >
+                        <option disabled value="">상태를 선택하세요</option>
+                        <option value="OPEN">OPEN</option>
+                        <option value="CLOSE">CLOSE</option>
+                      </select>
+                      <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                          <ErrorMessage name="status"/>
                         </div>
                       </div>
                     </div>
@@ -84,27 +128,6 @@
                       <div class="fv-plugins-message-container">
                         <div class="fv-help-block">
                           <ErrorMessage name="product"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Level 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      난이도
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="level"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
-                        placeholder="난이도를 입력하세요 (1~10 단계)"
-                      />
-                      <div class="fv-plugins-message-container">
-                        <div class="fv-help-block">
-                          <ErrorMessage name="level"/>
                         </div>
                       </div>
                     </div>
@@ -136,30 +159,29 @@
               </VForm>
             </div>
           </div>
-
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
           <button
-              type="button"
-              class="btn btn-light btn-active-light-primary me-2"
-              @click="goBack"
-              >
+            type="button"
+            class="btn btn-light btn-active-light-primary me-2"
+            @click="goBack"
+          >
             취소
           </button>
           <button
-              type="submit"
-              id="kt_account_detaiprofile_details_submit"
-              ref="submitButton1"
-              class="btn btn-primary"
-              @click="fetchData()"
-             >
+            type="submit"
+            id="kt_account_detaiprofile_details_submit"
+            ref="submitButton1"
+            class="btn btn-primary"
+            @click="fetchData()"
+          >
             <span class="indicator-label">
               등록
             </span>
             <span class="indicator-progress">
               잠시만 기다려주세요...
               <span
-                  class="spinner-border spinner-border-sm align-middle ms-2">
+                class="spinner-border spinner-border-sm align-middle ms-2">
               </span>
             </span>
           </button>
@@ -168,6 +190,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script lang="ts">
@@ -185,7 +208,8 @@ export default defineComponent({
     const programName = ref(''); // 프로그램명 입력 필드 상태
     const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
     const product = ref(''); // 교구 입력 필드 상태
-    const level = ref<number | null>(null); // level 상태 추가
+    const level = ref<number | null>(null); // level 상태 추가 (드롭다운 사용)
+    const status = ref(''); // 상태 추가 (드롭다운 사용)
     const remark = ref(''); // remark 상태 추가
     const errorMessage = ref(''); // 에러 메시지 상태 추가
 
@@ -211,6 +235,7 @@ export default defineComponent({
             "chapter": chapter.value,
             "productSn": product.value,
             "level": level.value, // level 값 추가
+            "status": status.value, // 상태 값 추가
             "remark": remark.value // remark 값 추가
         }),
         {
@@ -262,7 +287,8 @@ export default defineComponent({
       programName,
       chapter,
       product,
-      level, // level 상태 반환
+      level, // level 상태 반환 (드롭다운 사용)
+      status, // 상태 반환 (드롭다운 사용)
       remark, // remark 상태 반환
       submitButton,
       fetchData,

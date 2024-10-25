@@ -17,6 +17,16 @@
     <div class="separator border-gray-200"></div>
     <div class="px-7 py-5">
       <div class="mb-10">
+        <label class="form-label fw-semibold">상태</label>
+        <div>
+          <select class="form-select form-select-solid select2-hidden-accessible" v-model="data.status">
+            <option value="">전체</option>
+            <option value="OPEN">OPEN</option>
+            <option value="CLOSE">CLOSE</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-10">
         <label class="form-label fw-semibold">프로그램명</label>
         <div>
           <input type="text" class="form-control form-control-solid" placeholder="프로그램명을 입력해주세요." v-model="data.programName" />

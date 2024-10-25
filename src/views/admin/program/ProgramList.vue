@@ -3,30 +3,62 @@
     <div class="card-header border-0 pt-6">
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div v-if="selectedIds.length === 0" class="d-flex justify-content-end align-items-center">
-          <button
-            tabindex="3"
-            type="button"
-            @click="onButtonAction"
-            class="menu-link px-3 btn btn-light-primary"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            <span class="indicator-label">프로그램 등록</span>
-          </button>
-        </div>
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span> Selected
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+                <div class="fw-bold me-5">
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="d-flex align-items-center me-3" style=" margin-right: 0 !important">
+                  <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
+                      <option value="OPEN">OPEN</option>
+                      <option value="CLOSE">CLOSE</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary checkbox-button"
+                    @click="changeProgramStatus"
+                  >
+                    상태 변경
+                  </button>
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="ms-4" style=" margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger checkbox-button"
+                    @click="onDeletePrograms"
+                  >
+                    프로그램 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3"></div>
+              </div>
+            </transition>
           </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="onDeletePrograms"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            프로그램 삭제
-          </button>
+
+
+          <div class="d-flex justify-content-end align-items-center">
+            <button
+              tabindex="3"
+              type="button"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
+            >
+              <span class="indicator-label">프로그램 등록</span>
+            </button>
+          </div>
         </div>
+
         <div class="card-toolbar">
           <button
             type="button"
@@ -55,6 +87,9 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
+        <template v-slot:header-status>
+          <div>상태</div>
+        </template>
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
@@ -74,6 +109,13 @@
           <div>생성 날짜</div>
         </template>
 
+        <template v-slot:status="{ row: customer }">
+          <div class="column-status" @click="onProgramClick(customer)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">
+              {{ statusLabel[customer.status] }}
+            </span>
+          </div>
+        </template>
         <template v-slot:programName="{ row: customer }">
           <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
             {{ customer.programName }}
@@ -192,8 +234,75 @@ export default defineComponent({
     const search = ref<string>("");
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
+    const selectedStatus = ref("OPEN");
+
+    const changeProgramStatus = async () => {
+      const token = localStorage.getItem("token");
+
+      // 선택된 항목이 없을 경우 알림 표시
+      if (selectedIds.value.length === 0) {
+        Swal.fire({
+          title: "선택된 항목 없음",
+          text: "상태를 변경할 항목을 선택하세요.",
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+
+      try {
+        const requestBody = {
+          programIds: selectedIds.value,
+          status: selectedStatus.value,
+        };
+
+        console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/programs/status`);
+        console.log("요청 바디:", requestBody);
+
+        await axios.post(
+          `http://localhost:8081/api/v1/admin/programs/status`,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "선택된 프로그램의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error changing program status: ", error);
+
+        Swal.fire({
+          title: "오류",
+          text: "프로그램 상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
+
 
     const headerConfig = ref([
+      {
+        columnName: "상태",
+        columnLabel: "status",
+        sortEnabled: true,
+        columnWidth: 50,
+      },
       {
         columnName: "프로그램명",
         columnLabel: "programName",
@@ -210,13 +319,13 @@ export default defineComponent({
         columnName: "교구",
         columnLabel: "product",
         sortEnabled: true,
-        columnWidth: 100,
+        columnWidth: 50,
       },
       {
         columnName: "레벨",
         columnLabel: "level",
         sortEnabled: true,
-        columnWidth: 100,
+        columnWidth: 50,
       },
       {
         columnName: "비고",
@@ -231,6 +340,16 @@ export default defineComponent({
         columnWidth: 150,
       },
     ]);
+
+    const statusColor = {
+      OPEN: "primary",
+      CLOSE: "danger"
+    };
+
+    const statusLabel = {
+      OPEN: "OPEN",
+      CLOSE: "CLOSE"
+    };
 
     const isLoading = ref<boolean>(false);
     const isAscending = ref({
@@ -290,7 +409,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}&status=OPEN`,
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -300,7 +419,7 @@ export default defineComponent({
         const responseData = response.data;
         console.log(
           "API 호출 URL:",
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}&status=OPEN`
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
         );
         console.log("API 응답 데이터:", response.data);
 
@@ -358,7 +477,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}&status=OPEN`, {
+        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -372,7 +491,7 @@ export default defineComponent({
     const deleteFewSubscriptions = async () => {
       const result = await Swal.fire({
         title: "프로그램 삭제 확인",
-        text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
+        text: "정말로 삭제하시겠습니까?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "삭제",
@@ -385,20 +504,35 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        for (const id of selectedIds.value) {
-          await deleteSubscription(id);
+        try {
+          for (const id of selectedIds.value) {
+            await deleteSubscription(id);
+          }
+
+          selectedIds.value.length = 0;
+
+          Swal.fire({
+            title: "삭제 완료",
+            text: "선택된 프로그램이 삭제되었습니다.",
+            icon: "success",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-primary",
+            },
+          }).then(() => {
+            window.location.reload();
+          });
+        } catch (error) {
+          console.error("Error deleting program: ", error);
+
+          Swal.fire({
+            title: "오류",
+            text: "프로그램 삭제에 실패했습니다.",
+            icon: "error",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-danger",
+            },
+          });
         }
-
-        selectedIds.value.length = 0;
-
-        Swal.fire({
-          title: "삭제 완료",
-          text: "선택된 프로그램이 삭제되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        });
       }
     };
 
@@ -424,6 +558,11 @@ export default defineComponent({
           ? "&sortBy=level&direction=asc"
           : "&sortBy=level&direction=desc";
         isAscending.value.level = !isAscending.value.level;
+      } else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
       } else {
         return;
       }
@@ -493,6 +632,10 @@ export default defineComponent({
       currentSortBy,
       filters,
       handleFilter,
+      selectedStatus,
+      changeProgramStatus,
+      statusColor,
+      statusLabel,
     };
   },
 });
@@ -525,7 +668,7 @@ export default defineComponent({
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
+.column-status,
 .column-programName,
 .column-chapter,
 .column-product,
@@ -533,6 +676,15 @@ export default defineComponent({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.column-status{
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .column-programName {
@@ -546,7 +698,7 @@ export default defineComponent({
 }
 
 .column-chapter {
-  width: 100px;
+  width: 50px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -556,7 +708,7 @@ export default defineComponent({
 }
 
 .column-product {
-  width: 100px;
+  width: 50px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -573,5 +725,27 @@ export default defineComponent({
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.dropdown-button {
+  padding-left: 7px !important;
 }
 </style>
