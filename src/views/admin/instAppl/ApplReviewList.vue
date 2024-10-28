@@ -1,6 +1,15 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
+      <div class="d-flex align-items-center me-3">
+        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
+          <option value="Y">확정</option>
+          <!-- <option value="N">미확정</option> -->
+        </select>
+        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          필터 상태 적용
+        </button>
+      </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
@@ -227,6 +236,7 @@ export default defineComponent({
   },
 
   setup() {
+    const filterGoalIsConfirmed = ref("Y");
     const router = useRouter();
     const data = ref<Array<IProgram>>([]);
     const totalElements = ref<number>(0);
@@ -238,6 +248,63 @@ export default defineComponent({
     const selectedIds = ref<Array<number>>([]);
     const selectedIsConfirmed = ref("Y");
 
+    const applyStatusFilter = async () => {
+      const result = await Swal.fire({
+    title: "상태 필터 적용 확인",
+    text: "정말로 이 상태 필터를 적용하시겠습니까?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "예",
+    cancelButtonText: "아니오",
+    customClass: {
+      confirmButton: "btn fw-semibold btn-primary",
+      cancelButton: "btn fw-semibold btn-light",
+    },
+    buttonsStyling: false,
+  });
+
+  if (!result.isConfirmed) {
+    return;
+  }
+      const token = localStorage.getItem("token");
+      const goalIsConfirmed = filterGoalIsConfirmed.value;
+      const filterQuery = buildFilterQuery(filters.value);
+      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
+      console.log("goalIsConfirmed 값:", goalIsConfirmed);
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "필터 적용 완료",
+          text: "선택된 상태 필터가 적용되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+      window.location.reload();
+    });;
+      } catch (error) {
+        console.error("Error applying status filter: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "상태 필터 적용에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
+    
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 
@@ -690,6 +757,8 @@ export default defineComponent({
       statusLabel,
       changeProgramStatus,
       selectedIsConfirmed,
+      filterGoalIsConfirmed,
+      applyStatusFilter,
     };
   },
 });

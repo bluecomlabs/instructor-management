@@ -38,7 +38,7 @@ const MainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
-    heading: "기관 신청 관리",
+    heading: "교육 관리",
     route: "/resources",
     pages: [
       // {
@@ -60,7 +60,7 @@ const MainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "기관 수기 신청",
+        heading: "교육 신청",
         route: "/admin/InstApplPassivity",
         keenthemesIcon: "notepad-edit",
         bootstrapIcon: "bi-printer",
@@ -72,7 +72,7 @@ const MainMenuConfig: Array<MenuItem> = [
     route: "/교육 관리",
     pages: [
       {
-        heading: "신청 조회 및 확정",
+        heading: "신청 조회 및 배정",
         route: "/admin/TeacherApplList",
         keenthemesIcon: "archive-tick",
         bootstrapIcon: "bi-printer",

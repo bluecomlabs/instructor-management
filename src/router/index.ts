@@ -406,14 +406,14 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["프로그램 관리", "프로그램 수정"],
         },
       },
-      // 기관 신청 관리
+      // 교육 관리
       // {
       //   path: "InstApplList",
       //   name: "admin-InstApplList",
       //   component: () => import("@/views/admin/instAppl/InstApplList.vue"),
       //   meta: {
-      //     pageTitle: "기관 신청 관리",
-      //     breadcrumbs: ["기관 신청 관리", "기관별 신청 조회"],
+      //     pageTitle: "교육 관리",
+      //     breadcrumbs: ["교육 관리", "기관별 신청 조회"],
       //   },
       // },
       {
@@ -422,7 +422,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/instAppl/ApplReviewList.vue"),
         meta: {
           pageTitle: "신청 조회 및 확정",
-          breadcrumbs: ["기관 신청 관리", "신청 조회 및 확정"],
+          breadcrumbs: ["교육 관리", "신청 조회 및 확정"],
         },
       },
       {
@@ -431,7 +431,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/instAppl/ApplReviewDetails.vue"),
         meta: {
           pageTitle: "신청 조회 및 확정 상세보기",
-          breadcrumbs: ["기관 신청 관리", "신청 조회 및 확정", "신청 조회 및 확정 상세보기"],
+          breadcrumbs: ["교육 관리", "신청 조회 및 확정", "신청 조회 및 확정 상세보기"],
         },
       },
       {
@@ -439,8 +439,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-ApplStatusChange",
         component: () => import("@/views/admin/instAppl/ApplStatusChange.vue"),
         meta: {
-          pageTitle: "기관 신청 관리",
-          breadcrumbs: ["기관 신청 관리", "신청 상태 변경"],
+          pageTitle: "교육 관리",
+          breadcrumbs: ["교육 관리", "신청 상태 변경"],
         },
       },
       {
@@ -448,8 +448,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstApplPassivity",
         component: () => import("@/views/admin/instAppl/InstApplPassivity.vue"),
         meta: {
-          pageTitle: "기관 신청 관리",
-          breadcrumbs: ["기관 신청 관리", "기관 수기 신청"],
+          pageTitle: "교육 관리",
+          breadcrumbs: ["교육 관리", "교육 신청"],
         },
       },
       // 강사 배정 관리
