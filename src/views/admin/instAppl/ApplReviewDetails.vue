@@ -13,7 +13,7 @@
                 aria-controls="kt_account_toturprofile_details"
             >
               <div class="card-title m-0">
-                <h2 class="fw-bold m-0">출강교육 상세보기</h2>
+                <h2 class="fw-bold m-0">교육 신청</h2>
               </div>
             </div>
 
@@ -24,60 +24,29 @@
                   novalidate
               >
                 <div class="card-body border-top p-9">
-                  
-                  <!-- ID 입력 필드 -->
+                  <!-- 기관 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      ID
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="id"
-                        class="form-control form-control-lg form-control-solid disabled-input" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 프로그램명 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      프로그램명
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="programName"
-                        class="form-control form-control-lg form-control-solid disabled-input" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 총 차시 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      총 차시 (챕터)
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="chapterNumber"
-                        class="form-control form-control-lg form-control-solid disabled-input" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 교육기관명 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      교육기관명
+                      기관
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
                         v-model="institutionName"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
+                        disabled
+                      />
+                    </div>
+                  </div>
+
+                  <!-- 프로그램 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      프로그램
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="programName"
                         class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
@@ -130,10 +99,10 @@
                     </div>
                   </div>
 
-                  <!-- 날짜 입력 필드 -->
+                  <!-- 수업일 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      날짜
+                      수업일
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
@@ -144,27 +113,44 @@
                       />
                     </div>
                   </div>
-                  
-                  <!-- Remark 입력 필드 -->
-                  <div class="row mb-6">
+
+                  <!-- 필요 교구 수량 입력 필드 -->
+                  <!-- <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      메모
+                      필요 교구 수량
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="remark"
+                        v-model="numberOfMaterials"
+                        class="form-control form-control-lg form-control-solid disabled-input" 
+                        type="text"
+                        disabled
+                      />
+                    </div>
+                  </div> -->
+
+                  <!-- 총 차시 입력 필드 -->
+                  <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                      총 차시
+                    </label>
+                    <div class="col-lg-8 fv-row">
+                      <input 
+                        v-model="chapterNumber"
                         class="form-control form-control-lg form-control-solid disabled-input" 
                         type="text"
                         disabled
                       />
                     </div>
                   </div>
+
+                  <!-- 교육 차시 상세보기 -->
                   <h3 class="fw-bold mt-10 mb-5">교육 차시 상세</h3>
                   <div class="row">
                     <div
                       v-for="(chapter, index) in educationChapters"
                       :key="index"
-                      class="col-md-4 mb-4"
+                      class="col-md-12 mb-4"
                     >
                       <div class="card h-100">
                         <div
@@ -196,45 +182,29 @@
 
                             <div class="mb-3">
                               <label class="form-label fw-semibold">
-                                시작 시간
+                                시간
                               </label>
-                              <input 
-                                v-model="chapter.startTime"
-                                class="form-control form-control-solid" 
-                                type="text"
-                                disabled
-                              />
-                            </div>
-
-                            <div class="mb-3">
-                              <label class="form-label fw-semibold">
-                                종료 시간
-                              </label>
-                              <input 
-                                v-model="chapter.endTime"
-                                class="form-control form-control-solid" 
-                                type="text"
-                                disabled
-                              />
-                            </div>
-
-                            <div class="mb-3">
-                              <label class="form-label fw-semibold">
-                                설명
-                              </label>
-                              <textarea
-                                v-model="chapter.notes"
-                                class="form-control form-control-solid"
-                                rows="3"
-                                disabled>
-                              </textarea>
+                              <div class="d-flex align-items-center">
+                                <input 
+                                  v-model="chapter.startTime"
+                                  class="form-control form-control-solid me-2" 
+                                  type="text"
+                                  disabled
+                                />
+                                <span>~</span>
+                                <input 
+                                  v-model="chapter.endTime"
+                                  class="form-control form-control-solid ms-2" 
+                                  type="text"
+                                  disabled
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                 </div>
               </VForm>
             </div>
@@ -243,18 +213,10 @@
         <div class="card-footer d-flex justify-content-end py-6 px-9">
           <button
               type="button"
-              class="btn btn-left btn-active-left-primary me-2"
-              style="margin-right: auto !important; background-color: red; color: white;"
-              @click="deleteData()"
-              >
-            삭제
-          </button>
-          <button
-              type="button"
               class="btn btn-light btn-active-light-primary me-2"
               @click="goBack"
               >
-            뒤로
+            취소
           </button>
           <button
               type="submit"
@@ -263,21 +225,13 @@
               class="btn btn-primary"
               @click="goEdit()"
              >
-            <span class="indicator-label">
-              수정
-            </span>
-            <span class="indicator-progress">
-              잠시만 기다려주세요...
-              <span class="spinner-border spinner-border-sm align-middle ms-2">
-              </span>
-            </span>
+            수정
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script lang="ts">
 import axios from 'axios';
@@ -452,5 +406,12 @@ export default defineComponent({
   float: left;
   text-align: center;
   background-color: #F9F9F9;
+}
+.card-header {
+  background-color: #F1F3F4;
+}
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 </style>

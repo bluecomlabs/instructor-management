@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center me-3">
         <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
           <option value="Y">확정</option>
-          <!-- <option value="N">미확정</option> -->
+          <option value="N">미확정</option>
         </select>
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
@@ -26,7 +26,7 @@
                   <div class="dropdown me-2">
                     <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
                       <option value="Y">확정</option>
-                      <!-- <option value="N">미확정</option> -->
+                      <option value="N">미확정</option>
                     </select>
                   </div>
 
@@ -249,23 +249,37 @@ export default defineComponent({
     const selectedIsConfirmed = ref("Y");
 
     const applyStatusFilter = async () => {
+      const alreadyConfirmed = data.value.some(
+        (program) => program.isConfirmed === "Y"
+      );
+      if (alreadyConfirmed && filterGoalIsConfirmed.value === "Y") {
+        Swal.fire({
+          title: "필터 적용 불가",
+          text: "이미 확정된 항목이 포함되어 있습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+        return;
+      }
       const result = await Swal.fire({
-    title: "상태 필터 적용 확인",
-    text: "정말로 이 상태 필터를 적용하시겠습니까?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "예",
-    cancelButtonText: "아니오",
-    customClass: {
-      confirmButton: "btn fw-semibold btn-primary",
-      cancelButton: "btn fw-semibold btn-light",
-    },
-    buttonsStyling: false,
-  });
+        title: "상태 필터 적용 확인",
+        text: "정말로 이 상태 필터를 적용하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
 
-  if (!result.isConfirmed) {
-    return;
-  }
+      if (!result.isConfirmed) {
+        return;
+      }
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
@@ -315,6 +329,22 @@ export default defineComponent({
           icon: "warning",
           customClass: {
             confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+
+      const alreadyConfirmed = data.value.some(
+        (program) => selectedIds.value.includes(program.id) && program.isConfirmed === "Y"
+      );
+
+      if (alreadyConfirmed) {
+        Swal.fire({
+          title: "상태 변경 불가",
+          text: "이미 확정된 항목이 포함되어 있습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
           },
         });
         return;

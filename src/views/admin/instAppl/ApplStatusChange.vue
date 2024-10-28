@@ -2,9 +2,16 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
-          <option value="Y">확정</option>
-          <option value="N">미확정</option>
+        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+          <!-- <option value="INIT">INIT</option> -->
+          <option value="READY">강사 열람 가능</option>
+          <option value="OPEN">강사 신청 가능</option>
+          <option value="APPLIED">신청 마감</option>
+          <option value="CONFIRMED">출강 확정</option>
+          <option value="PROGRESS">강의 진행 중</option>
+          <option value="COMPLETE">강의 종료</option>
+          <option value="PAUSE">강의 중지</option>
+          <option value="CANCEL">강의 취소</option>
         </select>
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
@@ -24,9 +31,16 @@
 
                 <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
                   <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
-                      <option value="Y">확정</option>
-                      <!-- <option value="N">미확정</option> -->
+                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+                      <!-- <option value="INIT">INIT</option> -->
+                      <option value="READY">강사 열람 가능</option>
+                      <option value="OPEN">강사 신청 가능</option>
+                      <option value="APPLIED">신청 마감</option>
+                      <option value="CONFIRMED">출강 확정</option>
+                      <option value="PROGRESS">강의 진행 중</option>
+                      <option value="COMPLETE">강의 종료</option>
+                      <option value="PAUSE">강의 중지</option>
+                      <option value="CANCEL">강의 취소</option>
                     </select>
                   </div>
 
@@ -41,7 +55,7 @@
 
                 <div class="vertical-separator mx-3"></div>
 
-                <div class="ms-4" style="margin-left: 0 !important">
+                <!-- <div class="ms-4" style="margin-left: 0 !important">
                   <button
                     type="button"
                     class="btn btn-danger checkbox-button"
@@ -50,12 +64,12 @@
                     프로그램 삭제
                   </button>
                 </div>
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3"></div> -->
               </div>
             </transition>
           </div>
 
-          <div class="d-flex justify-content-end align-items-center">
+          <!-- <div class="d-flex justify-content-end align-items-center">
             <button
               tabindex="3"
               type="button"
@@ -64,7 +78,7 @@
             >
               <span class="indicator-label">프로그램 등록</span>
             </button>
-          </div>
+          </div> -->
         </div>
 
         <div class="card-toolbar">
@@ -96,10 +110,10 @@
         @selection-change="onSelectionChange"
       >
 
-        <template v-slot:isConfirmed="{ row: customer }">
-          <div class="column-isConfirmed" @click="onProgramClick(customer)" style="cursor: pointer;">
-            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
-              {{ statusLabel[customer.isConfirmed] }}
+        <template v-slot:status="{ row: customer }">
+          <div class="column-status" @click="onProgramClick(customer)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">
+              {{ statusLabel[customer.status] }}
             </span>
           </div>
         </template>
@@ -236,7 +250,7 @@ export default defineComponent({
   },
 
   setup() {
-    const filterGoalIsConfirmed = ref("Y");
+    const filterGoalIsConfirmed = ref("READY");
     const router = useRouter();
     const data = ref<Array<IProgram>>([]);
     const totalElements = ref<number>(0);
@@ -246,35 +260,35 @@ export default defineComponent({
     const search = ref<string>("");
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
-    const selectedIsConfirmed = ref("Y");
+    const selectedIsConfirmed = ref("READY");
 
     const applyStatusFilter = async () => {
       const result = await Swal.fire({
-    title: "상태 필터 적용 확인",
-    text: "정말로 이 상태 필터를 적용하시겠습니까?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "예",
-    cancelButtonText: "아니오",
-    customClass: {
-      confirmButton: "btn fw-semibold btn-primary",
-      cancelButton: "btn fw-semibold btn-light",
-    },
-    buttonsStyling: false,
-  });
+        title: "상태 필터 적용 확인",
+        text: "정말로 이 상태 필터를 적용하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
 
-  if (!result.isConfirmed) {
-    return;
-  }
+    if (!result.isConfirmed) {
+      return;
+    }
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
+      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`);
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -290,8 +304,8 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-primary",
           },
         }).then(() => {
-      window.location.reload();
-    });;
+          window.location.reload();
+        });;
       } catch (error) {
         console.error("Error applying status filter: ", error);
         Swal.fire({
@@ -337,14 +351,16 @@ export default defineComponent({
         return;
       }
 
+      console.log("선택된 ID:", selectedIds.value);
+  console.log("선택된 상태:", selectedIsConfirmed.value);
       try {
         const requestBody = {
           educationIds: selectedIds.value,
-          isConfirmed: selectedIsConfirmed.value,
+          status: selectedIsConfirmed.value,
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmed`,
+          `http://localhost:8081/api/v1/admin/apply-for-programs/status`,
           requestBody,
           {
             headers: {
@@ -380,7 +396,7 @@ export default defineComponent({
     const headerConfig = ref([
       {
         columnName: "확정",
-        columnLabel: "isConfirmed",
+        columnLabel: "status",
         sortEnabled: true,
         columnWidth: 100,
       },
@@ -433,15 +449,28 @@ export default defineComponent({
         columnWidth: 300,
       },
     ]);
-
     const statusColor = {
-      Y: "primary",
-      N: "danger"
+      INIT: "info",
+      OPEN: "primary",
+      READY: "warning",
+      APPLIED: "info",
+      CONFIRMED: "success",
+      PROGRESS: "primary",
+      COMPLETE: "success",
+      PAUSE: "danger",
+      CANCEL: "info",
     };
 
     const statusLabel = {
-      Y: "확정",
-      N: "미확정"
+      INIT: "강의 대기 중",
+      OPEN: "강사 열람 가능",
+      READY: "강사 신청 가능",
+      APPLIED: "신청 마감",
+      CONFIRMED: "확정 완료",
+      PROGRESS: "강의 진행 중",
+      COMPLETE: "강의 종료",
+      PAUSE: "강의 중지",
+      CANCEL: "강의 취소",
     };
 
     const isLoading = ref<boolean>(false);
@@ -507,7 +536,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -520,7 +549,7 @@ export default defineComponent({
           console.log('Total pages from API:', responseData.totalPages);
           console.log(
             "API 호출 URL:",
-            `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+            `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
           );
           console.log("API 응답 데이터:", response.data);
 
@@ -548,11 +577,14 @@ export default defineComponent({
     };
 
 
-
+    
     const buildFilterQuery = (filtersData) => {
       let query = "";
       if (filtersData.chapter) {
         query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
+      }
+      if (filtersData.status) {
+        query += `&status=${encodeURIComponent(filtersData.status)}`;
       }
       if (filtersData.isConfirmed) {
         query += `&isConfirmed=${encodeURIComponent(filtersData.isConfirmed)}`;
@@ -644,11 +676,11 @@ export default defineComponent({
 
     const sort = (sort: Sort) => {
       let sortBy = "";
-      if (sort.label === "isConfirmed") {
-        sortBy = isAscending.value.isConfirmed
-          ? "&sortBy=isConfirmed&direction=asc"
-          : "&sortBy=isConfirmed&direction=desc";
-        isAscending.value.isConfirmed = !isAscending.value.isConfirmed;
+      if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
       } else if (sort.label === "institutionName") {
         sortBy = isAscending.value.institutionName
           ? "&sortBy=institutionName&direction=asc"
