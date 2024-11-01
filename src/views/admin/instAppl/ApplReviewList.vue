@@ -569,7 +569,7 @@ export default defineComponent({
         }));
 
         totalElements.value = responseData.content.length;
-        totalPages.value = Math.ceil(totalElements.value / pageSize.value); // totalPages를 직접 계산합니다.
+        totalPages.value = responseData.totalPages;
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {

@@ -352,7 +352,7 @@ export default defineComponent({
       }
 
       console.log("선택된 ID:", selectedIds.value);
-  console.log("선택된 상태:", selectedIsConfirmed.value);
+      console.log("선택된 상태:", selectedIsConfirmed.value);
       try {
         const requestBody = {
           educationIds: selectedIds.value,

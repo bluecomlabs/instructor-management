@@ -239,7 +239,6 @@ export default defineComponent({
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 
-      // 선택된 항목이 없을 경우 알림 표시
       if (selectedIds.value.length === 0) {
         Swal.fire({
           title: "선택된 항목 없음",

@@ -435,6 +435,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "ApplReviewEdit",
+        name: "admin-ApplReviewEdit",
+        component: () => import("@/views/admin/instAppl/ApplReviewEdit.vue"),
+        meta: {
+          pageTitle: "신청 조회 및 확정 상세보기",
+          breadcrumbs: ["교육 관리", "신청 조회 및 확정", "신청 조회 및 확정 수정"],
+        },
+      },
+      {
         path: "ApplStatusChange",
         name: "admin-ApplStatusChange",
         component: () => import("@/views/admin/instAppl/ApplStatusChange.vue"),
@@ -446,7 +455,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "InstApplPassivity",
         name: "admin-InstApplPassivity",
-        component: () => import("@/views/admin/instAppl/InstApplPassivity.vue"),
+        component: () => import("@/views/admin/instAppl/ApplReviewAdd.vue"),
         meta: {
           pageTitle: "교육 관리",
           breadcrumbs: ["교육 관리", "교육 신청"],

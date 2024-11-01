@@ -200,6 +200,26 @@
                                 />
                               </div>
                             </div>
+                            <div class="mb-3">
+                              <label class="form-label fw-semibold">주 강사 수</label>
+                              <input
+                                v-model="chapter.mainInstructorsNumber"
+                                class="form-control form-control-solid"
+                                type="text"
+                                disabled
+                              />
+                            </div>
+
+                            <!-- Assistant Instructors Number -->
+                            <div class="mb-3">
+                              <label class="form-label fw-semibold">보조 강사 수</label>
+                              <input
+                                v-model="chapter.assistantInstructorsNumber"
+                                class="form-control form-control-solid"
+                                type="text"
+                                disabled
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -261,7 +281,7 @@ export default defineComponent({
     const classNumber = ref<number | null>(null);
     const numberOfStudents = ref<number | null>(null);
     const date = ref<number | null>(null);
-      const educationChapters = ref<EducationChapter[]>([]);
+    const educationChapters = ref<EducationChapter[]>([]);
       
     const remark = ref('');
     const errorMessage = ref('');
@@ -365,7 +385,7 @@ export default defineComponent({
     };
 
     const goEdit = () => {
-      router.push({ name: "admin-ProgramEdit" })
+      router.push({ name: "admin-ApplReviewEdit" })
     };
 
     onMounted(() => {
