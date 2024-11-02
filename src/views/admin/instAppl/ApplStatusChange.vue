@@ -463,10 +463,10 @@ export default defineComponent({
 
     const statusLabel = {
       INIT: "강의 대기 중",
-      OPEN: "강사 열람 가능",
-      READY: "강사 신청 가능",
+      OPEN: "강사 신청 가능",
+      READY: "강사 열람 가능",
       APPLIED: "신청 마감",
-      CONFIRMED: "확정 완료",
+      CONFIRMED: "출강 확정",
       PROGRESS: "강의 진행 중",
       COMPLETE: "강의 종료",
       PAUSE: "강의 중지",
