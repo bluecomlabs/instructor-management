@@ -809,12 +809,13 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .custom-number-input button {
-  width: 40px;
-  height: 40px;
+  width: 45.88px;
+  height: 45.88px;
   font-size: 24px;
   font-weight: bold;
   background-color: #f1f3f4;
   border: 1px solid #ccc;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
@@ -827,6 +828,6 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 100px;
   text-align: center !important;
   border: 1px solid #ccc;
-  height: 40px;
+  height: 45.88px;
 }
 </style>
