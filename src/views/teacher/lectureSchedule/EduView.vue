@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
+      <!-- <div class="d-flex align-items-center me-3">
         <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
           <option value="Y">확정</option>
           <option value="N">미확정</option>
@@ -9,10 +9,10 @@
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
-      </div>
+      </div> -->
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div class="card-toolbar d-flex justify-content-between align-items-center">
+        <!-- <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
@@ -65,7 +65,7 @@
               <span class="indicator-label">프로그램 등록</span>
             </button>
           </div>
-        </div>
+        </div> -->
 
         <div class="card-toolbar">
           <button
@@ -77,7 +77,7 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          <Dropdown6 @apply-filter="handleFilter"></Dropdown6>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
         @selection-change="onSelectionChange"
       >
 
@@ -211,7 +211,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
+import Dropdown6 from "@/components/dropdown/Dropdown6.vue";
 
 interface IProgram {
   id: number;
@@ -232,7 +232,7 @@ export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown4,
+    Dropdown6,
   },
 
   setup() {
@@ -408,15 +408,15 @@ export default defineComponent({
     };
 
     const headerConfig = ref([
+      // {
+      //   columnName: "확정",
+      //   columnLabel: "isConfirmed",
+      //   sortEnabled: true,
+      //   columnWidth: 100,
+      // },
       {
-        columnName: "확정",
-        columnLabel: "isConfirmed",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "교육기관명",
-        columnLabel: "institutionName",
+        columnName: "총 차시",
+        columnLabel: "chapterNumber",
         sortEnabled: true,
         columnWidth: 100,
       },
@@ -427,8 +427,8 @@ export default defineComponent({
         columnWidth: 100,
       },
       {
-        columnName: "총 차시",
-        columnLabel: "chapterNumber",
+        columnName: "교육기관명",
+        columnLabel: "institutionName",
         sortEnabled: true,
         columnWidth: 100,
       },
@@ -447,7 +447,7 @@ export default defineComponent({
       {
         columnName: "반",
         columnLabel: "classNumber",
-        sortEnabled: false,
+        sortEnabled: true,
         columnWidth: 50,
       },
       {

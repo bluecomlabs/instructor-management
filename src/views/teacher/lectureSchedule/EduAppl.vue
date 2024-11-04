@@ -1,375 +1,811 @@
 <template>
-  <!--begin::Card-->
   <div class="card">
-
-    <div class="d-flex justify-content-end my-3">
-      <button @click="goToDashboard" class="btn btn-primary custom-button top-button">
-        <KTIcon icon-name="element-11" icon-class="fs-2 me-2" />
-        대시보드
-      </button>
-    </div>
-
-    <!--begin::Card header-->
     <div class="card-header border-0 pt-6">
-      <div class="card-title">
-        <div class="d-flex align-items-center position-relative my-1">
-          <KTIcon
-            icon-name="magnifier"
-            icon-class="fs-1 position-absolute ms-6"
-          />
-          <input
-            v-model="search"
-            @input="searchItems()"
-            type="text"
-            data-kt-subscription-table-filter="search"
-            class="form-control form-control-solid w-250px ps-14"
-            placeholder="Search Subscriptions"
-          />
-        </div>
+      <div class="d-flex align-items-center me-3">
+        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
+          <option value="Y">확정</option>
+          <option value="N">미확정</option>
+        </select>
+        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          필터 상태 적용
+        </button>
       </div>
-
-      <!--begin::Card toolbar-->
+      <div class="card-title"></div>
       <div class="card-toolbar">
-        <div class="d-flex justify-content-end align-items-center">
-          <!-- 로딩 버튼 -->
-        </div>
-        <!--begin::Toolbar-->
-        <div
-          v-if="selectedIds.length === 0"
-          class="d-flex justify-content-end"
-          data-kt-subscription-table-toolbar="base"
-        >
-        </div>
-        <!--end::Toolbar-->
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+                <div class="fw-bold me-5">
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                </div>
 
-        <!--begin::Group actions-->
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span>Selected
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="dropdown me-2">
+                  <select
+                    v-model="selectedGoal"
+                    class="form-select checkbox-button dropdown-button"
+                  >
+                    <option value="UPDATE">신청하기</option>
+                    <option value="DELETE">취소하기</option>
+                  </select>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn-primary checkbox-button"
+                  @click="changeProgramStatus"
+                >
+                  상태 변경
+                </button>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="ms-4" style="margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger checkbox-button"
+                    @click="onDeletePrograms"
+                  >
+                    프로그램 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3"></div>
+              </div>
+            </transition>
           </div>
+
+          <div class="d-flex justify-content-end align-items-center">
+            <button
+              tabindex="3"
+              type="button"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
+            >
+              <span class="indicator-label">프로그램 등록</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-toolbar">
           <button
             type="button"
-            class="btn btn-danger"
-            @click="deleteFewSubscriptions()"
-          >
-            Delete Selected
-          </button>
-        </div>
-        <!--end::Group actions-->
-      </div>
-      <!--end::Card toolbar-->
-    </div>
-    <!--end::Card header-->
-
-    <!--begin::Card body-->
-    <div class="card-body pt-0">
-      <!-- 로딩 오버레이 -->
-      <div v-if="isLoading" class="overlay">
-        <div class="loader"></div>
-      </div>
-      <KTDatatable
-        @on-sort="sort"
-        @on-items-select="onItemSelect"
-        @on-items-per-page-change="onItemsPerPageChange"
-        :data="data"
-        :header="headerConfig"
-        :checkbox-enabled="true"
-      >
-        <template v-slot:customer="{ row: customer }">
-          <div>
-            <div class="text-gray-800 text-hover-primary mb-1">
-              {{ customer.customer }}
-            </div>
-            <div class="text-muted small">
-              <!-- 강사명 나열 -->
-              <span v-if="customer.status.length > 0" v-for="(teacher, index) in customer.status" :key="index">
-                {{ teacher }}<span v-if="index < customer.status.length - 1">, </span>
-              </span>
-
-              <!-- 강사 수 / 최대 강사 수 혹은 마감 표시 -->
-              <span class="ms-2">
-                <!-- 강사 수가 0이거나 강사가 없는 경우 처리 -->
-                <template v-if="!customer.status || customer.status.length === 0 || customer.status.includes(null)">
-                  (0 / {{ customer.maxInstructors }})
-                </template>
-                <template v-else-if="customer.status.length === customer.maxInstructors">
-                  <span class="text-danger">(마감)</span>
-                </template>
-                <template v-else>
-                  ({{ customer.status.length }} / {{ customer.maxInstructors }})
-                </template>
-              </span>
-            </div>
-          </div>
-        </template>
-
-        <template v-slot:institutionName="{ row: customer }">
-          <div>{{ customer.institutionName }}</div>
-        </template>
-
-        <template v-slot:date="{ row: customer }">
-          <div>{{ customer.date }}</div>
-        </template>
-        
-        <template v-slot:product="{ row: customer }">
-          <button
-            v-if="customer.product === '신청하기'"
-            class="btn btn-primary custom-button fade-transition"
-            @click="applyForProduct(customer)"
-          >
-            신청
-          </button>
-          <button
-            v-else
-            class="btn btn-danger custom-button fade-transition"
-            @click="cancelProduct(customer)"
-          >
-            취소
-          </button>
-        </template>
-
-        <template v-slot:actions="{ row: customer }">
-          <a
-            href="#"
-            class="btn btn-sm btn-light btn-active-light-primary"
+            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
             data-kt-menu-trigger="click"
             data-kt-menu-placement="bottom-end"
             data-kt-menu-flip="top-end"
-          >Actions
-            <KTIcon icon-name="down" icon-class="fs-5 m-0" />
-          </a>
-          <!--begin::Menu-->
-          <div
-            class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-            data-kt-menu="true"
           >
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <router-link
-                to="/apps/customers/customer-details"
-                class="menu-link px-3"
-              >View</router-link>
-            </div>
-            <!--end::Menu item-->
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-              <a @click="deleteSubscription(customer.id)" class="menu-link px-3">Delete</a>
-            </div>
-            <!--end::Menu item-->
+            <KTIcon icon-name="category" icon-class="fs-2" />
+          </button>
+          <Dropdown7 @apply-filter="handleFilter"></Dropdown7>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body pt-0">
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
+      <KTDatatable
+        @on-sort="sort"
+        @on-items-select="onItemSelect"
+        :data="data"
+        :header="headerConfig"
+        :checkbox-enabled="true"
+        @selection-change="onSelectionChange"
+      >
+
+        <template v-slot:isConfirmed="{ row: customer }">
+          <div class="column-isConfirmed" @click="onProgramClick(customer)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
+              {{ statusLabel[customer.isConfirmed] }}
+            </span>
           </div>
-          <!--end::Menu-->
+        </template>
+        <template v-slot:institutionName="{ row: customer }">
+          <div class="column-institutionName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.institutionName }}
+          </div>
+        </template>
+        <template v-slot:programName="{ row: customer }">
+          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.programName }}
+          </div>
+        </template>
+        <template v-slot:chapterNumber="{ row: customer }">
+          <div class="column-chapterNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.chapterNumber }}
+          </div>
+        </template>
+        <template v-slot:numberOfStudents="{ row: customer }">
+          <div class="column-numberOfStudents" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.numberOfStudents }}
+          </div>
+        </template>
+        <template v-slot:grade="{ row: customer }">
+          <div class="column-grade" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.grade }}
+          </div>
+        </template>
+        <template v-slot:classNumber="{ row: customer }">
+          <div class="column-classNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.classNumber }}
+          </div>
+        </template>
+        <template v-slot:date="{ row: customer }">
+          <div class="column-date" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.date }}
+          </div>
+        </template>
+        <template v-slot:remark="{ row: customer }">
+          <div class="column-remark" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.remark }}
+          </div>
+        </template>
+        <template v-slot:application="{ row: customer }">
+          <div class="column-application">
+            <button
+              @click="onApplicationClick(customer)"
+              :class="['btn', customer.application === 'Y' ? 'btn-danger' : 'btn-primary']"
+            >
+              {{ customer.application === 'Y' ? '취소하기' : '신청하기' }}
+            </button>
+          </div>
         </template>
       </KTDatatable>
+
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <!--end::Card body-->
   </div>
-  <!--end::Card-->
 </template>
 
+
+
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
-import arraySort from "array-sort";
-import { MenuComponent } from "@/assets/ts/components";
-import { SuccessAlert, WarningAlert, ErrorAlert } from '@/assets/ts/_utils/swal';
-import { ApiUrl } from "@/assets/ts/_utils/api";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import Dropdown7 from "@/components/dropdown/Dropdown7.vue";
 
-interface Sort {
-  order: "asc" | "desc";
-  label: string;
-}
-
-interface ISubscription {
+interface IProgram {
   id: number;
-  customer: string;
-  status: Array<string | null>; // 강사명 배열 (null 포함 가능)
-  product: string;
-  maxInstructors: number; // 최대 강사 수
+  status: string;
+  isConfirmed: string;
+  application: string;
+  institutionName: number | null;
+  programName: number | null;
+  chapterNumber: number | null;
+  numberOfStudents: string | null;
+  grade: number | null;
+  classNumber: number | null;
+  remark: string | null;
+  date: number | null;
+  // createdAt: number;
 }
 
 export default defineComponent({
-  name: "kt-subscription-list",
+  name: "kt-program-list",
   components: {
     KTDatatable,
+    Dropdown7,
   },
-  setup() {
 
+  setup() {
+    const filterGoalIsConfirmed = ref("Y");
     const router = useRouter();
-    const data = ref<Array<ISubscription>>([]);
+    const data = ref<Array<IProgram>>([]);
+    const totalElements = ref<number>(0);
+    const totalPages = ref<number>(0);
+    const currentPage = ref<number>(0);
+    const pageSize = ref<number>(10);
+    const search = ref<string>("");
+    const selectedItems = ref<Array<IProgram>>([]);
+    const selectedIds = ref<Array<number>>([]);
+    const selectedIsConfirmed = ref("Y");
+    const selectedGoal = ref("UPDATE");
+    const applyStatusFilter = async () => {
+      const alreadyConfirmed = data.value.some(
+        (program) => program.isConfirmed === "Y"
+      );
+      if (alreadyConfirmed && filterGoalIsConfirmed.value === "Y") {
+        Swal.fire({
+          title: "필터 적용 불가",
+          text: "이미 확정된 항목이 포함되어 있습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+        return;
+      }
+      const result = await Swal.fire({
+        title: "상태 필터 적용 확인",
+        text: "정말로 이 상태 필터를 적용하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      const goalIsConfirmed = filterGoalIsConfirmed.value;
+      const filterQuery = buildFilterQuery(filters.value);
+      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
+      console.log("goalIsConfirmed 값:", goalIsConfirmed);
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "필터 적용 완료",
+          text: "선택된 상태 필터가 적용되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+            window.location.reload();
+          });;
+      } catch (error) {
+        console.error("Error applying status filter: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "상태 필터 적용에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
+    
+    const changeProgramStatus = async () => {
+      const token = localStorage.getItem("token");
+
+      if (selectedIds.value.length === 0) {
+        Swal.fire({
+          title: "선택된 항목 없음",
+          text: "상태를 변경할 항목을 선택하세요.",
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+
+      const actionText = selectedGoal.value === "DELETE" ? "취소" : "신청";
+
+      const result = await Swal.fire({
+        title: "상태 변경 확인",
+        text: `선택한 프로그램을 정말로 ${actionText}하시겠습니까?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+
+      try {
+        const requestBody = {
+          educationIds: selectedIds.value,
+          goal: selectedGoal.value,
+        };
+
+        await axios.post(
+          `http://localhost:8081/api/v1/user/education`,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "선택된 프로그램의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error changing program status: ", error);
+
+        Swal.fire({
+          title: "오류",
+          text: "프로그램 상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
+
+    const onApplicationClick = async (customer: IProgram) => {
+      const token = localStorage.getItem("token");
+      const educationIds = [customer.id];
+      const goal = customer.application === 'Y' ? 'DELETE' : 'UPDATE';
+
+      const requestBody = {
+        educationIds,
+        goal,
+      };
+
+      try {
+        await axios.post(
+          'http://localhost:8081/api/v1/user/education',
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        Swal.fire({
+          title: '상태 변경 완료',
+          text: '신청 상태가 변경되었습니다.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn fw-semibold btn-primary',
+          },
+        });
+        customer.application = customer.application === 'Y' ? 'N' : 'Y';
+      } catch (error) {
+        console.error("Error changing application status: ", error);
+        Swal.fire({
+          title: '오류',
+          text: '신청 상태 변경에 실패했습니다.',
+          icon: 'error',
+          customClass: {
+            confirmButton: 'btn fw-semibold btn-danger',
+          },
+        });
+      }
+    };
+
     const headerConfig = ref([
+      // {
+      //   columnName: "확정",
+      //   columnLabel: "isConfirmed",
+      //   sortEnabled: true,
+      //   columnWidth: 100,
+      // },
       {
-        columnName: "프로그램명 및 강사명",
-        columnLabel: "customer",
+        columnName: "총 차시",
+        columnLabel: "chapterNumber",
         sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "프로그램명",
+        columnLabel: "programName",
+        sortEnabled: true,
+        columnWidth: 100,
       },
       {
         columnName: "교육기관명",
         columnLabel: "institutionName",
         sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "학생 수",
+        columnLabel: "numberOfStudents",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "학년",
+        columnLabel: "grade",
+        sortEnabled: true,
+        columnWidth: 50,
+      },
+      {
+        columnName: "반",
+        columnLabel: "classNumber",
+        sortEnabled: true,
+        columnWidth: 50,
       },
       {
         columnName: "날짜",
         columnLabel: "date",
         sortEnabled: true,
+        columnWidth: 300,
       },
       {
-        columnName: "신청 및 취소",
-        columnLabel: "product",
-        sortEnabled: true,
+        columnName: "메모",
+        columnLabel: "remark",
+        sortEnabled: false,
+        columnWidth: 300,
+      },
+      {
+        columnName: "신청 상태",
+        columnLabel: "application",
+        sortEnabled: false,
+        columnWidth: 100,
       },
     ]);
 
-    const isLoading = ref(false);
-    const initData = ref<Array<ISubscription>>([]);
-    const loadDataFromApi = async () => {
+    const statusColor = {
+      Y: "primary",
+      N: "danger"
+    };
+
+    const statusLabel = {
+      Y: "확정",
+      N: "미확정"
+    };
+
+    const isLoading = ref<boolean>(false);
+    const isAscending = ref({
+      status: true,
+      isConfirmed: true,
+      institutionName: true,
+      programName: true,
+      chapterNumber: true,
+      grade: true,
+      numberOfStudents: true,
+      date: true,
+    });
+
+    const currentSortBy = ref<string>("");
+
+    const filters = ref({
+      status: "",
+      isConfirmed: "",
+      institutionName: "",
+      programName: "",
+      startDate: "",
+      endDate: "",
+      chapterNumber: "",
+      grade: "",
+      numberOfStudents: "",
+    });
+
+    const handleFilter = (filterData) => {
+      filters.value = filterData;
+      currentPage.value = 0;
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+    };
+
+    const visiblePages = computed<Array<number>>(() => {
+      const range = 2;
+      let startPage = Math.max(1, currentPage.value + 1 - range);
+      let endPage = Math.min(totalPages.value, currentPage.value + 1 + range);
+
+      if (endPage - startPage < range * 2) {
+        if (startPage === 1) {
+          endPage = Math.min(totalPages.value, startPage + range * 2);
+        } else if (endPage === totalPages.value) {
+          startPage = Math.max(1, endPage - range * 2);
+        }
+      }
+
+      const pages: Array<number> = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    });
+
+    const fetchPrograms = async (
+      page: number = 0,
+      sortBy: string = currentSortBy.value,
+      filtersData = filters.value
+    ) => {
       try {
-        isLoading.value = true;
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error("Token이 없습니다.");
+        if (page === 0 && sortBy === "") isLoading.value = true;
+        const token = localStorage.getItem("token");
+        const filterQuery = buildFilterQuery(filtersData);
 
-        const response = await axios.get(ApiUrl('/api/v1/user/instructor-applications/all'),
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.get(
+          `http://localhost:8081/api/v1/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
+        const responseData = response.data;
+          console.log('Number of contents:', responseData.content.length);
+          console.log('Total elements:', responseData.totalElements);
+          console.log('Total pages from API:', responseData.totalPages);
+          console.log(
+            "API 호출 URL:",
+            `http://localhost:8081/api/v1/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+          );
+          console.log("API 응답 데이터:", response.data);
 
-        const programMap = new Map<number, any>(); // confirmedProgramId를 key로 사용하여 데이터 그룹핑
+        data.value = responseData.content.map((program: IProgram) => ({
+          ...program,
+          status: program.status,
+          isConfirmed: program.isConfirmed,
+          application: program.application,
+          institutionName: program.institutionName ? program.institutionName : "-",
+          programName: program.programName ? program.programName : "-",
+          chapterNumber: program.chapterNumber ? program.chapterNumber : "-",
+          numberOfStudents: program.numberOfStudents ? program.numberOfStudents : "-",
+          grade: program.grade ? program.grade : "-",
+          classNumber: program.classNumber ? program.classNumber : "-",
+          date: program.date ? program.date : "-",
+          remark: program.remark ? program.remark : "-",
+        }));
 
-        response.data.forEach((item: any) => {
-          const existingProgram = programMap.get(item.confirmedProgram);
-          if (existingProgram) {
-            if (item.instructorName) {
-              existingProgram.status.push(item.instructorName);
-            }
-          } else {
-            programMap.set(item.confirmedProgram, {
-              id: item.confirmedProgram,
-              customer: item.programName,
-              status: item.instructorName ? [item.instructorName] : [],
-              product: "신청하기",
-              maxInstructors: item.numberOfInstructors,
-              institutionName: item.institutionName,
-              date: item.date.split("T")[0],
-            });
-          }
-        });
-
-        const apiData = Array.from(programMap.values());
-        data.value.splice(0, data.value.length, ...apiData);
-        initData.value.splice(0, initData.value.length, ...apiData);
-        isLoading.value = false;
+        totalElements.value = responseData.content.length;
+        totalPages.value = responseData.totalPages;
       } catch (error) {
-        console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+        console.error("Error fetching data: ", error);
+      } finally {
         isLoading.value = false;
       }
     };
 
+
+
+    const buildFilterQuery = (filtersData) => {
+      let query = "";
+      if (filtersData.chapter) {
+        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
+      }
+      if (filtersData.isConfirmed) {
+        query += `&isConfirmed=${encodeURIComponent(filtersData.isConfirmed)}`;
+      }
+      if (filtersData.programName) {
+        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
+      }
+      if (filtersData.institutionName) {
+        query += `&institutionName=${encodeURIComponent(filtersData.institutionName)}`;
+      }
+      if (filtersData.startDate) {
+        query += `&startDate=${encodeURIComponent(filtersData.startDate)}`;
+      }
+      if (filtersData.endDate) {
+        query += `&endDate=${encodeURIComponent(filtersData.endDate)}`;
+      }
+      if (filtersData.numberOfStudents) {
+        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
+      }
+      if (filtersData.grade) {
+        query += `&grade=${encodeURIComponent(filtersData.grade)}`;
+      }
+      if (filtersData.classNumber) {
+        query += `&classNumber=${encodeURIComponent(filtersData.classNumber)}`;
+      }
+      if (filtersData.numberOfStudents) {
+        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
+      }
+      // if (filtersData.startDate) {
+      //   query += `&startDate=${filtersData.startDate}`;
+      // }
+      // if (filtersData.endDate) {
+      //   query += `&endDate=${filtersData.endDate}`;
+      // }
+
+      return query;
+    };
+
     onMounted(() => {
-      loadDataFromApi();
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     });
 
-    const selectedIds = ref<Array<number>>([]);
-    const deleteFewSubscriptions = () => {
-      selectedIds.value.forEach((item) => deleteSubscription(item));
-      selectedIds.value.length = 0;
+    const deleteSubscription = async (id: number) => {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:8081/api/v1/user/education/open/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        data.value = data.value.filter((program) => program.id !== id);
+      } catch (error) {
+        console.error("Error deleting program: ", error);
+      }
     };
-    const deleteSubscription = (id: number) => {
-      data.value = data.value.filter((item) => item.id !== id);
-      saveToLocalStorage();
+
+    const deleteFewSubscriptions = async () => {
+      const result = await Swal.fire({
+        title: "프로그램 삭제 확인",
+        text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-danger",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (result.isConfirmed) {
+        for (const id of selectedIds.value) {
+          await deleteSubscription(id);
+        }
+
+        selectedIds.value.length = 0;
+
+        Swal.fire({
+          title: "삭제 완료",
+          text: "선택된 프로그램이 삭제되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        });
+      }
     };
+
     const sort = (sort: Sort) => {
-      const reverse = sort.order === "asc";
-      arraySort(data.value, sort.label, { reverse });
+      let sortBy = "";
+      if (sort.label === "isConfirmed") {
+        sortBy = isAscending.value.isConfirmed
+          ? "&sortBy=isConfirmed&direction=asc"
+          : "&sortBy=isConfirmed&direction=desc";
+        isAscending.value.isConfirmed = !isAscending.value.isConfirmed;
+      } else if (sort.label === "institutionName") {
+        sortBy = isAscending.value.institutionName
+          ? "&sortBy=institutionName&direction=asc"
+          : "&sortBy=institutionName&direction=desc";
+        isAscending.value.institutionName = !isAscending.value.institutionName;
+      } else if (sort.label === "programName") {
+        sortBy = isAscending.value.programName
+          ? "&sortBy=programName&direction=asc"
+          : "&sortBy=programName&direction=desc";
+        isAscending.value.programName = !isAscending.value.programName;
+      } else if (sort.label === "chapterNumber") {
+        sortBy = isAscending.value.chapterNumber
+          ? "&sortBy=chapterNumber&direction=asc"
+          : "&sortBy=chapterNumber&direction=desc";
+        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
+      } else if (sort.label === "grade") {
+        sortBy = isAscending.value.grade
+          ? "&sortBy=grade&direction=asc"
+          : "&sortBy=grade&direction=desc";
+        isAscending.value.grade = !isAscending.value.grade;
+      } else if (sort.label === "numberOfStudents") {
+        sortBy = isAscending.value.numberOfStudents
+          ? "&sortBy=numberOfStudents&direction=asc"
+          : "&sortBy=numberOfStudents&direction=desc";
+        isAscending.value.numberOfStudents = !isAscending.value.numberOfStudents;
+      } else if (sort.label === "chapterNumber") {
+        sortBy = isAscending.value.chapterNumber
+          ? "&sortBy=chapterNumber&direction=asc"
+          : "&sortBy=chapterNumber&direction=desc";
+        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
+      } else if (sort.label === "date") {
+        sortBy = isAscending.value.date
+          ? "&sortBy=date&direction=asc"
+          : "&sortBy=date&direction=desc";
+        isAscending.value.date = !isAscending.value.date;
+      } else {
+        return;
+      }
+      currentSortBy.value = sortBy;
+      fetchPrograms(currentPage.value, sortBy, filters.value);
     };
+
     const onItemSelect = (selectedItems: Array<number>) => {
       selectedIds.value = selectedItems;
     };
 
-    const search = ref<string>("");
     const searchItems = () => {
-      data.value.splice(0, data.value.length, ...initData.value);
-      if (search.value !== "") {
-        const results = initData.value.filter(item => searchingFunc(item, search.value));
-        data.value.splice(0, data.value.length, ...results);
-      }
-      MenuComponent.reinitialization();
+      currentPage.value = 0;
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     };
 
-    const searchingFunc = (obj: any, value: string): boolean => {
-      for (let key in obj) {
-        if (!Number.isInteger(obj[key]) && !(typeof obj[key] === "object")) {
-          if (obj[key].toLowerCase().indexOf(value.toLowerCase()) !== -1) return true;
-        }
-      }
-      return false;
+    const onPageChange = async (page: number) => {
+      const currentScrollPosition = window.scrollY;
+      currentPage.value = page;
+      await fetchPrograms(page, currentSortBy.value, filters.value);
+      window.scrollTo(0, currentScrollPosition);
     };
 
-    const onItemsPerPageChange = () => {
-      setTimeout(() => MenuComponent.reinitialization(), 0);
+    const onSelectionChange = (selectedRows: Array<IProgram>) => {
+      selectedItems.value = selectedRows;
     };
 
-    const applyForProduct = async (customer: ISubscription) => {
-      if (customer.product === "신청하기") {
-        try {
-          const result = await WarningAlert('강의 신청', '해당 강의를 신청하시겠습니까?');
-          if (result.isConfirmed) {
-            const token = localStorage.getItem('token');
-            if (!token) throw new Error("Token이 없습니다.");
-
-            const requestData = { confirmedProgram: customer.id };
-            console.log(requestData)
-            const response = await axios.post(ApiUrl('/api/v1/user/instructor-applications'),
-            JSON.stringify(requestData), 
-            {
-              headers: { Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'  }
-            });
-
-            if (response.status === 200 || response.status === 201) {
-              await loadDataFromApi();
-              SuccessAlert('신청 완료', '성공적으로 강의를 신청하였습니다!');
-            }
-          }
-        } catch (error) {
-          console.error('신청하는 중 오류가 발생했습니다.', error);
-          ErrorAlert('신청 실패', error);
-        }
+    const onButtonAction = () => {
+      if (selectedItems.value.length > 0) {
+        console.log("선택된 프로그램 삭제:", selectedItems.value);
+      } else {
+        router.push({ name: "admin-ProgramAdd" });
       }
     };
 
-    const cancelProduct = (customer: ISubscription) => {
-      if (customer.product === "신청완료") {
-        WarningAlert('강의 취소', '해당 강의를 취소하시겠습니까?')
-          .then((result) => {
-            if (result.isConfirmed) {
-              customer.product = "신청하기";
-              saveToLocalStorage();
-              ErrorAlert('신청 실패', '(오류메세지)');
-            }
-          });
+    const onDeletePrograms = () => {
+      if (selectedIds.value.length > 0) {
+        deleteFewSubscriptions();
       }
     };
 
-    const saveToLocalStorage = () => {
-      const dataToSave = data.value.map((item) => ({ id: item.id, product: item.product }));
-      localStorage.setItem("subscriptions", JSON.stringify(dataToSave));
-    };
-
-    const goToDashboard = () => {
-      router.push({ path: "/user/dashboard" });
-    };
-    const loadFromLocalStorage = () => {
-      const savedData = localStorage.getItem("subscriptions");
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        parsedData.forEach((savedItem: { id: number; product: string }) => {
-          const item = data.value.find((d) => d.id === savedItem.id);
-          if (item) item.product = savedItem.product;
-        });
-      }
+    const onProgramClick = (program: IProgram) => {
+      localStorage.setItem("selectedProgramId", program.id.toString());
+      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
     };
 
     return {
@@ -377,93 +813,38 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
-      sort,
-      onItemSelect,
+      currentPage,
+      totalPages,
+      onPageChange,
+      visiblePages,
+      selectedItems,
+      onSelectionChange,
+      onButtonAction,
+      onDeletePrograms,
+      onProgramClick,
       selectedIds,
+      sort,
       deleteFewSubscriptions,
-      deleteSubscription,
-      onItemsPerPageChange,
-      applyForProduct,
-      cancelProduct,
+      onItemSelect,
       isLoading,
-      goToDashboard
+      isAscending,
+      currentSortBy,
+      filters,
+      handleFilter,
+      statusColor,
+      statusLabel,
+      changeProgramStatus,
+      selectedIsConfirmed,
+      filterGoalIsConfirmed,
+      applyStatusFilter,
+      onApplicationClick,
+      selectedGoal
     };
   },
 });
 </script>
 
 <style scoped>
-.fade-transition {
-  transition: opacity 0.5s ease-in-out;
-  width: 70px;
-}
-
-.customer-name {
-  font-weight: bold;
-}
-
-.text-muted {
-  color: #6c757d;
-  font-size: 12px;
-  
-}
-
-.btn-primary.custom-button {
-  width: auto;
-  height: 50%;
-  background-color: #4A90E2;
-  border: none;
-  color: white;
-  padding: 8px 18px !important;
-  text-align: center;
-  font-size: 14px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.top-button {
-
-  margin-right: 10px
-}
-
-.btn-primary.custom-button:hover {
-  background-color: #357ABD;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-  transform: scale(1.05);
-}
-
-.btn-primary.custom-button:active {
-  background-color: #2C5A8A;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  transform: scale(0.95);
-}
-
-.btn-danger.custom-button {
-  width: auto;
-  background-color: #E74C3C;
-  border: none;
-  color: white;
-  padding: 8px 18px !important;
-  text-align: center;
-  font-size: 14px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-danger.custom-button:hover {
-  background-color: #C0392B;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-  transform: scale(1.05);
-}
-
-.btn-danger.custom-button:active {
-  background-color: #A93226;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  transform: scale(0.95);
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -487,23 +868,131 @@ export default defineComponent({
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@media (min-width: 768px) {
-  .top-button {
-    display: none;
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-@media (max-width: 767px) {
-  .top-button {
-    display: block;
-  }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.dropdown-button {
+  padding-left: 7px !important;
+}
+.column-isConfirmed,
+.column-institutionName,
+.column-programName,
+.column-createdAt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.column-isConfirmed {
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-institutionName {
+  width: 110x;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-programName {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-createdAt {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-grade {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-classNumber {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-numberOfStudents {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-date {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-remark {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-application {
+  width: 100px;
+  text-align: center;
 }
 
 </style>
