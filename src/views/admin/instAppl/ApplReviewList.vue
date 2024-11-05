@@ -6,7 +6,7 @@
           <option value="Y">확정</option>
           <option value="N">미확정</option>
         </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+        <button type="button" class="filtercheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
       </div>
@@ -835,7 +835,7 @@ export default defineComponent({
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button {
+.checkbox-button, .filtercheckbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -941,4 +941,35 @@ export default defineComponent({
   display: block;
 }
 
+@media (max-width: 768px) {
+  .table-row {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .column-isConfirmed,
+  .column-institutionName,
+  .column-programName,
+  .column-createdAt,
+  .column-grade,
+  .column-classNumber,
+  .column-numberOfStudents,
+  .column-date,
+  .column-remark {
+    display: block;
+    width: auto; /* 너비를 자동으로 조정 */
+    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    overflow: visible;
+    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    margin: 10px 0;
+  }
+
+  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
+  .table-row > div {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+  }
+}
 </style>
