@@ -7,9 +7,10 @@ import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
 
 const routes: Array<RouteRecordRaw> = [
+
   {
     path: "/",
-    redirect: "/user/sign-in",  // 루트 경로에 접근 시 /user/sign-in으로 리다이렉트
+    redirect: "/user/sign-in",
   },
   // 사용자 로그인
   {
@@ -731,6 +732,290 @@ const routes: Array<RouteRecordRaw> = [
     path: "/:pathMatch(.*)*",
     redirect: "/404",
   },
+
+  {
+    path: "/client",
+    component: () => import("@/layouts/AuthLayout.vue"),
+    children: [
+      {
+        path: "sign-in",
+        name: "client-sign-in",
+        component: () =>
+          import("@/views/client/login/client-SignIn.vue"),
+        meta: {
+          pageTitle: "Sign In",
+        },
+      },
+      {
+        path: "/sign-up",
+        name: "sign-up",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/SignUp.vue"),
+        meta: {
+          pageTitle: "Sign Up",
+        },
+      },
+      {
+        path: "/password-reset",
+        name: "password-reset",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
+        meta: {
+          pageTitle: "Password reset",
+        },
+      },
+    ],
+  },
+  {
+    path: "/client",
+    redirect: "/client/dashborad",
+    component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
+    meta: {
+      // middleware: "auth",
+    },
+    children: [
+      // 대시보드
+      {
+        path: "dashboard",
+        name: "client-dashboard",
+        component: () => import("@/views/client/dashborad/appSchedule.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 전체 프로그램 현황
+      {
+        path: "allProgram",
+        name: "client-allProgram",
+        component: () => import("@/views/client/dashborad/allProgram.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 교육 일정 및 진행 상황
+      {
+        path: "appSchedule",
+        name: "client-appSchedule",
+        component: () => import("@/views/client/dashborad/appSchedule.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 프로그램 목록 조회
+      {
+        path: "programList",
+        name: "client-programList",
+        component: () => import("@/views/client/programMana/programList.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      {
+        path: "programDetails",
+        name: "client-programDetails",
+        component: () => import("@/views/client/programMana/programDetails.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 기관별 신청 조회
+      {
+        path: "appliList",
+        name: "client-appliList",
+        component: () => import("@/views/client/appliMana/appliList.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      {
+        path: "appliDetails",
+        name: "client-appliDetails",
+        component: () => import("@/views/client/appliMana/appliDetails.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 강사 신청 목록 조회
+      {
+        path: "instApplList",
+        name: "client-instApplList",
+        component: () => import("@/views/client/alloMana/instApplList.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      // 강사 출강 일정 조회
+      {
+        path: "instAttenSchedule",
+        name: "client-instAttenSchedule",
+        component: () => import("@/views/client/alloMana/instAttenSchedule.vue"),
+        meta: {
+          pageTitle: "대시보드",
+          breadcrumbs: ["대시보드"],
+        },
+      },
+      {
+        path: "BusinessJournalLlist",
+        name: "client-BusinessJournalLlist",
+        component: () => import("@/views/client/reportSubmit/BusinessJournalLlist.vue"),
+        meta: {
+          pageTitle: "보고서 제출",
+          breadcrumbs: ["보고서 제출", "업무 일지"],
+        },
+      },
+      {
+        path: "EducationalReportList",
+        name: "client-EducationalReportList",
+        component: () => import("@/views/client/reportSubmit/EducationalReportList.vue"),
+        meta: {
+          pageTitle: "보고서 제출",
+          breadcrumbs: ["보고서 제출", "교육 일지"],
+        },
+      },
+      {
+        path: "WorkSituation",
+        name: "client-WorkSituation",
+        component: () => import("@/views/client/reportSubmit/WorkSituation.vue"),
+        meta: {
+          pageTitle: "보고서 제출",
+          breadcrumbs: ["보고서 제출", "근무상황부"],
+        },
+      },
+      // 서명
+      {
+        path: "SignList",
+        name: "client-SignList",
+        component: () => import("@/views/client/sign/SignList.vue"),
+        meta: {
+          pageTitle: "서명",
+          breadcrumbs: ["서명", "서명 리스트"],
+        },
+      },
+      {
+        path: "MySign",
+        name: "client-MySign",
+        component: () => import("@/views/client/sign/MySign.vue"),
+        meta: {
+          pageTitle: "서명",
+          breadcrumbs: ["서명", "내 서명 관리"],
+        },
+      },
+      {
+        path: "MyProfile",
+        name: "client-MyProfile",
+        component: () => import("@/views/apps/customers/MyProfile.vue"),
+        meta: {
+          pageTitle: "마이페이지",
+          breadcrumbs: ["마이페이지"],
+        },
+      },
+      // // 출강 일정
+      // {
+      //   path: "MyEdu",
+      //   name: "user-MyEdu",
+      //   component: () => import("@/views/teacher/lectureSchedule/MyEdu.vue"),
+      //   meta: {
+      //     pageTitle: "출강 일정",
+      //     breadcrumbs: ["출강 일정", "내 출강 리스트"],
+      //   },
+      // },
+      // // 출강 신청
+      // {
+      //   path: "EduView",
+      //   name: "user-EduView",
+      //   component: () => import("@/views/teacher/lectureSchedule/EduView.vue"),
+      //   meta: {
+      //     pageTitle: "출강 신청",
+      //     breadcrumbs: ["출강 신청", "오픈 예정 교육"],
+      //   },
+      // },
+      // {
+      //   path: "EduAppl",
+      //   name: "user-EduAppl",
+      //   component: () => import("@/views/teacher/lectureSchedule/EduAppl.vue"),
+      //   meta: {
+      //     pageTitle: "출강 신청",
+      //     breadcrumbs: ["출강 신청", "출강 신청"],
+      //   },
+      // },
+      // {
+      //   path: "MyApplEdu",
+      //   name: "user-MyApplEdu",
+      //   component: () => import("@/views/apps/user/MyApplEdu.vue"),
+      //   meta: {
+      //     pageTitle: "출강 신청",
+      //     breadcrumbs: ["출강 신청", "출강 신청 내역"],
+      //   },
+      // },
+      // // 보고서 제출
+      // {
+      //   path: "SubmissionEdu",
+      //   name: "user-SubmissionEdu",
+      //   component: () => import("@/views/teacher/reportSubmit/SubmissionEdu.vue"),
+      //   meta: {
+      //     pageTitle: "보고서 제출",
+      //     breadcrumbs: ["보고서 제출", "교육별 제출 현황"],
+      //   },
+      // },
+      // {
+      //   path: "BusinessJournalLlist",
+      //   name: "user-BusinessJournalLlist",
+      //   component: () => import("@/views/teacher/reportSubmit/BusinessJournalLlist.vue"),
+      //   meta: {
+      //     pageTitle: "보고서 제출",
+      //     breadcrumbs: ["보고서 제출", "업무 일지"],
+      //   },
+      // },
+      // {
+      //   path: "EducationalReportList",
+      //   name: "user-EducationalReportList",
+      //   component: () => import("@/views/teacher/reportSubmit/EducationalReportList.vue"),
+      //   meta: {
+      //     pageTitle: "보고서 제출",
+      //     breadcrumbs: ["보고서 제출", "교육 일지"],
+      //   },
+      // },
+      // {
+      //   path: "WorkSituation",
+      //   name: "user-WorkSituation",
+      //   component: () => import("@/views/teacher/reportSubmit/WorkSituation.vue"),
+      //   meta: {
+      //     pageTitle: "보고서 제출",
+      //     breadcrumbs: ["보고서 제출", "근무상황부"],
+      //   },
+      // },
+      // // 서명
+      // {
+      //   path: "SignList",
+      //   name: "user-SignList",
+      //   component: () => import("@/views/teacher/sign/SignList.vue"),
+      //   meta: {
+      //     pageTitle: "서명",
+      //     breadcrumbs: ["서명", "서명 리스트"],
+      //   },
+      // },
+      // {
+      //   path: "MySign",
+      //   name: "user-MySign",
+      //   component: () => import("@/views/teacher/sign/MySign.vue"),
+      //   meta: {
+      //     pageTitle: "서명",
+      //     breadcrumbs: ["서명", "내 서명 관리"],
+      //   },
+      // },
+      
+    ],
+  },
+
+
 ];
 
 const router = createRouter({

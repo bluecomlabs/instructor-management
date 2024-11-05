@@ -227,9 +227,9 @@
               class="btn btn-light btn-active-light-primary me-2"
               @click="goBack"
               >
-            뒤로
+            취소
           </button>
-          <!-- <button
+          <button
               type="submit"
               id="kt_account_detaiprofile_details_submit"
               ref="submitButton1"
@@ -237,7 +237,7 @@
               @click="goEdit()"
              >
             수정
-          </button> -->
+          </button>
         </div>
       </div>
     </div>
@@ -286,7 +286,7 @@ export default defineComponent({
 
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/api/v1/admin/apply-for-programs/${programId}`), {
+        const response = await axios.get(ApiUrl(`/api/v1/client/apply-for-programs/${programId}`), {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -331,7 +331,7 @@ export default defineComponent({
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem("token");
-          await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
+          await axios.delete(ApiUrl(`/api/v1/client/programs/${programId}`), {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',

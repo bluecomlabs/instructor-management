@@ -28,6 +28,25 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
+    redirect: "/clientdashboard",
+    component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
+    meta: {
+      middleware: "auth",
+    },
+    children: [
+      {
+        path: "/clientdashboard",
+        name: "clientdashboard",
+        component: () => import("@/views/client/dashborad/appSchedule.vue"),
+        meta: {
+          pageTitle: "Dashboard",
+          breadcrumbs: ["Dashboards"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/",
     component: () => import("@/layouts/AuthLayout.vue"),
     children: [
       {
@@ -46,6 +65,15 @@ const routes: Array<RouteRecordRaw> = [
           import("@/views/admin/login/admin-SignIn.vue"),
         meta: {
           pageTitle: "admin-Sign In",
+        },
+      },
+      {
+        path: "/client-sign-in",
+        name: "client-sign-in",
+        component: () =>
+          import("@/views/client/login/client-SignIn.vue"),
+        meta: {
+          pageTitle: "client-Sign In",
         },
       },
       {

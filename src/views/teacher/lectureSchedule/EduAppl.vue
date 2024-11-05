@@ -536,6 +536,7 @@ export default defineComponent({
     const currentSortBy = ref<string>("");
 
     const filters = ref({
+      application: "",
       status: "",
       isConfirmed: "",
       institutionName: "",
@@ -629,6 +630,9 @@ export default defineComponent({
 
     const buildFilterQuery = (filtersData) => {
       let query = "";
+      if (filtersData.application) {
+        query += `&application=${encodeURIComponent(filtersData.application)}`;
+      }
       if (filtersData.chapter) {
         query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
       }

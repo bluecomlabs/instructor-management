@@ -1,22 +1,6 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-          <!-- <option value="INIT">INIT</option> -->
-          <option value="READY">강사 열람 가능</option>
-          <option value="OPEN">강사 신청 가능</option>
-          <option value="APPLIED">신청 마감</option>
-          <option value="CONFIRMED">출강 확정</option>
-          <option value="PROGRESS">강의 진행 중</option>
-          <option value="COMPLETE">강의 종료</option>
-          <option value="PAUSE">강의 중지</option>
-          <option value="CANCEL">강의 취소</option>
-        </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
-        </button>
-      </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
@@ -29,18 +13,11 @@
 
                 <div class="vertical-separator mx-3"></div>
 
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                <div class="d-flex align-items-center me-3" style=" margin-right: 0 !important">
                   <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-                      <!-- <option value="INIT">INIT</option> -->
-                      <option value="READY">강사 열람 가능</option>
-                      <option value="OPEN">강사 신청 가능</option>
-                      <option value="APPLIED">신청 마감</option>
-                      <option value="CONFIRMED">출강 확정</option>
-                      <option value="PROGRESS">강의 진행 중</option>
-                      <option value="COMPLETE">강의 종료</option>
-                      <option value="PAUSE">강의 중지</option>
-                      <option value="CANCEL">강의 취소</option>
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
+                      <option value="OPEN">OPEN</option>
+                      <option value="CLOSE">CLOSE</option>
                     </select>
                   </div>
 
@@ -55,7 +32,7 @@
 
                 <div class="vertical-separator mx-3"></div>
 
-                <!-- <div class="ms-4" style="margin-left: 0 !important">
+                <div class="ms-4" style=" margin-left: 0 !important">
                   <button
                     type="button"
                     class="btn btn-danger checkbox-button"
@@ -64,12 +41,13 @@
                     프로그램 삭제
                   </button>
                 </div>
-                <div class="vertical-separator mx-3"></div> -->
+                <div class="vertical-separator mx-3"></div>
               </div>
             </transition>
           </div>
 
-          <!-- <div class="d-flex justify-content-end align-items-center">
+
+          <div class="d-flex justify-content-end align-items-center">
             <button
               tabindex="3"
               type="button"
@@ -78,7 +56,7 @@
             >
               <span class="indicator-label">프로그램 등록</span>
             </button>
-          </div> -->
+          </div>
         </div>
 
         <div class="card-toolbar">
@@ -91,7 +69,7 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
         </div>
       </div>
     </div>
@@ -109,6 +87,27 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
+        <template v-slot:header-status>
+          <div>상태</div>
+        </template>
+        <template v-slot:header-programName>
+          <div>프로그램명</div>
+        </template>
+        <template v-slot:header-chapter>
+          <div>총 차시</div>
+        </template>
+        <template v-slot:header-product>
+          <div>교구</div>
+        </template>
+        <template v-slot:header-level>
+          <div>레벨</div>
+        </template>
+        <template v-slot:header-remark>
+          <div>비고</div>
+        </template>
+        <template v-slot:header-createdAt>
+          <div>생성 날짜</div>
+        </template>
 
         <template v-slot:status="{ row: customer }">
           <div class="column-status" @click="onProgramClick(customer)" style="cursor: pointer;">
@@ -117,45 +116,25 @@
             </span>
           </div>
         </template>
-        <template v-slot:institutionName="{ row: customer }">
-          <div class="column-institutionName" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.institutionName }}
-          </div>
-        </template>
         <template v-slot:programName="{ row: customer }">
           <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
             {{ customer.programName }}
           </div>
         </template>
-        <template v-slot:chapterNumber="{ row: customer }">
-          <div class="column-chapterNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.chapterNumber }}
-          </div>
+        <template v-slot:chapter="{ row: customer }">
+          <div class="column-chapter">{{ customer.chapter }}</div>
         </template>
-        <template v-slot:numberOfStudents="{ row: customer }">
-          <div class="column-numberOfStudents" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.numberOfStudents }}
-          </div>
+        <template v-slot:product="{ row: customer }">
+          <div class="column-product">{{ customer.product }}</div>
         </template>
-        <template v-slot:grade="{ row: customer }">
-          <div class="column-grade" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.grade }}
-          </div>
-        </template>
-        <template v-slot:classNumber="{ row: customer }">
-          <div class="column-classNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.classNumber }}
-          </div>
-        </template>
-        <template v-slot:date="{ row: customer }">
-          <div class="column-date" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.date }}
-          </div>
+        <template v-slot:level="{ row: customer }">
+          <div class="column-level">{{ customer.level }}</div>
         </template>
         <template v-slot:remark="{ row: customer }">
-          <div class="column-remark" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.remark }}
-          </div>
+          <div class="column-remark">{{ customer.remark }}</div>
+        </template>
+        <template v-slot:createdAt="{ row: customer }">
+          <div class="column-createdAt">{{ customer.createdAt }}</div>
         </template>
       </KTDatatable>
 
@@ -225,32 +204,27 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
+import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 
 interface IProgram {
   id: number;
   status: string;
-  isConfirmed: string;
-  institutionName: number | null;
-  programName: number | null;
-  chapterNumber: number | null;
-  numberOfStudents: string | null;
-  grade: number | null;
-  classNumber: number | null;
+  programName: string;
+  chapter: number | null;
+  product: number | null;
+  level: number | null;
   remark: string | null;
-  date: number | null;
-  // createdAt: number;
+  createdAt: number;
 }
 
 export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown4,
+    Dropdown3,
   },
 
   setup() {
-    const filterGoalIsConfirmed = ref("READY");
     const router = useRouter();
     const data = ref<Array<IProgram>>([]);
     const totalElements = ref<number>(0);
@@ -260,65 +234,8 @@ export default defineComponent({
     const search = ref<string>("");
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
-    const selectedIsConfirmed = ref("READY");
+    const selectedStatus = ref("OPEN");
 
-    const applyStatusFilter = async () => {
-      const result = await Swal.fire({
-        title: "상태 필터 적용 확인",
-        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태 필터를 적용하시겠습니까?</p>',
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "예",
-        cancelButtonText: "아니오",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-primary",
-          cancelButton: "btn fw-semibold btn-light",
-        },
-        buttonsStyling: false,
-      });
-
-    if (!result.isConfirmed) {
-      return;
-    }
-      const token = localStorage.getItem("token");
-      const goalIsConfirmed = filterGoalIsConfirmed.value;
-      const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`);
-      console.log("goalIsConfirmed 값:", goalIsConfirmed);
-
-      try {
-        const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        Swal.fire({
-          title: "필터 적용 완료",
-          text: "선택된 상태 필터가 적용되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        }).then(() => {
-          window.location.reload();
-        });;
-      } catch (error) {
-        console.error("Error applying status filter: ", error);
-        Swal.fire({
-          title: "오류",
-          text: "상태 필터 적용에 실패했습니다.",
-          icon: "error",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-danger",
-          },
-        });
-      }
-    };
-    
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 
@@ -333,34 +250,18 @@ export default defineComponent({
         });
         return;
       }
-      const result = await Swal.fire({
-        title: "상태 변경 확인",
-        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태 필터를 적용하시겠습니까?</p>',
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "예",
-        cancelButtonText: "아니오",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-primary",
-          cancelButton: "btn fw-semibold btn-light",
-        },
-        buttonsStyling: false,
-      });
 
-      if (!result.isConfirmed) {
-        return;
-      }
-
-      console.log("선택된 ID:", selectedIds.value);
-      console.log("선택된 상태:", selectedIsConfirmed.value);
       try {
         const requestBody = {
-          educationIds: selectedIds.value,
-          status: selectedIsConfirmed.value,
+          programIds: selectedIds.value,
+          status: selectedStatus.value,
         };
 
+        console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/programs/status`);
+        console.log("요청 바디:", requestBody);
+
         await axios.post(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/status`,
+          `http://localhost:8081/api/v1/admin/programs/status`,
           requestBody,
           {
             headers: {
@@ -393,110 +294,81 @@ export default defineComponent({
       }
     };
 
+
     const headerConfig = ref([
       {
-        columnName: "확정",
+        columnName: "상태",
         columnLabel: "status",
         sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "교육기관명",
-        columnLabel: "institutionName",
-        sortEnabled: true,
-        columnWidth: 100,
+        columnWidth: 50,
       },
       {
         columnName: "프로그램명",
         columnLabel: "programName",
         sortEnabled: true,
-        columnWidth: 100,
+        columnWidth: 200,
       },
       {
         columnName: "총 차시",
-        columnLabel: "chapterNumber",
+        columnLabel: "chapter",
         sortEnabled: true,
         columnWidth: 100,
       },
       {
-        columnName: "학생 수",
-        columnLabel: "numberOfStudents",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "학년",
-        columnLabel: "grade",
+        columnName: "교구",
+        columnLabel: "product",
         sortEnabled: true,
         columnWidth: 50,
       },
       {
-        columnName: "반",
-        columnLabel: "classNumber",
-        sortEnabled: false,
+        columnName: "레벨",
+        columnLabel: "level",
+        sortEnabled: true,
         columnWidth: 50,
       },
       {
-        columnName: "날짜",
-        columnLabel: "date",
-        sortEnabled: true,
-        columnWidth: 300,
-      },
-      {
-        columnName: "메모",
+        columnName: "비고",
         columnLabel: "remark",
         sortEnabled: false,
-        columnWidth: 300,
+        columnWidth: 200,
+      },
+      {
+        columnName: "생성 날짜",
+        columnLabel: "createdAt",
+        sortEnabled: false,
+        columnWidth: 150,
       },
     ]);
+
     const statusColor = {
-      INIT: "info",
       OPEN: "primary",
-      READY: "warning",
-      APPLIED: "info",
-      CONFIRMED: "success",
-      PROGRESS: "primary",
-      COMPLETE: "success",
-      PAUSE: "danger",
-      CANCEL: "info",
+      CLOSE: "danger"
     };
 
     const statusLabel = {
-      INIT: "강의 대기 중",
-      OPEN: "강사 신청 가능",
-      READY: "강사 열람 가능",
-      APPLIED: "신청 마감",
-      CONFIRMED: "출강 확정",
-      PROGRESS: "강의 진행 중",
-      COMPLETE: "강의 종료",
-      PAUSE: "강의 중지",
-      CANCEL: "강의 취소",
+      OPEN: "OPEN",
+      CLOSE: "CLOSE"
     };
 
     const isLoading = ref<boolean>(false);
     const isAscending = ref({
       status: true,
-      isConfirmed: true,
-      institutionName: true,
       programName: true,
-      chapterNumber: true,
-      grade: true,
-      numberOfStudents: true,
-      date: true,
+      chapter: true,
+      product: true,
+      level: true,
     });
 
     const currentSortBy = ref<string>("");
 
     const filters = ref({
       status: "",
-      isConfirmed: "",
-      institutionName: "",
       programName: "",
+      chapter: "",
+      product: "",
       startDate: "",
       endDate: "",
-      chapterNumber: "",
-      grade: "",
-      numberOfStudents: "",
+      level: "",
     });
 
     const handleFilter = (filterData) => {
@@ -536,7 +408,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -544,30 +416,24 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
-          console.log('Number of contents:', responseData.content.length);
-          console.log('Total elements:', responseData.totalElements);
-          console.log('Total pages from API:', responseData.totalPages);
-          console.log(
-            "API 호출 URL:",
-            `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
-          );
-          console.log("API 응답 데이터:", response.data);
+        console.log(
+          "API 호출 URL:",
+          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+        );
+        console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
           status: program.status,
-          isConfirmed: program.isConfirmed,
-          institutionName: program.institutionName ? program.institutionName : "-",
-          programName: program.programName ? program.programName : "-",
-          chapterNumber: program.chapterNumber ? program.chapterNumber : "-",
-          numberOfStudents: program.numberOfStudents ? program.numberOfStudents : "-",
-          grade: program.grade ? program.grade : "-",
-          classNumber: program.classNumber ? program.classNumber : "-",
-          date: program.date ? program.date : "-",
+          programName: program.programName,
+          chapter: program.chapter ? program.chapter : "-",
+          product: program.product ? program.product : "-",
+          level: program.level ? program.level : "-",
           remark: program.remark ? program.remark : "-",
+          createdAt: new Date(program.createdAt * 1000).toISOString().split("T")[0], 
         }));
 
-        totalElements.value = responseData.content.length;
+        totalElements.value = responseData.totalElements;
         totalPages.value = responseData.totalPages;
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -576,42 +442,22 @@ export default defineComponent({
       }
     };
 
-
-    
     const buildFilterQuery = (filtersData) => {
       let query = "";
-      if (filtersData.chapter) {
-        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
-      }
       if (filtersData.status) {
         query += `&status=${encodeURIComponent(filtersData.status)}`;
-      }
-      if (filtersData.isConfirmed) {
-        query += `&isConfirmed=${encodeURIComponent(filtersData.isConfirmed)}`;
       }
       if (filtersData.programName) {
         query += `&programName=${encodeURIComponent(filtersData.programName)}`;
       }
-      if (filtersData.institutionName) {
-        query += `&institutionName=${encodeURIComponent(filtersData.institutionName)}`;
+      if (filtersData.product) {
+        query += `&product=${encodeURIComponent(filtersData.product)}`;
       }
-      if (filtersData.startDate) {
-        query += `&startDate=${encodeURIComponent(filtersData.startDate)}`;
+      if (filtersData.chapter) {
+        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
       }
-      if (filtersData.endDate) {
-        query += `&endDate=${encodeURIComponent(filtersData.endDate)}`;
-      }
-      if (filtersData.numberOfStudents) {
-        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
-      }
-      if (filtersData.grade) {
-        query += `&grade=${encodeURIComponent(filtersData.grade)}`;
-      }
-      if (filtersData.classNumber) {
-        query += `&classNumber=${encodeURIComponent(filtersData.classNumber)}`;
-      }
-      if (filtersData.numberOfStudents) {
-        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
+      if (filtersData.level) {
+        query += `&level=${encodeURIComponent(filtersData.level)}`;
       }
       // if (filtersData.startDate) {
       //   query += `&startDate=${filtersData.startDate}`;
@@ -630,7 +476,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/apply-for-programs/${id}`, {
+        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -644,7 +490,7 @@ export default defineComponent({
     const deleteFewSubscriptions = async () => {
       const result = await Swal.fire({
         title: "프로그램 삭제 확인",
-        text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
+        text: "정말로 삭제하시겠습니까?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "삭제",
@@ -657,65 +503,65 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        for (const id of selectedIds.value) {
-          await deleteSubscription(id);
+        try {
+          for (const id of selectedIds.value) {
+            await deleteSubscription(id);
+          }
+
+          selectedIds.value.length = 0;
+
+          Swal.fire({
+            title: "삭제 완료",
+            text: "선택된 프로그램이 삭제되었습니다.",
+            icon: "success",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-primary",
+            },
+          }).then(() => {
+            window.location.reload();
+          });
+        } catch (error) {
+          console.error("Error deleting program: ", error);
+
+          Swal.fire({
+            title: "오류",
+            text: "프로그램 삭제에 실패했습니다.",
+            icon: "error",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-danger",
+            },
+          });
         }
-
-        selectedIds.value.length = 0;
-
-        Swal.fire({
-          title: "삭제 완료",
-          text: "선택된 프로그램이 삭제되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        });
       }
     };
 
     const sort = (sort: Sort) => {
       let sortBy = "";
-      if (sort.label === "status") {
-        sortBy = isAscending.value.status
-          ? "&sortBy=status&direction=asc"
-          : "&sortBy=status&direction=desc";
-        isAscending.value.status = !isAscending.value.status;
-      } else if (sort.label === "institutionName") {
-        sortBy = isAscending.value.institutionName
-          ? "&sortBy=institutionName&direction=asc"
-          : "&sortBy=institutionName&direction=desc";
-        isAscending.value.institutionName = !isAscending.value.institutionName;
-      } else if (sort.label === "programName") {
+      if (sort.label === "programName") {
         sortBy = isAscending.value.programName
           ? "&sortBy=programName&direction=asc"
           : "&sortBy=programName&direction=desc";
         isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "chapterNumber") {
-        sortBy = isAscending.value.chapterNumber
-          ? "&sortBy=chapterNumber&direction=asc"
-          : "&sortBy=chapterNumber&direction=desc";
-        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
-      } else if (sort.label === "grade") {
-        sortBy = isAscending.value.grade
-          ? "&sortBy=grade&direction=asc"
-          : "&sortBy=grade&direction=desc";
-        isAscending.value.grade = !isAscending.value.grade;
-      } else if (sort.label === "numberOfStudents") {
-        sortBy = isAscending.value.numberOfStudents
-          ? "&sortBy=numberOfStudents&direction=asc"
-          : "&sortBy=numberOfStudents&direction=desc";
-        isAscending.value.numberOfStudents = !isAscending.value.numberOfStudents;
-      } else if (sort.label === "chapterNumber") {
-        sortBy = isAscending.value.chapterNumber
-          ? "&sortBy=chapterNumber&direction=asc"
-          : "&sortBy=chapterNumber&direction=desc";
-        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
-      } else if (sort.label === "date") {
-        sortBy = isAscending.value.date
-          ? "&sortBy=date&direction=asc"
-          : "&sortBy=date&direction=desc";
-        isAscending.value.date = !isAscending.value.date;
+      } else if (sort.label === "chapter") {
+        sortBy = isAscending.value.chapter
+          ? "&sortBy=chapter&direction=asc"
+          : "&sortBy=chapter&direction=desc";
+        isAscending.value.chapter = !isAscending.value.chapter;
+      } else if (sort.label === "product") {
+        sortBy = isAscending.value.product
+          ? "&sortBy=product&direction=asc"
+          : "&sortBy=product&direction=desc";
+        isAscending.value.product = !isAscending.value.product;
+      } else if (sort.label === "level") {
+        sortBy = isAscending.value.level
+          ? "&sortBy=level&direction=asc"
+          : "&sortBy=level&direction=desc";
+        isAscending.value.level = !isAscending.value.level;
+      } else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
       } else {
         return;
       }
@@ -759,7 +605,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "admin-ProgramDetails", params: { id: program.id } });
     };
 
     return {
@@ -785,12 +631,10 @@ export default defineComponent({
       currentSortBy,
       filters,
       handleFilter,
+      selectedStatus,
+      changeProgramStatus,
       statusColor,
       statusLabel,
-      changeProgramStatus,
-      selectedIsConfirmed,
-      filterGoalIsConfirmed,
-      applyStatusFilter,
     };
   },
 });
@@ -823,7 +667,64 @@ export default defineComponent({
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+.column-status,
+.column-programName,
+.column-chapter,
+.column-product,
+.column-createdAt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.column-status{
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 
+.column-programName {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-chapter {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-product {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column-createdAt {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s ease;
 }
@@ -846,101 +747,4 @@ export default defineComponent({
 .dropdown-button {
   padding-left: 7px !important;
 }
-.column-isConfirmed,
-.column-institutionName,
-.column-programName,
-.column-createdAt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.column-isConfirmed {
-  width: 70px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-institutionName {
-  width: 110x;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-programName {
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-createdAt {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-grade {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-classNumber {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-numberOfStudents {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-.column-date {
-  width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-.column-remark {
-  width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
 </style>

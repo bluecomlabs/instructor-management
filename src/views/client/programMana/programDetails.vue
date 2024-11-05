@@ -144,14 +144,14 @@
           </div>
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
-          <button
+          <!-- <button
               type="button"
               class="btn btn-left btn-active-left-primary me-2"
               style="margin-right: auto !important; background-color: red; color: white;"
               @click="deleteData()"
               >
             삭제
-          </button>
+          </button> -->
           <button
               type="button"
               class="btn btn-light btn-active-light-primary me-2"
@@ -159,7 +159,7 @@
               >
             뒤로
           </button>
-          <button
+          <!-- <button
               type="submit"
               id="kt_account_detaiprofile_details_submit"
               ref="submitButton1"
@@ -175,7 +175,7 @@
                   class="spinner-border spinner-border-sm align-middle ms-2">
               </span>
             </span>
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -213,7 +213,7 @@ export default defineComponent({
 
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/api/v1/admin/programs/${programId}`), {
+        const response = await axios.get(ApiUrl(`/api/v1/client/programs/${programId}`), {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -255,7 +255,7 @@ export default defineComponent({
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem("token");
-          await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
+          await axios.delete(ApiUrl(`/api/v1/client/programs/${programId}`), {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',

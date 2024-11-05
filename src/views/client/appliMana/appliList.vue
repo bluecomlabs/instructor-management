@@ -1,9 +1,9 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
+      <!-- <div class="d-flex align-items-center me-3">
         <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-          <!-- <option value="INIT">INIT</option> -->
+          <option value="INIT">INIT</option>
           <option value="READY">강사 열람 가능</option>
           <option value="OPEN">강사 신청 가능</option>
           <option value="APPLIED">신청 마감</option>
@@ -16,7 +16,7 @@
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
-      </div>
+      </div> -->
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
@@ -29,10 +29,10 @@
 
                 <div class="vertical-separator mx-3"></div>
 
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                <!-- <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
                   <div class="dropdown me-2">
                     <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-                      <!-- <option value="INIT">INIT</option> -->
+                      <option value="INIT">INIT</option>
                       <option value="READY">강사 열람 가능</option>
                       <option value="OPEN">강사 신청 가능</option>
                       <option value="APPLIED">신청 마감</option>
@@ -51,7 +51,7 @@
                   >
                     상태 변경
                   </button>
-                </div>
+                </div> -->
 
                 <div class="vertical-separator mx-3"></div>
 
@@ -283,12 +283,12 @@ export default defineComponent({
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`);
+      console.log("API 호출 URL:", `http://localhost:8081/api/v1/client/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`);
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`,
+          `http://localhost:8081/api/v1/client/apply-for-programs/statusFilter?goalStatus=${goalIsConfirmed}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -360,7 +360,7 @@ export default defineComponent({
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/status`,
+          `http://localhost:8081/api/v1/client/apply-for-programs/status`,
           requestBody,
           {
             headers: {
@@ -536,7 +536,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          `http://localhost:8081/api/v1/client/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -549,7 +549,7 @@ export default defineComponent({
           console.log('Total pages from API:', responseData.totalPages);
           console.log(
             "API 호출 URL:",
-            `http://localhost:8081/api/v1/admin/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+            `http://localhost:8081/api/v1/client/apply-for-programs?isConfirmed=Y&page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
           );
           console.log("API 응답 데이터:", response.data);
 
@@ -630,7 +630,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/apply-for-programs/${id}`, {
+        await axios.delete(`http://localhost:8081/api/v1/client/apply-for-programs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -759,7 +759,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "client-appliDetails", params: { id: program.id } });
     };
 
     return {

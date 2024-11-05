@@ -245,15 +245,14 @@ export default defineComponent({
 
       try {
         const token = localStorage.getItem("token");
-        // PUT 요청으로 프로그램 업데이트
         const response = await axios.put(ApiUrl(`/api/v1/admin/programs/${programId}`),
         JSON.stringify({
             programName: programName.value,
             productSn: product.value,
             chapter: chapter.value,
-            level: level.value, // level 값 추가
-            status: status.value, // status 값 반영
-            remark: remark.value // remark 값 추가
+            level: level.value,
+            status: status.value,
+            remark: remark.value
         }),
         {
           headers: {

@@ -84,7 +84,7 @@
 
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                      번호
+                      번호 (-제외)
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
@@ -152,32 +152,31 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const institutionName = ref(''); // 프로그램명 입력 필드 상태
-    const region = ref(''); // 프로그램명 입력 필드 상태
-    const address = ref(''); // 프로그램명 입력 필드 상태
-    const phoneNumber = ref<number | null>(null); // 챕터 입력 필드 상태
-    const errorMessage = ref(''); // 에러 메시지 상태
+    const institutionName = ref('');
+    const region = ref('');
+    const address = ref('');
+    const phoneNumber = ref<number | null>(null);
+    const errorMessage = ref('');
 
     const fetchData = async () => {
-      // 입력값 검증
       if (!institutionName.value) {
-        errorMessage.value = "프로그램명을 입력하세요."; // 에러 메시지 설정
+        errorMessage.value = "교육기관명을 입력하세요.";
         return;
       }
       if (!region.value) {
-        errorMessage.value = "총 차시를 입력하세요."; // 챕터 입력 여부 검증
+        errorMessage.value = "지역을 입력하세요.";
         return;
       }
       if (!address.value) {
-        errorMessage.value = "총 차시를 입력하세요."; // 챕터 입력 여부 검증
+        errorMessage.value = "주소를 입력하세요.";
         return;
       }
       if (!phoneNumber.value) {
-        errorMessage.value = "교구명을 입력하세요."; // 교구 입력 여부 검증
+        errorMessage.value = "번호를 입력하세요(-제외).";
         return;
       }
       
-      errorMessage.value = ''; // 입력이 있으면 에러 메시지 초기화
+      errorMessage.value = '';
 
       if (submitButton.value) {
         submitButton.value.disabled = true;
@@ -235,7 +234,7 @@ export default defineComponent({
     };
 
     const goBack = () => {
-      router.back(); // 뒤로가기 함수
+      router.back();
     };
 
     return {
@@ -246,7 +245,7 @@ export default defineComponent({
       phoneNumber,
       fetchData,
       goBack,
-      errorMessage, // 에러 메시지 상태 리턴
+      errorMessage,
     };
   },
 });

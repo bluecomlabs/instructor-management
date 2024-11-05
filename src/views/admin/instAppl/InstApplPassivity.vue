@@ -57,7 +57,6 @@
     </div>
 
     <div class="card-body pt-0">
-      <!-- 로딩 스피너 오버레이 -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -70,7 +69,6 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <!-- 테이블 템플릿 -->
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
@@ -100,7 +98,6 @@
         </template>
       </KTDatatable>
 
-      <!-- 페이지네이션 -->
       <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
           <ul class="pagination">
