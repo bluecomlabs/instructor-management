@@ -16,16 +16,17 @@
         <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
-              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center" style="margin-bottom: 10px;">
                 <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                  <span class="me-2">{{ selectedIds.length }}</span> <span class="desktop-text">항목 선택됨</span>
+                    <span class="mobile-text">개</span>
                 </div>
 
                 <div class="vertical-separator mx-3"></div>
 
                 <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
                   <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
+                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
                       <option value="Y">확정</option>
                       <option value="N">미확정</option>
                     </select>
@@ -33,10 +34,11 @@
 
                   <button
                     type="button"
-                    class="btn btn-primary checkbox-button"
+                    class="btn btn-primary applycheckbox-button"
                     @click="changeProgramStatus"
                   >
-                    상태 변경
+                    <span class="desktop-text">상태 변경</span>
+                    <span class="mobile-text">변경</span>
                   </button>
                 </div>
 
@@ -66,19 +68,19 @@
               <span class="indicator-label">프로그램 등록</span>
             </button>
           </div>
-        </div>
 
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          <div class="card-toolbar">
+            <button
+              type="button"
+              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+              data-kt-menu-trigger="click"
+              data-kt-menu-placement="bottom-end"
+              data-kt-menu-flip="top-end"
+            >
+              <KTIcon icon-name="category" icon-class="fs-2" />
+            </button>
+            <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          </div>
         </div>
       </div>
     </div>
@@ -960,15 +962,19 @@ export default defineComponent({
   }
 
   .checkbox-button {
-  width: 110px;
+    width: 110px;
   }
 
   .applycheckbox-button {
-  width: 60px;
+    width: 60px;
   }
 
   .filtercheckbox-button {
-  width: 90px;
+    width: 90px;
+  }
+
+  .justify-content-between {
+    justify-content: flex-start !important;
   }
 
   .table-row {
