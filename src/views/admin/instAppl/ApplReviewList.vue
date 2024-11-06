@@ -2,12 +2,13 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
+        <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
           <option value="Y">확정</option>
           <option value="N">미확정</option>
         </select>
-        <button type="button" class="filtercheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
+        <button type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          <span class="desktop-text">필터 상태 적용</span>
+          <span class="mobile-text">적용</span>
         </button>
       </div>
       <div class="card-title"></div>
@@ -835,7 +836,7 @@ export default defineComponent({
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button, .filtercheckbox-button {
+.checkbox-button, .filtercheckbox-button, .applycheckbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -941,12 +942,39 @@ export default defineComponent({
   display: block;
 }
 
+@media (min-width: 769px) {
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
+  .desktop-text {
+    display: none;
+  }
+  .mobile-text {
+    display: inline;
+  }
+
+  .checkbox-button {
+  width: 110px;
+  }
+
+  .applycheckbox-button {
+  width: 60px;
+  }
+
+  .filtercheckbox-button {
+  width: 90px;
+  }
+
   .table-row {
     display: block;
     margin-bottom: 15px;
   }
-
   .column-isConfirmed,
   .column-institutionName,
   .column-programName,
