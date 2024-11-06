@@ -2,29 +2,31 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
-          <option value="Y">확정</option>
-          <option value="N">미확정</option>
-        </select>
-        <button type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          <span class="desktop-text">필터 상태 적용</span>
-          <span class="mobile-text">적용</span>
-        </button>
+        <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
+          <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
+            <option value="Y">확정</option>
+            <option value="N">미확정</option>
+          </select>
+          <button type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+            <span class="desktop-text">필터 상태 적용</span>
+            <span class="mobile-text">적용</span>
+          </button>
+        </div>
       </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
-              <div v-if="selectedIds.length > 0" class="d-flex align-items-center" style="margin-bottom: 10px;">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> <span class="desktop-text">항목 선택됨</span>
-                    <span class="mobile-text">개</span>
+                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
+                </div>
+                <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
+                  <div class="vertical-separator mx-3"></div>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                <div class="d-flex align-items-center me-3" style="margin-right: 0, margin-bottom: 10px, margin-top: 0 !important">
                   <div class="dropdown me-2">
                     <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
                       <option value="Y">확정</option>
@@ -50,7 +52,8 @@
                     class="btn btn-danger checkbox-button"
                     @click="onDeletePrograms"
                   >
-                    프로그램 삭제
+                    <span class="desktop-text">프로그램 삭제</span>
+                    <span class="mobile-text">삭제</span>
                   </button>
                 </div>
                 <div class="vertical-separator mx-3"></div>
@@ -58,14 +61,15 @@
             </transition>
           </div>
 
-          <div class="d-flex justify-content-end align-items-center">
+          <div class="d-flex justify-content-end align-items-center" style="margin-left: 15px !important">
             <button
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
             >
-              <span class="indicator-label">프로그램 등록</span>
+              <span class="desktop-text">프로그램 등록</span>
+              <span class="mobile-text">등록</span>
             </button>
           </div>
 
@@ -961,11 +965,7 @@ export default defineComponent({
     display: inline;
   }
 
-  .checkbox-button {
-    width: 110px;
-  }
-
-  .applycheckbox-button {
+  .applycheckbox-button, .checkbox-button {
     width: 60px;
   }
 
