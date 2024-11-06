@@ -2,7 +2,6 @@
   <div class="card">
     <div class="card-header border-0 pt-6">
       <div class="d-flex align-items-center me-3">
-        <!-- New Dropdown for newStatus -->
         <select v-model="filterNewStatus" class="form-select checkbox-button dropdown-button">
           <option value="ASSIGNED">배정</option>
           <option value="UNASSIGNED">미배정</option>
@@ -275,7 +274,6 @@ export default defineComponent({
 
       const token = localStorage.getItem("token");
 
-      // Build the request body with all applied filters
       const requestBody = {
         status: filters.value.status || null,
         newStatus: filterNewStatus.value,
@@ -289,14 +287,12 @@ export default defineComponent({
         endDate: filters.value.endDate || null,
       };
 
-      // Remove null or undefined fields
       Object.keys(requestBody).forEach((key) => {
         if (requestBody[key] == null || requestBody[key] === "") {
           delete requestBody[key];
         }
       });
 
-      // Log the request body to the console
       console.log("Request Body:", requestBody);
 
       try {
@@ -333,8 +329,6 @@ export default defineComponent({
       }
     };
 
-
-    
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 

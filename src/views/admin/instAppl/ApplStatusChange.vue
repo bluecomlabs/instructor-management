@@ -7,6 +7,7 @@
           <option value="READY">강사 열람 가능</option>
           <option value="OPEN">강사 신청 가능</option>
           <option value="APPLIED">신청 마감</option>
+          <option value="PENDING_ASSIGN">강사 역할 배정</option>
           <option value="CONFIRMED">출강 확정</option>
           <option value="PROGRESS">강의 진행 중</option>
           <option value="COMPLETE">강의 종료</option>
@@ -36,6 +37,7 @@
                       <option value="READY">강사 열람 가능</option>
                       <option value="OPEN">강사 신청 가능</option>
                       <option value="APPLIED">신청 마감</option>
+                      <option value="PENDING_ASSIGN">강사 역할 배정</option>
                       <option value="CONFIRMED">출강 확정</option>
                       <option value="PROGRESS">강의 진행 중</option>
                       <option value="COMPLETE">강의 종료</option>
@@ -454,6 +456,7 @@ export default defineComponent({
       OPEN: "primary",
       READY: "warning",
       APPLIED: "info",
+      PENDING_ASSIGN: "warning",
       CONFIRMED: "success",
       PROGRESS: "primary",
       COMPLETE: "success",
@@ -466,6 +469,7 @@ export default defineComponent({
       OPEN: "강사 신청 가능",
       READY: "강사 열람 가능",
       APPLIED: "신청 마감",
+      PENDING_ASSIGN: "강사 역할 배정",
       CONFIRMED: "출강 확정",
       PROGRESS: "강의 진행 중",
       COMPLETE: "강의 종료",
