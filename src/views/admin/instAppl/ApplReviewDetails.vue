@@ -229,7 +229,7 @@
               >
             뒤로
           </button>
-          <!-- <button
+          <button
               type="submit"
               id="kt_account_detaiprofile_details_submit"
               ref="submitButton1"
@@ -237,7 +237,7 @@
               @click="goEdit()"
              >
             수정
-          </button> -->
+          </button>
         </div>
       </div>
     </div>

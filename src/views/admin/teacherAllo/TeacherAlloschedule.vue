@@ -1,55 +1,87 @@
 <template>
-  <!--begin::Card-->
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <!--begin::Card title-->
-      <div class="card-title">
-        <!--begin::Search-->
-        <div class="d-flex align-items-center position-relative my-1">
-          <KTIcon
-            icon-name="magnifier"
-            icon-class="fs-1 position-absolute ms-6"
-          />
-          <input
-            v-model="search"
-            @input="searchItems()"
-            type="text"
-            data-kt-subscription-table-filter="search"
-            class="form-control form-control-solid w-250px ps-14"
-            placeholder="Search Subscriptions"
-          />
-        </div>
-        <!--end::Search-->
+      <div class="d-flex align-items-center me-3">
+        <select v-model="filterStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+          <option value="READY">강사 열람 가능</option>
+          <option value="OPEN">강사 신청 가능</option>
+          <option value="APPLIED">신청 마감</option>
+          <option value="PENDING_ASSIGN">강사 역할 배정</option>
+          <option value="CONFIRMED">출강 확정</option>
+          <option value="PROGRESS">강의 진행 중</option>
+          <option value="COMPLETE">강의 종료</option>
+          <option value="PAUSE">강의 중지</option>
+          <option value="CANCEL">강의 취소</option>
+        </select>
+        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          필터 상태 적용
+        </button>
       </div>
-      <!--begin::Card title-->
-
-      <!--begin::Card toolbar-->
+      <div class="card-title"></div>
       <div class="card-toolbar">
-        <!--begin::Toolbar-->
-        <div
-          v-if="selectedIds.length === 0"
-          class="d-flex justify-content-end"
-          data-kt-subscription-table-toolbar="base"
-        >
-        </div>
-        <!--end::Toolbar-->
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+                <div class="fw-bold me-5">
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                </div>
 
-        <!--begin::Group actions-->
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span> Selected
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+                      <option value="READY">강사 열람 가능</option>
+                      <option value="OPEN">강사 신청 가능</option>
+                      <option value="APPLIED">신청 마감</option>
+                      <option value="PENDING_ASSIGN">강사 역할 배정</option>
+                      <option value="CONFIRMED">출강 확정</option>
+                      <option value="PROGRESS">강의 진행 중</option>
+                      <option value="COMPLETE">강의 종료</option>
+                      <option value="PAUSE">강의 중지</option>
+                      <option value="CANCEL">강의 취소</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary checkbox-button"
+                    @click="changeProgramStatus"
+                  >
+                    상태 변경
+                  </button>
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <!-- <div class="ms-4" style="margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger checkbox-button"
+                    @click="onDeletePrograms"
+                  >
+                    프로그램 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3"></div> -->
+              </div>
+            </transition>
           </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="deleteFewSubscriptions()"
-          >
-            Delete Selected
-          </button>
+
+          <!-- <div class="d-flex justify-content-end align-items-center">
+            <button
+              tabindex="3"
+              type="button"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
+            >
+              <span class="indicator-label">프로그램 등록</span>
+            </button>
+          </div> -->
         </div>
-        <!--begin::Card header-->
+
         <div class="card-toolbar">
-          <!--begin::Menu-->
           <button
             type="button"
             class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -59,338 +91,730 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown1></Dropdown1>
-          <!--end::Menu-->
+          <Dropdown9 @apply-filter="handleFilter"></Dropdown9>
         </div>
-        <!--end::Group actions-->
       </div>
-      <!--end::Card toolbar-->
     </div>
-    <!--end::Card header-->
 
-    <!--begin::Card body-->
     <div class="card-body pt-0">
-      <!-- 로딩 오버레이 -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
 
       <KTDatatable
         @on-sort="sort"
-        @on-items-per-page-change="onItemsPerPageChange"
+        @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
         :checkbox-enabled="true"
+        @selection-change="onSelectionChange"
       >
-        <template v-slot:billing="{ row: customer }">
-          <div>
-            <div>{{ customer.billing }}</div>
-            <small class="text-muted">
-              {{ customer.createdDate }} | {{ customer.INST_NM }}
-            </small>
-          </div>
-        </template>
 
-        <template v-slot:ST_NM="{ row: customer }">
-          <div>
-            <small class="text-muted">
-              {{ customer.ST_NM }} {{ customer.AT_NM }}
-            </small>
-          </div>
-        </template>
-
-        <template v-slot:customer="{ row: customer }">
-          <router-link
-            to="AdminAttendance"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.customer }}
-          </router-link>
-        </template>
-        <template v-slot:status="{ row: customer }">
-          <router-link
-            to="EducationJournal"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.status }}
-          </router-link>
-        </template>
-        <template v-slot:product="{ row: customer }">
-          <router-link
-            to="syllabus"
-            href=""
-            class="btn btn-light-primary me-2"
-          >
-            {{ customer.product }}
-          </router-link>
-        </template>
-
-        <template v-slot:lecturePlan="{ row: customer }">
-          <div class="d-flex flex-column align-items-center">
-            <router-link
-              :to="getLecturePlanLink(customer)"
-              class="btn btn-light-primary me-2"
-            >
-              바로가기
-            </router-link>
-          </div>
-        </template>
-
-        <template v-slot:actions="{ row: customer }">
-          <a
-            href="#"
+      <template v-slot:manualAssignment="{ row: program }">
+          <button
+            @click="openTeacherModal(program)"
             class="btn btn-sm btn-light btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-            >Actions
-            <KTIcon icon-name="down" icon-class="fs-5 m-0" />
-          </a>
-          <div
-            class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-            data-kt-menu="true"
           >
-            <div class="menu-item px-3">
-              <router-link
-                to="/apps/customers/customer-details"
-                class="menu-link px-3"
-                >View</router-link
-              >
-            </div>
-            <div class="menu-item px-3">
-              <a @click="deleteSubscription(customer.id)" class="menu-link px-3"
-                >Delete</a
-              >
-            </div>
+            강사 선택
+          </button>
+        </template>
+        <template v-slot:status="{ row: program }">
+          <div class="column-status" @click="onProgramClick(program)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[program.status]}`">
+              {{ statusLabel[program.status] }}
+            </span>
+          </div>
+        </template>
+        <template v-slot:institutionName="{ row: program }">
+          <div class="column-institutionName" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.institutionName }}
+          </div>
+        </template>
+        <template v-slot:programName="{ row: program }">
+          <div class="column-programName" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.programName }}
+          </div>
+        </template>
+        <template v-slot:chapterInfo="{ row: program }">
+          <div class="column-chapterInfo" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.chapterNumber }} / {{ program.totalChapters }}
+          </div>
+        </template>
+        <template v-slot:classDate="{ row: program }">
+          <div class="column-classDate" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.classDate }}
+          </div>
+        </template>
+        <template v-slot:instructorName="{ row: program }">
+          <div class="column-instructorName" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.instructorName }}
+          </div>
+        </template>
+        <template v-slot:role="{ row: program }">
+          <div class="column-role" @click="onProgramClick(program)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${roleColor[program.role]}`">
+              {{ roleLabel[program.role] }}
+            </span>
+          </div>
+        </template>
+        <template v-slot:startTime="{ row: program }">
+          <div class="column-startTime" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.startTime }}
+          </div>
+        </template>
+        <template v-slot:endTime="{ row: program }">
+          <div class="column-endTime" @click="onProgramClick(program)" style="cursor: pointer;">
+            {{ program.endTime }}
           </div>
         </template>
       </KTDatatable>
+
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <TeacherSelectionModal
+        v-if="showTeacherModal"
+        :program="selectedProgram!"
+        @close="showTeacherModal = false"
+      />
     </div>
-    <!--end::Card body-->
   </div>
-  <!--end::Card-->
 </template>
 
 <script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, onMounted, ref } from "vue";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
-import arraySort from "array-sort";
-import { MenuComponent } from "@/assets/ts/components";
-import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
-import { ApiUrl } from "@/assets/ts/_utils/api";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import Dropdown9 from "@/components/dropdown/Dropdown9.vue";
+import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue"; 
 
-interface ISubscription {
+interface IProgram {
   id: number;
-  customer: string;
   status: string;
-  color: string;
-  billing: string;
-  product: string;
-  createdDate: string;
-  INST_NM: string;
-  ST_NM: string;
-  AT_NM: string;
-  lecturePlan: string;
+  institutionName: string;
+  programName: string;
+  totalChapters: number;
+  chapterNumber: number;
+  classDate: string;
+  instructorName: string;
+  role: string | null;
+  instructorPhoneNumber: string | null;
+  startTime: string;
+  endTime: string;
+  userId: number;
 }
 
 export default defineComponent({
-  name: "kt-subscription-list",
+  name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown1
+    Dropdown9,
+    TeacherSelectionModal,
   },
+
   setup() {
-    const data = ref<Array<ISubscription>>([]);
-    const initData = ref<Array<ISubscription>>([]);
-    const isLoading = ref(false);  // 로딩 상태 추가
+    const showTeacherModal = ref(false);
+    const selectedProgram = ref<IProgram | null>(null);
+
+    const openTeacherModal = (program: IProgram) => {
+      selectedProgram.value = program;
+      showTeacherModal.value = true;
+    };
+
+    const filterStatus = ref("READY");
+    const router = useRouter();
+    const data = ref<Array<IProgram>>([]);
+    const totalElements = ref<number>(0);
+    const totalPages = ref<number>(0);
+    const currentPage = ref<number>(0);
+    const pageSize = ref<number>(10);
+    const search = ref<string>("");
+    const selectedItems = ref<Array<IProgram>>([]);
+    const selectedIds = ref<Array<number>>([]);
+    const selectedStatus = ref("READY");
+
+    const applyStatusFilter = async () => {
+      const result = await Swal.fire({
+        title: "상태 필터 적용 확인",
+        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태 필터를 적용하시겠습니까?</p>',
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      const status = filterStatus.value;
+      const filterQuery = buildFilterQuery(filters.value);
+      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?status=${status}${filterQuery}`);
+      console.log("status 값:", status);
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?status=${status}${filterQuery}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "필터 적용 완료",
+          text: "선택된 상태 필터가 적용되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error applying status filter: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "상태 필터 적용에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
+
+    const changeProgramStatus = async () => {
+      const token = localStorage.getItem("token");
+
+      if (selectedIds.value.length === 0) {
+        Swal.fire({
+          title: "선택된 항목 없음",
+          text: "상태를 변경할 항목을 선택하세요.",
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+      const result = await Swal.fire({
+        title: "상태 변경 확인",
+        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태로 변경하시겠습니까?</p>',
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+
+      console.log("선택된 ID:", selectedIds.value);
+      console.log("선택된 상태:", selectedStatus.value);
+      try {
+        const requestBody = {
+          educationIds: selectedIds.value,
+          status: selectedStatus.value,
+        };
+
+        await axios.post(
+          `http://localhost:8081/api/v1/admin/education-instructors/schedules/status`,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "선택된 프로그램의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error changing program status: ", error);
+
+        Swal.fire({
+          title: "오류",
+          text: "프로그램 상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
 
     const headerConfig = ref([
       {
-        columnName: "프로그램명",
-        columnLabel: "billing",
-        sortEnabled: true,
+        columnName: "강사수동신청",
+        columnLabel: "manualAssignment",
+        sortEnabled: false,
+        columnWidth: 150,
       },
       {
-        columnName: "강사",
-        columnLabel: "ST_NM",
-        sortEnabled: true,
-      },
-      {
-        columnName: "출석부",
-        columnLabel: "customer",
-        sortEnabled: true,
-      },
-      {
-        columnName: "교육일지",
+        columnName: "상태",
         columnLabel: "status",
         sortEnabled: true,
+        columnWidth: 150,
       },
       {
-        columnName: "강의확인서",
-        columnLabel: "product",
+        columnName: "교육기관명",
+        columnLabel: "institutionName",
         sortEnabled: true,
+        columnWidth: 150,
       },
       {
-        columnName: "강의계획서",
-        columnLabel: "lecturePlan",
+        columnName: "프로그램명",
+        columnLabel: "programName",
         sortEnabled: true,
+        columnWidth: 200,
+      },
+      {
+        columnName: "현재 차시 / 총 차시",
+        columnLabel: "chapterInfo",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "수업 날짜",
+        columnLabel: "classDate",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "강사 이름",
+        columnLabel: "instructorName",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "강사 종류",
+        columnLabel: "role",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "시작 시간",
+        columnLabel: "startTime",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "종료 시간",
+        columnLabel: "endTime",
+        sortEnabled: true,
+        columnWidth: 100,
       },
     ]);
 
-    const getLecturePlanStatusStyle = (lecturePlan: string) => {
-      switch (lecturePlan) {
-        case "제출완료":
-          return {
-            color: "#ff8c00",
-            fontWeight: "bold",
-          };
-        case "관리자 승인완료":
-          return {
-            color: "#008000",
-            fontWeight: "bold",
-          };
-        default:
-          return {
-            color: "#8000ff",
-            fontWeight: "bold",
-          };
-      }
+
+    const statusColor: { [key: string]: string } = {
+      INIT: "info",
+      OPEN: "primary",
+      READY: "warning",
+      APPLIED: "info",
+      PENDING_ASSIGN: "warning",
+      CONFIRMED: "success",
+      PROGRESS: "primary",
+      COMPLETE: "success",
+      PAUSE: "danger",
+      CANCEL: "info",
     };
 
-    const getLecturePlanLink = (customer: ISubscription) => {
-      switch (customer.lecturePlan) {
-        case "제출완료":
-          return `/lecture-plan/${customer.id}/제출완료`;
-        case "관리자 승인완료":
-          return `/lecture-plan/${customer.id}/관리자승인완료`;
-        default:
-          return `/lecture-plan/${customer.id}/미제출`;
-      }
+    const statusLabel: { [key: string]: string } = {
+      INIT: "강의 대기 중",
+      OPEN: "강사 신청 가능",
+      READY: "강사 열람 가능",
+      APPLIED: "신청 마감",
+      PENDING_ASSIGN: "강사 역할 배정",
+      CONFIRMED: "출강 확정",
+      PROGRESS: "강의 진행 중",
+      COMPLETE: "강의 종료",
+      PAUSE: "강의 중지",
+      CANCEL: "강의 취소",
     };
 
-    const getLecturePlanButtonStyle = (lecturePlan: string) => {
-      const baseStyle = {
-        padding: "4px 10px",
-        fontSize: "14px",
-        borderRadius: "10px",
-        fontWeight: "bold",
-        minWidth: "140px",
-        textAlign: "center",
-        backgroundColor: "#ffffff",
-        border: "1px solid #ddd",
-        class: "hover-effect",
-      };
-      return {
-        ...baseStyle,
-        color: "#000000",
-        margin: "0px !important",
-      };
+    const roleColor: { [key: string]: string } = {
+      MAIN: "info",
+      ASSISTANT: "warning",
     };
 
-    // 데이터 병합 함수
-    const mergeDataByProgram = (rawData: any[]) => {
-      const mergedData: any = {};
+    const roleLabel: { [key: string]: string } = {
+      MAIN: "주강사",
+      ASSISTANT: "보조강사",
+    };
 
-      rawData.forEach((item) => {
-        // confirmedProgramId로 데이터 병합
-        if (!mergedData[item.confirmedProgramId]) {
-          mergedData[item.confirmedProgramId] = {
-            id: item.id,
-            customer: "상세보기",
-            status: "상세보기",
-            color: "success",
-            billing: item.programName,
-            product: "상세보기",
-            createdDate: new Date(item.date).toISOString().split("T")[0],
-            INST_NM: item.institutionName,
-            ST_NM: item.assistantInstructorName,
-            lecturePlan: "상세보기",
-            instructors: new Set([item.assistantInstructorName]), // 강사 이름을 Set에 저장
-          };
-        } else {
-          // 동일한 confirmedProgramId가 있다면 강사 이름을 Set에 추가
-          mergedData[item.confirmedProgramId].instructors.add(item.assistantInstructorName);
+    const isLoading = ref<boolean>(false);
+    const isAscending = ref({
+      status: true,
+      institutionName: true,
+      programName: true,
+      totalChapters: true,
+      chapterNumber: true,
+      classDate: true,
+      instructorName: true,
+      startTime: true,
+      endTime: true,
+      role: true,
+    });
+
+    const currentSortBy = ref<string>("");
+
+    const filters = ref({
+      status: "",
+      institutionName: "",
+      programName: "",
+      startDate: "",
+      endDate: "",
+      chapterNumber: "",
+      totalChapters: "",
+    });
+
+    const handleFilter = (filterData: any) => {
+      filters.value = filterData;
+      currentPage.value = 0;
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+    };
+
+    const visiblePages = computed<Array<number>>(() => {
+      const range = 2;
+      let startPage = Math.max(1, currentPage.value + 1 - range);
+      let endPage = Math.min(totalPages.value, currentPage.value + 1 + range);
+
+      if (endPage - startPage < range * 2) {
+        if (startPage === 1) {
+          endPage = Math.min(totalPages.value, startPage + range * 2);
+        } else if (endPage === totalPages.value) {
+          startPage = Math.max(1, endPage - range * 2);
         }
-      });
+      }
 
-      // instructors를 배열로 변환하여 출력
-      return Object.values(mergedData).map((item: any) => ({
-        ...item,
-        ST_NM: Array.from(item.instructors).join(", "),
-      }));
-    };
+      const pages: Array<number> = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    });
 
-    const fetchData = async () => {
+    const fetchPrograms = async (
+      page: number = 0,
+      sortBy: string = currentSortBy.value,
+      filtersData = filters.value
+    ) => {
       try {
-        isLoading.value = true;
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error("Token이 없습니다.");
-        }
-        const response = await axios.get(ApiUrl('/api/v1/admin/assistant-instructors'),
+        if (page === 0 && sortBy === "") isLoading.value = true;
+        const token = localStorage.getItem("token");
+        const filterQuery = buildFilterQuery(filtersData);
+
+        const response = await axios.get(
+          `http://localhost:8081/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-        
-        const mergedApiData = mergeDataByProgram(response.data);
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const responseData = response.data;
+        console.log('Number of contents:', responseData.content.length);
+        console.log('Total elements:', responseData.totalElements);
+        console.log('Total pages from API:', responseData.totalPages);
+        console.log(
+          "API 호출 URL:",
+          `http://localhost:8081/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+        );
+        console.log("API 응답 데이터:", response.data);
 
-        data.value = mergedApiData;
-        initData.value = [...mergedApiData];
+        data.value = responseData.content.map((program: any) => ({
+          id: program.id,
+          status: program.status,
+          institutionName: program.institutionName || "-",
+          programName: program.programName || "-",
+          totalChapters: program.totalChapters || 0,
+          chapterNumber: program.chapterNumber || 0,
+          classDate: program.classDate || "-",
+          instructorName: program.instructorName || "-",
+          role: program.role || "-",
+          startTime: program.startTime || "-",
+          endTime: program.endTime || "-",
+          userId: program.userId,
+        }));
+
+        totalElements.value = responseData.totalElements;
+        totalPages.value = responseData.totalPages;
       } catch (error) {
-        console.error("Failed to fetch data:", error);
+        console.error("Error fetching data: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "데이터를 불러오는 데 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
       } finally {
         isLoading.value = false;
       }
     };
 
+    const buildFilterQuery = (filtersData: any) => {
+      let query = "";
+      if (filtersData.status) {
+        query += `&status=${encodeURIComponent(filtersData.status)}`;
+      }
+      if (filtersData.institutionName) {
+        query += `&institutionName=${encodeURIComponent(filtersData.institutionName)}`;
+      }
+      if (filtersData.programName) {
+        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
+      }
+      if (filtersData.startDate) {
+        query += `&startDate=${encodeURIComponent(filtersData.startDate)}`;
+      }
+      if (filtersData.endDate) {
+        query += `&endDate=${encodeURIComponent(filtersData.endDate)}`;
+      }
+      if (filtersData.chapterNumber) {
+        query += `&chapterNumber=${encodeURIComponent(filtersData.chapterNumber)}`;
+      }
+      if (filtersData.totalChapters) {
+        query += `&totalChapters=${encodeURIComponent(filtersData.totalChapters)}`;
+      }
+      if (filtersData.instructorName) {
+        query += `&instructorName=${encodeURIComponent(filtersData.instructorName)}`;
+      }
+      return query;
+    };
+
     onMounted(() => {
-      fetchData();
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     });
 
-    const selectedIds = ref<Array<number>>([]);
-    const deleteFewSubscriptions = () => {
-      selectedIds.value.forEach((item) => {
-        deleteSubscription(item);
-      });
-      selectedIds.value.length = 0;
-    };
-
-    const deleteSubscription = (id: number) => {
-      data.value = data.value.filter((item) => item.id !== id);
-    };
-
-    const sort = (sort: Sort) => {
-      const reverse: boolean = sort.order === "asc";
-      if (sort.label) {
-        arraySort(data.value, sort.label, { reverse });
+    const deleteSubscription = async (id: number) => {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:8081/api/v1/admin/education-instructors/schedules/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        data.value = data.value.filter((program) => program.id !== id);
+      } catch (error) {
+        console.error("Error deleting program: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "프로그램 삭제에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
       }
     };
 
-    const search = ref<string>("");
+    const deleteFewSubscriptions = async () => {
+      const result = await Swal.fire({
+        title: "프로그램 삭제 확인",
+        text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-danger",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
+
+      if (result.isConfirmed) {
+        for (const id of selectedIds.value) {
+          await deleteSubscription(id);
+        }
+
+        selectedIds.value.length = 0;
+
+        Swal.fire({
+          title: "삭제 완료",
+          text: "선택된 프로그램이 삭제되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        });
+      }
+    };
+
+    const sort = (sort: Sort) => {
+      let sortBy = "";
+      if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
+      } else if (sort.label === "institutionName") {
+        sortBy = isAscending.value.institutionName
+          ? "&sortBy=institutionName&direction=asc"
+          : "&sortBy=institutionName&direction=desc";
+        isAscending.value.institutionName = !isAscending.value.institutionName;
+      } else if (sort.label === "programName") {
+        sortBy = isAscending.value.programName
+          ? "&sortBy=programName&direction=asc"
+          : "&sortBy=programName&direction=desc";
+        isAscending.value.programName = !isAscending.value.programName;
+      } else if (sort.label === "totalChapters") {
+        sortBy = isAscending.value.totalChapters
+          ? "&sortBy=totalChapters&direction=asc"
+          : "&sortBy=totalChapters&direction=desc";
+        isAscending.value.totalChapters = !isAscending.value.totalChapters;
+      } else if (sort.label === "chapterNumber") {
+        sortBy = isAscending.value.chapterNumber
+          ? "&sortBy=chapterNumber&direction=asc"
+          : "&sortBy=chapterNumber&direction=desc";
+        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
+      } else if (sort.label === "classDate") {
+        sortBy = isAscending.value.classDate
+          ? "&sortBy=classDate&direction=asc"
+          : "&sortBy=classDate&direction=desc";
+        isAscending.value.classDate = !isAscending.value.classDate;
+      } else if (sort.label === "instructorName") {
+        sortBy = isAscending.value.instructorName
+          ? "&sortBy=instructorName&direction=asc"
+          : "&sortBy=instructorName&direction=desc";
+        isAscending.value.instructorName = !isAscending.value.instructorName;
+      } else if (sort.label === "startTime") {
+        sortBy = isAscending.value.startTime
+          ? "&sortBy=startTime&direction=asc"
+          : "&sortBy=startTime&direction=desc";
+        isAscending.value.startTime = !isAscending.value.startTime;
+      } else if (sort.label === "role") {
+        sortBy = isAscending.value.role
+          ? "&sortBy=role&direction=asc"
+          : "&sortBy=role&direction=desc";
+        isAscending.value.role = !isAscending.value.role;
+      } else if (sort.label === "endTime") {
+        sortBy = isAscending.value.endTime
+          ? "&sortBy=endTime&direction=asc"
+          : "&sortBy=endTime&direction=desc";
+        isAscending.value.endTime = !isAscending.value.endTime;
+      } else {
+        return;
+      }
+      currentSortBy.value = sortBy;
+      fetchPrograms(currentPage.value, sortBy, filters.value);
+    };
+
+    const onItemSelect = (selectedItems: Array<number>) => {
+      selectedIds.value = selectedItems;
+    };
+
     const searchItems = () => {
-      data.value = initData.value.filter((item) =>
-        searchingFunc(item, search.value)
-      );
-      MenuComponent.reinitialization();
+      currentPage.value = 0;
+      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     };
 
-    const searchingFunc = (obj: any, value: string): boolean => {
-      return Object.keys(obj).some((key) =>
-        obj[key].toString().toLowerCase().includes(value.toLowerCase())
-      );
+    const onPageChange = async (page: number) => {
+      const currentScrollPosition = window.scrollY;
+      currentPage.value = page;
+      await fetchPrograms(page, currentSortBy.value, filters.value);
+      window.scrollTo(0, currentScrollPosition);
     };
 
-    const onItemsPerPageChange = () => {
-      setTimeout(() => {
-        MenuComponent.reinitialization();
-      }, 0);
+    const onSelectionChange = (selectedRows: Array<IProgram>) => {
+      selectedItems.value = selectedRows;
+      selectedIds.value = selectedRows.map(row => row.id);
+    };
+
+    const onButtonAction = () => {
+      if (selectedItems.value.length > 0) {
+        console.log("선택된 프로그램 삭제:", selectedItems.value);
+      } else {
+        router.push({ name: "admin-ProgramAdd" });
+      }
+    };
+
+    const onDeletePrograms = () => {
+      if (selectedIds.value.length > 0) {
+        deleteFewSubscriptions();
+      }
+    };
+
+    const onProgramClick = (program: IProgram) => {
+      // localStorage.setItem("selectedProgramId", program.id.toString());
+      // router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
     };
 
     return {
@@ -398,31 +822,41 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
-      sort,
+      currentPage,
+      totalPages,
+      onPageChange,
+      visiblePages,
+      selectedItems,
+      onSelectionChange,
+      onButtonAction,
+      onDeletePrograms,
+      onProgramClick,
       selectedIds,
+      sort,
       deleteFewSubscriptions,
-      deleteSubscription,
-      getLecturePlanLink,
-      getLecturePlanButtonStyle,
-      getLecturePlanStatusStyle,
-      onItemsPerPageChange,
-      isLoading,  // 로딩 상태 반환
+      onItemSelect,
+      isLoading,
+      isAscending,
+      currentSortBy,
+      filters,
+      handleFilter,
+      statusColor,
+      statusLabel,
+      roleColor,
+      roleLabel,
+      changeProgramStatus,
+      selectedStatus,
+      filterStatus,
+      applyStatusFilter,
+      openTeacherModal,
+      showTeacherModal,
+      selectedProgram,
     };
   },
 });
 </script>
 
-<style>
-.no-margin {
-  margin: 0px !important;
-}
-
-.btn:hover {
-  background-color: #9c9c9c !important;
-  color: #ffffff !important;
-  border-color: #9c9c9c !important;
-}
-
+<style scoped>
 .overlay {
   position: fixed;
   top: 0;
@@ -449,22 +883,71 @@ export default defineComponent({
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-.btn {
-  border-radius: 0.42rem;
-  font-size: 0.9rem;
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
   font-weight: 600;
-  padding: 0.5rem 1rem;
+}
+.dropdown-button {
+  padding-left: 7px !important;
+}
+.column-status,
+.column-institutionName,
+.column-programName,
+.column-totalChapters,
+.column-chapterNumber,
+.column-classDate,
+.column-instructorName,
+.column-role,
+.column-startTime,
+.column-endTime {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.btn-light-primary {
-  color: #009EF7;
-  background-color: #E1F0FF;
-  border: 1px solid #009EF7;
-  margin: 0px !important;
+.column-status {
+  width: 150px;
+  text-align: center;
 }
 
-.btn-light-primary:hover {
-  background-color: #009EF7;
-  color: white;
+.column-institutionName {
+  width: 150px;
+}
+
+.column-programName {
+  width: 200px;
+}
+
+.column-totalChapters,
+.column-chapterNumber,
+.column-startTime,
+.column-endTime {
+  width: 100px;
+  text-align: center;
+}
+
+.column-classDate {
+  width: 150px;
+}
+
+.column-instructorName,
+.column-role {
+  width: 150px;
 }
 </style>

@@ -397,7 +397,7 @@ export default defineComponent({
 
     const headerConfig = ref([
       {
-        columnName: "확정",
+        columnName: "상태",
         columnLabel: "status",
         sortEnabled: true,
         columnWidth: 100,

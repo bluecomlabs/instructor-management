@@ -386,7 +386,6 @@ export default defineComponent({
     const remark = ref('');
     const errorMessage = ref('');
 
-    // 초성 추출 함수
     const getChosung = (text: string): string => {
       const CHOSUNG = [
         "ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ",
@@ -405,7 +404,6 @@ export default defineComponent({
       return result;
     };
 
-    // 총 차시 수에 따른 교육 차시 상세 생성
     watch(chapterNumber, (newChapterNumber) => {
       if (newChapterNumber) {
         const existingChapters = educationChapters.value;
@@ -427,7 +425,6 @@ export default defineComponent({
       }
     });
 
-    // 전체 기관 및 프로그램 데이터 가져오기
     const fetchAllData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -451,7 +448,6 @@ export default defineComponent({
       }
     };
 
-    // 기관 검색 시 호출
     const onInstitutionInput = () => {
       showInstitutionDropdown.value = false;
       if (institutionSearch.value.trim() !== '') {
@@ -465,7 +461,6 @@ export default defineComponent({
       }
     };
 
-    // 프로그램 검색 시 호출
     const onProgramInput = () => {
       showProgramDropdown.value = false;
       if (programSearch.value.trim() !== '') {
@@ -571,7 +566,6 @@ export default defineComponent({
         return;
       }
 
-      // 날짜와 시간 필드 검증
       const invalidChapters = educationChapters.value.filter(chapter => {
         return !chapter.date || !chapter.startTime || !chapter.endTime;
       });
@@ -585,7 +579,6 @@ export default defineComponent({
         return;
       }
 
-      // 수정 확인 모달
       const result = await Swal.fire({
         text: '정말로 수정하시겠습니까?',
         icon: 'warning',
@@ -595,7 +588,6 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        // 수정 진행
         const payload = {
           id: Number(programId),
           programId: selectedProgramId.value,
@@ -607,7 +599,7 @@ export default defineComponent({
           numberOfStudents: numberOfStudents.value,
           productQuantity: 0,
           chapterNumber: chapterNumber.value,
-          status: null,
+          status: "INIT",
           isConfirmed: isConfirmed.value,
           remark: remark.value,
           date: date.value,
@@ -646,7 +638,6 @@ export default defineComponent({
           });
         }
       } else {
-        // 수정 취소
         Swal.fire({
           text: '수정이 취소되었습니다.',
           icon: 'info',

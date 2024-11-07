@@ -250,7 +250,7 @@
                                 주 강사 수
                               </label>
                               <div class="custom-number-input">
-                                <button @click="decrementChapter(index, 'mainInstructorsNumber')" :disabled="chapter.mainInstructorsNumber <= 0">-</button>
+                                <button @click="decrementChapter(index, 'mainInstructorsNumber')" :disabled="(chapter.mainInstructorsNumber || 0) <= 0">-</button>
                                 <input
                                   v-model.number="chapter.mainInstructorsNumber"
                                   class="form-control form-control-solid text-center"
@@ -267,7 +267,7 @@
                                 보조 강사 수
                               </label>
                             <div class="custom-number-input">
-                              <button @click="decrementChapter(index, 'assistantInstructorsNumber')" :disabled="chapter.assistantInstructorsNumber <= 0">-</button>
+                              <button @click="decrementChapter(index, 'assistantInstructorsNumber')" :disabled="(chapter.assistantInstructorsNumber || 0) <= 0">-</button>
                               <input
                                 v-model.number="chapter.assistantInstructorsNumber"
                                 class="form-control form-control-solid text-center"
@@ -559,7 +559,7 @@ export default defineComponent({
           numberOfStudents: numberOfStudents.value,
           productQuantity: 0,
           chapterNumber: chapterNumber.value,
-          status: null,
+          status: "INIT",
           isConfirmed: "N",
           remark: remark.value,
           date: date.value,
