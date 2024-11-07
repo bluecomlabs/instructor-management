@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6">
+    <div class="card-header border-0 pt-6" :class="{ 'no-style': selectedIds.length > 0 }">
       <div class="d-flex align-items-center me-3">
         <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
           <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
@@ -28,6 +28,77 @@
 
                 <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
                   <div class="dropdown me-2">
+                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }">
+                      <option value="Y">확정</option>
+                      <option value="N">미확정</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary applycheckbox-button"
+                    @click="changeProgramStatus"
+                    :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"
+                  >
+                    <span class="desktop-text">상태 변경</span>
+                    <span class="mobile-text">변경</span>
+                  </button>
+                </div>
+
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"></div>
+
+                <div class="ms-4" style="margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger delcheckbox-button"
+                    @click="onDeletePrograms"
+                    :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"
+                  >
+                    프로그램 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"></div>
+              </div>
+            </transition>
+          </div>
+
+          <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
+            <button
+              tabindex="3"
+              type="button"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
+              :class="{ 'del-selected': selectedIds.length > 0, 'has-selected': selectedIds.length > 0 }"
+            >
+              <span class="desktop-text">프로그램 등록</span>
+              <span class="mobile-text">등록</span>
+            </button>
+          </div>
+
+          <div class="card-toolbar">
+            <button
+              type="button"
+              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+              data-kt-menu-trigger="click"
+              data-kt-menu-placement="bottom-end"
+              data-kt-menu-flip="top-end"
+              :class="{ 'del-selected': selectedIds.length > 0, 'has-selected': selectedIds.length > 0 }"
+            >
+              <KTIcon icon-name="category" icon-class="fs-2" />
+            </button>
+            <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mbcard-header border-0 pt-6">
+      <div class="mbcard-toolbar">
+        <div class="mbcard-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center" style="margin-left: -13px !important">
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <div class="dropdown me-2">
                     <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button" :class="{ 'check-selected': selectedIds.length > 0 }">
                       <option value="Y">확정</option>
                       <option value="N">미확정</option>
@@ -45,8 +116,6 @@
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3" :class="{ 'check-selected': selectedIds.length > 0 }"></div>
-
                 <div class="ms-4" style="margin-left: 0 !important">
                   <button
                     type="button"
@@ -57,25 +126,23 @@
                     프로그램 삭제
                   </button>
                 </div>
-                <div class="vertical-separator mx-3" :class="{ 'check-selected': selectedIds.length > 0 }"></div>
               </div>
             </transition>
           </div>
 
-          <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
+          <div v-if="selectedIds.length > 0" class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
             <button
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
-              :class="{ 'has-selected': selectedIds.length > 0 }"
+              :class="{ 'check-selected': selectedIds.length > 0 }"
             >
-              <span class="desktop-text">프로그램 등록</span>
-              <span class="mobile-text">등록</span>
+              등록
             </button>
           </div>
 
-          <div class="card-toolbar">
+          <div v-if="selectedIds.length > 0" class="mbcard-toolbar">
             <button
               type="button"
               class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -958,9 +1025,23 @@ export default defineComponent({
   .mobile-text {
     display: none;
   }
+  .mbcard-toolbar, .mbcard-header {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
+  .card-toolbar {
+    display: none;
+  }
+
+  .no-style {
+    display: none;
+  }
+
   .desktop-text {
     display: none;
   }
@@ -986,6 +1067,10 @@ export default defineComponent({
   
   .has-selected {
     margin-top: 10px;
+  }
+
+  .del-selected {
+    display: none;
   }
 
   .table-row {
