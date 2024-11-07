@@ -18,7 +18,7 @@
         <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
-              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center" style="margin-left: -13px !important">
                 <div class="fw-bold me-5">
                   <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
                 </div>
@@ -26,9 +26,9 @@
                   <div class="vertical-separator mx-3"></div>
                 </div>
 
-                <div class="d-flex align-items-center me-3" style="margin-right: 0, margin-bottom: 10px, margin-top: 0 !important">
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
                   <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
+                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button" :class="{ 'check-selected': selectedIds.length > 0 }">
                       <option value="Y">확정</option>
                       <option value="N">미확정</option>
                     </select>
@@ -38,35 +38,37 @@
                     type="button"
                     class="btn btn-primary applycheckbox-button"
                     @click="changeProgramStatus"
+                    :class="{ 'check-selected': selectedIds.length > 0 }"
                   >
                     <span class="desktop-text">상태 변경</span>
                     <span class="mobile-text">변경</span>
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3" :class="{ 'check-selected': selectedIds.length > 0 }"></div>
 
                 <div class="ms-4" style="margin-left: 0 !important">
                   <button
                     type="button"
-                    class="btn btn-danger checkbox-button"
+                    class="btn btn-danger delcheckbox-button"
                     @click="onDeletePrograms"
+                    :class="{ 'check-selected': selectedIds.length > 0 }"
                   >
-                    <span class="desktop-text">프로그램 삭제</span>
-                    <span class="mobile-text">삭제</span>
+                    프로그램 삭제
                   </button>
                 </div>
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3" :class="{ 'check-selected': selectedIds.length > 0 }"></div>
               </div>
             </transition>
           </div>
 
-          <div class="d-flex justify-content-end align-items-center" style="margin-left: 15px !important">
+          <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
             <button
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
+              :class="{ 'has-selected': selectedIds.length > 0 }"
             >
               <span class="desktop-text">프로그램 등록</span>
               <span class="mobile-text">등록</span>
@@ -80,6 +82,7 @@
               data-kt-menu-trigger="click"
               data-kt-menu-placement="bottom-end"
               data-kt-menu-flip="top-end"
+              :class="{ 'has-selected': selectedIds.length > 0 }"
             >
               <KTIcon icon-name="category" icon-class="fs-2" />
             </button>
@@ -842,7 +845,7 @@ export default defineComponent({
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button, .filtercheckbox-button, .applycheckbox-button {
+.checkbox-button, .filtercheckbox-button, .applycheckbox-button, .delcheckbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -975,6 +978,14 @@ export default defineComponent({
 
   .justify-content-between {
     justify-content: flex-start !important;
+  }
+
+  .check-selected {
+    margin-top: -10px;
+  }
+  
+  .has-selected {
+    margin-top: 10px;
   }
 
   .table-row {
