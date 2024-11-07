@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6" :class="{ 'no-style': selectedIds.length > 0 }">
+    <div class="card-header border-0 pt-6" :class="{ 'checkbox-chide': selectedIds.length > 0 }">
       <div class="d-flex align-items-center me-3">
         <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
           <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
@@ -91,7 +91,7 @@
         </div>
       </div>
     </div>
-    <div class="mbcard-header border-0 pt-6">
+    <div class="mbcard-header border-0 pt-6" :class="{ 'checkbox-nchide': selectedIds.length === 0 }" >
       <div class="mbcard-toolbar">
         <div class="mbcard-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
@@ -1018,6 +1018,22 @@ export default defineComponent({
   display: block;
 }
 
+  .mbcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    min-height: 70px;
+    padding: 0 2.25rem;
+    color: var(--bs-card-cap-color);
+    background-color: var(--bs-card-cap-bg);
+    border-bottom: 1px solid var(--bs-card-border-color);
+  }
+
+  .mbcard-toolbar {
+    @extend .card-toolbar;
+  }
+
 @media (min-width: 769px) {
   .desktop-text {
     display: inline;
@@ -1025,6 +1041,7 @@ export default defineComponent({
   .mobile-text {
     display: none;
   }
+
   .mbcard-toolbar, .mbcard-header {
     margin: 0;
     padding: 0;
@@ -1038,7 +1055,7 @@ export default defineComponent({
     display: none;
   }
 
-  .no-style {
+  .checkbox-chide, .checkbox-nchide {
     display: none;
   }
 
