@@ -15,7 +15,6 @@
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
-
       </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
@@ -67,17 +66,6 @@
               </div>
             </transition>
           </div>
-
-          <!-- <div class="d-flex justify-content-end align-items-center">
-            <button
-              tabindex="3"
-              type="button"
-              @click="onButtonAction"
-              class="btn btn-light-primary checkbox-button"
-            >
-              <span class="indicator-label">프로그램 등록</span>
-            </button>
-          </div> -->
         </div>
 
         <div class="card-toolbar">
@@ -109,6 +97,16 @@
         @selection-change="onSelectionChange"
       >
 
+        <!-- 강사 수동 신청 버튼 추가 -->
+        <template v-slot:manualAssignment="{ row: program }">
+          <button
+            @click="openTeacherModal(program)"
+            class="btn btn-sm btn-light btn-active-light-primary"
+          >
+            강사 선택
+          </button>
+        </template>
+
         <template v-slot:status="{ row: program }">
           <div class="column-isConfirmed" @click="onProgramClick(program)" style="cursor: pointer;">
             <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[program.status]}`">
@@ -116,11 +114,6 @@
             </span>
           </div>
         </template>
-        <!-- <template v-slot:status="{ row: program }">
-          <div class="column-status" style="cursor: pointer;">
-            {{ program.status }}
-          </div>
-        </template> -->
         <template v-slot:institutionName="{ row: program }">
           <div class="column-institutionName" style="cursor: pointer;">
             {{ program.institutionName }}
@@ -136,9 +129,9 @@
             {{ program.totalChapters }}
           </div>
         </template>
-        <template v-slot:classDates="{ row: program }">
-          <div class="column-classDates" style="cursor: pointer;">
-            {{ program.classDates }}
+        <template v-slot:classDate="{ row: program }">
+          <div class="column-classDate" style="cursor: pointer;">
+            {{ program.classDate }}
           </div>
         </template>
         <template v-slot:instructorName="{ row: program }">
@@ -151,7 +144,6 @@
             {{ program.instructorPhoneNumber }}
           </div>
         </template>
-
       </KTDatatable>
 
       <div class="d-flex justify-content-end mt-4">
@@ -207,11 +199,16 @@
           </ul>
         </nav>
       </div>
+
+      <!-- 강사 선택 모달 추가 -->
+      <TeacherSelectionModal
+        v-if="showTeacherModal"
+        :program="selectedProgram!"
+        @close="showTeacherModal = false"
+      />
     </div>
   </div>
 </template>
-
-
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
@@ -221,6 +218,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown8 from "@/components/dropdown/Dropdown8.vue";
+import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue"; // 모달 컴포넌트 임포트
 
 interface IProgram {
   id: number;
@@ -229,7 +227,7 @@ interface IProgram {
   institutionName: string | null;
   programName: string | null;
   totalChapters: number | null;
-  classDates: string | null;
+  classDate: string | null;
   instructorName: string | null;
   instructorPhoneNumber: string | null;
   chapterNumber: number | null;
@@ -241,15 +239,23 @@ interface IProgram {
   role: number | null;
 }
 
-
 export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
     Dropdown8,
+    TeacherSelectionModal, // 컴포넌트 등록
   },
 
   setup() {
+    const showTeacherModal = ref(false);
+    const selectedProgram = ref<IProgram | null>(null);
+
+    const openTeacherModal = (program: IProgram) => {
+      selectedProgram.value = program;
+      showTeacherModal.value = true;
+    };
+
     const filterNewStatus = ref("READY");
     const router = useRouter();
     const data = ref<Array<IProgram>>([]);
@@ -263,80 +269,78 @@ export default defineComponent({
     const selectedStatus = ref("READY");
 
     const applyStatusFilter = async () => {
-  const result = await Swal.fire({
-    title: "상태 변경 확인",
-    text: "현재 필터링된 모든 프로그램의 상태를 변경하시겠습니까?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "예",
-    cancelButtonText: "아니오",
-    customClass: {
-      confirmButton: "btn fw-semibold btn-primary",
-      cancelButton: "btn fw-semibold btn-light",
-    },
-    buttonsStyling: false,
-  });
+      const result = await Swal.fire({
+        title: "상태 변경 확인",
+        text: "현재 필터링된 모든 프로그램의 상태를 변경하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        customClass: {
+          confirmButton: "btn fw-semibold btn-primary",
+          cancelButton: "btn fw-semibold btn-light",
+        },
+        buttonsStyling: false,
+      });
 
-  if (!result.isConfirmed) {
-    return;
-  }
+      if (!result.isConfirmed) {
+        return;
+      }
 
-  const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-  try {
-    const requestBody = {
-      status: filters.value.status || null,
-      institutionName: filters.value.institutionName || null,
-      programName: filters.value.programName || null,
-      totalChapters: filters.value.totalChapters || null,
-      classDates: filters.value.classDates || null,
-      instructorName: filters.value.instructorName || null,
-      instructorPhoneNumber: filters.value.instructorPhoneNumber || null,
-      newStatus: filterNewStatus.value,
-      startDate: filters.value.startDate || null,
-      endDate: filters.value.endDate || null,
+      try {
+        const requestBody = {
+          status: filters.value.status || null,
+          institutionName: filters.value.institutionName || null,
+          programName: filters.value.programName || null,
+          totalChapters: filters.value.totalChapters || null,
+          classDate: filters.value.classDate || null,
+          instructorName: filters.value.instructorName || null,
+          instructorPhoneNumber: filters.value.instructorPhoneNumber || null,
+          newStatus: filterNewStatus.value,
+          startDate: filters.value.startDate || null,
+          endDate: filters.value.endDate || null,
+        };
+
+        // null 값을 가진 키 제거
+        Object.keys(requestBody).forEach(
+          (key) => requestBody[key] == null && delete requestBody[key]
+        );
+
+        await axios.put(
+          `http://localhost:8081/api/v1/admin/education-instructors/status`,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "필터링된 프로그램의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error applying status filter: ", error);
+        Swal.fire({
+          title: "오류",
+          text: "상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
     };
 
-    // Remove keys with null values
-    Object.keys(requestBody).forEach(
-      (key) => requestBody[key] == null && delete requestBody[key]
-    );
-
-    await axios.put(
-      `http://localhost:8081/api/v1/admin/education-instructors/status`,
-      requestBody,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    Swal.fire({
-      title: "상태 변경 완료",
-      text: "필터링된 프로그램의 상태가 변경되었습니다.",
-      icon: "success",
-      customClass: {
-        confirmButton: "btn fw-semibold btn-primary",
-      },
-    }).then(() => {
-      window.location.reload();
-    });
-  } catch (error) {
-    console.error("Error applying status filter: ", error);
-    Swal.fire({
-      title: "오류",
-      text: "상태 변경에 실패했습니다.",
-      icon: "error",
-      customClass: {
-        confirmButton: "btn fw-semibold btn-danger",
-      },
-    });
-  }
-};
-
-
-    
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 
@@ -412,6 +416,12 @@ export default defineComponent({
 
     const headerConfig = ref([
       {
+        columnName: "강사수동신청",
+        columnLabel: "manualAssignment",
+        sortEnabled: false,
+        columnWidth: 150,
+      },
+      {
         columnName: "상태",
         columnLabel: "status",
         sortEnabled: true,
@@ -437,7 +447,7 @@ export default defineComponent({
       },
       {
         columnName: "수업 날짜",
-        columnLabel: "classDates",
+        columnLabel: "classDate",
         sortEnabled: true,
         columnWidth: 200,
       },
@@ -455,7 +465,7 @@ export default defineComponent({
       },
     ]);
 
-    const statusColor = {
+    const statusColor: { [key: string]: string } = {
       INIT: "info",
       OPEN: "primary",
       READY: "warning",
@@ -468,7 +478,7 @@ export default defineComponent({
       CANCEL: "info",
     };
 
-    const statusLabel = {
+    const statusLabel: { [key: string]: string } = {
       INIT: "강의 대기 중",
       OPEN: "강사 신청 가능",
       READY: "강사 열람 가능",
@@ -480,13 +490,14 @@ export default defineComponent({
       PAUSE: "강의 중지",
       CANCEL: "강의 취소",
     };
+
     const isLoading = ref<boolean>(false);
     const isAscending = ref({
       status: true,
       institutionName: true,
       programName: true,
       totalChapters: true,
-      classDates: true,
+      classDate: true,
       instructorName: true,
       instructorPhoneNumber: true,
       date: true,
@@ -499,15 +510,14 @@ export default defineComponent({
       institutionName: "",
       programName: "",
       totalChapters: "",
-      classDates: "",
+      classDate: "",
       instructorName: "",
       instructorPhoneNumber: "",
       startDate: "",
       endDate: "",
     });
 
-
-    const handleFilter = (filterData) => {
+    const handleFilter = (filterData: any) => {
       filters.value = filterData;
       currentPage.value = 0;
       fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
@@ -559,7 +569,7 @@ export default defineComponent({
           institutionName: program.institutionName || "-",
           programName: program.programName || "-",
           totalChapters: program.totalChapters || "-",
-          classDates: program.classDates || "-",
+          classDate: program.classDate || "-",
           instructorName: program.instructorName || "-",
           instructorPhoneNumber: program.instructorPhoneNumber || "-",
           role: program.role || "-",
@@ -574,7 +584,7 @@ export default defineComponent({
       }
     };
 
-    const buildFilterQuery = (filtersData) => {
+    const buildFilterQuery = (filtersData: any) => {
       let query = "";
       if (filtersData.status) {
         query += `&status=${encodeURIComponent(filtersData.status)}`;
@@ -588,8 +598,8 @@ export default defineComponent({
       if (filtersData.totalChapters) {
         query += `&totalChapters=${encodeURIComponent(filtersData.totalChapters)}`;
       }
-      if (filtersData.classDates) {
-        query += `&classDates=${encodeURIComponent(filtersData.classDates)}`;
+      if (filtersData.classDate) {
+        query += `&classDate=${encodeURIComponent(filtersData.classDate)}`;
       }
       if (filtersData.instructorName) {
         query += `&instructorName=${encodeURIComponent(filtersData.instructorName)}`;
@@ -679,11 +689,11 @@ export default defineComponent({
           ? "&sortBy=programName&direction=asc"
           : "&sortBy=programName&direction=desc";
         isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "classDates") {
-        sortBy = isAscending.value.classDates
-          ? "&sortBy=classDates&direction=asc"
-          : "&sortBy=classDates&direction=desc";
-        isAscending.value.classDates = !isAscending.value.classDates;
+      } else if (sort.label === "classDate") {
+        sortBy = isAscending.value.classDate
+          ? "&sortBy=classDate&direction=asc"
+          : "&sortBy=classDate&direction=desc";
+        isAscending.value.classDate = !isAscending.value.classDate;
       } else if (sort.label === "instructorName") {
         sortBy = isAscending.value.instructorName
           ? "&sortBy=instructorName&direction=asc"
@@ -724,6 +734,7 @@ export default defineComponent({
 
     const onSelectionChange = (selectedRows: Array<IProgram>) => {
       selectedItems.value = selectedRows;
+      selectedIds.value = selectedRows.map((row) => row.id);
     };
 
     const onButtonAction = () => {
@@ -774,6 +785,9 @@ export default defineComponent({
       selectedStatus,
       filterNewStatus,
       applyStatusFilter,
+      openTeacherModal, // 추가
+      showTeacherModal, // 추가
+      selectedProgram, // 추가
     };
   },
 });
@@ -849,7 +863,7 @@ export default defineComponent({
 }
 
 .column-institutionName {
-  width: 110x;
+  width: 110px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -925,5 +939,4 @@ export default defineComponent({
   margin-right: auto;
   display: block;
 }
-
 </style>
