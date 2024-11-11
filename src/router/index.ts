@@ -586,6 +586,33 @@ const routes: Array<RouteRecordRaw> = [
       },
       // 설정 및 사용자 관리 - 강사 관련
       {
+        path: "TeacherAdd",
+        name: "admin-TeacherAdd",
+        component: () => import("@/views/admin/userSettings/TeacherAdd.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "강사 생성"],
+        },
+      },
+      {
+        path: "TeacherDetails",
+        name: "admin-TeacherDetails",
+        component: () => import("@/views/admin/userSettings/TeacherDetails.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "강사 상세정보"],
+        },
+      },
+      {
+        path: "TeacherEdit",
+        name: "admin-TeacherEdit",
+        component: () => import("@/views/admin/userSettings/TeacherEdit.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "강사 수정"],
+        },
+      },
+      {
         path: "TeacherList",
         name: "admin-TeacherList",
         component: () => import("@/views/admin/userSettings/TeacherList.vue"),

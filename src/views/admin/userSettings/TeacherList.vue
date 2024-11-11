@@ -1,63 +1,79 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="card-title">
-        <!-- <div class="d-flex align-items-center position-relative my-1">
-          <KTIcon
-            icon-name="magnifier"
-            icon-class="fs-1 position-absolute ms-6"
-          />
-          <input
-            v-model="search"
-            @input="searchItems"
-            type="text"
-            class="form-control form-control-solid w-250px ps-14"
-            placeholder="Search Subscriptions"
-          />
-        </div> -->
-      </div>
+      <div class="card-title"></div>
       <div class="card-toolbar">
-        <div v-if="selectedIds.length === 0" class="d-flex justify-content-end align-items-center">
-          <button
-            tabindex="3"
-            type="button"
-            @click="onButtonAction"
-            class="menu-link px-3 btn btn-light-primary"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            <span class="indicator-label">프로그램 등록</span>
-          </button>
-        </div>
-        <div v-else class="d-flex justify-content-end align-items-center">
-          <div class="fw-bold me-5">
-            <span class="me-2">{{ selectedIds.length }}</span> Selected
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
+            <transition name="fade">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+                <div class="fw-bold me-5">
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="d-flex align-items-center me-3" style=" margin-right: 0 !important">
+                  <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
+                      <option value="Y">활성</option>
+                      <option value="N">비활성</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary checkbox-button"
+                    @click="changeUserStatus"
+                  >
+                    상태 변경
+                  </button>
+                </div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="ms-4" style=" margin-left: 0 !important">
+                  <button
+                    type="button"
+                    class="btn btn-danger checkbox-button"
+                    @click="onDeleteUsers"
+                  >
+                    사용자 삭제
+                  </button>
+                </div>
+                <div class="vertical-separator mx-3"></div>
+              </div>
+            </transition>
           </div>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="onDeletePrograms"
-            style="width: 140px; height: 45px; margin-right: 10px"
-          >
-            프로그램 삭제
-          </button>
-        </div>
-          <div class="card-toolbar">
+
+          <div class="d-flex justify-content-end align-items-center">
             <button
+              tabindex="3"
               type="button"
-              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-              data-kt-menu-trigger="click"
-              data-kt-menu-placement="bottom-end"
-              data-kt-menu-flip="top-end"
+              @click="onButtonAction"
+              class="btn btn-light-primary checkbox-button"
             >
-              <KTIcon icon-name="category" icon-class="fs-2" />
+              <span class="indicator-label">사용자 등록</span>
             </button>
-            <Dropdown1 @apply-filter="handleFilter"></Dropdown1>
           </div>
+        </div>
+
+        <div class="card-toolbar">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+            data-kt-menu-trigger="click"
+            data-kt-menu-placement="bottom-end"
+            data-kt-menu-flip="top-end"
+          >
+            <KTIcon icon-name="category" icon-class="fs-2" />
+          </button>
+          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
+        </div>
       </div>
     </div>
 
     <div class="card-body pt-0">
-      <!-- 로딩 스피너 오버레이 -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -70,37 +86,59 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <!-- 테이블 템플릿 -->
-        <template v-slot:header-programName>
-          <div>프로그램명</div>
+        <template v-slot:header-id>
+          <div>ID</div>
         </template>
-        <template v-slot:header-chapter>
-          <div>총 차시</div>
+        <template v-slot:header-username>
+          <div>사용자명</div>
         </template>
-        <template v-slot:header-product>
-          <div>교구</div>
+        <template v-slot:header-name>
+          <div>이름</div>
         </template>
-        <template v-slot:header-createdAt>
-          <div>생성 날짜</div>
+        <template v-slot:header-email>
+          <div>이메일</div>
+        </template>
+        <template v-slot:header-gender>
+          <div>성별</div>
+        </template>
+        <template v-slot:header-affiliation>
+          <div>소속</div>
+        </template>
+        <template v-slot:header-status>
+          <div>상태</div>
         </template>
 
-        <template v-slot:programName="{ row: customer }">
-          <div @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.programName }}
+        <template v-slot:id="{ row: user }">
+          <div class="column-id">{{ user.id }}</div>
+        </template>
+        <template v-slot:username="{ row: user }">
+          <div class="column-username" @click="onUserClick(user)" style="cursor: pointer;">
+            {{ user.username }}
           </div>
         </template>
-        <template v-slot:chapter="{ row: customer }">
-          <div>{{ customer.chapter }}</div>
+        <template v-slot:name="{ row: user }">
+          <div class="column-name" @click="onUserClick(user)" style="cursor: pointer;">
+            {{ user.name }}
+          </div>
         </template>
-        <template v-slot:product="{ row: customer }">
-          <div>{{ customer.product }}</div>
+        <template v-slot:email="{ row: user }">
+          <div class="column-email">{{ user.email }}</div>
         </template>
-        <template v-slot:createdAt="{ row: customer }">
-          <div>{{ customer.createdAt }}</div>
+        <template v-slot:gender="{ row: user }">
+          <div class="column-gender">{{ user.gender }}</div>
+        </template>
+        <template v-slot:affiliation="{ row: user }">
+          <div class="column-affiliation">{{ user.affiliation }}</div>
+        </template>
+        <template v-slot:status="{ row: user }">
+          <div class="column-status">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[user.status]}`">
+              {{ statusLabel[user.status] }}
+            </span>
+          </div>
         </template>
       </KTDatatable>
 
-      <!-- 페이지네이션 -->
       <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
           <ul class="pagination">
@@ -121,8 +159,7 @@
               :class="{ disabled: currentPage === 0 }"
               @click="onPageChange(currentPage - 1)"
             >
-              <i class="page-link ki-duotone ki-left fs-2">
-              </i>
+              <i class="page-link ki-duotone ki-left fs-2"></i>
             </li>
             <li
               class="page-item"
@@ -138,8 +175,7 @@
               :class="{ disabled: currentPage + 1 === totalPages }"
               @click="onPageChange(currentPage + 1)"
             >
-              <i class="page-link ki-duotone ki-right fs-2">
-              </i>
+              <i class="page-link ki-duotone ki-right fs-2"></i>
             </li>
             <li
               class="page-item"
@@ -167,83 +203,178 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
+import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 
-interface IProgram {
+interface IUser {
   id: number;
-  programName: string;
-  chapter: number | null;
-  product: number | null;
-  createdAt: number;
+  username: string;
+  name: string;
+  email: string;
+  gender: string;
+  affiliation: string;
+  status: string;
 }
 
 export default defineComponent({
-  name: "kt-program-list",
+  name: "kt-user-list",
   components: {
     KTDatatable,
-    Dropdown1,
+    Dropdown3,
   },
 
   setup() {
     const router = useRouter();
-    const data = ref<Array<IProgram>>([]);
+    const data = ref<Array<IUser>>([]);
     const totalElements = ref<number>(0);
     const totalPages = ref<number>(0);
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
     const search = ref<string>("");
-    const isLoading = ref<boolean>(false);
-
-    const selectedItems = ref<Array<IProgram>>([]);
+    const selectedItems = ref<Array<IUser>>([]);
     const selectedIds = ref<Array<number>>([]);
+    const selectedStatus = ref("Y");
+
+    const changeUserStatus = async () => {
+      const token = localStorage.getItem("token");
+
+      if (selectedIds.value.length === 0) {
+        Swal.fire({
+          title: "선택된 항목 없음",
+          text: "상태를 변경할 항목을 선택하세요.",
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-warning",
+          },
+        });
+        return;
+      }
+
+      try {
+        const requestBody = {
+          userIds: selectedIds.value,
+          status: selectedStatus.value,
+        };
+
+        const apiUrl = `http://localhost:8081/api/v1/admin/user/list/status`;
+        console.log("API 호출 URL:", apiUrl);
+        console.log("요청 바디:", requestBody);
+
+        await axios.post(
+          apiUrl,
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          title: "상태 변경 완료",
+          text: "선택된 사용자의 상태가 변경되었습니다.",
+          icon: "success",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-primary",
+          },
+        }).then(() => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.error("Error changing user status: ", error);
+
+        Swal.fire({
+          title: "오류",
+          text: "사용자 상태 변경에 실패했습니다.",
+          icon: "error",
+          customClass: {
+            confirmButton: "btn fw-semibold btn-danger",
+          },
+        });
+      }
+    };
 
     const headerConfig = ref([
       {
-        columnName: "프로그램명",
-        columnLabel: "programName",
+        columnName: "ID",
+        columnLabel: "id",
+        sortEnabled: true,
+        columnWidth: 50,
+      },
+      {
+        columnName: "사용자명",
+        columnLabel: "username",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "이름",
+        columnLabel: "name",
+        sortEnabled: true,
+        columnWidth: 150,
+      },
+      {
+        columnName: "이메일",
+        columnLabel: "email",
         sortEnabled: true,
         columnWidth: 200,
       },
       {
-        columnName: "총 차시",
-        columnLabel: "chapter",
+        columnName: "성별",
+        columnLabel: "gender",
         sortEnabled: true,
         columnWidth: 100,
       },
       {
-        columnName: "교구",
-        columnLabel: "product",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "생성 날짜",
-        columnLabel: "createdAt",
+        columnName: "소속",
+        columnLabel: "affiliation",
         sortEnabled: true,
         columnWidth: 150,
       },
+      {
+        columnName: "상태",
+        columnLabel: "status",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
     ]);
 
+    const statusColor = {
+      Y: "success", // 활성 상태
+      N: "danger",  // 비활성 상태
+    };
+
+    const statusLabel = {
+      Y: "활성",
+      N: "비활성",
+    };
+
+    const isLoading = ref<boolean>(false);
     const isAscending = ref({
-      programName: true,
-      chapter: true,
-      product: true,
-      createdAt: true,
+      id: true,
+      username: true,
+      name: true,
+      email: true,
+      gender: true,
+      affiliation: true,
+      status: true,
     });
 
     const currentSortBy = ref<string>("");
 
     const filters = ref({
-      programName: "",
-      product: "",
-      startDate: "",
-      endDate: "",
+      status: "",
+      username: "",
+      name: "",
+      email: "",
+      gender: "",
+      affiliation: "",
     });
 
     const handleFilter = (filterData) => {
+      console.log("적용된 필터 데이터:", filterData);
       filters.value = filterData;
       currentPage.value = 0;
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+      fetchUsers(currentPage.value, currentSortBy.value, filters.value);
     };
 
     const visiblePages = computed<Array<number>>(() => {
@@ -266,7 +397,7 @@ export default defineComponent({
       return pages;
     });
 
-    const fetchPrograms = async (
+    const fetchUsers = async (
       page: number = 0,
       sortBy: string = currentSortBy.value,
       filtersData = filters.value
@@ -276,26 +407,24 @@ export default defineComponent({
         const token = localStorage.getItem("token");
         const filterQuery = buildFilterQuery(filtersData);
 
+        const apiUrl = `http://localhost:8081/api/v1/admin/user/list?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`;
+        console.log("API 호출 URL:", apiUrl);
+
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          apiUrl,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        const responseData = response.data;
-        console.log('API 호출 URL:', `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`);
-        console.log('API 응답 데이터:', response.data);
 
-        data.value = responseData.content.map((program: IProgram) => ({
-          ...program,
-          programName: program.programName,
-          chapter: program.chapter ? program.chapter : "-",
-          product: program.product ? program.product : "-",
-          createdAt: new Date(program.createdAt * 1000)
-            .toLocaleDateString()
-            .replace(/\.$/, ""),
+        const responseData = response.data;
+        console.log("API 응답 데이터:", responseData);
+
+        data.value = responseData.content.map((user: IUser) => ({
+          ...user,
+          status: user.status,
         }));
 
         totalElements.value = responseData.totalElements;
@@ -308,44 +437,54 @@ export default defineComponent({
     };
 
     const buildFilterQuery = (filtersData) => {
-      let query = '';
-      if (filtersData.programName) {
-        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
+      let query = "";
+      if (filtersData.status) {
+        query += `&status=${encodeURIComponent(filtersData.status)}`;
       }
-      if (filtersData.product) {
-        query += `&product=${encodeURIComponent(filtersData.product)}`;
+      if (filtersData.username) {
+        query += `&username=${encodeURIComponent(filtersData.username)}`;
       }
-      if (filtersData.startDate) {
-        query += `&startDate=${filtersData.startDate}`;
+      if (filtersData.name) {
+        query += `&name=${encodeURIComponent(filtersData.name)}`;
       }
-      if (filtersData.endDate) {
-        query += `&endDate=${filtersData.endDate}`;
+      if (filtersData.email) {
+        query += `&email=${encodeURIComponent(filtersData.email)}`;
       }
+      if (filtersData.gender) {
+        query += `&gender=${encodeURIComponent(filtersData.gender)}`;
+      }
+      if (filtersData.affiliation) {
+        query += `&affiliation=${encodeURIComponent(filtersData.affiliation)}`;
+      }
+
       return query;
     };
 
     onMounted(() => {
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+      fetchUsers(currentPage.value, currentSortBy.value, filters.value);
     });
 
-    const deleteSubscription = async (id: number) => {
+    const deleteUser = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
+        const apiUrl = `http://localhost:8081/api/v1/admin/user/${id}`;
+        console.log("API 호출 URL:", apiUrl);
+
+        await axios.delete(apiUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        data.value = data.value.filter((program) => program.id !== id);
+        data.value = data.value.filter((user) => user.id !== id);
       } catch (error) {
-        console.error("Error deleting program: ", error);
+        console.error("Error deleting user: ", error);
       }
     };
 
-    const deleteFewSubscriptions = async () => {
+    const deleteFewUsers = async () => {
       const result = await Swal.fire({
-        title: "프로그램 삭제 확인",
-        text: "선택한 프로그램을 정말로 삭제하시겠습니까?",
+        title: "사용자 삭제 확인",
+        text: "정말로 삭제하시겠습니까?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "삭제",
@@ -358,87 +497,126 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        for (const id of selectedIds.value) {
-          await deleteSubscription(id);
+        try {
+          for (const id of selectedIds.value) {
+            await deleteUser(id);
+          }
+
+          selectedIds.value.length = 0;
+
+          Swal.fire({
+            title: "삭제 완료",
+            text: "선택된 사용자가 삭제되었습니다.",
+            icon: "success",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-primary",
+            },
+          }).then(() => {
+            window.location.reload();
+          });
+        } catch (error) {
+          console.error("Error deleting user: ", error);
+
+          Swal.fire({
+            title: "오류",
+            text: "사용자 삭제에 실패했습니다.",
+            icon: "error",
+            customClass: {
+              confirmButton: "btn fw-semibold btn-danger",
+            },
+          });
         }
-
-        selectedIds.value.length = 0;
-
-        Swal.fire({
-          title: "삭제 완료",
-          text: "선택된 프로그램이 삭제되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        });
       }
     };
 
     const sort = (sort: Sort) => {
       let sortBy = "";
-      if (sort.label === "programName") {
-        sortBy = isAscending.value.programName
-          ? "&sortBy=programName&direction=asc"
-          : "&sortBy=programName&direction=desc";
-        isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "chapter") {
-        sortBy = isAscending.value.chapter
-          ? "&sortBy=chapter&direction=asc"
-          : "&sortBy=chapter&direction=desc";
-        isAscending.value.chapter = !isAscending.value.chapter;
-      } else if (sort.label === "product") {
-        sortBy = isAscending.value.product
-          ? "&sortBy=product&direction=asc"
-          : "&sortBy=product&direction=desc";
-        isAscending.value.product = !isAscending.value.product;
-      } else if (sort.label === "createdAt") {
-        sortBy = isAscending.value.createdAt
-          ? "&sortBy=createdAt&direction=asc"
-          : "&sortBy=createdAt&direction=desc";
-        isAscending.value.createdAt = !isAscending.value.createdAt;
+      if (sort.label === "id") {
+        sortBy = isAscending.value.id
+          ? "&sortBy=id&direction=asc"
+          : "&sortBy=id&direction=desc";
+        isAscending.value.id = !isAscending.value.id;
+      } else if (sort.label === "username") {
+        sortBy = isAscending.value.username
+          ? "&sortBy=username&direction=asc"
+          : "&sortBy=username&direction=desc";
+        isAscending.value.username = !isAscending.value.username;
+      } else if (sort.label === "name") {
+        sortBy = isAscending.value.name
+          ? "&sortBy=name&direction=asc"
+          : "&sortBy=name&direction=desc";
+        isAscending.value.name = !isAscending.value.name;
+      } else if (sort.label === "email") {
+        sortBy = isAscending.value.email
+          ? "&sortBy=email&direction=asc"
+          : "&sortBy=email&direction=desc";
+        isAscending.value.email = !isAscending.value.email;
+      } else if (sort.label === "gender") {
+        sortBy = isAscending.value.gender
+          ? "&sortBy=gender&direction=asc"
+          : "&sortBy=gender&direction=desc";
+        isAscending.value.gender = !isAscending.value.gender;
+      } else if (sort.label === "affiliation") {
+        sortBy = isAscending.value.affiliation
+          ? "&sortBy=affiliation&direction=asc"
+          : "&sortBy=affiliation&direction=desc";
+        isAscending.value.affiliation = !isAscending.value.affiliation;
+      } else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sortBy=status&direction=asc"
+          : "&sortBy=status&direction=desc";
+        isAscending.value.status = !isAscending.value.status;
+      } else {
+        return;
       }
       currentSortBy.value = sortBy;
-      fetchPrograms(currentPage.value, sortBy, filters.value);
+      console.log("정렬 요청:", sortBy);
+      fetchUsers(currentPage.value, sortBy, filters.value);
     };
 
     const onItemSelect = (selectedItems: Array<number>) => {
       selectedIds.value = selectedItems;
+      console.log("선택된 ID들:", selectedIds.value);
     };
 
     const searchItems = () => {
+      console.log("검색 실행:", search.value);
       currentPage.value = 0;
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+      fetchUsers(currentPage.value, currentSortBy.value, filters.value);
     };
 
     const onPageChange = async (page: number) => {
+      console.log(`페이지 변경: ${page + 1}`);
       const currentScrollPosition = window.scrollY;
       currentPage.value = page;
-      await fetchPrograms(page, currentSortBy.value, filters.value);
+      await fetchUsers(page, currentSortBy.value, filters.value);
       window.scrollTo(0, currentScrollPosition);
     };
 
-    const onSelectionChange = (selectedRows: Array<IProgram>) => {
+    const onSelectionChange = (selectedRows: Array<IUser>) => {
       selectedItems.value = selectedRows;
+      console.log("선택된 행들:", selectedItems.value);
     };
 
     const onButtonAction = () => {
       if (selectedItems.value.length > 0) {
-        console.log("선택된 프로그램 삭제:", selectedItems.value);
+        console.log("선택된 사용자 삭제:", selectedItems.value);
       } else {
-        router.push({ name: "admin-ProgramAdd" });
+        console.log("사용자 등록 페이지로 이동");
+        router.push({ name: "admin-TeacherAdd" });
       }
     };
 
-    const onDeletePrograms = () => {
+    const onDeleteUsers = () => {
       if (selectedIds.value.length > 0) {
-        deleteFewSubscriptions();
+        deleteFewUsers();
       }
     };
 
-    const onProgramClick = (program: IProgram) => {
-      localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ProgramDetails", params: { id: program.id } });
+    const onUserClick = (user: IUser) => {
+      console.log("사용자 클릭:", user);
+      localStorage.setItem("selectedUserId", user.id.toString());
+      router.push({ name: "admin-TeacherDetails", params: { id: user.id } });
     };
 
     return {
@@ -453,21 +631,26 @@ export default defineComponent({
       selectedItems,
       onSelectionChange,
       onButtonAction,
-      onDeletePrograms,
-      onProgramClick,
+      onDeleteUsers,
+      onUserClick,
       selectedIds,
       sort,
-      deleteFewSubscriptions,
+      deleteFewUsers,
       onItemSelect,
       isLoading,
       isAscending,
       currentSortBy,
       filters,
       handleFilter,
+      selectedStatus,
+      changeUserStatus,
+      statusColor,
+      statusLabel,
     };
   },
 });
 </script>
+
 <style scoped>
 .overlay {
   position: fixed;
@@ -495,29 +678,104 @@ export default defineComponent({
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-.column-programName,
-.column-chapter,
-.column-product,
-.column-createdAt {
+.column-id,
+.column-username,
+.column-name,
+.column-email,
+.column-gender,
+.column-affiliation,
+.column-status {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.column-programName {
-  width: 200px;
+.column-id {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
-
-.column-chapter {
-  width: 100px;
-}
-
-.column-product {
-  width: 100px;
-}
-
-.column-createdAt {
+.column-username {
   width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-name {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-email {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-gender {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-affiliation {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.column-status {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.dropdown-button {
+  padding-left: 7px !important;
 }
 </style>

@@ -105,7 +105,7 @@ export default defineComponent({
         const token = localStorage.getItem("token");
         const baseUrl = "http://localhost:8081";
         const response = await axios.get(
-          `${baseUrl}/api/v1/admin/users/compact`,
+          `${baseUrl}/api/v1/admin/user/compact`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
