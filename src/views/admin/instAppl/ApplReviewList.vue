@@ -1,63 +1,57 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6 cmcard-header" :class="{ 'checkbox-chide': selectedIds.length > 0 }">
+    <div class="card-header border-0 pt-6 cmcard-header">
       <div class="d-flex align-items-center me-3">
-        <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
+        <div class="d-flex align-items-center">
           <select v-model="filterGoalIsConfirmed" class="form-select filtercheckbox-button dropdown-button">
             <option value="Y">확정</option>
             <option value="N">미확정</option>
           </select>
-          <button type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
             <span class="desktop-text">필터 상태 적용</span>
-            <span class="mobile-text">적용</span>
+            <span class="mobile-text">변경</span>
           </button>
         </div>
       </div>
       <div class="card-title"></div>
-      <div class="card-toolbar cmcard-toolbar">
-        <div class="card-toolbar d-flex justify-content-between align-items-center cmcard-toolbar">
-          <div class="d-flex justify-content-start align-items-center">
+      <div class="card-toolbar">
+        <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center box-leftsort">
             <transition name="fade">
-              <div v-if="selectedIds.length > 0" class="d-flex align-items-center" style="margin-left: -13px !important">
+              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
                   <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
                 </div>
-                <div v-if="selectedIds.length === 0" class="d-flex align-items-center">
-                  <div class="vertical-separator mx-3"></div>
+                <div class="d-flex align-items-center">
+                  <div class="vertical-separator mx-3 check-delline"></div>
                 </div>
 
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }">
-                      <option value="Y">확정</option>
-                      <option value="N">미확정</option>
-                    </select>
-                  </div>
-
+                <div class="d-flex align-items-center me-3">
                   <button
                     type="button"
                     class="btn btn-primary applycheckbox-button"
                     @click="changeProgramStatus"
-                    :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"
+                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
                     <span class="desktop-text">상태 변경</span>
                     <span class="mobile-text">변경</span>
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"></div>
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
 
-                <div class="ms-4" style="margin-left: 0 !important">
+                <div class="ms-4">
                   <button
                     type="button"
                     class="btn btn-danger delcheckbox-button"
                     @click="onDeletePrograms"
-                    :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"
+                    :class="{ 'check-selected': selectedIds.length > 0 }"
                   >
-                    프로그램 삭제
+                  <span class="desktop-text">프로그램 삭제</span>
+                  <span class="mobile-text">삭제</span>
                   </button>
                 </div>
-                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0, 'check-selected': selectedIds.length > 0 }"></div>
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
               </div>
             </transition>
           </div>
@@ -68,21 +62,20 @@
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
-              :class="{ 'del-selected': selectedIds.length > 0, 'has-selected': selectedIds.length > 0 }"
+              :class="{ 'del-selected': selectedIds.length > 0 }"
             >
               <span class="desktop-text">프로그램 등록</span>
               <span class="mobile-text">등록</span>
             </button>
           </div>
 
-          <div class="card-toolbar cmcard-toolbar">
+          <div class="card-toolbar">
             <button
               type="button"
               class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
               data-kt-menu-trigger="click"
               data-kt-menu-placement="bottom-end"
               data-kt-menu-flip="top-end"
-              :class="{ 'del-selected': selectedIds.length > 0, 'has-selected': selectedIds.length > 0 }"
             >
               <KTIcon icon-name="category" icon-class="fs-2" />
             </button>
@@ -93,79 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="card-header border-0 pt-6 mbcard-header" :class="{ 'checkbox-nchide': selectedIds.length === 0 }" >
-      <div class="align-items-center me-3">
-        <div class="card-toolbar justify-content-between align-items-center mbcard-toolbar">
-          <div class="justify-content-start align-items-center">
-            <transition name="fade">
-
-              <div v-if="selectedIds.length > 0" class="align-items-center">
-                <div class="d-flex align-items-center me-3" style="margin-top: 18px !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select filtercheckbox-button dropdown-button" :class="{ 'check-selected': selectedIds.length > 0 }">
-                      <option value="Y">확정</option>
-                      <option value="N">미확정</option>
-                    </select>
-                  </div>
-
-                    <div v-if="selectedIds.length > 0" class="card-toolbar mbcard-toolbar" style="margin-top: -15px !important">
-                      <button
-                        type="button"
-                        style="position: relative; left: 110%;"
-                        class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-                        data-kt-menu-trigger="click"
-                        data-kt-menu-placement="bottom-end"
-                        data-kt-menu-flip="top-end"
-                        :class="{ 'has-selected': selectedIds.length > 0 }"
-                      >
-                      <KTIcon icon-name="category" icon-class="fs-2" />
-                    </button>
-                    <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
-                  </div>
-
-                  <button
-                    type="button"
-                    style="position: absolute; right: 9%;"
-                    class="btn btn-primary checkbox-button"
-                    @click="changeProgramStatus"
-                    :class="{ 'check-selected': selectedIds.length > 0 }"
-                  >
-                    변경
-                  </button>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                  <div class="ms-4" style="margin-top: 20px; margin-left: 0 !important">
-                    <button
-                      type="button"
-                      class="btn btn-danger checkbox-button"
-                      @click="onDeletePrograms"
-                      :class="{ 'check-selected': selectedIds.length > 0 }"
-                    >
-                      삭제
-                    </button>
-                  </div>
-                  <div v-if="selectedIds.length > 0" class="d-flex justify-content-end align-items-center" style="margin-top: 20px !important">
-                    <button
-                      tabindex="3"
-                      type="button"
-                      style="position: absolute; right: 9%;"
-                      @click="onButtonAction"
-                      class="btn btn-light-primary checkbox-button"
-                      :class="{ 'check-selected': selectedIds.length > 0 }"
-                    >
-                      등록
-                    </button>
-                  </div>
-
-                </div>
-              </div>
-              
-            </transition>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    
     <div class="card-body pt-0">
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
@@ -907,7 +828,7 @@ export default defineComponent({
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0s ease;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -915,6 +836,7 @@ export default defineComponent({
 .fade-enter-to, .fade-leave {
   opacity: 1;
 }
+
 .vertical-separator {
   border-left: 1px solid #dee2e6;
   height: 40px;
@@ -1032,24 +954,12 @@ export default defineComponent({
   .mobile-text {
     display: none;
   }
-
-  .mbcard-toolbar, .mbcard-header {
-    margin: 0;
-    padding: 0;
-    border: 0;
+  .cmdel-selected {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-  .cmcard-toolbar {
-    display: none;
-  }
-
-  .checkbox-chide, .checkbox-nchide {
-    display: none;
-  }
-
   .desktop-text {
     display: none;
   }
@@ -1057,7 +967,23 @@ export default defineComponent({
     display: inline;
   }
 
-  .applycheckbox-button, .checkbox-button {
+  .del-selected {
+    display: none;
+  }
+
+  .check-delline {
+    display: none;
+  }
+  
+  .check-selected {
+    margin-left: -10px;
+  }
+  
+  .box-leftsort {
+    margin-left: 0;
+  }
+
+  .applycheckbox-button, .checkbox-button, .delcheckbox-button {
     width: 60px;
   }
 
@@ -1067,18 +993,6 @@ export default defineComponent({
 
   .justify-content-between {
     justify-content: flex-start !important;
-  }
-
-  .check-selected {
-    margin-top: -10px;
-  }
-  
-  .has-selected {
-    margin-top: 10px;
-  }
-
-  .del-selected {
-    display: none;
   }
 
   .table-row {
