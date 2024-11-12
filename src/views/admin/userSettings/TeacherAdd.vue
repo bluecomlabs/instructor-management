@@ -330,7 +330,7 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-light-primary",
           },
         }).then(() => {
-          router.push({ name: "admin-UserList" });
+          router.push({ name: "admin-TeacherList" });
         });
 
       } catch (error: any) { // error 타입을 any로 변경하여 접근 가능하게 함

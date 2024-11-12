@@ -415,12 +415,12 @@ export default defineComponent({
     };
 
     const headerConfig = ref([
-      {
-        columnName: "강사수동신청",
-        columnLabel: "manualAssignment",
-        sortEnabled: false,
-        columnWidth: 150,
-      },
+      // {
+      //   columnName: "강사수동신청",
+      //   columnLabel: "manualAssignment",
+      //   sortEnabled: false,
+      //   columnWidth: 150,
+      // },
       {
         columnName: "상태",
         columnLabel: "status",

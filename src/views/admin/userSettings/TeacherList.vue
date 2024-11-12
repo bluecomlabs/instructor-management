@@ -68,7 +68,7 @@
           >
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
+          <Dropdown10 @apply-filter="handleFilter"></Dropdown10>
         </div>
       </div>
     </div>
@@ -86,9 +86,9 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
-        <template v-slot:header-id>
+        <!-- <template v-slot:header-id>
           <div>ID</div>
-        </template>
+        </template> -->
         <template v-slot:header-username>
           <div>사용자명</div>
         </template>
@@ -125,7 +125,7 @@
           <div class="column-email">{{ user.email }}</div>
         </template>
         <template v-slot:gender="{ row: user }">
-          <div class="column-gender">{{ user.gender }}</div>
+          <div class="column-gender">{{ genderLabel[user.gender] }}</div>
         </template>
         <template v-slot:affiliation="{ row: user }">
           <div class="column-affiliation">{{ user.affiliation }}</div>
@@ -203,7 +203,7 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import Dropdown10 from "@/components/dropdown/Dropdown10.vue";
 
 interface IUser {
   id: number;
@@ -219,7 +219,7 @@ export default defineComponent({
   name: "kt-user-list",
   components: {
     KTDatatable,
-    Dropdown3,
+    Dropdown10,
   },
 
   setup() {
@@ -233,6 +233,10 @@ export default defineComponent({
     const selectedItems = ref<Array<IUser>>([]);
     const selectedIds = ref<Array<number>>([]);
     const selectedStatus = ref("Y");
+    const genderLabel = {
+      F: '여성',
+      M: '남성',
+    };
 
     const changeUserStatus = async () => {
       const token = localStorage.getItem("token");
@@ -294,14 +298,14 @@ export default defineComponent({
     };
 
     const headerConfig = ref([
+      // {
+      //   columnName: "ID",
+      //   columnLabel: "id",
+      //   sortEnabled: true,
+      //   columnWidth: 50,
+      // },
       {
         columnName: "ID",
-        columnLabel: "id",
-        sortEnabled: true,
-        columnWidth: 50,
-      },
-      {
-        columnName: "사용자명",
         columnLabel: "username",
         sortEnabled: true,
         columnWidth: 150,
@@ -339,8 +343,8 @@ export default defineComponent({
     ]);
 
     const statusColor = {
-      Y: "success", // 활성 상태
-      N: "danger",  // 비활성 상태
+      Y: "success",
+      N: "danger",
     };
 
     const statusLabel = {
@@ -621,6 +625,7 @@ export default defineComponent({
 
     return {
       search,
+      genderLabel,
       searchItems,
       data,
       headerConfig,

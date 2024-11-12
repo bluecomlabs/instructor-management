@@ -7,7 +7,6 @@
           <button type="button" class="btn-close" @click="$emit('close')"></button>
         </div>
         <div class="modal-body">
-          <!-- 강사 선택 폼 내용 -->
           <form @submit.prevent="assignTeacher">
             <div class="mb-3">
               <label for="teacherSelect" class="form-label">강사 검색</label>
@@ -241,6 +240,7 @@ export default defineComponent({
   max-width: 500px;
 }
 
+
 .btn-close {
   background: none;
   border: none;
@@ -248,6 +248,7 @@ export default defineComponent({
 
 .modal-content-custom {
   overflow-y: auto;
+  height: 500px !important;
 }
 
 .position-relative {

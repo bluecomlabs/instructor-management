@@ -25,7 +25,7 @@
               >
                 <div class="card-body border-top p-9">
                   
-                  <div class="row mb-6">
+                  <!-- <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
                       ID
                     </label>
@@ -38,7 +38,7 @@
                         disabled
                       />
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
@@ -91,7 +91,7 @@
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="gender"
+                        :value="mappedGender"
                         style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
@@ -115,14 +115,13 @@
                     </div>
                   </div>
 
-
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
                       상태
                     </label>
                     <div class="col-lg-8 fv-row">
                       <input 
-                        v-model="status"
+                        :value="mappedStatus"
                         style="font-weight: bold; font-size: 16px; float: left;"
                         class="form-control form-control-lg form-control-solid" 
                         type="text"
@@ -179,9 +178,10 @@
 
 
 
+
 <script lang="ts">
 import axios from 'axios';
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
@@ -199,6 +199,30 @@ export default defineComponent({
     const affiliation = ref('');
     const status = ref('');
     const errorMessage = ref('');
+
+    // Computed property for mapped gender
+    const mappedGender = computed(() => {
+      switch (gender.value) {
+        case 'M':
+          return '남성';
+        case 'F':
+          return '여성';
+        default:
+          return gender.value;
+      }
+    });
+
+    // Computed property for mapped status
+    const mappedStatus = computed(() => {
+      switch (status.value) {
+        case 'Y':
+          return '활성';
+        case 'N':
+          return '비활성';
+        default:
+          return status.value;
+      }
+    });
 
     const fetchUserData = async () => {
       const userId = localStorage.getItem('selectedUserId');
@@ -325,7 +349,7 @@ export default defineComponent({
     /**
      * 수정 버튼 클릭 시 동작 (수정 기능 비활성화)
      */
-     const goEdit = () => {
+    const goEdit = () => {
       router.push({ name: "admin-TeacherEdit" })
     };
 
@@ -348,6 +372,8 @@ export default defineComponent({
       gender,
       affiliation,
       status,
+      mappedGender,      // Expose mappedGender
+      mappedStatus,      // Expose mappedStatus
       submitButton,
       deleteData,
       goEdit,

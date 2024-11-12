@@ -40,6 +40,12 @@
         </div>
       </div>
       <div class="mb-10">
+        <label class="form-label fw-semibold">강사명</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="강사명을 입력해주세요." v-model="data.instructorName" />
+        </div>
+      </div>
+      <div class="mb-10">
         <label class="form-label fw-semibold">차시</label>
         <div>
           <input type="text" class="form-control form-control-solid" placeholder="총 차시를 입력해주세요." v-model="data.chapter" />
@@ -111,6 +117,7 @@ interface Filter {
   totalChapters: string;
   classNumber: string;
   instructorPhoneNumber: string;
+  instructorName: string;
   programName: string;
   chapter: string;
   startDate: string;
@@ -124,6 +131,7 @@ export default defineComponent({
       data: {
         status: "",
         institutionName: "",
+        instructorName: "",
         totalChapters: "",
         classNumber: "",
         instructorPhoneNumber: "",
@@ -165,6 +173,7 @@ export default defineComponent({
           this.data = {
             status: "",
             institutionName: "",
+            instructorName: "",
             totalChapters: "",
             classNumber: "",
             instructorPhoneNumber: "",
