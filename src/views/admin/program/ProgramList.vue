@@ -1,6 +1,17 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
+      <div class="d-flex align-items-center me-3">
+        <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
+          <select v-model="selectedStatus" class="form-select filtercheckbox-button dropdown-button">
+            <option value="OPEN">OPEN</option>
+            <option value="CLOSE">CLOSE</option>
+          </select>
+          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
+            변경
+          </button>
+        </div>
+      </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
@@ -8,53 +19,52 @@
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3 check-delline"></div>
 
                 <div class="d-flex align-items-center me-3" style=" margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
-                      <option value="OPEN">OPEN</option>
-                      <option value="CLOSE">CLOSE</option>
-                    </select>
-                  </div>
-
                   <button
                     type="button"
-                    class="btn btn-primary checkbox-button"
+                    class="btn btn-primary applycheckbox-button"
                     @click="changeProgramStatus"
+                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                    상태 변경
+                    <span class="desktop-text">상태 변경</span>
+                    <span class="mobile-text">변경</span>
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3 check-delline"></div>
 
                 <div class="ms-4" style=" margin-left: 0 !important">
                   <button
                     type="button"
-                    class="btn btn-danger checkbox-button"
+                    class="btn btn-danger delcheckbox-button"
                     @click="onDeletePrograms"
+                    :class="{ 'check-selected': selectedIds.length > 0 }"
                   >
-                    프로그램 삭제
+                  <span class="desktop-text">프로그램 삭제</span>
+                  <span class="mobile-text">삭제</span>
                   </button>
                 </div>
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3 check-delline"></div>
               </div>
             </transition>
           </div>
 
 
-          <div class="d-flex justify-content-end align-items-center">
+          <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
             <button
+              v-if="showRegisterButton"
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
             >
-              <span class="indicator-label">프로그램 등록</span>
+              <span class="desktop-text">프로그램 등록</span>
+              <span class="mobile-text">등록</span>
             </button>
           </div>
         </div>
@@ -198,7 +208,7 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, onMounted, ref, computed, watch } from "vue";
 import axios from "axios";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
@@ -235,6 +245,28 @@ export default defineComponent({
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
     const selectedStatus = ref("OPEN");
+
+    // 딜레이함수
+    const showRegisterButton = ref(true);
+    let registerButtonTimeout: number | null = null;
+
+    watch(selectedIds, (newVal) => {
+      if (newVal.length === 0) {
+        showRegisterButton.value = false;
+        if (registerButtonTimeout) {
+          clearTimeout(registerButtonTimeout);
+        }
+        registerButtonTimeout = window.setTimeout(() => {
+          showRegisterButton.value = true;
+        }, 30);
+      } else {
+        showRegisterButton.value = false;
+        if (registerButtonTimeout) {
+          clearTimeout(registerButtonTimeout);
+          registerButtonTimeout = null;
+        }
+      }
+    });
 
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
@@ -635,6 +667,7 @@ export default defineComponent({
       changeProgramStatus,
       statusColor,
       statusLabel,
+      showRegisterButton,
     };
   },
 });
@@ -725,7 +758,7 @@ export default defineComponent({
   margin-right: auto;
   display: block;
 }
-.fade-enter-active, .fade-leave-active {
+/* .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s ease;
 }
 .fade-enter, .fade-leave-to {
@@ -733,12 +766,12 @@ export default defineComponent({
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;
-}
+} */
 .vertical-separator {
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button {
+.checkbox-button, .applycheckbox-button, .delcheckbox-button, .filtercheckbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -746,5 +779,79 @@ export default defineComponent({
 }
 .dropdown-button {
   padding-left: 7px !important;
+}
+
+@media (min-width: 769px) {
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+  .cmdel-selected {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-text {
+    display: none;
+  }
+  .mobile-text {
+    display: inline;
+  }
+
+  .del-selected {
+    display: none;
+  }
+
+  .check-delline {
+    display: none;
+  }
+  
+  .check-selected {
+    margin-left: -10px;
+  }
+
+  .filtercheckbox-button {
+    width: 90px;
+  }
+
+  .applycheckbox-button, .checkbox-button, .delcheckbox-button {
+    width: 60px;
+  }
+
+  .justify-content-between {
+    justify-content: flex-start !important;
+  }
+
+  .table-row {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .column-isConfirmed,
+  .column-institutionName,
+  .column-programName,
+  .column-createdAt,
+  .column-grade,
+  .column-classNumber,
+  .column-numberOfStudents,
+  .column-date,
+  .column-remark {
+    display: block;
+    width: auto; /* 너비를 자동으로 조정 */
+    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    overflow: visible;
+    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    margin: 10px 0;
+  }
+
+  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
+  .table-row > div {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+  }
 }
 </style>
