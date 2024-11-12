@@ -195,7 +195,7 @@ export default defineComponent({
     });
     const handleFilter = (filterData) => {
       filters.value = filterData;
-      currentPage.value = 0; // 첫 페이지로 리셋
+      currentPage.value = 0;
       fetchData(currentPage.value, currentSortBy.value, filters.value);
     };
     const statusColor = {
