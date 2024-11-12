@@ -18,6 +18,9 @@
             <span class="desktop-text">필터 상태 적용</span>
             <span class="mobile-text">변경</span>
           </button>
+          <button :class="{ 'cmdel-selected': selectedIds.length === 0, 'comdel-selected':  selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
+            변경
+          </button>
         </div>
       </div>
       <div class="card-title"></div>
@@ -959,6 +962,9 @@ export default defineComponent({
   .cmdel-selected {
     display: none;
   }
+  .comdel-selected {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -968,6 +974,10 @@ export default defineComponent({
   }
   .mobile-text {
     display: inline;
+  }
+
+  .cmdel-selected {
+    display: none;
   }
 
   .applycheckbox-button {
