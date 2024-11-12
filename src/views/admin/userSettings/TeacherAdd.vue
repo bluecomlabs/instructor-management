@@ -241,18 +241,17 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const username = ref(''); // 사용자명 입력 필드 상태
-    const password = ref(''); // 비밀번호 입력 필드 상태
-    const name = ref(''); // 이름 입력 필드 상태
-    const email = ref(''); // 이메일 입력 필드 상태
-    const gender = ref(''); // 성별 드롭다운 상태
-    const affiliation = ref(''); // 소속 입력 필드 상태
-    const status = ref(''); // 상태 드롭다운 상태
-    const roles = ref('USER'); // roles 고정 값
-    const errorMessage = ref(''); // 에러 메시지 상태 추가
+    const username = ref('');
+    const password = ref('');
+    const name = ref('');
+    const email = ref('');
+    const gender = ref('');
+    const affiliation = ref('');
+    const status = ref('');
+    const roles = ref('USER');
+    const errorMessage = ref('');
 
     const fetchData = async () => {
-      // 입력값 검증
       if (!username.value) {
         errorMessage.value = "사용자명을 입력하세요.";
         return;
@@ -301,7 +300,7 @@ export default defineComponent({
           gender: gender.value,
           affiliation: affiliation.value,
           status: status.value,
-          roles: roles.value, // roles는 "USER"로 고정
+          roles: roles.value,
         };
 
         console.log("API 호출 URL:", apiUrl);
@@ -333,9 +332,8 @@ export default defineComponent({
           router.push({ name: "admin-TeacherList" });
         });
 
-      } catch (error: any) { // error 타입을 any로 변경하여 접근 가능하게 함
+      } catch (error: any) {
         console.error("사용자 등록 오류:", error);
-        // 서버에서 반환된 에러 메시지가 있을 경우 표시
         if (error.response && error.response.data && error.response.data.message) {
           errorMessage.value = error.response.data.message;
         } else {
@@ -372,7 +370,7 @@ export default defineComponent({
       gender,
       affiliation,
       status,
-      roles, // roles는 "USER"로 고정
+      roles,
       submitButton,
       fetchData,
       goBack,

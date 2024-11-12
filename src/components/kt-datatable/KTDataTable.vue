@@ -110,7 +110,6 @@ export default defineComponent({
       emit("on-sort", sort);
     };
 
-    //eslint-disable-next-line
     const onItemSelect = (selectedItems: any) => {
       emit("on-items-select", selectedItems);
     };

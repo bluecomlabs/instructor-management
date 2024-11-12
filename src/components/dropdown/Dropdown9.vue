@@ -268,9 +268,7 @@ export default defineComponent({
         cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Emit the filter data
           emit("apply-filter", { ...data.value });
-          // Close the dropdown menu
           (document.activeElement as HTMLElement).blur();
           closeButton.value?.click();
         }
@@ -299,15 +297,12 @@ export default defineComponent({
             endDate: "",
             instructorName: "",
           };
-          // Also reset the instructor search field
           instructorSearch.value = "";
           instructorSuggestions.value = [];
           showInstructorSuggestions.value = false;
           showInstructorDropdown.value = false;
 
-          // Emit the reset event
           emit("apply-filter", { ...data.value });
-          // Close the dropdown menu
           (document.activeElement as HTMLElement).blur();
           closeButton.value?.click();
         }

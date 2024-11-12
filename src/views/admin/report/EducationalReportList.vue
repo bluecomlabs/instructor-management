@@ -208,7 +208,6 @@ export default defineComponent({
           }
         );
 
-        // 데이터 매핑
         const apiData = response.data.map((item: any) => ({
           id: item.confirmedProgramId,
           institutionName: item.institutionName || "미정",
@@ -221,13 +220,12 @@ export default defineComponent({
           createdDate: item.instructorName || "미정",
         }));
 
-        // 기존 데이터를 그대로 유지
         data.value = [...apiData];
-        initData.value = [...apiData]; // 검색을 위해 복사본 저장
+        initData.value = [...apiData];
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        isLoading.value = false;  // 로딩 종료
+        isLoading.value = false;
       }
     };
 
@@ -370,7 +368,7 @@ export default defineComponent({
       deleteSubscription,
       finalizeAssignments,
       loadFromLocalStorage,
-      isLoading,  // 로딩 상태 반환
+      isLoading,
     };
   },
 });

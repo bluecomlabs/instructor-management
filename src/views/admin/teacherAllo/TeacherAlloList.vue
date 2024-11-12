@@ -218,7 +218,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown8 from "@/components/dropdown/Dropdown8.vue";
-import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue"; // 모달 컴포넌트 임포트
+import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue";
 
 interface IProgram {
   id: number;
@@ -244,7 +244,7 @@ export default defineComponent({
   components: {
     KTDatatable,
     Dropdown8,
-    TeacherSelectionModal, // 컴포넌트 등록
+    TeacherSelectionModal,
   },
 
   setup() {
@@ -303,7 +303,6 @@ export default defineComponent({
           endDate: filters.value.endDate || null,
         };
 
-        // null 값을 가진 키 제거
         Object.keys(requestBody).forEach(
           (key) => requestBody[key] == null && delete requestBody[key]
         );
@@ -785,9 +784,9 @@ export default defineComponent({
       selectedStatus,
       filterNewStatus,
       applyStatusFilter,
-      openTeacherModal, // 추가
-      showTeacherModal, // 추가
-      selectedProgram, // 추가
+      openTeacherModal,
+      showTeacherModal,
+      selectedProgram,
     };
   },
 });

@@ -158,9 +158,9 @@ interface Sort {
 interface ISubscription {
   id: number;
   customer: string;
-  status: string[]; // 강사명들을 나열하는 배열
+  status: string[];
   product: string;
-  maxInstructors: number; // 최대 강사 수
+  maxInstructors: number;
 }
 
 export default defineComponent({
@@ -186,7 +186,6 @@ export default defineComponent({
     const isLoading = ref(false);
     const initData = ref<Array<ISubscription>>([]);
 
-    // API 호출 함수 추가
     const loadDataFromApi = async () => {
       try {
         isLoading.value = true;
@@ -211,7 +210,6 @@ export default defineComponent({
           maxInstructors: item.numberOfInstructors
         }));
 
-        // 데이터를 그대로 테이블에 적용
         data.value.splice(0, data.value.length, ...apiData);
         initData.value.splice(0, initData.value.length, ...apiData);
         
@@ -295,16 +293,13 @@ export default defineComponent({
         WarningAlert('강의 취소', '해당 강의를 취소하시겠습니까?')
           .then(async (result) => {
             if (result.isConfirmed) {
-              // API 호출
               await axios.delete(ApiUrl(`/api/v1/user/instructor-applications/${customer.id}`),
               {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
               });
-
-              // 취소 성공시 데이터 로드
-              await loadDataFromApi(); // 테이블 데이터를 다시 불러옴
+              await loadDataFromApi();
               SuccessAlert('취소 완료', '강의 신청을 취소하였습니다.');
             }
           });

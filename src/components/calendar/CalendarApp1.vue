@@ -47,7 +47,7 @@ export default defineComponent({
         right: "dayGridMonth,timeGridWeek,timeGridDay",
       },
       initialDate: TODAY,
-      navLinks: true, // can click day/week names to navigate views
+      navLinks: true,
       selectable: true,
       selectMirror: true,
 
@@ -58,7 +58,7 @@ export default defineComponent({
       },
 
       editable: true,
-      dayMaxEvents: true, // allow "more" link when too many events
+      dayMaxEvents: true,
       events: events,
       dateClick: newEvent,
       eventClick: newEvent,

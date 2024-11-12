@@ -24,7 +24,6 @@
                 novalidate
               >
                 <div class="card-body border-top p-9">
-                  <!-- 기관 검색 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       기관
@@ -63,7 +62,6 @@
                     </div>
                   </div>
 
-                  <!-- 프로그램 검색 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       프로그램
@@ -102,7 +100,6 @@
                     </div>
                   </div>
 
-                  <!-- 학년 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       학년
@@ -121,7 +118,6 @@
                     </div>
                   </div>
 
-                  <!-- 반 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       반
@@ -140,7 +136,6 @@
                     </div>
                   </div>
 
-                  <!-- 학생 수 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       학생 수
@@ -159,7 +154,6 @@
                     </div>
                   </div>
 
-                  <!-- 수업일 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       수업일
@@ -173,7 +167,6 @@
                     </div>
                   </div>
 
-                  <!-- 총 차시 입력 필드 -->
                   <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
                       총 차시
@@ -192,7 +185,6 @@
                     </div>
                   </div>
 
-                  <!-- 교육 차시 상세보기 -->
                   <h3 class="fw-bold mt-10 mb-5">교육 차시 상세</h3>
                   <div class="row">
                     <div
@@ -261,7 +253,6 @@
                               </div>
                             </div>
 
-                            <!-- 보조 강사 수 -->
                             <div class="mb-3">
                               <label class="form-label fw-semibold">
                                 보조 강사 수
@@ -378,7 +369,6 @@ export default defineComponent({
     const remark = ref('');
     const errorMessage = ref('');
 
-    // 초성 추출 함수
     const getChosung = (text: string): string => {
       const CHOSUNG = [
         "ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ",
@@ -397,7 +387,6 @@ export default defineComponent({
       return result;
     };
 
-    // 총 차시 수에 따른 교육 차시 상세 생성
     watch(chapterNumber, (newChapterNumber) => {
       if (newChapterNumber) {
         const existingChapters = educationChapters.value;
@@ -419,7 +408,6 @@ export default defineComponent({
       }
     });
 
-    // 전체 기관 및 프로그램 데이터 가져오기
     const fetchAllData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -443,7 +431,6 @@ export default defineComponent({
       }
     };
 
-    // 기관 검색 시 호출
     const onInstitutionInput = () => {
       showInstitutionDropdown.value = false;
       if (institutionSearch.value.trim() !== '') {
@@ -457,7 +444,6 @@ export default defineComponent({
       }
     };
 
-    // 프로그램 검색 시 호출
     const onProgramInput = () => {
       showProgramDropdown.value = false;
       if (programSearch.value.trim() !== '') {
@@ -524,7 +510,6 @@ export default defineComponent({
     };
 
     const goRegister = async () => {
-      // 날짜와 시간 필드 검증
       const invalidChapters = educationChapters.value.filter(chapter => {
         return !chapter.date || !chapter.startTime || !chapter.endTime;
       });
@@ -538,7 +523,6 @@ export default defineComponent({
         return;
       }
 
-      // 등록 확인 모달
       const result = await Swal.fire({
         text: '등록하시겠습니까?',
         icon: 'warning',
@@ -548,7 +532,6 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        // 등록 진행
         const payload = {
           programId: selectedProgramId.value,
           programName: programSearch.value,
@@ -598,7 +581,6 @@ export default defineComponent({
           });
         }
       } else {
-        // 등록 취소
         Swal.fire({
           text: '등록이 취소되었습니다.',
           icon: 'info',

@@ -200,7 +200,6 @@ export default defineComponent({
     const status = ref('');
     const errorMessage = ref('');
 
-    // Computed property for mapped gender
     const mappedGender = computed(() => {
       switch (gender.value) {
         case 'M':
@@ -212,7 +211,6 @@ export default defineComponent({
       }
     });
 
-    // Computed property for mapped status
     const mappedStatus = computed(() => {
       switch (status.value) {
         case 'Y':
@@ -372,8 +370,8 @@ export default defineComponent({
       gender,
       affiliation,
       status,
-      mappedGender,      // Expose mappedGender
-      mappedStatus,      // Expose mappedStatus
+      mappedGender,
+      mappedStatus,
       submitButton,
       deleteData,
       goEdit,

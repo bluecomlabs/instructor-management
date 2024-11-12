@@ -205,18 +205,17 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const programName = ref(''); // 프로그램명 입력 필드 상태
-    const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
-    const product = ref(''); // 교구 입력 필드 상태
-    const level = ref<number | null>(null); // level 상태 추가 (드롭다운 사용)
-    const status = ref(''); // 상태 추가 (드롭다운 사용)
-    const remark = ref(''); // remark 상태 추가
-    const errorMessage = ref(''); // 에러 메시지 상태 추가
+    const programName = ref(''); 
+    const chapter = ref<number | null>(null);
+    const product = ref('');
+    const level = ref<number | null>(null);
+    const status = ref('');
+    const remark = ref('');
+    const errorMessage = ref('');
 
     const fetchData = async () => {
-      // 입력값 검증
       if (!programName.value) {
-        errorMessage.value = "프로그램명을 입력하세요."; // 에러 메시지 설정
+        errorMessage.value = "프로그램명을 입력하세요.";
         return;
       }
 
@@ -234,9 +233,9 @@ export default defineComponent({
             "programName": programName.value,
             "chapter": chapter.value,
             "productSn": product.value,
-            "level": level.value, // level 값 추가
-            "status": status.value, // 상태 값 추가
-            "remark": remark.value // remark 값 추가
+            "level": level.value,
+            "status": status.value,
+            "remark": remark.value
         }),
         {
           headers: {
@@ -287,9 +286,9 @@ export default defineComponent({
       programName,
       chapter,
       product,
-      level, // level 상태 반환 (드롭다운 사용)
-      status, // 상태 반환 (드롭다운 사용)
-      remark, // remark 상태 반환
+      level,
+      status,
+      remark,
       submitButton,
       fetchData,
       goBack,

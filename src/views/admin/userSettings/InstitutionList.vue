@@ -516,7 +516,7 @@ export default defineComponent({
 
     const onInstitutionClick = (institution: IInstitution) => {
       localStorage.setItem("selectedInstitutionId", institution.id.toString());
-      router.push({ name: "admin-InstitutionDetails", params: { id: institution.id } }); // 라우트 이름 확인 필요
+      router.push({ name: "admin-InstitutionDetails", params: { id: institution.id } });
     };
 
     return {

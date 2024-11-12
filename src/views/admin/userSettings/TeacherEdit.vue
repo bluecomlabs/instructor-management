@@ -159,22 +159,18 @@ import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
 export default defineComponent({
-  name: "UserEdit", // 컴포넌트 이름 변경
+  name: "UserEdit",
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const name = ref(''); // 이름 입력 필드 상태
-    const email = ref(''); // 이메일 입력 필드 상태
-    const gender = ref(''); // 성별 드롭다운 상태
-    const affiliation = ref(''); // 소속 입력 필드 상태
-    const status = ref(''); // 상태 드롭다운 상태
-    const errorMessage = ref(''); // 에러 메시지 상태
-
-    /**
-     * 사용자 데이터를 가져오는 함수
-     */
+    const name = ref('');
+    const email = ref('');
+    const gender = ref('');
+    const affiliation = ref('');
+    const status = ref('');
+    const errorMessage = ref('');
     const fetchUserData = async () => {
-      const userId = localStorage.getItem('selectedUserId'); // 로컬스토리지에서 ID 가져오기
+      const userId = localStorage.getItem('selectedUserId');
       if (!userId) {
         errorMessage.value = '사용자 ID를 찾을 수 없습니다.';
         return;
@@ -183,7 +179,7 @@ export default defineComponent({
       try {
         const token = localStorage.getItem("token");
         const apiUrl = ApiUrl(`/api/v1/admin/user/${userId}`);
-        console.log("API 호출 URL:", apiUrl); // API 호출 URL 콘솔 출력
+        console.log("API 호출 URL:", apiUrl);
 
         const response = await axios.get(apiUrl, {
           headers: {
@@ -193,14 +189,13 @@ export default defineComponent({
 
         const userData = response.data;
 
-        // 폼 필드에 데이터 반영
         name.value = userData.name;
         email.value = userData.email;
         gender.value = userData.gender;
         affiliation.value = userData.affiliation;
         status.value = userData.status;
 
-        console.log("받은 사용자 데이터:", userData); // 받은 데이터 콘솔 출력
+        console.log("받은 사용자 데이터:", userData);
       } catch (error: any) {
         console.error('Error fetching user data:', error);
         errorMessage.value = '사용자 정보를 불러오는 데 실패했습니다.';
@@ -217,18 +212,14 @@ export default defineComponent({
       }
     };
 
-    /**
-     * 사용자 업데이트를 위한 PUT 요청 함수
-     */
     const updateUser = async () => {
-      const userId = localStorage.getItem('selectedUserId'); // 로컬스토리지에서 ID 가져오기
+      const userId = localStorage.getItem('selectedUserId');
 
       if (!userId) {
         errorMessage.value = '사용자 ID를 찾을 수 없습니다.';
         return;
       }
 
-      // 입력값 검증
       if (!name.value) {
         errorMessage.value = "이름을 입력하세요.";
         return;
@@ -250,8 +241,7 @@ export default defineComponent({
         return;
       }
 
-      errorMessage.value = ''; // 에러 메시지 초기화
-
+      errorMessage.value = '';
       if (submitButton.value) {
         submitButton.value.disabled = true;
         submitButton.value.setAttribute("data-kt-indicator", "on");
@@ -269,12 +259,12 @@ export default defineComponent({
           status: status.value,
         };
 
-        console.log("API 호출 URL:", apiUrl); // API 호출 URL 콘솔 출력
-        console.log("요청 바디:", requestBody); // 요청 본문 콘솔 출력
+        console.log("API 호출 URL:", apiUrl);
+        console.log("요청 바디:", requestBody);
 
         const response = await axios.put(
           apiUrl,
-          requestBody, // JSON 형식으로 전송
+          requestBody,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -283,7 +273,7 @@ export default defineComponent({
           }
         );
 
-        console.log("API 응답:", response); // API 응답 콘솔 출력
+        console.log("API 응답:", response); 
 
         Swal.fire({
           text: "사용자가 성공적으로 업데이트되었습니다.",
@@ -295,12 +285,11 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-light-primary",
           },
         }).then(() => {
-          router.push({ name: "admin-TeacherList" }); // 사용자 목록 페이지로 이동
+          router.push({ name: "admin-TeacherList" });
         });
 
       } catch (error: any) { 
         console.error("사용자 업데이트 오류:", error);
-        // 서버에서 반환된 에러 메시지가 있을 경우 표시
         if (error.response && error.response.data && error.response.data.message) {
           errorMessage.value = error.response.data.message;
         } else {
@@ -325,14 +314,10 @@ export default defineComponent({
       }
     };
 
-    /**
-     * 뒤로 가기 함수
-     */
     const goBack = () => {
       router.back();
     };
 
-    // 컴포넌트가 마운트될 때 사용자 데이터를 불러오기
     onMounted(() => {
       fetchUserData();
     });

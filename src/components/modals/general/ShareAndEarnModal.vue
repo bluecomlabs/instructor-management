@@ -48,9 +48,6 @@
               <h4 class="fs-5 fw-semibold text-gray-800">
                 Share my referral link with friends
               </h4>
-              <!--end::Title-->
-
-              <!--begin::Title-->
               <div class="d-flex">
                 <input
                   ref="inputRef"
@@ -70,11 +67,7 @@
                   Copy Link
                 </button>
               </div>
-              <!--end::Title-->
             </div>
-            <!--end::Input group-->
-
-            <!--begin::Actions-->
             <div class="d-flex">
               <a href="#" class="btn btn-light-primary w-100">
                 <img

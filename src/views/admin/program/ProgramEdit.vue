@@ -187,17 +187,16 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const submitButton = ref<HTMLButtonElement | null>(null);
-    const programName = ref(''); // 프로그램명 입력 필드 상태
-    const product = ref(''); // 프로그램명 입력 필드 상태
-    const chapter = ref<number | null>(null); // 챕터 입력 필드 상태
-    const level = ref<number | null>(null); // level 입력 필드 상태 추가
-    const status = ref(''); // status 상태 추가
-    const remark = ref(''); // remark 입력 필드 상태 추가
-    const errorMessage = ref(''); // 에러 메시지 상태
+    const programName = ref('');
+    const product = ref('');
+    const chapter = ref<number | null>(null);
+    const level = ref<number | null>(null);
+    const status = ref('');
+    const remark = ref('');
+    const errorMessage = ref('');
 
-    // API 응답으로 프로그램 데이터를 가져오는 함수
     const fetchProgramData = async () => {
-      const programId = localStorage.getItem('selectedProgramId'); // 로컬스토리지에서 ID 가져오기
+      const programId = localStorage.getItem('selectedProgramId');
       if (!programId) {
         errorMessage.value = '프로그램 ID를 찾을 수 없습니다.';
         return;
@@ -213,30 +212,27 @@ export default defineComponent({
 
         const programData = response.data;
 
-        // 프로그램명과 챕터, level, remark 값을 인풋 필드에 반영
         programName.value = programData.programName;
         product.value = programData.product;
         chapter.value = programData.chapter;
-        level.value = programData.level; // level 값 반영
-        status.value =  programData.status; // status 상태 추가
-        remark.value = programData.remark; // remark 값 반영
+        level.value = programData.level;
+        status.value =  programData.status;
+        remark.value = programData.remark;
       } catch (error) {
         console.error('Error fetching program data:', error);
         errorMessage.value = '프로그램 정보를 불러오는 데 실패했습니다.';
       }
     };
 
-    // 프로그램 업데이트를 위한 PUT 요청 함수
     const fetchData = async () => {
-      const programId = localStorage.getItem('selectedProgramId'); // 로컬스토리지에서 ID 가져오기
+      const programId = localStorage.getItem('selectedProgramId');
 
-      // 입력값 검증
       if (!programName.value) {
         errorMessage.value = "프로그램명을 입력하세요.";
         return;
       }
       
-      errorMessage.value = ''; // 입력이 있으면 에러 메시지 초기화
+      errorMessage.value = '';
 
       if (submitButton.value) {
         submitButton.value.disabled = true;
@@ -293,26 +289,25 @@ export default defineComponent({
       }
     };
 
-    // 컴포넌트가 마운트될 때 프로그램 데이터를 불러오기
     onMounted(() => {
       fetchProgramData();
     });
 
     const goBack = () => {
-      router.back(); // 뒤로가기 함수
+      router.back(); 
     };
 
     return {
       programName,
       product,
       chapter,
-      level, // level 상태 리턴
-      remark, // remark 상태 리턴
+      level,
+      remark,
       status,
       submitButton,
       fetchData,
       goBack,
-      errorMessage, // 에러 메시지 상태 리턴
+      errorMessage,
     };
   },
 });

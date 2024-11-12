@@ -156,7 +156,7 @@ interface Instructor {
 }
 
 export default defineComponent({
-  name: "UserFilterModal", // 컴포넌트 이름 변경
+  name: "UserFilterModal",
   emits: ["apply-filter"],
   setup(props, { emit }) {
     const data = ref<Filter>({
@@ -258,12 +258,10 @@ export default defineComponent({
         cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Emit the filter data
           emit("apply-filter", { ...data.value });
-          // Close the dropdown menu
           (document.activeElement as HTMLElement).blur();
           closeButton.value?.click();
-          console.log("적용된 필터 데이터:", data.value); // 콘솔 로그 추가
+          console.log("적용된 필터 데이터:", data.value);
         }
       });
     };
@@ -294,18 +292,15 @@ export default defineComponent({
             endDate: "",
             instructorName: "",
           };
-          // Also reset the instructor search field
           instructorSearch.value = "";
           instructorSuggestions.value = [];
           showInstructorSuggestions.value = false;
           showInstructorDropdown.value = false;
 
-          // Emit the reset event
           emit("apply-filter", { ...data.value });
-          // Close the dropdown menu
           (document.activeElement as HTMLElement).blur();
           closeButton.value?.click();
-          console.log("초기화된 필터 데이터:", data.value); // 콘솔 로그 추가
+          console.log("초기화된 필터 데이터:", data.value);
         }
       });
     };

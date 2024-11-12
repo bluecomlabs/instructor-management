@@ -351,9 +351,7 @@ export default defineComponent({
         return;
       }
 
-      //Disable button
       submitButtonRef.value.disabled = true;
-      // Activate indicator
       submitButtonRef.value.setAttribute("data-kt-indicator", "on");
 
       setTimeout(() => {

@@ -411,7 +411,6 @@ export default defineComponent({
       }
     };
 
-    // 수정 페이지로 이동
     const goEdit = () => {
       if (id.value !== null) {
         router.push({ name: "admin-InstitutionEdit", params: { id: id.value.toString() } });
@@ -429,7 +428,6 @@ export default defineComponent({
       }
     };
 
-    // 뒤로가기
     const goBack = () => {
       router.back();
     };

@@ -207,7 +207,7 @@ export default defineComponent({
   setup() {
     const data = ref<Array<ISubscription>>([]);
     const initData = ref<Array<ISubscription>>([]);
-    const isLoading = ref(false);  // 로딩 상태 추가
+    const isLoading = ref(false);
 
     const headerConfig = ref([
       {
@@ -291,13 +291,10 @@ export default defineComponent({
         margin: "0px !important",
       };
     };
-
-    // 데이터 병합 함수
     const mergeDataByProgram = (rawData: any[]) => {
       const mergedData: any = {};
 
       rawData.forEach((item) => {
-        // confirmedProgramId로 데이터 병합
         if (!mergedData[item.confirmedProgramId]) {
           mergedData[item.confirmedProgramId] = {
             id: item.id,
@@ -310,15 +307,12 @@ export default defineComponent({
             INST_NM: item.institutionName,
             ST_NM: item.assistantInstructorName,
             lecturePlan: "상세보기",
-            instructors: new Set([item.assistantInstructorName]), // 강사 이름을 Set에 저장
+            instructors: new Set([item.assistantInstructorName]),
           };
         } else {
-          // 동일한 confirmedProgramId가 있다면 강사 이름을 Set에 추가
           mergedData[item.confirmedProgramId].instructors.add(item.assistantInstructorName);
         }
       });
-
-      // instructors를 배열로 변환하여 출력
       return Object.values(mergedData).map((item: any) => ({
         ...item,
         ST_NM: Array.from(item.instructors).join(", "),
@@ -406,7 +400,7 @@ export default defineComponent({
       getLecturePlanButtonStyle,
       getLecturePlanStatusStyle,
       onItemsPerPageChange,
-      isLoading,  // 로딩 상태 반환
+      isLoading,
     };
   },
 });

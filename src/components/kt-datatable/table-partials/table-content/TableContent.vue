@@ -78,7 +78,6 @@ export default defineComponent({
         selectedItems.value = [];
         allSelectedItems.value = [];
         check.value = false;
-        // eslint-disable-next-line
         props.data.forEach((item: any) => {
           if (item[props.checkboxLabel]) {
             allSelectedItems.value.push(item[props.checkboxLabel]);
@@ -87,7 +86,6 @@ export default defineComponent({
       }
     );
 
-    // eslint-disable-next-line
     const selectAll = (checked: any) => {
       check.value = checked;
       if (checked) {
@@ -99,10 +97,8 @@ export default defineComponent({
       }
     };
 
-    //eslint-disable-next-line
     const itemsSelect = (value: any) => {
       selectedItems.value = [];
-      //eslint-disable-next-line
       value.forEach((item:any) => {
         if (!selectedItems.value.includes(item)) selectedItems.value.push(item);
       });
@@ -125,7 +121,6 @@ export default defineComponent({
       selectedItems.value = [];
       allSelectedItems.value = [];
       check.value = false;
-      // eslint-disable-next-line
       props.data.forEach((item: any) => {
         if (item[props.checkboxLabel]) {
           allSelectedItems.value.push(item[props.checkboxLabel]);
