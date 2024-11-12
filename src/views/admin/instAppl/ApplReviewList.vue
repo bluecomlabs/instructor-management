@@ -58,11 +58,11 @@
 
           <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
             <button
+              v-if="showRegisterButton"
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
-              :class="{ 'del-selected': selectedIds.length > 0 }"
             >
               <span class="desktop-text">프로그램 등록</span>
               <span class="mobile-text">등록</span>
@@ -210,7 +210,7 @@
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, onMounted, ref, computed, watch } from "vue";
 import axios from "axios";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
@@ -252,6 +252,28 @@ export default defineComponent({
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
     const selectedIsConfirmed = ref("Y");
+
+    // 딜레이함수
+    const showRegisterButton = ref(true);
+    let registerButtonTimeout: number | null = null;
+
+    watch(selectedIds, (newVal) => {
+      if (newVal.length === 0) {
+        showRegisterButton.value = false;
+        if (registerButtonTimeout) {
+          clearTimeout(registerButtonTimeout);
+        }
+        registerButtonTimeout = window.setTimeout(() => {
+          showRegisterButton.value = true;
+        }, 30);
+      } else {
+        showRegisterButton.value = false;
+        if (registerButtonTimeout) {
+          clearTimeout(registerButtonTimeout);
+          registerButtonTimeout = null;
+        }
+      }
+    });
 
     const applyStatusFilter = async () => {
       const alreadyConfirmed = data.value.some(
@@ -794,6 +816,7 @@ export default defineComponent({
       selectedIsConfirmed,
       filterGoalIsConfirmed,
       applyStatusFilter,
+      showRegisterButton,
     };
   },
 });
