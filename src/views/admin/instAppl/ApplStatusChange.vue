@@ -2,23 +2,6 @@
   <div class="card">
     <div class="card-header border-0 pt-6 cmcard-header">
       <div class="d-flex align-items-center me-3">
-<<<<<<< HEAD
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-          <!-- <option value="INIT">INIT</option> -->
-          <option value="READY">강사 열람 가능</option>
-          <option value="OPEN">강사 신청 가능</option>
-          <option value="APPLIED">신청 마감</option>
-          <option value="PENDING_ASSIGN">강사 역할 배정</option>
-          <option value="CONFIRMED">출강 확정</option>
-          <option value="PROGRESS">강의 진행 중</option>
-          <option value="COMPLETE">강의 종료</option>
-          <option value="PAUSE">강의 중지</option>
-          <option value="CANCEL">강의 취소</option>
-        </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
-        </button>
-=======
         <div class="d-flex align-items-center">
           <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
             <!-- <option value="INIT">INIT</option> -->
@@ -39,7 +22,6 @@
             변경
           </button>
         </div>
->>>>>>> development/ljb
       </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
@@ -50,26 +32,6 @@
                 <div class="fw-bold me-5">
                   <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
                 </div>
-<<<<<<< HEAD
-
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-                      <!-- <option value="INIT">INIT</option> -->
-                      <option value="READY">강사 열람 가능</option>
-                      <option value="OPEN">강사 신청 가능</option>
-                      <option value="APPLIED">신청 마감</option>
-                      <option value="PENDING_ASSIGN">강사 역할 배정</option>
-                      <option value="CONFIRMED">출강 확정</option>
-                      <option value="PROGRESS">강의 진행 중</option>
-                      <option value="COMPLETE">강의 종료</option>
-                      <option value="PAUSE">강의 중지</option>
-                      <option value="CANCEL">강의 취소</option>
-                    </select>
-                  </div>
-=======
                 <div class="d-flex align-items-center">
                   <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
                 
@@ -89,7 +51,6 @@
                       </select>
                     </div> 
                   </div>-->
->>>>>>> development/ljb
 
                   <button
                     type="button"
