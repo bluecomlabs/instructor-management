@@ -1,59 +1,65 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6">
+    <div class="card-header border-0 pt-6 cmcard-header">
       <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-          <!-- <option value="INIT">INIT</option> -->
-          <option value="READY">강사 열람 가능</option>
-          <option value="OPEN">강사 신청 가능</option>
-          <option value="APPLIED">신청 마감</option>
-          <option value="CONFIRMED">출강 확정</option>
-          <option value="PROGRESS">강의 진행 중</option>
-          <option value="COMPLETE">강의 종료</option>
-          <option value="PAUSE">강의 중지</option>
-          <option value="CANCEL">강의 취소</option>
-        </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
-        </button>
+        <div class="d-flex align-items-center">
+          <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+            <!-- <option value="INIT">INIT</option> -->
+            <option value="READY">강사 열람 가능</option>
+            <option value="OPEN">강사 신청 가능</option>
+            <option value="APPLIED">신청 마감</option>
+            <option value="CONFIRMED">출강 확정</option>
+            <option value="PROGRESS">강의 진행 중</option>
+            <option value="COMPLETE">강의 종료</option>
+            <option value="PAUSE">강의 중지</option>
+            <option value="CANCEL">강의 취소</option>
+          </select>
+          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+            <span class="desktop-text">필터 상태 적용</span>
+            <span class="mobile-text">변경</span>
+          </button>
+        </div>
       </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
-          <div class="d-flex justify-content-start align-items-center">
+          <div class="d-flex justify-content-start align-items-center box-leftsort">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
                 </div>
-
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-                      <!-- <option value="INIT">INIT</option> -->
-                      <option value="READY">강사 열람 가능</option>
-                      <option value="OPEN">강사 신청 가능</option>
-                      <option value="APPLIED">신청 마감</option>
-                      <option value="CONFIRMED">출강 확정</option>
-                      <option value="PROGRESS">강의 진행 중</option>
-                      <option value="COMPLETE">강의 종료</option>
-                      <option value="PAUSE">강의 중지</option>
-                      <option value="CANCEL">강의 취소</option>
-                    </select>
-                  </div>
+                <div class="d-flex align-items-center">
+                  <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
+                
+                
+                  <!-- <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                    <div class="dropdown me-2">
+                      <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;"> -->
+                        <!-- <option value="INIT">INIT</option> -->
+                        <!-- <option value="READY">강사 열람 가능</option>
+                        <option value="OPEN">강사 신청 가능</option>
+                        <option value="APPLIED">신청 마감</option>
+                        <option value="CONFIRMED">출강 확정</option>
+                        <option value="PROGRESS">강의 진행 중</option>
+                        <option value="COMPLETE">강의 종료</option>
+                        <option value="PAUSE">강의 중지</option>
+                        <option value="CANCEL">강의 취소</option>
+                      </select>
+                    </div> 
+                  </div>-->
 
                   <button
                     type="button"
                     class="btn btn-primary checkbox-button"
                     @click="changeProgramStatus"
+                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                    상태 변경
+                  상태 변경
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
 
                 <!-- <div class="ms-4" style="margin-left: 0 !important">
                   <button
@@ -79,19 +85,19 @@
               <span class="indicator-label">프로그램 등록</span>
             </button>
           </div> -->
-        </div>
 
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          <div class="card-toolbar">
+            <button
+              type="button"
+              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+              data-kt-menu-trigger="click"
+              data-kt-menu-placement="bottom-end"
+              data-kt-menu-flip="top-end"
+            >
+              <KTIcon icon-name="category" icon-class="fs-2" />
+            </button>
+            <Dropdown4 @apply-filter="handleFilter"></Dropdown4>
+          </div>
         </div>
       </div>
     </div>
@@ -824,7 +830,7 @@ export default defineComponent({
   100% { transform: rotate(360deg); }
 }
 
-.fade-enter-active, .fade-leave-active {
+/* .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s ease;
 }
 .fade-enter, .fade-leave-to {
@@ -832,12 +838,12 @@ export default defineComponent({
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;
-}
+} */
 .vertical-separator {
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button {
+.checkbox-button, .applycheckbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -941,6 +947,69 @@ export default defineComponent({
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+@media (min-width: 769px) {
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+  .cmdel-selected {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .desktop-text {
+    display: none;
+  }
+  .mobile-text {
+    display: inline;
+  }
+
+  .applycheckbox-button {
+    width: 60px;
+  }
+
+  .del-selected {
+    display: none;
+  }
+
+  .justify-content-between {
+    justify-content: flex-start !important;
+  }
+
+  .table-row {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .column-isConfirmed,
+  .column-institutionName,
+  .column-programName,
+  .column-createdAt,
+  .column-grade,
+  .column-classNumber,
+  .column-numberOfStudents,
+  .column-date,
+  .column-remark {
+    display: block;
+    width: auto; /* 너비를 자동으로 조정 */
+    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    overflow: visible;
+    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    margin: 10px 0;
+  }
+
+  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
+  .table-row > div {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+  }
 }
 
 </style>
