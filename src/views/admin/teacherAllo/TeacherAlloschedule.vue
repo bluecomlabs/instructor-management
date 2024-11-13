@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
+      <!-- <div class="d-flex align-items-center me-3">
         <select v-model="filterStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
           <option value="READY">강사 열람 가능</option>
           <option value="OPEN">강사 신청 가능</option>
@@ -16,10 +16,10 @@
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
-      </div>
+      </div> -->
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div class="card-toolbar d-flex justify-content-between align-items-center">
+        <!-- <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
@@ -54,32 +54,10 @@
                 </div>
 
                 <div class="vertical-separator mx-3"></div>
-
-                <!-- <div class="ms-4" style="margin-left: 0 !important">
-                  <button
-                    type="button"
-                    class="btn btn-danger checkbox-button"
-                    @click="onDeletePrograms"
-                  >
-                    프로그램 삭제
-                  </button>
-                </div>
-                <div class="vertical-separator mx-3"></div> -->
               </div>
             </transition>
           </div>
-
-          <!-- <div class="d-flex justify-content-end align-items-center">
-            <button
-              tabindex="3"
-              type="button"
-              @click="onButtonAction"
-              class="btn btn-light-primary checkbox-button"
-            >
-              <span class="indicator-label">프로그램 등록</span>
-            </button>
-          </div> -->
-        </div>
+        </div> -->
 
         <div class="card-toolbar">
           <button
@@ -106,7 +84,7 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
         @selection-change="onSelectionChange"
       >
 
@@ -231,6 +209,7 @@
   </div>
 </template>
 
+
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
@@ -250,6 +229,7 @@ interface IProgram {
   chapterNumber: number;
   classDate: string;
   instructorName: string;
+  instructorId: number | null; // Added instructorId
   role: string | null;
   instructorPhoneNumber: string | null;
   startTime: string;
@@ -481,7 +461,6 @@ export default defineComponent({
       },
     ]);
 
-
     const statusColor: { [key: string]: string } = {
       INIT: "info",
       OPEN: "primary",
@@ -527,6 +506,7 @@ export default defineComponent({
       chapterNumber: true,
       classDate: true,
       instructorName: true,
+      instructorId: true, // Added instructorId
       startTime: true,
       endTime: true,
       role: true,
@@ -542,6 +522,7 @@ export default defineComponent({
       endDate: "",
       chapterNumber: "",
       totalChapters: "",
+      instructorId: null, // Add instructorId
     });
 
     const handleFilter = (filterData: any) => {
@@ -607,6 +588,7 @@ export default defineComponent({
           chapterNumber: program.chapterNumber || 0,
           classDate: program.classDate || "-",
           instructorName: program.instructorName || "-",
+          instructorId: program.instructorId || null, // Capture instructorId
           role: program.role || "-",
           startTime: program.startTime || "-",
           endTime: program.endTime || "-",
@@ -653,8 +635,8 @@ export default defineComponent({
       if (filtersData.totalChapters) {
         query += `&totalChapters=${encodeURIComponent(filtersData.totalChapters)}`;
       }
-      if (filtersData.instructorName) {
-        query += `&instructorName=${encodeURIComponent(filtersData.instructorName)}`;
+      if (filtersData.instructorId) { // Use instructorId instead of instructorName
+        query += `&instructorId=${encodeURIComponent(filtersData.instructorId)}`;
       }
       return query;
     };
@@ -755,6 +737,11 @@ export default defineComponent({
           ? "&sortBy=instructorName&direction=asc"
           : "&sortBy=instructorName&direction=desc";
         isAscending.value.instructorName = !isAscending.value.instructorName;
+      } else if (sort.label === "instructorId") { // Handle instructorId sorting
+        sortBy = isAscending.value.instructorId
+          ? "&sortBy=instructorId&direction=asc"
+          : "&sortBy=instructorId&direction=desc";
+        isAscending.value.instructorId = !isAscending.value.instructorId;
       } else if (sort.label === "startTime") {
         sortBy = isAscending.value.startTime
           ? "&sortBy=startTime&direction=asc"
@@ -915,7 +902,8 @@ export default defineComponent({
 .column-instructorName,
 .column-role,
 .column-startTime,
-.column-endTime {
+.column-endTime,
+.column-instructorId { /* Added column-instructorId */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -937,7 +925,8 @@ export default defineComponent({
 .column-totalChapters,
 .column-chapterNumber,
 .column-startTime,
-.column-endTime {
+.column-endTime,
+.column-instructorId { /* Added column-instructorId */
   width: 100px;
   text-align: center;
 }

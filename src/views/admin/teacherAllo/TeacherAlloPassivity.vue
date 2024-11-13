@@ -671,7 +671,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "admin-TeacherAlloPassivityDetails", params: { id: program.id } });
     };
 
     return {

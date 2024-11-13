@@ -809,7 +809,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "user-EduApplDetails", params: { id: program.id } });
     };
 
     return {
