@@ -376,7 +376,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-ProgramList",
         component: () => import("@/views/admin/program/ProgramList.vue"),
         meta: {
-          pageTitle: "프로그램 관리",
+          pageTitle: "프로그램 조회",
           breadcrumbs: ["프로그램 관리", "프로그램 조회"],
         },
       },
@@ -385,7 +385,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-ProgramAdd",
         component: () => import("@/views/admin/program/ProgramAdd.vue"),
         meta: {
-          pageTitle: "프로그램 관리",
+          pageTitle: "프로그램 생성",
           breadcrumbs: ["프로그램 관리", "프로그램 생성"],
         },
       },
@@ -449,7 +449,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-ApplStatusChange",
         component: () => import("@/views/admin/instAppl/ApplStatusChange.vue"),
         meta: {
-          pageTitle: "교육 관리",
+          pageTitle: "신청 상태 변경",
           breadcrumbs: ["교육 관리", "신청 상태 변경"],
         },
       },
@@ -458,7 +458,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstApplPassivity",
         component: () => import("@/views/admin/instAppl/ApplReviewAdd.vue"),
         meta: {
-          pageTitle: "교육 관리",
+          pageTitle: "교육 신청",
           breadcrumbs: ["교육 관리", "교육 신청"],
         },
       },
@@ -468,7 +468,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherApplList",
         component: () => import("@/views/admin/teacherAllo/TeacherApplList.vue"),
         meta: {
-          pageTitle: "강사 배정 관리",
+          pageTitle: "강사 신청 목록 조회",
           breadcrumbs: ["강사 배정 관리", "강사 신청 목록 조회"],
         },
       },
@@ -486,7 +486,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherAlloPassivity",
         component: () => import("@/views/admin/teacherAllo/TeacherAlloPassivity.vue"),
         meta: {
-          pageTitle: "강사 배정 관리",
+          pageTitle: "강사 수기 배정",
           breadcrumbs: ["강사 배정 관리", "강사 수기 배정"],
         },
       },
@@ -505,7 +505,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherReportList",
         component: () => import("@/views/admin/report/TeacherReportList.vue"),
         meta: {
-          pageTitle: "보고서 관리",
+          pageTitle: "강사 업무 일지",
           breadcrumbs: ["보고서 관리", "강사 업무 일지"],
         },
       },
@@ -514,8 +514,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-EducationalReportList",
         component: () => import("@/views/admin/report/EducationalReportList.vue"),
         meta: {
-          pageTitle: "보고서 관리",
-          breadcrumbs: ["보고서 관리", "교육일지 일지"],
+          pageTitle: "교육일지 관리",
+          breadcrumbs: ["보고서 관리", "교육일지 관리"],
         },
       },
       {
@@ -523,8 +523,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-WorkSchedule",
         component: () => import("@/views/admin/report/WorkSchedule.vue"),
         meta: {
-          pageTitle: "근무상황부",
-          breadcrumbs: ["보고서 관리", "강사관리"],
+          pageTitle: "근무상황부 관리",
+          breadcrumbs: ["보고서 관리", "근무상황부 관리"],
         },
       },
       {
@@ -532,7 +532,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-SignCheck",
         component: () => import("@/views/admin/report/SignCheck.vue"),
         meta: {
-          pageTitle: "보고서 관리",
+          pageTitle: "서명 확인",
           breadcrumbs: ["보고서 관리", "서명 확인"],
         },
       },
@@ -543,7 +543,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-adminList",
         component: () => import("@/views/admin/userSettings/AdminList.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "관리자 관리",
           breadcrumbs: ["설정 및 사용자 관리", "관리자 관리"],
         },
       },
@@ -553,7 +553,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstitutionList",
         component: () => import("@/views/admin/userSettings/InstitutionList.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "기관 관리",
           breadcrumbs: ["설정 및 사용자 관리", "기관 관리"],
         },
       },
@@ -562,8 +562,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstitutionDetails",
         component: () => import("@/views/admin/userSettings/InstitutionDetails.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
-          breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
+          pageTitle: "강사 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "강사 관리"],
         },
       },
       {
@@ -571,7 +571,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstitutionEdit",
         component: () => import("@/views/admin/userSettings/InstitutionEdit.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "기관 수정",
           breadcrumbs: ["설정 및 사용자 관리", "기관 수정"],
         },
       },
@@ -580,7 +580,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-InstitutionAdd",
         component: () => import("@/views/admin/userSettings/InstitutionAdd.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "기관 생성",
           breadcrumbs: ["설정 및 사용자 관리", "기관 생성"],
         },
       },
@@ -590,7 +590,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherAdd",
         component: () => import("@/views/admin/userSettings/TeacherAdd.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "강사 생성",
           breadcrumbs: ["설정 및 사용자 관리", "강사 생성"],
         },
       },
@@ -599,7 +599,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherDetails",
         component: () => import("@/views/admin/userSettings/TeacherDetails.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "강사 상세정보",
           breadcrumbs: ["설정 및 사용자 관리", "강사 상세정보"],
         },
       },
@@ -608,7 +608,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherEdit",
         component: () => import("@/views/admin/userSettings/TeacherEdit.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "강사 수정",
           breadcrumbs: ["설정 및 사용자 관리", "강사 수정"],
         },
       },
@@ -617,7 +617,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-TeacherList",
         component: () => import("@/views/admin/userSettings/TeacherList.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "강사 관리",
           breadcrumbs: ["설정 및 사용자 관리", "강사 관리"],
         },
       },
@@ -627,7 +627,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-SystemSettings",
         component: () => import("@/views/admin/userSettings/SystemSettings.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
+          pageTitle: "시스템 설정",
           breadcrumbs: ["설정 및 사용자 관리", "시스템 설정"],
         },
       },
