@@ -1,97 +1,66 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6">
+    <div class="card-header border-0 pt-6 cmcard-header">
       <div class="d-flex align-items-center me-3">
-        <select v-model="filterStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-          <option value="READY">강사 열람 가능</option>
-          <option value="OPEN">강사 신청 가능</option>
-          <option value="APPLIED">신청 마감</option>
-          <option value="PENDING_ASSIGN">강사 역할 배정</option>
-          <option value="CONFIRMED">출강 확정</option>
-          <option value="PROGRESS">강의 진행 중</option>
-          <option value="COMPLETE">강의 종료</option>
-          <option value="PAUSE">강의 중지</option>
-          <option value="CANCEL">강의 취소</option>
-        </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
-        </button>
+        <div class="d-flex align-items-center">
+          <select v-model="filterStatus" class="form-select filtercheckbox-button dropdown-button">
+            <option value="READY">강사 열람 가능</option>
+            <option value="OPEN">강사 신청 가능</option>
+            <option value="APPLIED">신청 마감</option>
+            <option value="CONFIRMED">출강 확정</option>
+            <option value="PROGRESS">강의 진행 중</option>
+            <option value="COMPLETE">강의 종료</option>
+            <option value="PAUSE">강의 중지</option>
+            <option value="CANCEL">강의 취소</option>
+          </select>
+          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+            <span class="desktop-text">필터 상태 적용</span>
+            <span class="mobile-text">변경</span>
+          </button>
+          <button :class="{ 'cmdel-selected': selectedIds.length === 0, 'comdel-selected':  selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
+            변경
+          </button>
+        </div>
       </div>
       <div class="card-title"></div>
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
-          <div class="d-flex justify-content-start align-items-center">
+          <div class="d-flex justify-content-start align-items-center box-leftsort">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
+                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
                 </div>
-
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
-                      <option value="READY">강사 열람 가능</option>
-                      <option value="OPEN">강사 신청 가능</option>
-                      <option value="APPLIED">신청 마감</option>
-                      <option value="PENDING_ASSIGN">강사 역할 배정</option>
-                      <option value="CONFIRMED">출강 확정</option>
-                      <option value="PROGRESS">강의 진행 중</option>
-                      <option value="COMPLETE">강의 종료</option>
-                      <option value="PAUSE">강의 중지</option>
-                      <option value="CANCEL">강의 취소</option>
-                    </select>
-                  </div>
+                <div class="d-flex align-items-center">
+                  <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
 
                   <button
                     type="button"
                     class="btn btn-primary checkbox-button"
                     @click="changeProgramStatus"
+                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                    상태 변경
+                  상태 변경
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3"></div>
-
-                <!-- <div class="ms-4" style="margin-left: 0 !important">
-                  <button
-                    type="button"
-                    class="btn btn-danger checkbox-button"
-                    @click="onDeletePrograms"
-                  >
-                    프로그램 삭제
-                  </button>
-                </div>
-                <div class="vertical-separator mx-3"></div> -->
+                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
               </div>
             </transition>
           </div>
 
-          <!-- <div class="d-flex justify-content-end align-items-center">
+          <div class="card-toolbar">
             <button
-              tabindex="3"
               type="button"
-              @click="onButtonAction"
-              class="btn btn-light-primary checkbox-button"
+              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+              data-kt-menu-trigger="click"
+              data-kt-menu-placement="bottom-end"
+              data-kt-menu-flip="top-end"
             >
-              <span class="indicator-label">프로그램 등록</span>
+              <KTIcon icon-name="category" icon-class="fs-2" />
             </button>
-          </div> -->
-        </div>
-
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown9 @apply-filter="handleFilter"></Dropdown9>
+            <Dropdown8 @apply-filter="handleFilter"></Dropdown8>
+          </div>
         </div>
       </div>
     </div>
@@ -885,7 +854,7 @@ export default defineComponent({
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0s ease;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -897,8 +866,14 @@ export default defineComponent({
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button {
+.checkbox-button, .applycheckbox-button {
   width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.filtercheckbox-button {
+  width: 150px;
   height: 40px;
   padding: 0 !important;
   font-weight: 600;
@@ -949,5 +924,88 @@ export default defineComponent({
 .column-instructorName,
 .column-role {
   width: 150px;
+}
+
+@media (min-width: 769px) {
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+  .cmdel-selected {
+    display: none;
+  }
+  .comdel-selected {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .desktop-text {
+    display: none;
+  }
+  .mobile-text {
+    display: inline;
+  }
+
+  .cmdel-selected {
+    display: none;
+  }
+
+  .applycheckbox-button, .checkbox-button {
+    width: 60px;
+  }
+
+  .filtercheckbox-button {
+    width: 115px;
+    text-overflow: ellipsis;
+  }
+
+  .del-selected {
+    display: none;
+  }
+
+
+  .justify-content-between {
+    justify-content: flex-start !important;
+  }
+
+  .table-row {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .column-isConfirmed,
+  .column-institutionName,
+  .column-programName,
+  .column-createdAt,
+  .column-grade,
+  .column-classNumber,
+  .column-numberOfStudents,
+  .column-date,
+  .column-remark {
+    display: block;
+    width: auto; /* 너비를 자동으로 조정 */
+    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    overflow: visible;
+    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    margin: 10px 0;
+  }
+
+  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
+  .table-row > div {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 400px){
+  .filtercheckbox-button {
+    width: 90px;
+    text-overflow: ellipsis;
+  }
 }
 </style>
