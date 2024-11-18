@@ -47,6 +47,12 @@ const UserMainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "clipboard",
         bootstrapIcon: "bi-app-indicator",
       },
+      {
+        heading: "출강 협의",
+        route: "/user/MyApplEduList",
+        keenthemesIcon: "clipboard",
+        bootstrapIcon: "bi-app-indicator",
+      },
     ],
   },
   {

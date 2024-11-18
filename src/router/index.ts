@@ -129,6 +129,24 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["출강 신청", "출강 신청 내역"],
         },
       },
+      {
+        path: "MyApplEduList",
+        name: "user-MyApplEduList",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduList.vue"),
+        meta: {
+          pageTitle: "출강 협의",
+          breadcrumbs: ["출강 신청", "출강 협의"],
+        },
+      },
+      {
+        path: "MyApplEduListDetails",
+        name: "user-MyApplEduListDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduListDetails.vue"),
+        meta: {
+          pageTitle: "출강 협의",
+          breadcrumbs: ["출강 신청", "출강 협의 상세보기"],
+        },
+      },
       // 보고서 제출
       {
         path: "SubmissionEdu",

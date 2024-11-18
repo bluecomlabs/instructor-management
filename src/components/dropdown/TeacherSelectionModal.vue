@@ -55,6 +55,18 @@
               />
             </div>
 
+            <!-- 선택된 역할 표시 -->
+            <div class="mb-3">
+              <label for="selectedRole" class="form-label">선택된 역할</label>
+              <input
+                type="text"
+                id="selectedRole"
+                class="form-control"
+                :value="role === 'MAIN' ? '주강사' : '보조강사'"
+                readonly
+              />
+            </div>
+
             <div class="text-end">
               <button type="button" class="btn btn-secondary me-2" @click="$emit('close')">
                 취소
@@ -87,9 +99,12 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    role: {
+      type: String,
+      required: true,
+    },
   },
   setup(props, { emit }) {
-    const instructors = ref<Instructor[]>([]);
     const selectedTeacherId = ref<number | null>(null);
     const selectedInstructorName = ref("");
 
@@ -103,14 +118,14 @@ export default defineComponent({
       try {
         const token = localStorage.getItem("token");
         const baseUrl = "http://localhost:8081";
-        const response = await axios.get(
-          `${baseUrl}/api/v1/admin/user/compact`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const url = `${baseUrl}/api/v1/admin/user/compact`;
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         allInstructors.value = response.data;
       } catch (error) {
         console.error("Error fetching instructors:", error);
@@ -175,18 +190,23 @@ export default defineComponent({
 
       try {
         const token = localStorage.getItem("token");
-        await axios.post(
-          `http://localhost:8081/api/v1/admin/education-instructors/assign`,
-          {
-            programId: props.program.id,
-            teacherId: selectedTeacherId.value,
+        const url = `http://localhost:8081/api/v1/admin/education-instructors/assign`;
+        const data = {
+          chapterId: props.program.id,
+          userId: selectedTeacherId.value,
+          role: props.role,
+        };
+
+        // 콘솔 로그 추가
+        console.log("API 호출 URL:", url);
+        console.log("전송 데이터:", data);
+
+        await axios.post(url, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        });
+
         Swal.fire({
           title: "강사 배정 완료",
           text: "강사가 성공적으로 배정되었습니다.",
@@ -214,7 +234,6 @@ export default defineComponent({
     });
 
     return {
-      instructors,
       selectedTeacherId,
       selectedInstructorName,
       assignTeacher,
@@ -226,6 +245,7 @@ export default defineComponent({
       onInstructorInput,
       hideInstructorSuggestions,
       toggleInstructorDropdown,
+      role: props.role,
     };
   },
 });
@@ -239,7 +259,6 @@ export default defineComponent({
 .modal-dialog {
   max-width: 500px;
 }
-
 
 .btn-close {
   background: none;

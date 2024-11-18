@@ -320,8 +320,8 @@ import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface EducationChapter {
   chapterNumber: number;
-  mainInstructorsNumber: number | null;
-  assistantInstructorsNumber: number | null;
+  mainInstructorsNumber: number;
+  assistantInstructorsNumber: number;
   date: string;
   startTime: string;
   endTime: string;
@@ -395,8 +395,8 @@ export default defineComponent({
           const existingChapter = existingChapters[index];
           return existingChapter || {
             chapterNumber: index + 1,
-            mainInstructorsNumber: null,
-            assistantInstructorsNumber: null,
+            mainInstructorsNumber: 0,
+            assistantInstructorsNumber: 0,
             date: "",
             startTime: "",
             endTime: "",
@@ -602,24 +602,25 @@ export default defineComponent({
       else if (field === 'numberOfStudents' && numberOfStudents.value! > 0) numberOfStudents.value!--;
       else if (field === 'chapterNumber' && chapterNumber.value! > 0) chapterNumber.value!--;
     };
-
+    
     const incrementChapter = (index: number, field: string) => {
       const chapter = educationChapters.value[index];
       if (field === 'mainInstructorsNumber') {
-        chapter.mainInstructorsNumber = (chapter.mainInstructorsNumber || 0) + 1;
+        chapter.mainInstructorsNumber++;
       } else if (field === 'assistantInstructorsNumber') {
-        chapter.assistantInstructorsNumber = (chapter.assistantInstructorsNumber || 0) + 1;
+        chapter.assistantInstructorsNumber++;
       }
     };
 
     const decrementChapter = (index: number, field: string) => {
       const chapter = educationChapters.value[index];
-      if (field === 'mainInstructorsNumber' && (chapter.mainInstructorsNumber || 0) > 0) {
-        chapter.mainInstructorsNumber!--;
-      } else if (field === 'assistantInstructorsNumber' && (chapter.assistantInstructorsNumber || 0) > 0) {
-        chapter.assistantInstructorsNumber!--;
+      if (field === 'mainInstructorsNumber' && chapter.mainInstructorsNumber > 0) {
+        chapter.mainInstructorsNumber--;
+      } else if (field === 'assistantInstructorsNumber' && chapter.assistantInstructorsNumber > 0) {
+        chapter.assistantInstructorsNumber--;
       }
     };
+
     return {
       selectedProgramId,
       selectedInstitutionId,

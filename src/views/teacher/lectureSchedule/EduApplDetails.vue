@@ -245,14 +245,14 @@
           >
             뒤로
           </button>
-          <button
+          <!-- <button
             v-if="educationData"
             type="button"
             class="btn btn-primary me-2"
             @click="toggleApplication"
           >
             {{ educationData.isConfirmed === 'N' ? '신청하기' : '취소하기' }}
-          </button>
+          </button> -->
           <!-- <button
             type="submit"
             id="kt_account_detaiprofile_details_submit"
