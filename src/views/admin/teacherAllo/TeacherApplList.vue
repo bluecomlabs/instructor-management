@@ -211,6 +211,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown5 from "@/components/dropdown/Dropdown5.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -288,16 +289,12 @@ export default defineComponent({
       };
 
       Object.keys(requestBody).forEach((key) => {
-        if (requestBody[key] == null || requestBody[key] === "") {
-          delete requestBody[key];
-        }
+        if (requestBody[key] == null || requestBody[key] === "") delete requestBody[key];
       });
-
-      console.log("Request Body:", requestBody);
 
       try {
         await axios.put(
-          `http://localhost:8081/api/v1/admin/instructor-applications/status`,
+          ApiUrl(`/api/v1/admin/instructor-applications/status`),
           requestBody,
           {
             headers: {
@@ -369,7 +366,7 @@ export default defineComponent({
         };
 
         await axios.put(
-          `http://localhost:8081/api/v1/admin/instructor-applications/status-by-ids`,
+          ApiUrl(`/api/v1/admin/instructor-applications/status-by-ids`),
           requestBody,
           {
             headers: {
@@ -524,7 +521,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/instructor-applications?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/instructor-applications?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -593,7 +590,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/instructor-applications/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/instructor-applications/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

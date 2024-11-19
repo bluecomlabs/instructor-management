@@ -130,6 +130,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Filter {
   id: string;
@@ -187,9 +188,8 @@ export default defineComponent({
     const fetchInstructors = async () => {
       try {
         const token = localStorage.getItem("token");
-        const baseUrl = "http://localhost:8081";
         const response = await axios.get(
-          `${baseUrl}/api/v1/admin/user/compact`,
+          ApiUrl(`/api/v1/admin/user/compact`),
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -205,6 +205,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -257,11 +258,11 @@ export default defineComponent({
           status: selectedStatus.value,
         };
 
-        console.log("API 호출 URL:", `http://localhost:8081/api/v1/client/programs/status`);
+        console.log("API 호출 URL:", ApiUrl(`/client/programs/status`));
         console.log("요청 바디:", requestBody);
 
         await axios.post(
-          `http://localhost:8081/api/v1/client/programs/status`,
+          ApiUrl(`/client/programs/status`),
           requestBody,
           {
             headers: {
@@ -408,7 +409,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/client/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/client/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -418,7 +419,7 @@ export default defineComponent({
         const responseData = response.data;
         console.log(
           "API 호출 URL:",
-          `http://localhost:8081/api/v1/client/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+          ApiUrl(`/client/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`)
         );
         console.log("API 응답 데이터:", response.data);
 
@@ -476,7 +477,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/client/programs/${id}`, {
+        await axios.delete(ApiUrl(`/client/programs/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

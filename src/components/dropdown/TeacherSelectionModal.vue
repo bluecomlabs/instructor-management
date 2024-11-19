@@ -84,6 +84,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Instructor {
   id: number;
@@ -117,15 +118,14 @@ export default defineComponent({
     const fetchInstructors = async () => {
       try {
         const token = localStorage.getItem("token");
-        const baseUrl = "http://localhost:8081";
-        const url = `${baseUrl}/api/v1/admin/user/compact`;
-
-        const response = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const response = await axios.get(
+          ApiUrl(`/api/v1/admin/user/compact`),
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         allInstructors.value = response.data;
       } catch (error) {
         console.error("Error fetching instructors:", error);

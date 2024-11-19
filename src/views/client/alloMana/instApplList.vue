@@ -209,6 +209,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -284,13 +285,11 @@ export default defineComponent({
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/client/instructor-applications/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
+      const apiUrl = ApiUrl(`/api/v1/client/instructor-applications/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
-        const response = await axios.get(
-          `http://localhost:8081/api/v1/client/instructor-applications/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
-          {
+        const response = await axios.get(apiUrl, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -360,7 +359,7 @@ export default defineComponent({
         };
 
         await axios.put(
-          `http://localhost:8081/api/v1/client/instructor-applications/status-by-ids`,
+          ApiUrl(`/api/v1/client/instructor-applications/status-by-ids`),
           requestBody,
           {
             headers: {
@@ -511,14 +510,14 @@ export default defineComponent({
         const token = localStorage.getItem("token");
         const filterQuery = buildFilterQuery(filtersData);
 
-        const response = await axios.get(
-          `http://localhost:8081/api/v1/client/instructor-applications?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const apiUrl = ApiUrl(`/api/v1/client/instructor-applications?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`);
+        console.log("API 호출 URL:", apiUrl);
+
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const responseData = response.data;
 
         data.value = responseData.content.map((program: IProgram) => ({
@@ -575,7 +574,8 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/client/instructor-applications/${id}`, {
+        const apiUrl = ApiUrl(`/api/v1/client/instructor-applications/${id}`);
+        await axios.delete(apiUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

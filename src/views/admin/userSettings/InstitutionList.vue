@@ -183,6 +183,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IInstitution {
   id: number;
@@ -319,7 +320,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/institutions?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/institutions?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -386,7 +387,7 @@ export default defineComponent({
     const deleteInstitution = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/institutions/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/institutions/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

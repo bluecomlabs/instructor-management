@@ -150,6 +150,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Filter {
   status: string;
@@ -162,7 +163,7 @@ interface Filter {
   startDate: string;
   endDate: string;
   instructorName: string;
-  instructorId: number | null; // Added instructorId
+  instructorId: number | null; 
 }
 
 interface Instructor {
@@ -186,7 +187,7 @@ export default defineComponent({
       startDate: "",
       endDate: "",
       instructorName: "",
-      instructorId: null, // Initialize instructorId
+      instructorId: null, 
     });
 
     const closeButton = ref<HTMLElement | null>(null);
@@ -200,9 +201,8 @@ export default defineComponent({
     const fetchInstructors = async () => {
       try {
         const token = localStorage.getItem("token");
-        const baseUrl = "http://localhost:8081";
         const response = await axios.get(
-          `${baseUrl}/api/v1/admin/user/compact`,
+          ApiUrl(`/api/v1/admin/user/compact`),
           {
             headers: {
               Authorization: `Bearer ${token}`,

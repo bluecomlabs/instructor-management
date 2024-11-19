@@ -220,6 +220,7 @@ import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown9 from "@/components/dropdown/Dropdown9.vue";
 import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -435,7 +436,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -513,7 +514,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/education-instructors/schedules/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/education-instructors/schedules/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

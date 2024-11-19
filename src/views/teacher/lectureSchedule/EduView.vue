@@ -212,6 +212,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown6 from "@/components/dropdown/Dropdown6.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -283,12 +284,11 @@ export default defineComponent({
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          ApiUrl(`/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -374,7 +374,7 @@ export default defineComponent({
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/user/education/ready`,
+          ApiUrl(`/user/education/ready`),
           requestBody,
           {
             headers: {
@@ -537,7 +537,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -550,7 +550,7 @@ export default defineComponent({
           console.log('Total pages from API:', responseData.totalPages);
           console.log(
             "API 호출 URL:",
-            `http://localhost:8081/api/v1/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+            ApiUrl(`/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`)
           );
           console.log("API 응답 데이터:", response.data);
 
@@ -628,7 +628,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/user/education/ready/${id}`, {
+        await axios.delete(ApiUrl(`/v1/user/education/ready/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -147,9 +147,10 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown7 from "@/components/dropdown/Dropdown7.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
-  educationId: number; // 변경된 부분
+  educationId: number; 
   status: string;
   isConfirmed: string;
   application: string;
@@ -220,12 +221,11 @@ export default defineComponent({
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          ApiUrl(`/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -293,12 +293,12 @@ export default defineComponent({
 
       try {
         const requestBody = {
-          educationIds: selectedIds.value, // 수정된 부분
+          educationIds: selectedIds.value,
           goal: selectedGoal.value,
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/user/education/pending-assign`,
+          ApiUrl(`/v1/user/education/pending-assign`),
           requestBody,
           {
             headers: {
@@ -343,7 +343,7 @@ export default defineComponent({
 
       try {
         await axios.post(
-          'http://localhost:8081/api/v1/user/education/pending-assign',
+          ApiUrl(`v1/user/education/pending-assign`),
           requestBody,
           {
             headers: {
@@ -501,7 +501,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/user/education/pending-assign?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/v1/user/education/pending-assign?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -571,7 +571,7 @@ export default defineComponent({
       if (filtersData.grade) {
         query += `&grade=${encodeURIComponent(filtersData.grade)}`;
       }
-      if (filtersData.classNumber) { // 추가: classNumber 필터
+      if (filtersData.classNumber) {
         query += `&classNumber=${encodeURIComponent(filtersData.classNumber)}`;
       }
       return query;
@@ -581,19 +581,21 @@ export default defineComponent({
       fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     });
 
-    const deleteSubscription = async (educationId: number) => { // 수정된 부분
+    const deleteSubscription = async (educationId: number) => { 
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/user/education/open/${educationId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        data.value = data.value.filter((program) => program.educationId !== educationId);
-      } catch (error) {
-        console.error("Error deleting program: ", error);
-      }
-    };
+        await axios.delete(
+          ApiUrl(`/v1/user/education/open/${educationId}`),
+          {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            data.value = data.value.filter((program) => program.educationId !== educationId);
+          } catch (error) {
+            console.error("Error deleting program: ", error);
+          }
+        };
 
     const deleteFewSubscriptions = async () => {
       const result = await Swal.fire({

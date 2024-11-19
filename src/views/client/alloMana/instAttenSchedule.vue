@@ -205,6 +205,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -256,19 +257,15 @@ export default defineComponent({
           programIds: selectedIds.value,
           status: selectedStatus.value,
         };
-
-        console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/programs/status`);
+        const apiUrl = ApiUrl(`/api/v1/admin/programs/status`);
+        console.log("API 호출 URL:", apiUrl);
         console.log("요청 바디:", requestBody);
 
-        await axios.post(
-          `http://localhost:8081/api/v1/admin/programs/status`,
-          requestBody,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        await axios.post(apiUrl, requestBody, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         Swal.fire({
           title: "상태 변경 완료",
@@ -408,7 +405,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -418,7 +415,7 @@ export default defineComponent({
         const responseData = response.data;
         console.log(
           "API 호출 URL:",
-          `http://localhost:8081/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+          ApiUrl(`/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`)
         );
         console.log("API 응답 데이터:", response.data);
 
@@ -476,7 +473,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/programs/${id}`, {
+        await axios.delete(ApiUrl(`/admin/programs/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
