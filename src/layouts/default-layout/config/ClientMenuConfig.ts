@@ -53,56 +53,56 @@ const ClientMainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "questionnaire-tablet",
         bootstrapIcon: "bi-app-indicator",
       },
-      {
-        heading: "강사 출강 일정 조회",
-        route: "/client/instAttenSchedule",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
+      // {
+      //   heading: "강사 출강 일정 조회",
+      //   route: "/client/instAttenSchedule",
+      //   keenthemesIcon: "questionnaire-tablet",
+      //   bootstrapIcon: "bi-app-indicator",
+      // },
     ],
   },
-  {
-    heading: "보고서 조회",
-    route: "/apps",
-    pages: [
-      {
-        heading: "업무일지",
-        route: "/client/BusinessJournalLlist",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
-      {
-        heading: "교육일지",
-        route: "/client/EducationalReportList",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
-      {
-        heading: "근무상황부",
-        route: "/client/WorkSituation",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
-    ],
-  },
-  {
-    heading: "서명",
-    route: "/apps",
-    pages: [
-      {
-        heading: "서명 리스트",
-        route: "/client/SignList",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
-      {
-        heading: "내 서명 관리",
-        route: "/client/MySign",
-        keenthemesIcon: "questionnaire-tablet",
-        bootstrapIcon: "bi-app-indicator",
-      },
-    ],
-  },
+  // {
+  //   heading: "보고서 조회",
+  //   route: "/apps",
+  //   pages: [
+  //     {
+  //       heading: "업무일지",
+  //       route: "/client/BusinessJournalLlist",
+  //       keenthemesIcon: "questionnaire-tablet",
+  //       bootstrapIcon: "bi-app-indicator",
+  //     },
+  //     {
+  //       heading: "교육일지",
+  //       route: "/client/EducationalReportList",
+  //       keenthemesIcon: "questionnaire-tablet",
+  //       bootstrapIcon: "bi-app-indicator",
+  //     },
+  //     {
+  //       heading: "근무상황부",
+  //       route: "/client/WorkSituation",
+  //       keenthemesIcon: "questionnaire-tablet",
+  //       bootstrapIcon: "bi-app-indicator",
+  //     },
+  //   ],
+  // },
+  // {
+  //   heading: "서명",
+  //   route: "/apps",
+  //   pages: [
+  //     {
+  //       heading: "서명 리스트",
+  //       route: "/client/SignList",
+  //       keenthemesIcon: "questionnaire-tablet",
+  //       bootstrapIcon: "bi-app-indicator",
+  //     },
+  //     {
+  //       heading: "내 서명 관리",
+  //       route: "/client/MySign",
+  //       keenthemesIcon: "questionnaire-tablet",
+  //       bootstrapIcon: "bi-app-indicator",
+  //     },
+  //   ],
+  // },
 ];
 
 export default ClientMainMenuConfig;
