@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
+      <!-- <div class="d-flex align-items-center me-3">
         <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
           <option value="Y">확정</option>
           <option value="N">미확정</option>
@@ -9,9 +9,9 @@
         <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
           필터 상태 적용
         </button>
-      </div>
-      <div class="card-title"></div>
-      <div class="card-toolbar">
+      </div> -->
+      <!-- <div class="card-title"></div> -->
+      <!-- <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
@@ -80,7 +80,7 @@
           </button>
           <Dropdown7 @apply-filter="handleFilter"></Dropdown7>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="card-body pt-0">
@@ -93,7 +93,7 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
         @selection-change="onSelectionChange"
       >
 

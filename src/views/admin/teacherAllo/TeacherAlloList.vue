@@ -3,6 +3,7 @@
     <div class="card-header border-0 pt-6">
       <div class="d-flex align-items-center me-3">
         <select v-model="filterNewStatus" class="form-select checkbox-button dropdown-button">
+          <option value="INIT">강의 대기 중</option>
           <option value="READY">강사 열람 가능</option>
           <option value="OPEN">강사 신청 가능</option>
           <option value="APPLIED">신청 마감</option>

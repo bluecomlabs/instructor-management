@@ -83,6 +83,15 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["출강 일정", "내 출강 리스트"],
         },
       },
+      {
+        path: "MyEduDetails",
+        name: "user-MyEduDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyEduDetails.vue"),
+        meta: {
+          pageTitle: "출강 일정",
+          breadcrumbs: ["출강 일정", "내 출강 리스트 상세보기"],
+        },
+      },
       // 출강 신청
       {
         path: "EduView",
@@ -127,6 +136,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "출강 신청",
           breadcrumbs: ["출강 신청", "출강 신청 내역"],
+        },
+      },
+      {
+        path: "MyApplEduDetails",
+        name: "user-MyApplEduDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduDetails.vue"),
+        meta: {
+          pageTitle: "출강 신청",
+          breadcrumbs: ["출강 신청", "출강 신청 내역 상세보기"],
         },
       },
       {
