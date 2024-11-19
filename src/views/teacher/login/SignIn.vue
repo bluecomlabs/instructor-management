@@ -3,7 +3,7 @@
   <div class="background-container"></div>
   <div class="form-wrapper">
     <!--begin::Form-->
-    <img src="../../../../../public/logo.png" style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 30px;">
+    <img src="/logo.png" style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 30px;">
 
     <form @submit.prevent="login">
       <div class="text-center mb-10">
