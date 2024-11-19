@@ -55,54 +55,54 @@ const UserMainMenuConfig: Array<MenuItem> = [
       },
     ],
   },
-  {
-    heading: "보고서 제출",
-    route: "/resources",
-    pages: [
-      {
-        heading: "교육별 제출 현황",
-        route: "/user/SubmissionEdu",
-        keenthemesIcon: "note-2",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "업무일지",
-        route: "/user/BusinessJournalLlist",
-        keenthemesIcon: "notepad",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "교육 일지",
-        route: "/user/EducationalReportList",
-        keenthemesIcon: "people",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "근무상황부",
-        route: "/user/WorkSituation",
-        keenthemesIcon: "calendar-2",
-        bootstrapIcon: "bi-printer",
-      },
-    ],
-  },
-  {
-    heading: "서명",
-    route: "/resources",
-    pages: [
-      {
-        heading: "서명 리스트",
-        route: "/user/SignList",
-        keenthemesIcon: "tablet-text-up",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "내 서명 관리",
-        route: "/user/MySign",
-        keenthemesIcon: "brush",
-        bootstrapIcon: "bi-printer",
-      },
-    ],
-  },
+  // {
+  //   heading: "보고서 제출",
+  //   route: "/resources",
+  //   pages: [
+  //     {
+  //       heading: "교육별 제출 현황",
+  //       route: "/user/SubmissionEdu",
+  //       keenthemesIcon: "note-2",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "업무일지",
+  //       route: "/user/BusinessJournalLlist",
+  //       keenthemesIcon: "notepad",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "교육 일지",
+  //       route: "/user/EducationalReportList",
+  //       keenthemesIcon: "people",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "근무상황부",
+  //       route: "/user/WorkSituation",
+  //       keenthemesIcon: "calendar-2",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //   ],
+  // },
+  // {
+  //   heading: "서명",
+  //   route: "/resources",
+  //   pages: [
+  //     {
+  //       heading: "서명 리스트",
+  //       route: "/user/SignList",
+  //       keenthemesIcon: "tablet-text-up",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "내 서명 관리",
+  //       route: "/user/MySign",
+  //       keenthemesIcon: "brush",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //   ],
+  // },
 ];
 
 export default UserMainMenuConfig;

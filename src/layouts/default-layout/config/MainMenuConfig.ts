@@ -97,46 +97,46 @@ const MainMenuConfig: Array<MenuItem> = [
       },
     ],
   },
-  {
-    heading: "보고서 관리",
-    route: "/resources",
-    pages: [
-      {
-        heading: "업무일지 관리",
-        route: "/admin/TeacherReportList",
-        keenthemesIcon: "notepad",
-        bootstrapIcon: "bi-layers",
-      },
-      {
-        heading: "교육일지 관리",
-        route: "/admin/EducationalReportList",
-        keenthemesIcon: "people",
-        bootstrapIcon: "bi-layers",
-      },
-      {
-        heading: "근무상황부 관리",
-        route: "/admin/WorkSchedule",
-        keenthemesIcon: "calendar-2",
-        bootstrapIcon: "bi-layers",
-      },
-      {
-        heading: "서명 확인",
-        route: "/admin/SignCheck",
-        keenthemesIcon: "brush",
-        bootstrapIcon: "bi-layers",
-      },
-    ],
-  },
+  // {
+  //   heading: "보고서 관리",
+  //   route: "/resources",
+  //   pages: [
+  //     {
+  //       heading: "업무일지 관리",
+  //       route: "/admin/TeacherReportList",
+  //       keenthemesIcon: "notepad",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "교육일지 관리",
+  //       route: "/admin/EducationalReportList",
+  //       keenthemesIcon: "people",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "근무상황부 관리",
+  //       route: "/admin/WorkSchedule",
+  //       keenthemesIcon: "calendar-2",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "서명 확인",
+  //       route: "/admin/SignCheck",
+  //       keenthemesIcon: "brush",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //   ],
+  // },
   {
     heading: "설정 및 사용자 관리",
     route: "/resources",
     pages: [
-      {
-        heading: "관리자 관리",
-        route: "/admin/AdminList",
-        keenthemesIcon: "user",
-        bootstrapIcon: "bi-layers",
-      },
+      // {
+      //   heading: "관리자 관리",
+      //   route: "/admin/AdminList",
+      //   keenthemesIcon: "user",
+      //   bootstrapIcon: "bi-layers",
+      // },
       {
         heading: "기관 관리",
         route: "/admin/InstitutionList",
@@ -149,12 +149,12 @@ const MainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "teacher",
         bootstrapIcon: "bi-layers",
       },
-      {
-        heading: "시스템 이력 조회",
-        route: "/admin/SystemSettings",
-        keenthemesIcon: "setting-2",
-        bootstrapIcon: "bi-layers",
-      }
+      // {
+      //   heading: "시스템 이력 조회",
+      //   route: "/admin/SystemSettings",
+      //   keenthemesIcon: "setting-2",
+      //   bootstrapIcon: "bi-layers",
+      // }
     ],
   },
 ];
