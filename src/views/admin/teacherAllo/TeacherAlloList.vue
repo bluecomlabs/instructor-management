@@ -1246,14 +1246,13 @@ export default defineComponent({
   }
   .column-instructorName {
     display: block;
-    width: auto; /* 너비를 자동으로 조정 */
-    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    width: auto;
+    white-space: normal;
     overflow: visible;
-    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    text-overflow: clip;
     margin: 10px 0;
   }
 
-  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
   .table-row > div {
     display: block;
     padding: 10px;
