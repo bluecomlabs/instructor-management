@@ -218,31 +218,15 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="mobheaderConfig"
-        :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
 
-        <template v-slot:isConfirmed="{ row: customer }">
-          <div class="column-isConfirmed" @click="onProgramClick(customer)" style="cursor: pointer;">
-            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
-              {{ statusLabel[customer.isConfirmed] }}
-            </span>
-          </div>
-        </template>
-        <template v-slot:institutionName="{ row: customer }">
-          <div class="column-institutionName" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.institutionName }}
-          </div>
-        </template>
-        <template v-slot:programName="{ row: customer }">
-          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.programName }}
-          </div>
-        </template>
-        <template v-slot:chapterNumber="{ row: customer }">
-          <div class="column-chapterNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.chapterNumber }}
-          </div>
+        <template v-slot:aboutProgram="{ row: customer }">
+          <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.isConfirmed]}`">
+            <div class="column-aboutProgram" @click="onProgramClick(customer)" style="cursor: pointer;">
+              {{ customer.chapterNumber }} - {{ customer.programName }} - {{ customer.institutionName }}
+            </div>
+          </span>
         </template>
         <template v-slot:studentInfo="{ row: customer }">
           <div class="column-studentInfo" @click="onProgramClick(customer)" style="cursor: pointer;">
@@ -537,26 +521,8 @@ export default defineComponent({
 
     const mobheaderConfig = ref([
       {
-        columnName: "확정",
-        columnLabel: "isConfirmed",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "교육기관명",
-        columnLabel: "institutionName",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "프로그램명",
-        columnLabel: "programName",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "총 차시",
-        columnLabel: "chapterNumber",
+        columnName: "총 차시 - 프로그램명 - 교육기관명",
+        columnLabel: "aboutProgram",
         sortEnabled: true,
         columnWidth: 100,
       },
@@ -564,7 +530,7 @@ export default defineComponent({
         columnName: "학생 수 - 학년 - 반", // 새로운 항목명
         columnLabel: "studentInfo", // 새로운 label
         sortEnabled: false, // 정렬 불가
-        columnWidth: 150, // 적절한 너비 설정
+        columnWidth: 100, // 적절한 너비 설정
       },
     ]);
 
@@ -1181,30 +1147,20 @@ export default defineComponent({
     margin-bottom: 15px;
   }
 
-  .column-institutionName,
-  .column-programName {
-    width: 60px; 
+  .column-aboutProgram {
+    width: 170px; 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
   }
-  .column-isConfirmed,
-  .column-createdAt,
-  .column-grade,
-  .column-classNumber,
-  .column-numberOfStudents {
+  .column-studentInfo {
     display: block;
     width: auto;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
     margin: 10px 0;
-  }
-
-  .column-date,
-  .column-remark {
-    display: none !important;
   }
 
   .table-row > div {
