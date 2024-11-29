@@ -105,7 +105,7 @@
       </div>
     </div>
 
-    <div class="card-body pt-0">
+    <div class="card-body pt-0 com-headerCon">
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -166,6 +166,128 @@
             {{ customer.remark }}
           </div>
         </template>
+      </KTDatatable>
+
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="card-body pt-0 mob-headerCon">
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
+      <KTDatatable
+        @on-sort="sort"
+        @on-items-select="onItemSelect"
+        :data="data"
+        :header="mobheaderConfig"
+        @selection-change="onSelectionChange"
+      >
+
+        <template v-slot:aboutProgram="{ row: customer }">
+          <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">
+            <div class="column-aboutProgram" @click="onProgramClick(customer)" style="cursor: pointer;">
+              {{ customer.chapterNumber }} - {{ customer.programName }} - {{ customer.institutionName }}<br>{{ statusLabel[customer.status] }}
+            </div>
+          </span>
+        </template>
+        <template v-slot:studentInfo="{ row: customer }">
+          <div class="column-studentInfo" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.numberOfStudents }} - {{ customer.grade }} - {{ customer.classNumber }}
+          </div>
+        </template>
+        <!-- <template v-slot:institutionName="{ row: customer }">
+          <div class="column-institutionName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.institutionName }}
+          </div>
+        </template>
+        <template v-slot:programName="{ row: customer }">
+          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.programName }}
+          </div>
+        </template>
+        <template v-slot:chapterNumber="{ row: customer }">
+          <div class="column-chapterNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.chapterNumber }}
+          </div>
+        </template>
+        <template v-slot:numberOfStudents="{ row: customer }">
+          <div class="column-numberOfStudents" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.numberOfStudents }}
+          </div>
+        </template>
+        <template v-slot:grade="{ row: customer }">
+          <div class="column-grade" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.grade }}
+          </div>
+        </template>
+        <template v-slot:classNumber="{ row: customer }">
+          <div class="column-classNumber" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.classNumber }}
+          </div>
+        </template>
+        <template v-slot:date="{ row: customer }">
+          <div class="column-date" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.date }}
+          </div>
+        </template>
+        <template v-slot:remark="{ row: customer }">
+          <div class="column-remark" @click="onProgramClick(customer)" style="cursor: pointer;">
+            {{ customer.remark }}
+          </div>
+        </template> -->
       </KTDatatable>
 
       <div class="d-flex justify-content-end mt-4">
@@ -456,6 +578,21 @@ export default defineComponent({
         columnLabel: "remark",
         sortEnabled: false,
         columnWidth: 300,
+      },
+    ]);
+
+    const mobheaderConfig = ref([
+      {
+        columnName: "총 차시 - 프로그램명 - 교육기관명",
+        columnLabel: "aboutProgram",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "학생 수 - 학년 - 반", // 새로운 항목명
+        columnLabel: "studentInfo", // 새로운 label
+        sortEnabled: false, // 정렬 불가
+        columnWidth: 100, // 적절한 너비 설정
       },
     ]);
     const statusColor = {
@@ -778,6 +915,7 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
+      mobheaderConfig,
       currentPage,
       totalPages,
       onPageChange,
@@ -833,6 +971,14 @@ export default defineComponent({
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.com-headerCon {
+  display: inline;
+}
+
+.mob-headerCon {
+  display: none;
 }
 
 /* .fade-enter-active, .fade-leave-active {
@@ -978,6 +1124,14 @@ export default defineComponent({
     display: inline;
   }
 
+  .com-headerCon {
+    display: none;
+  }
+
+  .mob-headerCon {
+    display: inline;
+  }
+
   .cmdel-selected {
     display: none;
   }
@@ -998,24 +1152,22 @@ export default defineComponent({
     display: block;
     margin-bottom: 15px;
   }
-  .column-isConfirmed,
-  .column-institutionName,
-  .column-programName,
-  .column-createdAt,
-  .column-grade,
-  .column-classNumber,
-  .column-numberOfStudents,
-  .column-date,
-  .column-remark {
+  .column-aboutProgram {
+    width: 170px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+  .column-studentInfo {
     display: block;
-    width: auto; /* 너비를 자동으로 조정 */
-    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
+    width: auto;
+    white-space: normal;
     overflow: visible;
-    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
+    text-overflow: clip;
     margin: 10px 0;
   }
 
-  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
   .table-row > div {
     display: block;
     padding: 10px;
