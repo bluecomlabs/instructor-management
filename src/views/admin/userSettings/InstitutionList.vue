@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="card-body pt-0">
+    <div class="card-body pt-0 com-headerCon">
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -120,6 +120,124 @@
         <template v-slot:createdAt="{ row: institution }">
           <div class="column-createdAt">{{ institution.createdAt }}</div>
         </template>
+      </KTDatatable>
+
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="card-body pt-0 mob-headerCon">
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
+      <KTDatatable
+        @on-sort="sort"
+        @on-items-select="onItemSelect"
+        :data="data"
+        :header="mobheaderConfig"
+        @selection-change="onSelectionChange"
+      >
+        <!-- <template v-slot:header-status>
+          <div>상태</div>
+        </template>
+        <template v-slot:header-institutionName>
+          <div>기관명</div>
+        </template>
+        <template v-slot:header-managerName>
+          <div>관리자</div>
+        </template>
+        <template v-slot:header-phoneNumber>
+          <div>전화번호</div>
+        </template>
+        <template v-slot:header-address>
+          <div>주소</div>
+        </template>
+        <template v-slot:header-remarks>
+          <div>비고</div>
+        </template>
+        <template v-slot:header-createdAt>
+          <div>생성 날짜</div>
+        </template> -->
+
+        <!-- <template v-slot:status="{ row: institution }">
+          <div class="column-status" @click="onInstitutionClick(institution)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[institution.status]}`">
+              {{ statusLabel[institution.status] }}
+            </span>
+          </div>
+        </template> -->
+        <template v-slot:aboutProgram="{ row: institution }">
+          <div class="column-aboutProgram" @click="onInstitutionClick(institution)" style="cursor: pointer;">
+            {{ institution.managerName }} - {{ institution.institutionName }}
+          </div>
+        </template>
+        <!-- <template v-slot:managerName="{ row: institution }">
+          <div class="column-managerName">{{ institution.managerName || '-' }}</div>
+        </template> -->
+        <template v-slot:phoneNumber="{ row: institution }">
+          <div class="column-phoneNumber">{{ institution.phoneNumber || '-' }}</div>
+        </template>
+        <!-- <template v-slot:address="{ row: institution }">
+          <div class="column-address">{{ institution.address }}</div>
+        </template>
+        <template v-slot:remarks="{ row: institution }">
+          <div class="column-remarks">{{ institution.remarks || '-' }}</div>
+        </template>
+        <template v-slot:createdAt="{ row: institution }">
+          <div class="column-createdAt">{{ institution.createdAt }}</div>
+        </template> -->
       </KTDatatable>
 
       <div class="d-flex justify-content-end mt-4">
@@ -276,6 +394,39 @@ export default defineComponent({
         sortEnabled: true,
         columnWidth: 150,
       },
+    ]);
+
+    const mobheaderConfig = ref([
+      {
+        columnName: "관리자 - 기관명",
+        columnLabel: "aboutProgram",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      {
+        columnName: "전화번호",
+        columnLabel: "phoneNumber",
+        sortEnabled: false,
+        columnWidth: 100,
+      },
+      // {
+      //   columnName: "주소",
+      //   columnLabel: "address",
+      //   sortEnabled: true,
+      //   columnWidth: 300,
+      // },
+      // {
+      //   columnName: "비고",
+      //   columnLabel: "remarks",
+      //   sortEnabled: false,
+      //   columnWidth: 200,
+      // },
+      // {
+      //   columnName: "생성 날짜",
+      //   columnLabel: "createdAt",
+      //   sortEnabled: true,
+      //   columnWidth: 150,
+      // },
     ]);
 
     const statusColor = {
@@ -550,6 +701,7 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
+      mobheaderConfig,
       currentPage,
       totalPages,
       onPageChange,
@@ -603,6 +755,14 @@ export default defineComponent({
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.com-headerCon {
+  display: inline;
+}
+
+.mob-headerCon {
+  display: none;
 }
 
 .column-status,
@@ -689,6 +849,14 @@ export default defineComponent({
     display: inline;
   }
 
+  .com-headerCon {
+    display: none;
+  }
+
+  .mob-headerCon {
+    display: inline;
+  }
+
   .del-selected {
     display: none;
   }
@@ -717,15 +885,14 @@ export default defineComponent({
     display: block;
     margin-bottom: 15px;
   }
-  .column-isConfirmed,
-  .column-institutionName,
-  .column-programName,
-  .column-createdAt,
-  .column-grade,
-  .column-classNumber,
-  .column-numberOfStudents,
-  .column-date,
-  .column-remark {
+  .column-aboutProgram {
+    width: 170px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+  .column-phoneNumber {
     display: block;
     width: auto; /* 너비를 자동으로 조정 */
     white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
