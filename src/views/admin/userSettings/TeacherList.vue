@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div class="card-body pt-0">
+    <div class="card-body pt-0 com-headerCon">
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -148,6 +148,128 @@
             </span>
           </div>
         </template>
+      </KTDatatable>
+
+      <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(0)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 0 }"
+              @click="onPageChange(currentPage - 1)"
+            >
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="card-body pt-0 mob-headerCon">
+      <div v-if="isLoading" class="overlay">
+        <div class="loader"></div>
+      </div>
+
+      <KTDatatable
+        @on-sort="sort"
+        @on-items-select="onItemSelect"
+        :data="data"
+        :header="mobheaderConfig"
+        @selection-change="onSelectionChange"
+      >
+        <!-- <template v-slot:header-id>
+          <div>ID</div>
+        </template> 
+        <template v-slot:header-username>
+          <div>사용자명</div>
+        </template>
+        <template v-slot:header-name>
+          <div>이름</div>
+        </template>
+        <template v-slot:header-email>
+          <div>이메일</div>
+        </template>
+        <template v-slot:header-gender>
+          <div>성별</div>
+        </template>
+        <template v-slot:header-affiliation>
+          <div>소속</div>
+        </template>
+        <template v-slot:header-status>
+          <div>상태</div>
+        </template> -->
+
+        <template v-slot:aboutUser="{ row: user }">
+          <div class="column-aboutUser">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[user.status]}`">
+              {{ user.name }}/{{ user.username }}
+            </span>
+          </div>
+        </template>
+        <template v-slot:email="{ row: user }">
+          <div class="column-email">{{ user.email }}</div>
+        </template>
+        <!-- <template v-slot:id="{ row: user }">
+          <div class="column-id">{{ user.id }}</div>
+        </template>
+        <template v-slot:username="{ row: user }">
+          <div class="column-username" @click="onUserClick(user)" style="cursor: pointer;">
+            {{ user.username }}
+          </div>
+        </template>
+        <template v-slot:name="{ row: user }">
+          <div class="column-name" @click="onUserClick(user)" style="cursor: pointer;">
+            {{ user.name }}
+          </div>
+        </template>
+        
+        <template v-slot:gender="{ row: user }">
+          <div class="column-gender">{{ genderLabel[user.gender] }}</div>
+        </template>
+        <template v-slot:affiliation="{ row: user }">
+          <div class="column-affiliation">{{ user.affiliation }}</div>
+        </template> -->
+        
       </KTDatatable>
 
       <div class="d-flex justify-content-end mt-4">
@@ -373,6 +495,51 @@ export default defineComponent({
         sortEnabled: true,
         columnWidth: 100,
       },
+    ]);
+
+    const mobheaderConfig = ref([
+      // {
+      //   columnName: "ID",
+      //   columnLabel: "id",
+      //   sortEnabled: true,
+      //   columnWidth: 50,
+      // },
+      {
+        columnName: "이름/ID",
+        columnLabel: "aboutUser",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      // {
+      //   columnName: "이름",
+      //   columnLabel: "name",
+      //   sortEnabled: true,
+      //   columnWidth: 150,
+      // },
+      {
+        columnName: "이메일",
+        columnLabel: "email",
+        sortEnabled: true,
+        columnWidth: 100,
+      },
+      // {
+      //   columnName: "성별",
+      //   columnLabel: "gender",
+      //   sortEnabled: true,
+      //   columnWidth: 100,
+      // },
+      // {
+      //   columnName: "소속",
+      //   columnLabel: "affiliation",
+      //   sortEnabled: true,
+      //   columnWidth: 150,
+      // },
+      // {
+      //   columnName: "상태",
+      //   columnLabel: "status",
+      //   sortEnabled: true,
+      //   columnWidth: 100,
+      // },
     ]);
 
     const statusColor = {
@@ -662,6 +829,7 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
+      mobheaderConfig,
       currentPage,
       totalPages,
       onPageChange,
@@ -717,6 +885,15 @@ export default defineComponent({
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.com-headerCon {
+  display: inline;
+}
+
+.mob-headerCon {
+  display: none;
+}
+
 .column-id,
 .column-username,
 .column-name,
@@ -838,6 +1015,14 @@ export default defineComponent({
     display: inline;
   }
 
+  .com-headerCon {
+    display: none;
+  }
+
+  .mob-headerCon {
+    display: inline;
+  }
+
   .del-selected {
     display: none;
   }
@@ -866,15 +1051,14 @@ export default defineComponent({
     display: block;
     margin-bottom: 15px;
   }
-  .column-isConfirmed,
-  .column-institutionName,
-  .column-programName,
-  .column-createdAt,
-  .column-grade,
-  .column-classNumber,
-  .column-numberOfStudents,
-  .column-date,
-  .column-remark {
+  .column-email {
+    width: 160px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+  .column-aboutUser {
     display: block;
     width: auto; /* 너비를 자동으로 조정 */
     white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
