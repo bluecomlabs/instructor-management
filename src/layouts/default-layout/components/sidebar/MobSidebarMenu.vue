@@ -1,7 +1,10 @@
 <template>
   <!--begin::sidebar menu-->
-  <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none">
+  <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom">
     <!--begin::Menu wrapper-->
+    <div class="menu-header menu-header-attribute">
+      <span>MENU</span>
+    </div>
     <div
       id="kt_app_sidebar_menu_wrapper"
       class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
@@ -22,14 +25,23 @@
         <template v-for="(item, i) in activeMenuConfig" :key="i">
           <div v-if="item.heading" class="menu-item pt-5">
             <div class="menu-content">
-              <span class="menu-heading fw-bold text-uppercase fs-7">
-                {{ translate(item.heading) }}
+              <span class="menu-heading fw-bold text-uppercase fs-7 menu-heading-attribute">
+                {{ translate(item.heading) }} 
+                <div 
+                  id="arrow-box"
+                  :style="{ transform: arrowTransform(`arrow-${i}`).value }" 
+                  @click="toggleDiv(`arrow-${i}`); toggleMenu(`menu-${i}`)"
+                >
+                </div>
               </span>
             </div>
           </div>
           <template v-for="(menuItem, j) in item.pages" :key="j">
             <template v-if="menuItem.heading">
-              <div class="menu-item">
+              <div 
+                class="menu-item"
+                v-if="activeMenus[`menu-${i}`]"
+              >
                 <router-link
                   v-if="menuItem.route"
                   class="menu-link"
@@ -51,7 +63,7 @@
                       icon-class="fs-2"
                     />
                   </span>
-                  <span class="menu-title">{{
+                  <span class="menu-title menu-title-attribute">{{
                     translate(menuItem.heading)
                   }}</span>
                 </router-link>
@@ -176,12 +188,26 @@ export default defineComponent({
     const { t, te } = useI18n();
     const route = useRoute();
     const scrollElRef = ref<null | HTMLElement>(null);
+    const isLeftInner2Visible = ref(false);
+    const activeArrows = ref<{ [key: string]: boolean }>({});
+    const activeMenus = ref<{ [key: string]: boolean }>({});
 
     onMounted(() => {
       if (scrollElRef.value) {
         scrollElRef.value.scrollTop = 0;
       }
     });
+
+    const toggleDiv = (key: string) => {
+      activeArrows.value[key] = !activeArrows.value[key];
+    };
+
+    const toggleMenu = (key: string) => {
+      activeMenus.value[key] = !activeMenus.value[key];
+    };
+
+    const arrowTransform = (key: string) =>
+      computed(() => (activeArrows.value[key] ? "rotate(-135deg)" : "rotate(45deg)"));
 
     const translate = (text: string) => {
       if (te(text)) {
@@ -207,6 +233,11 @@ export default defineComponent({
     
 
     return {
+      isLeftInner2Visible,
+      activeMenus,
+      arrowTransform,
+      toggleDiv,
+      toggleMenu,
       hasActiveChildren,
       activeMenuConfig,
       sidebarMenuIcons,
@@ -218,7 +249,42 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.app-sidebar-menu {
-  color: rgb(25, 44, 59);
+.menu-title-attribute {
+  color: #1B1F3B;
+  font-size: 19px !important;
+}
+
+.menu-header-attribute {
+  font-size: 25px !important;
+  margin-top: 20px;
+  margin-bottom: -20px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
+  color: #1B1F3B;
+}
+
+.menu-heading-attribute {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -5px;
+  padding-bottom: -10px;
+  padding-top: 10px;
+  align-items: center;
+  font-size: 25px !important;
+  border-top: 3px solid #ddd;
+  color: #1B1F3B;
+}
+
+#arrow-box {
+  position: relative;
+  top: -5px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  transform: rotate(45deg);
+  display: inline-block;
 }
 </style>

@@ -151,7 +151,7 @@ export default defineComponent({
 .app-sidebar-menu-wrap {
   position: absolute;
   z-index: 10;
-  background-color: lightgray;
+  background-color: #F0F0F0;
   right: 0;
   top: 0px;
   width: 100%;
