@@ -47,6 +47,7 @@
       <div
         class="btn btn-flex btn-icon btn-active-color-primary w-30px h-30px"
         id="kt_app_header_menu_toggle"
+        @click="toggleSidebar"
       >
         <KTIcon icon-name="element-4" icon-class="fs-2" />
       </div>
@@ -54,17 +55,20 @@
     <!--end::Header menu toggle-->
   </div>
   <!--end::Navbar-->
+
+  <sidebar-menu class="app-sidebar-menu-wrap" :class="{'sidebar-hidden-first': !sidebarVisible && firstSidebar , 'sidebar-hidden': !sidebarVisible, 'sidebar-visible': sidebarVisible}"/>
 </template>
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import KTSearch from "@/layouts/default-layout/components/search/Search.vue";
 import KTNotificationMenu from "@/layouts/default-layout/components/menus/NotificationsMenu.vue";
 import KTUserMenu from "@/layouts/default-layout/components/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/default-layout/components/theme-mode/ThemeModeSwitcher.vue";
 import { ThemeModeComponent } from "@/assets/ts/layout";
 import { useThemeStore } from "@/stores/theme";
+import SidebarMenu from '@/layouts/default-layout/components/sidebar/MobSidebarMenu.vue'
 
 export default defineComponent({
   name: "header-navbar",
@@ -73,10 +77,21 @@ export default defineComponent({
     KTNotificationMenu,
     KTUserMenu,
     KTThemeModeSwitcher,
+    SidebarMenu,
   },
   setup() {
-    const store = useThemeStore();
+    const sidebarVisible = ref(false);
+    const firstSidebar = ref(true);
 
+    const toggleSidebar = () => {
+      sidebarVisible.value = !sidebarVisible.value;
+
+      if(sidebarVisible.value == false){
+        firstSidebar.value = false;
+      }
+    };
+
+    const store = useThemeStore();
     const themeMode = computed(() => {
       if (store.mode === "system") {
         return ThemeModeComponent.getSystemMode();
@@ -85,9 +100,61 @@ export default defineComponent({
     });
 
     return {
+      sidebarVisible,
+      toggleSidebar,
       themeMode,
       getAssetPath,
+      firstSidebar
     };
   },
+  
 });
 </script>
+
+<style scope>
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(-2%);
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(-2%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.sidebar-visible {
+  display: block;
+  animation: slideInFromTop 0.5s forwards;
+}
+
+.sidebar-hidden {
+  display: block;
+  animation: slideOutToTop 0.3s ease-out forwards;
+}
+
+.sidebar-hidden-first {
+  visibility: hidden;
+}
+
+.app-navbar-item {
+  z-index: 11;
+}
+
+.app-sidebar-menu-wrap {
+  position: absolute;
+  z-index: 10;
+  background-color: lightgray;
+  right: 0;
+  top: 0px;
+  width: 100%;
+  border-radius: 10px;
+}
+</style>
