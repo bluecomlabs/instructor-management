@@ -136,7 +136,7 @@ export default defineComponent({
             ? item.endTime.slice(0, -3)
             : item.endTime;
 
-          let roleKor = "N/A";
+          let roleKor = "미정";
           if (item.role === "MAIN") {
             roleKor = "주강사";
           } else if (item.role === "ASSISTANT") {
