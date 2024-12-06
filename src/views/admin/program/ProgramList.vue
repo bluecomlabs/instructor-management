@@ -259,7 +259,7 @@ export default defineComponent({
         }
         registerButtonTimeout = window.setTimeout(() => {
           showRegisterButton.value = true;
-        }, 30);
+        }, 300);
       } else {
         showRegisterButton.value = false;
         if (registerButtonTimeout) {

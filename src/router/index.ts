@@ -631,6 +631,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "NoticeList",
+        name: "admin-NoticeList",
+        component: () => import("@/views/admin/userSettings/NoticeList.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "공지사항 관리"],
+        },
+      },
+      {
+        path: "NoticeDetails",
+        name: "admin-NoticeDetails",
+        component: () => import("@/views/admin/userSettings/NoticeDetails.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "공지사항 상세보기"],
+        },
+      },
+      {
         path: "InstitutionDetails",
         name: "admin-InstitutionDetails",
         component: () => import("@/views/admin/userSettings/InstitutionDetails.vue"),

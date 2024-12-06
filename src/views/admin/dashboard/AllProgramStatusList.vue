@@ -16,6 +16,24 @@
     <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget3 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div>
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget2 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div> -->
+    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget4 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget5 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget6 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget7 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget8 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div> -->
     <!--end::Col-->
   </div>
   <!--end::Row-->
@@ -194,7 +212,13 @@ import arraySort from "array-sort";
 import { MenuComponent } from "@/assets/ts/components";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
 import Widget1 from "@/components/dashboard-default-widgets/Widget1.vue";
+import Widget2 from "@/components/dashboard-default-widgets/Widget2.vue";
 import Widget3 from "@/components/dashboard-default-widgets/Widget3.vue";
+import Widget4 from "@/components/dashboard-default-widgets/Widget4.vue";
+import Widget5 from "@/components/dashboard-default-widgets/Widget5.vue";
+import Widget6 from "@/components/dashboard-default-widgets/Widget6.vue";
+import Widget7 from "@/components/dashboard-default-widgets/Widget7.vue";
+import Widget8 from "@/components/dashboard-default-widgets/Widget8.vue";
 
 interface ISubscription {
   id: number;
@@ -215,7 +239,13 @@ export default defineComponent({
     KTDatatable,
     Dropdown1,
     Widget1,
+    Widget2,
     Widget3,
+    Widget4,
+    Widget5,
+    Widget6,
+    Widget7,
+    Widget8,
   },
   setup() {
     const data = ref<Array<ISubscription>>([

@@ -138,6 +138,12 @@ const MainMenuConfig: Array<MenuItem> = [
       //   bootstrapIcon: "bi-layers",
       // },
       {
+        heading: "공지사항 관리",
+        route: "/admin/NoticeList",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-buildings",
+      },
+      {
         heading: "기관 관리",
         route: "/admin/InstitutionList",
         keenthemesIcon: "abstract-38",
