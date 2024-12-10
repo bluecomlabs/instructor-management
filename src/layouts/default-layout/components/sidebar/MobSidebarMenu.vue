@@ -2,15 +2,15 @@
   <!--begin::sidebar menu-->
   <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom">
     <!--begin::Menu wrapper-->
-    <div class="menu-header menu-header-attribute">
-      <span>MENU</span>
+    <div class="menu-header-attribute">
+      <img class="logo-img" src="/logo.png">
     </div>
     <div
       id="kt_app_sidebar_menu_wrapper"
       class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
       data-kt-scroll="true"
       data-kt-scroll-activate="true"
-      data-kt-scroll-height="auto"
+      data-kt-scroll-max-height="auto"
       data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
       data-kt-scroll-wrappers="#kt_app_sidebar_menu"
       data-kt-scroll-offset="5px"
@@ -23,14 +23,13 @@
         data-kt-menu="true"
       >
         <template v-for="(item, i) in activeMenuConfig" :key="i">
-          <div v-if="item.heading" class="menu-item pt-5">
+          <div v-if="item.heading" class="menu-item pt-5" @click="toggleDiv(`arrow-${i}`); toggleMenu(`menu-${i}`)">
             <div class="menu-content">
               <span class="menu-heading fw-bold text-uppercase fs-7 menu-heading-attribute">
                 {{ translate(item.heading) }} 
                 <div 
                   id="arrow-box"
                   :style="{ transform: arrowTransform(`arrow-${i}`).value }" 
-                  @click="toggleDiv(`arrow-${i}`); toggleMenu(`menu-${i}`)"
                 >
                 </div>
               </span>
@@ -44,7 +43,7 @@
               >
                 <router-link
                   v-if="menuItem.route"
-                  class="menu-link"
+                  class="menu-link show-menu-bar"
                   active-class="active"
                   :to="menuItem.route"
                 >
@@ -76,7 +75,7 @@
               data-kt-menu-sub="accordion"
               data-kt-menu-trigger="click"
             >
-              <span class="menu-link">
+              <span class="menu-link show-menu-bar">
                 <span
                   v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
                   class="menu-icon"
@@ -105,7 +104,7 @@
                   <div v-if="item2.heading" class="menu-item">
                     <router-link
                       v-if="item2.route"
-                      class="menu-link"
+                      class="menu-link show-menu-bar"
                       active-class="active"
                       :to="item2.route"
                     >
@@ -124,7 +123,7 @@
                     data-kt-menu-sub="accordion"
                     data-kt-menu-trigger="click"
                   >
-                    <span class="menu-link">
+                    <span class="menu-link show-menu-bar">
                       <span class="menu-bullet">
                         <span class="bullet bullet-dot"></span>
                       </span>
@@ -141,7 +140,7 @@
                         <div v-if="item3.heading" class="menu-item">
                           <router-link
                             v-if="item3.route"
-                            class="menu-link"
+                            class="menu-link show-menu-bar"
                             active-class="active"
                             :to="item3.route"
                           >
@@ -188,7 +187,6 @@ export default defineComponent({
     const { t, te } = useI18n();
     const route = useRoute();
     const scrollElRef = ref<null | HTMLElement>(null);
-    const isLeftInner2Visible = ref(false);
     const activeArrows = ref<{ [key: string]: boolean }>({});
     const activeMenus = ref<{ [key: string]: boolean }>({});
 
@@ -198,12 +196,28 @@ export default defineComponent({
       }
     });
 
+    // const maintainScrollPosition = () => {
+    //   if (scrollElRef.value) {
+    //     const currentScroll = scrollElRef.value.scrollTop;
+    //     setTimeout(() => {
+    //       scrollElRef.value!.scrollTop = currentScroll;
+    //     }, 0);
+    //   }
+    // };
+
     const toggleDiv = (key: string) => {
       activeArrows.value[key] = !activeArrows.value[key];
     };
 
     const toggleMenu = (key: string) => {
+      Object.keys(activeMenus.value).forEach((menuKey) => {
+        if (menuKey !== key) {
+          activeMenus.value[menuKey] = false;
+          activeArrows.value[menuKey] = false;
+        }
+      });
       activeMenus.value[key] = !activeMenus.value[key];
+      activeArrows.value[key] = !activeArrows.value[key];
     };
 
     const arrowTransform = (key: string) =>
@@ -231,9 +245,7 @@ export default defineComponent({
       }
     });
     
-
     return {
-      isLeftInner2Visible,
       activeMenus,
       arrowTransform,
       toggleDiv,
@@ -249,19 +261,26 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.menu-title-attribute {
-  color: #1B1F3B;
-  font-size: 19px !important;
+.menu-header-attribute {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  height: 53.5px;
 }
 
-.menu-header-attribute {
-  font-size: 25px !important;
-  margin-top: 20px;
-  margin-bottom: -20px;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px 0;
-  color: #1B1F3B;
+.logo-img {
+  width: 100px;
+  object-fit: cover;
+  padding-top: 4px;
+  padding-left: 10px;
+}
+
+#kt_app_sidebar_menu_wrapper {
+  border-top: 3px solid #ddd;
+}
+
+.show-menu-bar {
+  background-color: #F1F1F1;
 }
 
 .menu-heading-attribute {
@@ -272,8 +291,22 @@ export default defineComponent({
   padding-top: 10px;
   align-items: center;
   font-size: 25px !important;
-  border-top: 3px solid #ddd;
-  color: #1B1F3B;
+  color: #1d1f21;
+  transition: transform 0.3s ease;
+}
+
+/* .menu-item:has(.menu-link.active) {
+  color: #ddb900 !important;
+} */
+
+.menu-item:active, .show-menu-bar:active {
+  background-color: #69b4ff;
+  transition: 0.1s ease
+}
+
+.menu-title-attribute {
+  color: black;
+  font-size: 19px !important;
 }
 
 #arrow-box {
@@ -286,5 +319,10 @@ export default defineComponent({
   border-left: 2px solid black;
   transform: rotate(45deg);
   display: inline-block;
+  transition: transform 0.3s ease;
 }
+
+/* #arrow-box:active {
+  background-color: rgb(130, 171, 238);
+} */
 </style>

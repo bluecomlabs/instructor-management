@@ -150,11 +150,15 @@ export default defineComponent({
 
 .app-sidebar-menu-wrap {
   position: absolute;
+  height: auto;
   z-index: 10;
-  background-color: #F0F0F0;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100vh;
   right: 0;
   top: 0px;
   width: 100%;
   border-radius: 10px;
+  border-bottom: 2px solid black;
 }
 </style>
