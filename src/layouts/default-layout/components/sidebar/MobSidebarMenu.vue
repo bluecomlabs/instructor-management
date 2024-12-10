@@ -1,9 +1,15 @@
 <template>
   <!--begin::sidebar menu-->
-  <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom">
+  <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom"
+    :class="{ 'sidebar-hidden': !isVisible, 'sidebar-visible': isVisible }"
+    @animationend="handleAnimationEnd"
+  >
+  
+  >
     <!--begin::Menu wrapper-->
     <div class="menu-header-attribute">
       <img class="logo-img" src="/logo.png">
+      <div class="menu-close-btn" @click="closeMenu">X</div>
     </div>
     <div
       id="kt_app_sidebar_menu_wrapper"
@@ -189,12 +195,24 @@ export default defineComponent({
     const scrollElRef = ref<null | HTMLElement>(null);
     const activeArrows = ref<{ [key: string]: boolean }>({});
     const activeMenus = ref<{ [key: string]: boolean }>({});
+    const isVisible = ref(true);
 
     onMounted(() => {
       if (scrollElRef.value) {
         scrollElRef.value.scrollTop = 0;
       }
     });
+
+    const closeMenu = () => {
+      isVisible.value = false; // 메뉴 닫기
+    };
+
+    const handleAnimationEnd = (event: AnimationEvent) => {
+      const target = event.target as HTMLElement;
+      if (!isVisible.value && target.classList.contains("sidebar-hidden")) {
+        target.style.display = "none"; // 애니메이션 종료 후 숨김 처리
+      }
+    };
 
     // const maintainScrollPosition = () => {
     //   if (scrollElRef.value) {
@@ -246,6 +264,9 @@ export default defineComponent({
     });
     
     return {
+      isVisible,
+      closeMenu,
+      handleAnimationEnd,
       activeMenus,
       arrowTransform,
       toggleDiv,
@@ -261,26 +282,61 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.sidebar-visible {
+  visibility: visible;
+  display: block;
+  animation: slideInFromTop 0.5s forwards;
+}
+
+.sidebar-hidden {
+  visibility: hidden;
+  display: block;
+  animation: slideOutToTop 0.5s forwards;
+}
+
 .menu-header-attribute {
   position: relative;
-  display: inline-block;
+  display: block;
   margin-top: 20px;
+  padding-bottom: 90px;
   height: 53.5px;
+  border-bottom: 2px solid #ddd;
+  box-shadow: 0 1px 0 1px #555555;
 }
 
 .logo-img {
   width: 100px;
   object-fit: cover;
-  padding-top: 4px;
+  padding-top: 14px;
   padding-left: 10px;
 }
 
-#kt_app_sidebar_menu_wrapper {
-  border-top: 3px solid #ddd;
-}
+/* #kt_app_sidebar_menu_wrapper {
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -5px 3 2 #1d1f21;
+} */
 
 .show-menu-bar {
   background-color: #F1F1F1;
+  border-radius: 0;
 }
 
 .menu-heading-attribute {
@@ -295,9 +351,9 @@ export default defineComponent({
   transition: transform 0.3s ease;
 }
 
-/* .menu-item:has(.menu-link.active) {
-  color: #ddb900 !important;
-} */
+.menu-item {
+  padding: 0;
+}
 
 .menu-item:active, .show-menu-bar:active {
   background-color: #69b4ff;
@@ -306,7 +362,7 @@ export default defineComponent({
 
 .menu-title-attribute {
   color: black;
-  font-size: 19px !important;
+  font-size: 23px !important;
 }
 
 #arrow-box {
@@ -322,6 +378,18 @@ export default defineComponent({
   transition: transform 0.3s ease;
 }
 
+.menu-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: black;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* #arrow-box:active {
   background-color: rgb(130, 171, 238);
 } */

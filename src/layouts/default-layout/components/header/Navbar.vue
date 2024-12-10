@@ -144,9 +144,9 @@ export default defineComponent({
   visibility: hidden;
 }
 
-.app-navbar-item {
+/* .app-navbar-item {
   z-index: 11;
-}
+} */
 
 .app-sidebar-menu-wrap {
   position: absolute;
