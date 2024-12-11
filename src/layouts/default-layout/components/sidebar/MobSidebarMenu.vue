@@ -39,18 +39,49 @@
               </span>
             </div>
           </div>
-          <template v-for="(menuItem, j) in item.pages" :key="j">
-            <template v-if="menuItem.heading">
-              <div 
-                class="menu-item"
-                v-if="activeMenus[`menu-${i}`]"
-              >
-                <router-link
-                  v-if="menuItem.route"
-                  class="menu-link show-menu-bar border-radius-attribute"
-                  active-class="active"
-                  :to="menuItem.route"
+          <template v-if="item.pages && Array.isArray(item.pages)">
+            <template v-for="(menuItem, j) in item.pages" :key="j">
+              <template v-if="menuItem.heading">
+                <div 
+                  class="menu-item"
+                  v-if="activeMenus[`menu-${i}`]"
+                  :class="{ 'first-menu-item': j === 0, 'last-menu-item': j === item.pages.length - 1 }"
                 >
+                  <router-link
+                    v-if="menuItem.route"
+                    class="menu-link show-menu-bar border-radius-attribute"
+                    active-class="active"
+                    :to="menuItem.route"
+                  >
+                    <span
+                      v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
+                      class="menu-icon"
+                    >
+                      <i
+                        v-if="sidebarMenuIcons === 'bootstrap'"
+                        :class="menuItem.bootstrapIcon"
+                        class="bi fs-3"
+                      ></i>
+                      <KTIcon
+                        v-else-if="sidebarMenuIcons === 'keenthemes'"
+                        :icon-name="menuItem.keenthemesIcon"
+                        icon-class="fs-2"
+                      />
+                    </span>
+                    <span class="menu-title menu-title-attribute" @click="closeMenu">{{
+                      translate(menuItem.heading)
+                    }}</span>
+                  </router-link>
+                </div>
+              </template>
+              <div
+                v-if="menuItem.sectionTitle && menuItem.route"
+                :class="{ show: hasActiveChildren(menuItem.route) }"
+                class="menu-item menu-accordion"
+                data-kt-menu-sub="accordion"
+                data-kt-menu-trigger="click"
+              >
+                <span class="menu-link show-menu-bar">
                   <span
                     v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
                     class="menu-icon"
@@ -66,102 +97,74 @@
                       icon-class="fs-2"
                     />
                   </span>
-                  <span class="menu-title menu-title-attribute" @click="closeMenu">{{
-                    translate(menuItem.heading)
+                  <span class="menu-title">{{
+                    translate(menuItem.sectionTitle)
                   }}</span>
-                </router-link>
+                  <span class="menu-arrow"></span>
+                </span>
+                <div
+                  :class="{ show: hasActiveChildren(menuItem.route) }"
+                  class="menu-sub menu-sub-accordion"
+                >
+                  <template v-for="(item2, k) in menuItem.sub" :key="k">
+                    <div v-if="item2.heading" class="menu-item">
+                      <router-link
+                        v-if="item2.route"
+                        class="menu-link show-menu-bar"
+                        active-class="active"
+                        :to="item2.route"
+                      >
+                        <span class="menu-bullet">
+                          <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">{{
+                          translate(item2.heading)
+                        }}</span>
+                      </router-link>
+                    </div>
+                    <div
+                      v-if="item2.sectionTitle && item2.route"
+                      :class="{ show: hasActiveChildren(item2.route) }"
+                      class="menu-item menu-accordion"
+                      data-kt-menu-sub="accordion"
+                      data-kt-menu-trigger="click"
+                    >
+                      <span class="menu-link show-menu-bar">
+                        <span class="menu-bullet">
+                          <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">{{
+                          translate(item2.sectionTitle)
+                        }}</span>
+                        <span class="menu-arrow"></span>
+                      </span>
+                      <div
+                        :class="{ show: hasActiveChildren(item2.route) }"
+                        class="menu-sub menu-sub-accordion"
+                      >
+                        <template v-for="(item3, k) in item2.sub" :key="k">
+                          <div v-if="item3.heading" class="menu-item">
+                            <router-link
+                              v-if="item3.route"
+                              class="menu-link show-menu-bar"
+                              active-class="active"
+                              :to="item3.route"
+                            >
+                              <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                              </span>
+                              <span class="menu-title">{{
+                                translate(item3.heading)
+                              }}</span>
+                            </router-link>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+                </div>
               </div>
             </template>
-            <div
-              v-if="menuItem.sectionTitle && menuItem.route"
-              :class="{ show: hasActiveChildren(menuItem.route) }"
-              class="menu-item menu-accordion"
-              data-kt-menu-sub="accordion"
-              data-kt-menu-trigger="click"
-            >
-              <span class="menu-link show-menu-bar">
-                <span
-                  v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
-                  class="menu-icon"
-                >
-                  <i
-                    v-if="sidebarMenuIcons === 'bootstrap'"
-                    :class="menuItem.bootstrapIcon"
-                    class="bi fs-3"
-                  ></i>
-                  <KTIcon
-                    v-else-if="sidebarMenuIcons === 'keenthemes'"
-                    :icon-name="menuItem.keenthemesIcon"
-                    icon-class="fs-2"
-                  />
-                </span>
-                <span class="menu-title">{{
-                  translate(menuItem.sectionTitle)
-                }}</span>
-                <span class="menu-arrow"></span>
-              </span>
-              <div
-                :class="{ show: hasActiveChildren(menuItem.route) }"
-                class="menu-sub menu-sub-accordion"
-              >
-                <template v-for="(item2, k) in menuItem.sub" :key="k">
-                  <div v-if="item2.heading" class="menu-item">
-                    <router-link
-                      v-if="item2.route"
-                      class="menu-link show-menu-bar"
-                      active-class="active"
-                      :to="item2.route"
-                    >
-                      <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                      </span>
-                      <span class="menu-title">{{
-                        translate(item2.heading)
-                      }}</span>
-                    </router-link>
-                  </div>
-                  <div
-                    v-if="item2.sectionTitle && item2.route"
-                    :class="{ show: hasActiveChildren(item2.route) }"
-                    class="menu-item menu-accordion"
-                    data-kt-menu-sub="accordion"
-                    data-kt-menu-trigger="click"
-                  >
-                    <span class="menu-link show-menu-bar">
-                      <span class="menu-bullet">
-                        <span class="bullet bullet-dot"></span>
-                      </span>
-                      <span class="menu-title">{{
-                        translate(item2.sectionTitle)
-                      }}</span>
-                      <span class="menu-arrow"></span>
-                    </span>
-                    <div
-                      :class="{ show: hasActiveChildren(item2.route) }"
-                      class="menu-sub menu-sub-accordion"
-                    >
-                      <template v-for="(item3, k) in item2.sub" :key="k">
-                        <div v-if="item3.heading" class="menu-item">
-                          <router-link
-                            v-if="item3.route"
-                            class="menu-link show-menu-bar"
-                            active-class="active"
-                            :to="item3.route"
-                          >
-                            <span class="menu-bullet">
-                              <span class="bullet bullet-dot"></span>
-                            </span>
-                            <span class="menu-title">{{
-                              translate(item3.heading)
-                            }}</span>
-                          </router-link>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </div>
           </template>
         </template>
         <!--begin:Menu item-->
@@ -238,7 +241,7 @@ export default defineComponent({
     };
 
     const arrowTransform = (key: string) =>
-      computed(() => (activeArrows.value[key] ? "rotate(-135deg)" : "rotate(45deg)"));
+      computed(() => (activeArrows.value[key] ? "rotate(45deg)" : "rotate(-135deg)"));
 
     const translate = (text: string) => {
       if (te(text)) {
@@ -305,7 +308,7 @@ export default defineComponent({
 
 .sidebar-hidden {
   display: block;
-  animation: slideOutToTop 0.5s forwards;
+  animation: slideOutToTop 0.2s ease-out forwards;
 }
 
 .menu-header-attribute {
@@ -331,9 +334,14 @@ export default defineComponent({
 }
 
 .show-menu-bar {
-  background-color: #f9f9f9;
-  border-radius: 0;
-  border-bottom: 2px solid #f9f9f9;
+  background-color: #fbfbfb;
+  /* border-radius: 0; */
+  border-bottom: 10px solid #fbfbfb;
+  margin-left: -9px;
+  margin-right: -9px;
+  margin-bottom: -8px !important;
+  padding-left: 20px;
+  padding-top: 10px;
 }
 
 .border-radius-attribute:nth-last-child(1) {
@@ -373,7 +381,7 @@ export default defineComponent({
   height: 10px;
   border-top: 2px solid black;
   border-left: 2px solid black;
-  transform: rotate(45deg);
+  transform: rotate(-135deg);
   display: inline-block;
   transition: transform 0.3s ease;
 }
@@ -390,7 +398,14 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
-/* #arrow-box:active {
-  background-color: rgb(130, 171, 238);
+
+.first-menu-item {
+  border-top : 0.01px solid #f1f1f4;
+  box-shadow: 0 -0.2px 1px 0.5px #f1f1f4;
+}
+
+/* .last-menu-item {
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
 } */
 </style>

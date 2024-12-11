@@ -131,16 +131,8 @@ export default defineComponent({
 
 .sidebar-hidden {
   display: block;
-  animation: slideOutToTop 0.3s ease-out forwards;
+  animation: slideOutToTop 0.2s ease-out forwards;
 }
-
-.sidebar-hidden-first {
-  visibility: hidden;
-}
-/* 
-.app-navbar-item {
-  z-index: 11;
-} */
 
 .app-sidebar-menu-wrap {
   position: absolute;
