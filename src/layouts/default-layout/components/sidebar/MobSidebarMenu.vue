@@ -1,10 +1,8 @@
 <template>
   <!--begin::sidebar menu-->
   <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom"
-    :class="{ 'sidebar-hidden': !isVisible, 'sidebar-visible': isVisible }"
+    :class="{ 'sidebar-hidden': !sidebarVisible, 'sidebar-visible': sidebarVisible }"
     @animationend="handleAnimationEnd"
-  >
-  
   >
     <!--begin::Menu wrapper-->
     <div class="menu-header-attribute">
@@ -25,7 +23,7 @@
       <!--begin::Menu-->
       <div
         id="#kt_app_sidebar_menu"
-        class="menu menu-column menu-rounded menu-sub-indention px-3"
+        class="menu menu-column menu-rounded menu-sub-indention px-3 menu-attribute"
         data-kt-menu="true"
       >
         <template v-for="(item, i) in activeMenuConfig" :key="i">
@@ -35,7 +33,7 @@
                 {{ translate(item.heading) }} 
                 <div 
                   id="arrow-box"
-                  :style="{ transform: arrowTransform(`arrow-${i}`).value }" 
+                  :style="{ transform: arrowTransform(`menu-${i}`).value }" 
                 >
                 </div>
               </span>
@@ -49,7 +47,7 @@
               >
                 <router-link
                   v-if="menuItem.route"
-                  class="menu-link show-menu-bar"
+                  class="menu-link show-menu-bar border-radius-attribute"
                   active-class="active"
                   :to="menuItem.route"
                 >
@@ -68,7 +66,7 @@
                       icon-class="fs-2"
                     />
                   </span>
-                  <span class="menu-title menu-title-attribute">{{
+                  <span class="menu-title menu-title-attribute" @click="closeMenu">{{
                     translate(menuItem.heading)
                   }}</span>
                 </router-link>
@@ -188,14 +186,21 @@ import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "sidebar-menu",
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  emits: ["update:visible"],
   components: {},
-  setup() {
+  setup(props, { emit }) {
     const { t, te } = useI18n();
     const route = useRoute();
     const scrollElRef = ref<null | HTMLElement>(null);
     const activeArrows = ref<{ [key: string]: boolean }>({});
     const activeMenus = ref<{ [key: string]: boolean }>({});
-    const isVisible = ref(true);
+    const sidebarVisible = ref(true);
 
     onMounted(() => {
       if (scrollElRef.value) {
@@ -204,24 +209,18 @@ export default defineComponent({
     });
 
     const closeMenu = () => {
-      isVisible.value = false; // 메뉴 닫기
+      sidebarVisible.value = false;
+      setTimeout(() => {
+        emit("update:visible", false);
+      }, 300);
     };
 
     const handleAnimationEnd = (event: AnimationEvent) => {
       const target = event.target as HTMLElement;
-      if (!isVisible.value && target.classList.contains("sidebar-hidden")) {
-        target.style.display = "none"; // 애니메이션 종료 후 숨김 처리
+      if (!sidebarVisible.value && target.classList.contains("sidebar-hidden")) {
+        target.style.visibility = "hidden";
       }
     };
-
-    // const maintainScrollPosition = () => {
-    //   if (scrollElRef.value) {
-    //     const currentScroll = scrollElRef.value.scrollTop;
-    //     setTimeout(() => {
-    //       scrollElRef.value!.scrollTop = currentScroll;
-    //     }, 0);
-    //   }
-    // };
 
     const toggleDiv = (key: string) => {
       activeArrows.value[key] = !activeArrows.value[key];
@@ -264,7 +263,7 @@ export default defineComponent({
     });
     
     return {
-      isVisible,
+      sidebarVisible,
       closeMenu,
       handleAnimationEnd,
       activeMenus,
@@ -290,7 +289,6 @@ export default defineComponent({
     transform: translateY(-100%);
   }
 }
-
 @keyframes slideOutToTop {
   0% {
     transform: translateY(0);
@@ -301,13 +299,11 @@ export default defineComponent({
 }
 
 .sidebar-visible {
-  visibility: visible;
   display: block;
   animation: slideInFromTop 0.5s forwards;
 }
 
 .sidebar-hidden {
-  visibility: hidden;
   display: block;
   animation: slideOutToTop 0.5s forwards;
 }
@@ -315,39 +311,43 @@ export default defineComponent({
 .menu-header-attribute {
   position: relative;
   display: block;
-  margin-top: 20px;
-  padding-bottom: 90px;
+  padding-top: 20px;
+  padding-bottom: 75px;
+  margin: 0;
   height: 53.5px;
-  border-bottom: 2px solid #ddd;
-  box-shadow: 0 1px 0 1px #555555;
+  background-color: white;
+  box-shadow: 0 0.2px 1px 0.5px #f1f1f4;
 }
 
 .logo-img {
-  width: 100px;
+  width: 80px;
   object-fit: cover;
   padding-top: 14px;
   padding-left: 10px;
 }
 
-/* #kt_app_sidebar_menu_wrapper {
-  border-top: 1px solid #ddd;
-  box-shadow: 0 -5px 3 2 #1d1f21;
-} */
+.sidebar-custom {
+  background-color: #fcfcfc;
+}
 
 .show-menu-bar {
-  background-color: #F1F1F1;
+  background-color: #f9f9f9;
   border-radius: 0;
+  border-bottom: 2px solid #f9f9f9;
+}
+
+.border-radius-attribute:nth-last-child(1) {
+  border-radius: 0 0 10px 10px;
 }
 
 .menu-heading-attribute {
   display: flex;
   justify-content: space-between;
   margin-top: -5px;
-  padding-bottom: -10px;
   padding-top: 10px;
   align-items: center;
   font-size: 25px !important;
-  color: #1d1f21;
+  color: #444444;
   transition: transform 0.3s ease;
 }
 
@@ -361,7 +361,7 @@ export default defineComponent({
 }
 
 .menu-title-attribute {
-  color: black;
+  color: #3b3c3d;
   font-size: 23px !important;
 }
 
@@ -380,7 +380,7 @@ export default defineComponent({
 
 .menu-close-btn {
   position: absolute;
-  top: 20px;
+  top: 38px;
   right: 20px;
   color: black;
   font-size: 18px;

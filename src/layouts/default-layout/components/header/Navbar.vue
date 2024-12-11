@@ -56,19 +56,19 @@
   </div>
   <!--end::Navbar-->
 
-  <sidebar-menu class="app-sidebar-menu-wrap" :class="{'sidebar-hidden-first': !sidebarVisible && firstSidebar , 'sidebar-hidden': !sidebarVisible, 'sidebar-visible': sidebarVisible}"/>
+  <sidebar-menu class="app-sidebar-menu-wrap" v-if="sidebarVisible" v-model:visible="sidebarVisible"/>
 </template>
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import KTSearch from "@/layouts/default-layout/components/search/Search.vue";
 import KTNotificationMenu from "@/layouts/default-layout/components/menus/NotificationsMenu.vue";
 import KTUserMenu from "@/layouts/default-layout/components/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/default-layout/components/theme-mode/ThemeModeSwitcher.vue";
 import { ThemeModeComponent } from "@/assets/ts/layout";
 import { useThemeStore } from "@/stores/theme";
-import SidebarMenu from '@/layouts/default-layout/components/sidebar/MobSidebarMenu.vue'
+import SidebarMenu from '@/layouts/default-layout/components/sidebar/MobSidebarMenu.vue';
 
 export default defineComponent({
   name: "header-navbar",
@@ -81,14 +81,9 @@ export default defineComponent({
   },
   setup() {
     const sidebarVisible = ref(false);
-    const firstSidebar = ref(true);
 
     const toggleSidebar = () => {
       sidebarVisible.value = !sidebarVisible.value;
-
-      if(sidebarVisible.value == false){
-        firstSidebar.value = false;
-      }
     };
 
     const store = useThemeStore();
@@ -104,7 +99,6 @@ export default defineComponent({
       toggleSidebar,
       themeMode,
       getAssetPath,
-      firstSidebar
     };
   },
   
@@ -143,8 +137,8 @@ export default defineComponent({
 .sidebar-hidden-first {
   visibility: hidden;
 }
-
-/* .app-navbar-item {
+/* 
+.app-navbar-item {
   z-index: 11;
 } */
 
