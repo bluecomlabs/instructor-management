@@ -297,13 +297,11 @@ export default defineComponent({
   }
 }
 
-.min-menu-bar-enter-active,
-.min-menu-bar-leave-active {
+.min-menu-bar-enter-active {
   transition: opacity 0.3s ease, transform 1s ease, max-height 1s ease;
 }
 
-.min-menu-bar-enter-from,
-.min-menu-bar-leave-to {
+.min-menu-bar-enter-from {
   opacity: 0;
   transform: translateY(-10px);
   max-height: 0;
