@@ -23,7 +23,7 @@
       <!--begin::Menu-->
       <div
         id="#kt_app_sidebar_menu"
-        class="menu menu-column menu-rounded menu-sub-indention px-3 menu-attribute"
+        class="menu menu-column menu-rounded menu-sub-indention menu-attribute"
         data-kt-menu="true"
       >
         <template v-for="(item, i) in activeMenuConfig" :key="i">
@@ -42,37 +42,39 @@
           <template v-if="item.pages && Array.isArray(item.pages)">
             <template v-for="(menuItem, j) in item.pages" :key="j">
               <template v-if="menuItem.heading">
-                <div 
-                  class="menu-item"
-                  v-if="activeMenus[`menu-${i}`]"
-                  :class="{ 'first-menu-item': j === 0, 'last-menu-item': j === item.pages.length - 1 }"
-                >
-                  <router-link
-                    v-if="menuItem.route"
-                    class="menu-link show-menu-bar border-radius-attribute"
-                    active-class="active"
-                    :to="menuItem.route"
+                <Transition name = min-menu-bar>
+                  <div 
+                    class="menu-item"
+                    v-if="activeMenus[`menu-${i}`]"
+                    :class="{ 'first-menu-item': j === 0, 'last-menu-item': j === item.pages.length - 1 }"
                   >
-                    <span
-                      v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
-                      class="menu-icon"
+                    <router-link
+                      v-if="menuItem.route"
+                      class="menu-link show-menu-bar border-radius-attribute"
+                      active-class="active"
+                      :to="menuItem.route"
                     >
-                      <i
-                        v-if="sidebarMenuIcons === 'bootstrap'"
-                        :class="menuItem.bootstrapIcon"
-                        class="bi fs-3"
-                      ></i>
-                      <KTIcon
-                        v-else-if="sidebarMenuIcons === 'keenthemes'"
-                        :icon-name="menuItem.keenthemesIcon"
-                        icon-class="fs-2"
-                      />
-                    </span>
-                    <span class="menu-title menu-title-attribute" @click="closeMenu">{{
-                      translate(menuItem.heading)
-                    }}</span>
-                  </router-link>
-                </div>
+                      <span
+                        v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
+                        class="menu-icon"
+                      >
+                        <i
+                          v-if="sidebarMenuIcons === 'bootstrap'"
+                          :class="menuItem.bootstrapIcon"
+                          class="bi fs-3"
+                        ></i>
+                        <KTIcon
+                          v-else-if="sidebarMenuIcons === 'keenthemes'"
+                          :icon-name="menuItem.keenthemesIcon"
+                          icon-class="fs-2"
+                        />
+                      </span>
+                      <span class="menu-title menu-title-attribute" @click="closeMenu">{{
+                        translate(menuItem.heading)
+                      }}</span>
+                    </router-link>
+                  </div>
+                </Transition>
               </template>
               <div
                 v-if="menuItem.sectionTitle && menuItem.route"
@@ -236,8 +238,10 @@ export default defineComponent({
           activeArrows.value[menuKey] = false;
         }
       });
+      setTimeout(() => {
       activeMenus.value[key] = !activeMenus.value[key];
       activeArrows.value[key] = !activeArrows.value[key];
+      }, 200);
     };
 
     const arrowTransform = (key: string) =>
@@ -292,13 +296,24 @@ export default defineComponent({
     transform: translateY(-100%);
   }
 }
-@keyframes slideOutToTop {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+
+.min-menu-bar-enter-active,
+.min-menu-bar-leave-active {
+  transition: opacity 0.3s ease, transform 1s ease, max-height 1s ease;
+}
+
+.min-menu-bar-enter-from,
+.min-menu-bar-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+.min-menu-bar-enter-to,
+.min-menu-bar-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
 }
 
 .sidebar-visible {
@@ -337,14 +352,13 @@ export default defineComponent({
   background-color: #fbfbfb;
   /* border-radius: 0; */
   border-bottom: 10px solid #fbfbfb;
-  margin-left: -9px;
-  margin-right: -9px;
   margin-bottom: -8px !important;
-  padding-left: 20px;
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
   padding-top: 10px;
 }
 
-.border-radius-attribute:nth-last-child(1) {
+.border-radius-attribute {
   border-radius: 0 0 10px 10px;
 }
 
@@ -353,6 +367,8 @@ export default defineComponent({
   justify-content: space-between;
   margin-top: -5px;
   padding-top: 10px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   align-items: center;
   font-size: 25px !important;
   color: #444444;
@@ -363,9 +379,14 @@ export default defineComponent({
   padding: 0;
 }
 
-.menu-item:active, .show-menu-bar:active {
-  background-color: #69b4ff;
+.menu-item:active {
+  background-color: #69b4ff62;
   transition: 0.1s ease
+}
+
+.show-menu-bar:active {
+  box-shadow: inset 0 0 87px 11px #fdfdfd;
+  background-color: #3b3c3d;
 }
 
 .menu-title-attribute {
@@ -400,8 +421,8 @@ export default defineComponent({
 }
 
 .first-menu-item {
-  border-top : 0.01px solid #f1f1f4;
-  box-shadow: 0 -0.2px 1px 0.5px #f1f1f4;
+  border-top : 0.1px solid #f1f1f4;
+  box-shadow: 0 -1px 5px 2px #535455 inset;
 }
 
 /* .last-menu-item {
