@@ -11,7 +11,7 @@
     </div>
     <div
       id="kt_app_sidebar_menu_wrapper"
-      class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
+      class="app-sidebar-wrapper hover-scroll-overlay-y"
       data-kt-scroll="true"
       data-kt-scroll-activate="true"
       data-kt-scroll-max-height="auto"
@@ -27,7 +27,7 @@
         data-kt-menu="true"
       >
         <template v-for="(item, i) in activeMenuConfig" :key="i">
-          <div v-if="item.heading" class="menu-item pt-5" @click="toggleDiv(`arrow-${i}`); toggleMenu(`menu-${i}`)">
+          <div v-if="item.heading" class="menu-item" @click="toggleDiv(`arrow-${i}`); toggleMenu(`menu-${i}`)">
             <div class="menu-content">
               <span class="menu-heading fw-bold text-uppercase fs-7 menu-heading-attribute">
                 {{ translate(item.heading) }} 
@@ -377,14 +377,19 @@ export default defineComponent({
   padding: 0;
 }
 
+.menu-content {
+  padding-top: 1.25rem !important;
+  padding-bottom: 1.25rem !important;
+}
+
 .menu-item:active {
-  background-color: #69b4ff62;
+  background-color: #969ba062;
   transition: 0.1s ease
 }
 
 .show-menu-bar:active {
   box-shadow: inset 0 0 87px 11px #fdfdfd;
-  background-color: #3b3c3d;
+  background-color: #7b7e81;
 }
 
 .menu-title-attribute {

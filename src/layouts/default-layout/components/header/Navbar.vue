@@ -52,11 +52,10 @@
         <KTIcon icon-name="element-4" icon-class="fs-2" />
       </div>
     </div>
+    <sidebar-menu class="app-sidebar-menu-wrap" v-if="sidebarVisible" v-model:visible="sidebarVisible"/>
     <!--end::Header menu toggle-->
   </div>
   <!--end::Navbar-->
-
-  <sidebar-menu class="app-sidebar-menu-wrap" v-if="sidebarVisible" v-model:visible="sidebarVisible"/>
 </template>
 
 <script lang="ts">
@@ -137,7 +136,7 @@ export default defineComponent({
 .app-sidebar-menu-wrap {
   position: absolute;
   height: auto;
-  z-index: 10;
+  z-index: 110;
   background-color: #ffffff;
   width: 100%;
   height: 100vh;
