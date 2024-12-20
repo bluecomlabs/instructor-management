@@ -298,7 +298,7 @@ export default defineComponent({
 }
 
 .min-menu-bar-enter-active {
-  transition: opacity 0.3s ease, transform 1s ease, max-height 1s ease;
+  transition: opacity 0.5s ease, transform 0.3s ease, max-height 1s ease;
 }
 
 .min-menu-bar-enter-from {
@@ -368,7 +368,7 @@ export default defineComponent({
   padding-left: 1rem;
   padding-right: 1rem;
   align-items: center;
-  font-size: 25px !important;
+  font-size: 29px !important;
   color: #444444;
   transition: transform 0.3s ease;
 }
@@ -422,9 +422,4 @@ export default defineComponent({
   border-top : 0.1px solid #f1f1f4;
   box-shadow: 0 -1px 5px 2px #535455 inset;
 }
-
-/* .last-menu-item {
-  border-bottom-left-radius: 10px !important;
-  border-bottom-right-radius: 10px !important;
-} */
 </style>
