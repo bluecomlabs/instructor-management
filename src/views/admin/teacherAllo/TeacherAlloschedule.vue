@@ -1,71 +1,80 @@
 <template>
   <div class="card">
-    <div class="card-header border-0 pt-6 cmcard-header">
-      <div class="d-flex align-items-center me-3">
-        <div class="d-flex align-items-center">
-          <select v-model="filterStatus" class="form-select filtercheckbox-button dropdown-button">
-            <option value="READY">강사 열람 가능</option>
-            <option value="OPEN">강사 신청 가능</option>
-            <option value="APPLIED">신청 마감</option>
-            <option value="CONFIRMED">출강 확정</option>
-            <option value="PROGRESS">강의 진행 중</option>
-            <option value="COMPLETE">강의 종료</option>
-            <option value="PAUSE">강의 중지</option>
-            <option value="CANCEL">강의 취소</option>
-          </select>
-          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-            <span class="desktop-text">필터 상태 적용</span>
-            <span class="mobile-text">변경</span>
-          </button>
-          <button :class="{ 'cmdel-selected': selectedIds.length === 0, 'comdel-selected':  selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
-            변경
-          </button>
-        </div>
-      </div>
+    <div class="card-header border-0 pt-6">
+      <!-- <div class="d-flex align-items-center me-3">
+        <select v-model="filterStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+          <option value="READY">강사 열람 가능</option>
+          <option value="OPEN">강사 신청 가능</option>
+          <option value="APPLIED">신청 마감</option>
+          <option value="PENDING_ASSIGN">강사 역할 배정</option>
+          <option value="CONFIRMED">출강 확정</option>
+          <option value="PROGRESS">강의 진행 중</option>
+          <option value="COMPLETE">강의 종료</option>
+          <option value="PAUSE">강의 중지</option>
+          <option value="CANCEL">강의 취소</option>
+        </select>
+        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
+          필터 상태 적용
+        </button>
+      </div> -->
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div class="card-toolbar d-flex justify-content-between align-items-center">
-          <div class="d-flex justify-content-start align-items-center box-leftsort">
+        <!-- <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span> 
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
                 </div>
-                <div class="d-flex align-items-center">
-                  <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
+
+                <div class="vertical-separator mx-3"></div>
+
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+                      <option value="READY">강사 열람 가능</option>
+                      <option value="OPEN">강사 신청 가능</option>
+                      <option value="APPLIED">신청 마감</option>
+                      <option value="PENDING_ASSIGN">강사 역할 배정</option>
+                      <option value="CONFIRMED">출강 확정</option>
+                      <option value="PROGRESS">강의 진행 중</option>
+                      <option value="COMPLETE">강의 종료</option>
+                      <option value="PAUSE">강의 중지</option>
+                      <option value="CANCEL">강의 취소</option>
+                    </select>
+                  </div>
 
                   <button
                     type="button"
                     class="btn btn-primary checkbox-button"
                     @click="changeProgramStatus"
-                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                  상태 변경
+                    상태 변경
                   </button>
                 </div>
 
-                <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
+                <div class="vertical-separator mx-3"></div>
               </div>
             </transition>
           </div>
+        </div> -->
 
-          <div class="card-toolbar">
-            <button
-              type="button"
-              class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-              data-kt-menu-trigger="click"
-              data-kt-menu-placement="bottom-end"
-              data-kt-menu-flip="top-end"
-            >
-              <KTIcon icon-name="category" icon-class="fs-2" />
-            </button>
-            <Dropdown8 @apply-filter="handleFilter"></Dropdown8>
-          </div>
+        <div class="card-toolbar">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+            data-kt-menu-trigger="click"
+            data-kt-menu-placement="bottom-end"
+            data-kt-menu-flip="top-end"
+          >
+            <KTIcon icon-name="category" icon-class="fs-2" />
+          </button>
+          <Dropdown9 @apply-filter="handleFilter"></Dropdown9>
         </div>
       </div>
     </div>
 
-    <div class="card-body pt-0 com-headerCon">
+    <div class="card-body pt-0">
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
@@ -195,138 +204,6 @@
         v-if="showTeacherModal"
         :program="selectedProgram!"
         :role="selectedRole"
-        @close="showTeacherModal = false"
-      />
-    </div>
-
-    <div class="card-body pt-0 mob-headerCon">
-      <div v-if="isLoading" class="overlay">
-        <div class="loader"></div>
-      </div>
-
-      <KTDatatable
-        @on-sort="sort"
-        @on-items-select="onItemSelect"
-        :data="data"
-        :header="mobheaderConfig"
-        @selection-change="onSelectionChange"
-      >
-
-        <!-- <template v-slot:manualAssignment="{ row: program }">
-          <button
-            @click="openTeacherModal(program)"
-            class="btn btn-sm btn-light btn-active-light-primary"
-          >
-            강사 선택
-          </button>
-        </template> -->
-        <template v-slot:aboutProgram="{ row: program }">
-          <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[program.status]}`">
-            <div class="column-aboutProgram" @click="openTeacherModal(program)" style="cursor: pointer;">
-              {{ program.chapterNumber }} / {{ program.totalChapters }} - {{ program.programName }} - {{ program.institutionName }}<br>{{ statusLabel[program.status] }}
-            </div>
-          </span>
-        </template>
-        <!-- <template v-slot:institutionName="{ row: program }">
-          <div class="column-institutionName" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.institutionName }}
-          </div>
-        </template>
-        <template v-slot:programName="{ row: program }">
-          <div class="column-programName" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.programName }}
-          </div>
-        </template>
-        <template v-slot:chapterInfo="{ row: program }">
-          <div class="column-chapterInfo" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.chapterNumber }} / {{ program.totalChapters }}
-          </div>
-        </template>
-        <template v-slot:classDate="{ row: program }">
-          <div class="column-classDate" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.classDate }}
-          </div>
-        </template>
-        <template v-slot:instructorName="{ row: program }">
-          <div class="column-instructorName" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.instructorName }}
-          </div>
-        </template> -->
-        <template v-slot:role="{ row: program }">
-          <div class="column-role" @click="onProgramClick(program)" style="cursor: pointer;">
-            <span :class="`badge py-3 px-4 fs-7 badge-light-${roleColor[program.role]}`">
-              {{ roleLabel[program.role] }}
-            </span>
-          </div>
-        </template>
-        <!-- <template v-slot:startTime="{ row: program }">
-          <div class="column-startTime" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.startTime }}
-          </div>
-        </template>
-        <template v-slot:endTime="{ row: program }">
-          <div class="column-endTime" @click="onProgramClick(program)" style="cursor: pointer;">
-            {{ program.endTime }}
-          </div>
-        </template> -->
-      </KTDatatable>
-
-      <div class="d-flex justify-content-end mt-4">
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <li
-              class="page-item"
-              :class="{ disabled: currentPage === 0 }"
-              @click="onPageChange(0)"
-            >
-              <a class="page-link">
-                <i class="ki-duotone ki-double-left fs-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>
-              </a>
-            </li>
-            <li
-              class="page-item"
-              :class="{ disabled: currentPage === 0 }"
-              @click="onPageChange(currentPage - 1)"
-            >
-              <i class="page-link ki-duotone ki-left fs-2"></i>
-            </li>
-            <li
-              class="page-item"
-              v-for="page in visiblePages"
-              :key="page"
-              :class="{ active: page === currentPage + 1 }"
-              @click="onPageChange(page - 1)"
-            >
-              <a class="page-link" href="#">{{ page }}</a>
-            </li>
-            <li
-              class="page-item"
-              :class="{ disabled: currentPage + 1 === totalPages }"
-              @click="onPageChange(currentPage + 1)"
-            >
-              <i class="page-link ki-duotone ki-right fs-2"></i>
-            </li>
-            <li
-              class="page-item"
-              :class="{ disabled: currentPage + 1 === totalPages }"
-              @click="onPageChange(totalPages - 1)"
-            >
-              <a class="page-link">
-                <i class="ki-duotone ki-double-right fs-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <TeacherSelectionModal
-        v-if="showTeacherModal"
-        :program="selectedProgram!"
         @close="showTeacherModal = false"
       />
     </div>
@@ -797,7 +674,6 @@ export default defineComponent({
       searchItems,
       data,
       headerConfig,
-      mobheaderConfig,
       currentPage,
       totalPages,
       onPageChange,
@@ -857,174 +733,5 @@ export default defineComponent({
   100% { transform: rotate(360deg); }
 }
 
-.com-headerCon {
-  display: inline;
-}
-
-.mob-headerCon {
-  display: none;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0s ease;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-to, .fade-leave {
-  opacity: 1;
-}
-.vertical-separator {
-  border-left: 1px solid #dee2e6;
-  height: 40px;
-}
-.checkbox-button, .applycheckbox-button {
-  width: 120px;
-  height: 40px;
-  padding: 0 !important;
-  font-weight: 600;
-}
-.filtercheckbox-button {
-  width: 150px;
-  height: 40px;
-  padding: 0 !important;
-  font-weight: 600;
-}
-.dropdown-button {
-  padding-left: 7px !important;
-}
-.column-status,
-.column-institutionName,
-.column-programName,
-.column-totalChapters,
-.column-chapterNumber,
-.column-classDate,
-.column-instructorName,
-.column-role,
-.column-startTime,
-.column-endTime {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.column-status {
-  width: 150px;
-  text-align: center;
-}
-
-.column-institutionName {
-  width: 150px;
-}
-
-.column-programName {
-  width: 200px;
-}
-
-.column-totalChapters,
-.column-chapterNumber,
-.column-startTime,
-.column-endTime {
-  width: 100px;
-  text-align: center;
-}
-
-.column-classDate {
-  width: 150px;
-}
-
-.column-instructorName,
-.column-role {
-  width: 150px;
-}
-
-@media (min-width: 769px) {
-  .desktop-text {
-    display: inline;
-  }
-  .mobile-text {
-    display: none;
-  }
-  .cmdel-selected {
-    display: none;
-  }
-  .comdel-selected {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-
-  .desktop-text {
-    display: none;
-  }
-  .mobile-text {
-    display: inline;
-  }
-
-  .com-headerCon {
-    display: none;
-  }
-
-  .mob-headerCon {
-    display: inline;
-  }
-
-  .cmdel-selected {
-    display: none;
-  }
-
-  .applycheckbox-button, .checkbox-button {
-    width: 60px;
-  }
-
-  .filtercheckbox-button {
-    width: 115px;
-    text-overflow: ellipsis;
-  }
-
-  .del-selected {
-    display: none;
-  }
-
-
-  .justify-content-between {
-    justify-content: flex-start !important;
-  }
-
-  .table-row {
-    display: block;
-    margin-bottom: 15px;
-  }
-  .column-aboutProgram {
-    width: 170px; 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-  }
-  .column-role {
-    display: block;
-    width: auto; /* 너비를 자동으로 조정 */
-    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
-    overflow: visible;
-    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
-    margin: 10px 0;
-  }
-
-  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
-  .table-row > div {
-    display: block;
-    padding: 10px;
-    border: 1px solid #ddd;
-    margin: 5px 0;
-  }
-}
-
-@media (max-width: 400px){
-  .filtercheckbox-button {
-    width: 90px;
-    text-overflow: ellipsis;
-  }
-}
+/* 추가 스타일 */
 </style>

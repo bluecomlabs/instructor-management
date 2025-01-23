@@ -30,6 +30,12 @@
                 </div>
 
                 <div class="d-flex align-items-center me-3">
+                  <!-- <div class="dropdown me-2">
+                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
+                      <option value="Y">확정</option>
+                      <option value="N">미확정</option>
+                    </select>
+                  </div> -->
                   <button
                     type="button"
                     class="btn btn-primary applycheckbox-button"

@@ -36,11 +36,11 @@
                   <div class="vertical-separator mx-3" :class="{ 'del-selected': selectedIds.length > 0 }"></div>
                 
                 
-                  <!-- <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <!-- <div class="d-flex align-items-center me-3 d-lg-block" style="margin-right: 0 !important">
                     <div class="dropdown me-2">
-                      <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;"> -->
-                        <!-- <option value="INIT">INIT</option> -->
-                        <!-- <option value="READY">강사 열람 가능</option>
+                      <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button" style="width: 150px;">
+                        <option value="INIT">INIT</option>
+                        <option value="READY">강사 열람 가능</option>
                         <option value="OPEN">강사 신청 가능</option>
                         <option value="APPLIED">신청 마감</option>
                         <option value="CONFIRMED">출강 확정</option>
@@ -50,7 +50,7 @@
                         <option value="CANCEL">강의 취소</option>
                       </select>
                     </div> 
-                  </div>-->
+                  </div> -->
 
                   <button
                     type="button"

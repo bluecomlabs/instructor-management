@@ -35,15 +35,26 @@
                   <div class="vertical-separator mx-3 check-delline"></div>
                 </div>
 
-                <div class="d-flex align-items-center me-3">
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <!-- <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
+                      <option value="READY">강사 열람 가능</option>
+                      <option value="OPEN">강사 신청 가능</option>
+                      <option value="APPLIED">신청 마감</option>
+                      <option value="CONFIRMED">출강 확정</option>
+                      <option value="PROGRESS">강의 진행 중</option>
+                      <option value="COMPLETE">강의 종료</option>
+                      <option value="PAUSE">강의 중지</option>
+                      <option value="CANCEL">강의 취소</option>
+                    </select>
+                  </div> -->
+
                   <button
                     type="button"
-                    class="btn btn-primary applycheckbox-button"
+                    class="btn btn-primary checkbox-button"
                     @click="changeProgramStatus"
-                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                    <span class="desktop-text">상태 변경</span>
-                    <span class="mobile-text">변경</span>
+                    상태 변경
                   </button>
                 </div>
 
@@ -294,11 +305,11 @@
         </nav>
       </div>
 
-      <TeacherSelectionModal
+      <!-- <TeacherSelectionModal
         v-if="showTeacherModal"
         :program="selectedProgram!"
         @close="showTeacherModal = false"
-      />
+      /> -->
     </div>
   </div>
 </template>

@@ -12,9 +12,6 @@
             <span class="desktop-text">필터 상태 적용</span>
             <span class="mobile-text">변경</span>
           </button>
-          <button :class="{ 'cmdel-selected': selectedIds.length === 0, 'comdel-selected':  selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
-            변경
-          </button>
         </div>
       </div>
       <div class="card-title"></div>
@@ -30,15 +27,21 @@
                   <div class="vertical-separator mx-3 check-delline"></div>
                 </div>
 
-                <div class="d-flex align-items-center me-3">
+                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
+                  <!-- <div class="dropdown me-2">
+                    <select v-model="selectedStatus" class="form-select checkbox-button dropdown-button">
+                      <option value="ASSIGNED">배정</option>
+                      <option value="UNASSIGNED">미배정</option>
+                      <option value="REJECTED">탈락</option>
+                    </select>
+                  </div> -->
+
                   <button
                     type="button"
-                    class="btn btn-primary applycheckbox-button"
+                    class="btn btn-primary checkbox-button"
                     @click="changeProgramStatus"
-                    :class="{ 'del-selected': selectedIds.length > 0 }"
                   >
-                    <span class="desktop-text">상태 변경</span>
-                    <span class="mobile-text">변경</span>
+                    상태 변경
                   </button>
                 </div>
 
