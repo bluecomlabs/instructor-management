@@ -302,6 +302,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -400,7 +401,7 @@ export default defineComponent({
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -416,8 +417,8 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-primary",
           },
         }).then(() => {
-      window.location.reload();
-    });;
+          window.location.reload();
+        });
       } catch (error) {
         console.error("Error applying status filter: ", error);
         Swal.fire({
@@ -430,6 +431,7 @@ export default defineComponent({
         });
       }
     };
+
     
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
@@ -486,7 +488,7 @@ export default defineComponent({
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmed`,
+          ApiUrl(`/api/v1/admin/apply-for-programs/isConfirmed`),
           requestBody,
           {
             headers: {
@@ -652,7 +654,7 @@ export default defineComponent({
       }
       return pages;
     });
-
+    
     const fetchPrograms = async (
       page: number = 0,
       sortBy: string = currentSortBy.value,
@@ -662,15 +664,16 @@ export default defineComponent({
         if (page === 0 && sortBy === "") isLoading.value = true;
         const token = localStorage.getItem("token");
         const filterQuery = buildFilterQuery(filtersData);
-
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/apply-for-programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+
+
         const responseData = response.data;
           console.log('Number of contents:', responseData.content.length);
           console.log('Total elements:', responseData.totalElements);
@@ -755,7 +758,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/apply-for-programs/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/apply-for-programs/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

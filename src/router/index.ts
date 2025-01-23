@@ -83,6 +83,15 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["출강 일정", "내 출강 리스트"],
         },
       },
+      {
+        path: "MyEduDetails",
+        name: "user-MyEduDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyEduDetails.vue"),
+        meta: {
+          pageTitle: "출강 일정",
+          breadcrumbs: ["출강 일정", "내 출강 리스트 상세보기"],
+        },
+      },
       // 출강 신청
       {
         path: "EduView",
@@ -91,6 +100,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "출강 신청",
           breadcrumbs: ["출강 신청", "오픈 예정 교육"],
+        },
+      },
+      {
+        path: "EduViewDetails",
+        name: "user-EduViewDetails",
+        component: () => import("@/views/teacher/lectureSchedule/EduViewDetails.vue"),
+        meta: {
+          pageTitle: "출강 신청",
+          breadcrumbs: ["출강 신청", "오픈 예정 교육 상세보기"],
         },
       },
       {
@@ -103,12 +121,48 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "EduApplDetails",
+        name: "user-EduApplDetails",
+        component: () => import("@/views/teacher/lectureSchedule/EduApplDetails.vue"),
+        meta: {
+          pageTitle: "출강 신청",
+          breadcrumbs: ["출강 신청", "출강 신청 상세보기"],
+        },
+      },
+      {
         path: "MyApplEdu",
         name: "user-MyApplEdu",
-        component: () => import("@/views/apps/user/MyApplEdu.vue"),
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEdu.vue"),
         meta: {
           pageTitle: "출강 신청",
           breadcrumbs: ["출강 신청", "출강 신청 내역"],
+        },
+      },
+      {
+        path: "MyApplEduDetails",
+        name: "user-MyApplEduDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduDetails.vue"),
+        meta: {
+          pageTitle: "출강 신청",
+          breadcrumbs: ["출강 신청", "출강 신청 내역 상세보기"],
+        },
+      },
+      {
+        path: "MyApplEduList",
+        name: "user-MyApplEduList",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduList.vue"),
+        meta: {
+          pageTitle: "출강 협의",
+          breadcrumbs: ["출강 신청", "출강 협의"],
+        },
+      },
+      {
+        path: "MyApplEduListDetails",
+        name: "user-MyApplEduListDetails",
+        component: () => import("@/views/teacher/lectureSchedule/MyApplEduListDetails.vue"),
+        meta: {
+          pageTitle: "출강 협의",
+          breadcrumbs: ["출강 신청", "출강 협의 상세보기"],
         },
       },
       // 보고서 제출
@@ -496,9 +550,28 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/teacherAllo/TeacherAlloschedule.vue"),
         meta: {
           pageTitle: "출강정보 목록",
-          breadcrumbs: ["배정 정보 관리", "출강정보 목록"],
+          breadcrumbs: ["강사 배정 관리", "출강정보 목록"],
         },
       },
+      {
+        path: "TeacherAlloPassivityDetails",
+        name: "admin-TeacherAlloPassivityDetails",
+        component: () => import("@/views/admin/teacherAllo/TeacherAlloPassivityDetails.vue"),
+        meta: {
+          pageTitle: "출강정보 상세조회",
+          breadcrumbs: ["강사 배정 관리", "출강정보 상세조회"],
+        },
+      },
+      {
+        path: "TeacherAlloPassivityEdit",
+        name: "admin-TeacherAlloPassivityEdit",
+        component: () => import("@/views/admin/teacherAllo/TeacherAlloPassivityEdit.vue"),
+        meta: {
+          pageTitle: "출강정보 상세조회",
+          breadcrumbs: ["강사 배정 관리", "출강정보 강사 수동변경"],
+        },
+      },
+      
       // 보고서 관리
       {
         path: "TeacherReportList",
@@ -555,6 +628,24 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "기관 관리",
           breadcrumbs: ["설정 및 사용자 관리", "기관 관리"],
+        },
+      },
+      {
+        path: "NoticeList",
+        name: "admin-NoticeList",
+        component: () => import("@/views/admin/userSettings/NoticeList.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "공지사항 관리"],
+        },
+      },
+      {
+        path: "NoticeDetails",
+        name: "admin-NoticeDetails",
+        component: () => import("@/views/admin/userSettings/NoticeDetails.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "공지사항 상세보기"],
         },
       },
       {

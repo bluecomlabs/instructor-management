@@ -125,6 +125,7 @@
         </div>
       </div>
 
+
       <div class="d-flex justify-content-end">
         <button
           type="reset"
@@ -149,6 +150,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Filter {
   status: string;
@@ -161,6 +163,7 @@ interface Filter {
   startDate: string;
   endDate: string;
   instructorName: string;
+  instructorId: number | null; 
 }
 
 interface Instructor {
@@ -171,7 +174,7 @@ interface Instructor {
 }
 
 export default defineComponent({
-  name: "Dropdown1",
+  name: "Dropdown9",
   setup(props, { emit }) {
     const data = ref<Filter>({
       status: "",
@@ -184,6 +187,7 @@ export default defineComponent({
       startDate: "",
       endDate: "",
       instructorName: "",
+      instructorId: null, 
     });
 
     const closeButton = ref<HTMLElement | null>(null);
@@ -197,9 +201,8 @@ export default defineComponent({
     const fetchInstructors = async () => {
       try {
         const token = localStorage.getItem("token");
-        const baseUrl = "http://localhost:8081";
         const response = await axios.get(
-          `${baseUrl}/api/v1/admin/user/compact`,
+          ApiUrl(`/api/v1/admin/user/compact`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -234,6 +237,7 @@ export default defineComponent({
 
     const selectInstructor = (instructor: Instructor) => {
       data.value.instructorName = instructor.name;
+      data.value.instructorId = instructor.id; // Set instructorId
       instructorSearch.value = `${instructor.name} (${instructor.affiliation})`;
       showInstructorSuggestions.value = false;
       showInstructorDropdown.value = false;
@@ -296,6 +300,7 @@ export default defineComponent({
             startDate: "",
             endDate: "",
             instructorName: "",
+            instructorId: null, // Reset instructorId
           };
           instructorSearch.value = "";
           instructorSuggestions.value = [];
@@ -342,8 +347,8 @@ export default defineComponent({
 }
 
 .input-group .dropdown-button {
-  background-color: #F5F8FA;
-  border: 1px solid #E4E6EF;
+  background-color: #f5f8fa;
+  border: 1px solid #e4e6ef;
 }
 
 .suggestions-list {

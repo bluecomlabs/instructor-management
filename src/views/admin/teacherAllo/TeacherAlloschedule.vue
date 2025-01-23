@@ -75,7 +75,7 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
         @selection-change="onSelectionChange"
       >
 
@@ -194,6 +194,7 @@
       <TeacherSelectionModal
         v-if="showTeacherModal"
         :program="selectedProgram!"
+        :role="selectedRole"
         @close="showTeacherModal = false"
       />
     </div>
@@ -332,6 +333,7 @@
   </div>
 </template>
 
+
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
@@ -340,7 +342,8 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown9 from "@/components/dropdown/Dropdown9.vue";
-import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue"; 
+import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -351,6 +354,7 @@ interface IProgram {
   chapterNumber: number;
   classDate: string;
   instructorName: string;
+  instructorId: number | null;
   role: string | null;
   instructorPhoneNumber: string | null;
   startTime: string;
@@ -369,9 +373,11 @@ export default defineComponent({
   setup() {
     const showTeacherModal = ref(false);
     const selectedProgram = ref<IProgram | null>(null);
+    const selectedRole = ref<string>("");
 
     const openTeacherModal = (program: IProgram) => {
       selectedProgram.value = program;
+      selectedRole.value = program.role || "MAIN"; // role 값이 없을 경우 'MAIN'으로 기본 설정
       showTeacherModal.value = true;
     };
 
@@ -387,137 +393,7 @@ export default defineComponent({
     const selectedIds = ref<Array<number>>([]);
     const selectedStatus = ref("READY");
 
-    const applyStatusFilter = async () => {
-      const result = await Swal.fire({
-        title: "상태 필터 적용 확인",
-        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태 필터를 적용하시겠습니까?</p>',
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "예",
-        cancelButtonText: "아니오",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-primary",
-          cancelButton: "btn fw-semibold btn-light",
-        },
-        buttonsStyling: false,
-      });
-
-      if (!result.isConfirmed) {
-        return;
-      }
-
-      const token = localStorage.getItem("token");
-      const status = filterStatus.value;
-      const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?status=${status}${filterQuery}`);
-      console.log("status 값:", status);
-
-      try {
-        const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/statusFilter?status=${status}${filterQuery}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        Swal.fire({
-          title: "필터 적용 완료",
-          text: "선택된 상태 필터가 적용되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        }).then(() => {
-          window.location.reload();
-        });
-      } catch (error) {
-        console.error("Error applying status filter: ", error);
-        Swal.fire({
-          title: "오류",
-          text: "상태 필터 적용에 실패했습니다.",
-          icon: "error",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-danger",
-          },
-        });
-      }
-    };
-
-    const changeProgramStatus = async () => {
-      const token = localStorage.getItem("token");
-
-      if (selectedIds.value.length === 0) {
-        Swal.fire({
-          title: "선택된 항목 없음",
-          text: "상태를 변경할 항목을 선택하세요.",
-          icon: "warning",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-warning",
-          },
-        });
-        return;
-      }
-      const result = await Swal.fire({
-        title: "상태 변경 확인",
-        html: '<p style="color: red; font-weight: bold;">※경고※<br> 정말로 이 상태로 변경하시겠습니까?</p>',
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "예",
-        cancelButtonText: "아니오",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-primary",
-          cancelButton: "btn fw-semibold btn-light",
-        },
-        buttonsStyling: false,
-      });
-
-      if (!result.isConfirmed) {
-        return;
-      }
-
-      console.log("선택된 ID:", selectedIds.value);
-      console.log("선택된 상태:", selectedStatus.value);
-      try {
-        const requestBody = {
-          educationIds: selectedIds.value,
-          status: selectedStatus.value,
-        };
-
-        await axios.post(
-          `http://localhost:8081/api/v1/admin/education-instructors/schedules/status`,
-          requestBody,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        Swal.fire({
-          title: "상태 변경 완료",
-          text: "선택된 프로그램의 상태가 변경되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        }).then(() => {
-          window.location.reload();
-        });
-      } catch (error) {
-        console.error("Error changing program status: ", error);
-
-        Swal.fire({
-          title: "오류",
-          text: "프로그램 상태 변경에 실패했습니다.",
-          icon: "error",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-danger",
-          },
-        });
-      }
-    };
+    // 기타 반응형 변수 및 메소드
 
     const headerConfig = ref([
       {
@@ -582,69 +458,6 @@ export default defineComponent({
       },
     ]);
 
-    const mobheaderConfig = ref([
-      {
-        columnName: "차시 - 프로그램명 - 교육기관명",
-        columnLabel: "aboutProgram",
-        sortEnabled: false,
-        columnWidth: 100,
-      },
-      // {
-      //   columnName: "상태",
-      //   columnLabel: "status",
-      //   sortEnabled: true,
-      //   columnWidth: 150,
-      // },
-      // {
-      //   columnName: "교육기관명",
-      //   columnLabel: "institutionName",
-      //   sortEnabled: true,
-      //   columnWidth: 150,
-      // },
-      // {
-      //   columnName: "프로그램명",
-      //   columnLabel: "programName",
-      //   sortEnabled: true,
-      //   columnWidth: 200,
-      // },
-      // {
-      //   columnName: "현재 차시 / 총 차시",
-      //   columnLabel: "chapterInfo",
-      //   sortEnabled: true,
-      //   columnWidth: 150,
-      // },
-      // {
-      //   columnName: "수업 날짜",
-      //   columnLabel: "classDate",
-      //   sortEnabled: true,
-      //   columnWidth: 150,
-      // },
-      // {
-      //   columnName: "강사 이름",
-      //   columnLabel: "instructorName",
-      //   sortEnabled: true,
-      //   columnWidth: 150,
-      // },
-      {
-        columnName: "강사 종류",
-        columnLabel: "role",
-        sortEnabled: true,
-        columnWidth: 100,
-      },
-      // {
-      //   columnName: "시작 시간",
-      //   columnLabel: "startTime",
-      //   sortEnabled: true,
-      //   columnWidth: 100,
-      // },
-      // {
-      //   columnName: "종료 시간",
-      //   columnLabel: "endTime",
-      //   sortEnabled: true,
-      //   columnWidth: 100,
-      // },
-    ]);
-
     const statusColor: { [key: string]: string } = {
       INIT: "info",
       OPEN: "primary",
@@ -690,6 +503,7 @@ export default defineComponent({
       chapterNumber: true,
       classDate: true,
       instructorName: true,
+      instructorId: true,
       startTime: true,
       endTime: true,
       role: true,
@@ -705,6 +519,7 @@ export default defineComponent({
       endDate: "",
       chapterNumber: "",
       totalChapters: "",
+      instructorId: null,
     });
 
     const handleFilter = (filterData: any) => {
@@ -744,7 +559,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -752,14 +567,6 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
-        console.log('Number of contents:', responseData.content.length);
-        console.log('Total elements:', responseData.totalElements);
-        console.log('Total pages from API:', responseData.totalPages);
-        console.log(
-          "API 호출 URL:",
-          `http://localhost:8081/api/v1/admin/education-instructors/schedules?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
-        );
-        console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: any) => ({
           id: program.id,
@@ -770,6 +577,7 @@ export default defineComponent({
           chapterNumber: program.chapterNumber || 0,
           classDate: program.classDate || "-",
           instructorName: program.instructorName || "-",
+          instructorId: program.instructorId || null,
           role: program.role || "-",
           startTime: program.startTime || "-",
           endTime: program.endTime || "-",
@@ -816,8 +624,8 @@ export default defineComponent({
       if (filtersData.totalChapters) {
         query += `&totalChapters=${encodeURIComponent(filtersData.totalChapters)}`;
       }
-      if (filtersData.instructorName) {
-        query += `&instructorName=${encodeURIComponent(filtersData.instructorName)}`;
+      if (filtersData.instructorId) {
+        query += `&instructorId=${encodeURIComponent(filtersData.instructorId)}`;
       }
       return query;
     };
@@ -829,7 +637,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/education-instructors/schedules/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/education-instructors/schedules/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -918,6 +726,11 @@ export default defineComponent({
           ? "&sortBy=instructorName&direction=asc"
           : "&sortBy=instructorName&direction=desc";
         isAscending.value.instructorName = !isAscending.value.instructorName;
+      } else if (sort.label === "instructorId") {
+        sortBy = isAscending.value.instructorId
+          ? "&sortBy=instructorId&direction=asc"
+          : "&sortBy=instructorId&direction=desc";
+        isAscending.value.instructorId = !isAscending.value.instructorId;
       } else if (sort.label === "startTime") {
         sortBy = isAscending.value.startTime
           ? "&sortBy=startTime&direction=asc"
@@ -976,8 +789,7 @@ export default defineComponent({
     };
 
     const onProgramClick = (program: IProgram) => {
-      // localStorage.setItem("selectedProgramId", program.id.toString());
-      // router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      // 프로그램 클릭 처리
     };
 
     return {
@@ -1008,13 +820,10 @@ export default defineComponent({
       statusLabel,
       roleColor,
       roleLabel,
-      changeProgramStatus,
-      selectedStatus,
-      filterStatus,
-      applyStatusFilter,
       openTeacherModal,
       showTeacherModal,
       selectedProgram,
+      selectedRole,
     };
   },
 });

@@ -95,7 +95,7 @@
 
 
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="card-body pt-0">
@@ -108,7 +108,7 @@
         @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
-        :checkbox-enabled="true"
+        :checkbox-enabled="false"
         @selection-change="onSelectionChange"
       >
 
@@ -238,6 +238,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown7 from "@/components/dropdown/Dropdown7.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -333,12 +334,15 @@ export default defineComponent({
       const token = localStorage.getItem("token");
       const goalIsConfirmed = filterGoalIsConfirmed.value;
       const filterQuery = buildFilterQuery(filters.value);
-      console.log("API 호출 URL:", `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`);
+      console.log(
+        "API 호출 URL:",
+        ApiUrl(`/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`)
+      );
       console.log("goalIsConfirmed 값:", goalIsConfirmed);
 
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`,
+          ApiUrl(`/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -411,7 +415,7 @@ export default defineComponent({
         };
 
         await axios.post(
-          `http://localhost:8081/api/v1/user/education`,
+          ApiUrl(`/api/v1/user/education`),
           requestBody,
           {
             headers: {
@@ -455,10 +459,7 @@ export default defineComponent({
       };
 
       try {
-        await axios.post(
-          'http://localhost:8081/api/v1/user/education',
-          requestBody,
-          {
+        await axios.post(ApiUrl(`/user/education`), requestBody, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -623,7 +624,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -636,7 +637,7 @@ export default defineComponent({
           console.log('Total pages from API:', responseData.totalPages);
           console.log(
             "API 호출 URL:",
-            `http://localhost:8081/api/v1/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+            ApiUrl(`/user/education/open?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`)
           );
           console.log("API 응답 데이터:", response.data);
 
@@ -718,7 +719,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/user/education/open/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/user/education/open/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -847,7 +848,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "user-EduApplDetails", params: { id: program.id } });
     };
 
     return {

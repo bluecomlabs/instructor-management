@@ -189,12 +189,6 @@
           </ul>
         </nav>
       </div>
-
-      <TeacherSelectionModal
-        v-if="showTeacherModal"
-        :program="selectedProgram!"
-        @close="showTeacherModal = false"
-      />
     </div>
 
     <div class="card-body pt-0 mob-headerCon">
@@ -318,6 +312,7 @@ import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown8 from "@/components/dropdown/Dropdown8.vue";
 import TeacherSelectionModal from "@/components/dropdown/TeacherSelectionModal.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
   id: number;
@@ -420,7 +415,7 @@ export default defineComponent({
         );
 
         await axios.put(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/list/status`,
+          ApiUrl(`/api/v1/admin/apply-for-programs/list/status`),
           requestBody,
           {
             headers: {
@@ -437,7 +432,7 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-primary",
           },
         }).then(() => {
-          window.location.reload();
+          fetchPrograms(); // 데이터 갱신
         });
       } catch (error) {
         console.error("Error applying status filter: ", error);
@@ -492,7 +487,7 @@ export default defineComponent({
         };
 
         await axios.put(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/list/`,
+          ApiUrl(`/api/v1/admin/apply-for-programs/list/`),
           requestBody,
           {
             headers: {
@@ -509,7 +504,7 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-primary",
           },
         }).then(() => {
-          window.location.reload();
+          fetchPrograms(); // 데이터 갱신
         });
       } catch (error) {
         console.error("Error changing program status: ", error);
@@ -675,7 +670,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          `http://localhost:8081/api/v1/admin/apply-for-programs/list?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`,
+          ApiUrl(`/api/v1/admin/apply-for-programs/list?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -732,7 +727,7 @@ export default defineComponent({
     const deleteSubscription = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8081/api/v1/admin/apply-for-programs/list/${id}`, {
+        await axios.delete(ApiUrl(`/api/v1/admin/apply-for-programs/list/${id}`), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -847,7 +842,7 @@ export default defineComponent({
 
     const onProgramClick = (program: IProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ApplReviewDetails", params: { id: program.id } });
+      router.push({ name: "admin-TeacherAlloPassivityDetails", params: { id: program.id } });
     };
 
     return {

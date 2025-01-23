@@ -189,7 +189,7 @@ export default defineComponent({
         const sortQuery = sortBy || "&sortBy=createdAt&direction=asc";
 
         const url = ApiUrl(
-          `/api/v1/user/education/my-educations?page=${page}&size=${pageSize.value}${sortQuery}${filterQuery}`
+          `/api/v1/user/instructor-applications/application-list?page=${page}&size=${pageSize.value}${sortQuery}${filterQuery}`
         );
 
         console.log("API 호출 URL:", url);
@@ -203,7 +203,7 @@ export default defineComponent({
         console.log("API 응답:", response.data);
 
         const apiData = response.data.content.map((item: any) => ({
-          id: item.id,
+          id: item.educationId,
           programName: item.programName,
           institutionName: item.institutionName,
           chapterNumber: item.chapterNumber,
@@ -326,7 +326,7 @@ export default defineComponent({
       localStorage.setItem("selectedProgramId", item.id.toString());
 
       // Navigate to the details page
-      router.push({ name: "user-MyEduDetails", params: { id: item.id } });
+      router.push({ name: "user-MyApplEduDetails", params: { id: item.id } });
     };
     return {
       data,
@@ -414,7 +414,7 @@ export default defineComponent({
 }
 
 .column-date {
-  width: 200px;
+  width: 150px;
   margin-left: auto;
   margin-right: auto;
   display: block;

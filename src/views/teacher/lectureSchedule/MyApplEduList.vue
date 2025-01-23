@@ -1,84 +1,20 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <!-- <div class="d-flex align-items-center me-3">
-        <select v-model="filterGoalIsConfirmed" class="form-select checkbox-button dropdown-button">
-          <option value="Y">확정</option>
-          <option value="N">미확정</option>
-        </select>
-        <button type="button" class="checkbox-button btn btn-primary ms-2" @click="applyStatusFilter">
-          필터 상태 적용
-        </button>
-      </div> -->
+      <!-- 필터링 및 툴바 부분 주석 처리됨 -->
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <!-- <div class="card-toolbar d-flex justify-content-between align-items-center">
-          <div class="d-flex justify-content-start align-items-center">
-            <transition name="fade">
-              <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
-                <div class="fw-bold me-5">
-                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
-                </div>
-
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="d-flex align-items-center me-3" style="margin-right: 0 !important">
-                  <div class="dropdown me-2">
-                    <select v-model="selectedIsConfirmed" class="form-select checkbox-button dropdown-button">
-                      <option value="Y">확정</option>
-                      <option value="N">미확정</option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="button"
-                    class="btn btn-primary checkbox-button"
-                    @click="changeProgramStatus"
-                  >
-                    상태 변경
-                  </button>
-                </div>
-
-                <div class="vertical-separator mx-3"></div>
-
-                <div class="ms-4" style="margin-left: 0 !important">
-                  <button
-                    type="button"
-                    class="btn btn-danger checkbox-button"
-                    @click="onDeletePrograms"
-                  >
-                    프로그램 삭제
-                  </button>
-                </div>
-                <div class="vertical-separator mx-3"></div>
-              </div>
-            </transition>
-          </div>
-
-          <div class="d-flex justify-content-end align-items-center">
-            <button
-              tabindex="3"
-              type="button"
-              @click="onButtonAction"
-              class="btn btn-light-primary checkbox-button"
-            >
-              <span class="indicator-label">프로그램 등록</span>
-            </button>
-          </div>
-        </div> -->
-
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-          >
-            <KTIcon icon-name="category" icon-class="fs-2" />
-          </button>
-          <Dropdown6 @apply-filter="handleFilter"></Dropdown6>
-        </div>
+        <!-- 추가 툴바 버튼 -->
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+          data-kt-menu-trigger="click"
+          data-kt-menu-placement="bottom-end"
+          data-kt-menu-flip="top-end"
+        >
+          <KTIcon icon-name="category" icon-class="fs-2" />
+        </button>
+        <Dropdown7 @apply-filter="handleFilter"></Dropdown7>
       </div>
     </div>
 
@@ -143,6 +79,7 @@
             {{ customer.remark }}
           </div>
         </template>
+        <!-- 신청 상태 슬롯 주석 처리됨 -->
       </KTDatatable>
 
       <div class="d-flex justify-content-end mt-4">
@@ -202,8 +139,6 @@
   </div>
 </template>
 
-
-
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
@@ -211,13 +146,14 @@ import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown6 from "@/components/dropdown/Dropdown6.vue";
+import Dropdown7 from "@/components/dropdown/Dropdown7.vue";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IProgram {
-  id: number;
+  educationId: number; 
   status: string;
   isConfirmed: string;
+  application: string;
   institutionName: number | null;
   programName: number | null;
   chapterNumber: number | null;
@@ -233,7 +169,7 @@ export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown6,
+    Dropdown7,
   },
 
   setup() {
@@ -248,6 +184,7 @@ export default defineComponent({
     const selectedItems = ref<Array<IProgram>>([]);
     const selectedIds = ref<Array<number>>([]);
     const selectedIsConfirmed = ref("Y");
+    const selectedGoal = ref("UPDATE");
 
     const applyStatusFilter = async () => {
       const alreadyConfirmed = data.value.some(
@@ -288,7 +225,7 @@ export default defineComponent({
 
       try {
         const response = await axios.get(
-          ApiUrl(`/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
+          ApiUrl(`/v1/admin/apply-for-programs/isConfirmedFilter?goalIsConfirmed=${goalIsConfirmed}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -304,8 +241,8 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-primary",
           },
         }).then(() => {
-      window.location.reload();
-    });;
+          window.location.reload();
+        });
       } catch (error) {
         console.error("Error applying status filter: ", error);
         Swal.fire({
@@ -318,7 +255,7 @@ export default defineComponent({
         });
       }
     };
-    
+
     const changeProgramStatus = async () => {
       const token = localStorage.getItem("token");
 
@@ -334,24 +271,11 @@ export default defineComponent({
         return;
       }
 
-      const alreadyConfirmed = data.value.some(
-        (program) => selectedIds.value.includes(program.id) && program.isConfirmed === "Y"
-      );
+      const actionText = selectedGoal.value === "DELETE" ? "취소" : "신청";
 
-      if (alreadyConfirmed) {
-        Swal.fire({
-          title: "상태 변경 불가",
-          text: "이미 확정된 항목이 포함되어 있습니다.",
-          icon: "error",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-danger",
-          },
-        });
-        return;
-      }
       const result = await Swal.fire({
         title: "상태 변경 확인",
-        text: "한번 결정하면 돌릴 수 없어요! 정말 확정 하실건가요?",
+        text: `선택한 프로그램을 정말로 ${actionText}하시겠습니까?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "예",
@@ -370,11 +294,11 @@ export default defineComponent({
       try {
         const requestBody = {
           educationIds: selectedIds.value,
-          isConfirmed: selectedIsConfirmed.value,
+          goal: selectedGoal.value,
         };
 
         await axios.post(
-          ApiUrl(`/user/education/ready`),
+          ApiUrl(`/v1/user/education/pending-assign`),
           requestBody,
           {
             headers: {
@@ -407,13 +331,50 @@ export default defineComponent({
       }
     };
 
+    const onApplicationClick = async (customer: IProgram) => {
+      const token = localStorage.getItem("token");
+      const educationIds = [customer.educationId];
+      const goal = customer.application === 'Y' ? 'DELETE' : 'UPDATE';
+
+      const requestBody = {
+        educationIds,
+        goal,
+      };
+
+      try {
+        await axios.post(
+          ApiUrl(`v1/user/education/pending-assign`),
+          requestBody,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        Swal.fire({
+          title: '상태 변경 완료',
+          text: '신청 상태가 변경되었습니다.',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn fw-semibold btn-primary',
+          },
+        });
+        customer.application = customer.application === 'Y' ? 'N' : 'Y';
+      } catch (error) {
+        console.error("Error changing application status: ", error);
+        Swal.fire({
+          title: '오류',
+          text: '신청 상태 변경에 실패했습니다.',
+          icon: 'error',
+          customClass: {
+            confirmButton: 'btn fw-semibold btn-danger',
+          },
+        });
+      }
+    };
+
     const headerConfig = ref([
-      // {
-      //   columnName: "확정",
-      //   columnLabel: "isConfirmed",
-      //   sortEnabled: true,
-      //   columnWidth: 100,
-      // },
+      // 필드 설정 (주석 처리된 필드 제외)
       {
         columnName: "총 차시",
         columnLabel: "chapterNumber",
@@ -462,6 +423,7 @@ export default defineComponent({
         sortEnabled: false,
         columnWidth: 300,
       },
+      // 신청 상태 필드 주석 처리됨
     ]);
 
     const statusColor = {
@@ -489,6 +451,7 @@ export default defineComponent({
     const currentSortBy = ref<string>("");
 
     const filters = ref({
+      application: "",
       status: "",
       isConfirmed: "",
       institutionName: "",
@@ -498,6 +461,7 @@ export default defineComponent({
       chapterNumber: "",
       grade: "",
       numberOfStudents: "",
+      classNumber: "",
     });
 
     const handleFilter = (filterData) => {
@@ -537,7 +501,7 @@ export default defineComponent({
         const filterQuery = buildFilterQuery(filtersData);
 
         const response = await axios.get(
-          ApiUrl(`/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
+          ApiUrl(`/v1/user/education/pending-assign?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`),
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -545,19 +509,20 @@ export default defineComponent({
           }
         );
         const responseData = response.data;
-          console.log('Number of contents:', responseData.content.length);
-          console.log('Total elements:', responseData.totalElements);
-          console.log('Total pages from API:', responseData.totalPages);
-          console.log(
-            "API 호출 URL:",
-            ApiUrl(`/user/education/ready?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`)
-          );
-          console.log("API 응답 데이터:", response.data);
+        console.log('Number of contents:', responseData.content.length);
+        console.log('Total elements:', responseData.totalElements);
+        console.log('Total pages from API:', responseData.totalPages);
+        console.log(
+          "API 호출 URL:",
+          `http://localhost:8081/api/v1/user/education/pending-assign?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
+        );
+        console.log("API 응답 데이터:", response.data);
 
         data.value = responseData.content.map((program: IProgram) => ({
           ...program,
           status: program.status,
           isConfirmed: program.isConfirmed,
+          application: program.application,
           institutionName: program.institutionName ? program.institutionName : "-",
           programName: program.programName ? program.programName : "-",
           chapterNumber: program.chapterNumber ? program.chapterNumber : "-",
@@ -568,7 +533,7 @@ export default defineComponent({
           remark: program.remark ? program.remark : "-",
         }));
 
-        totalElements.value = responseData.content.length;
+        totalElements.value = responseData.totalElements;
         totalPages.value = responseData.totalPages;
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -577,12 +542,13 @@ export default defineComponent({
       }
     };
 
-
-
     const buildFilterQuery = (filtersData) => {
       let query = "";
-      if (filtersData.chapter) {
-        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
+      if (filtersData.application) {
+        query += `&application=${encodeURIComponent(filtersData.application)}`;
+      }
+      if (filtersData.chapterNumber) { // 수정: chapterNumber로 변경
+        query += `&chapterNumber=${encodeURIComponent(filtersData.chapterNumber)}`;
       }
       if (filtersData.isConfirmed) {
         query += `&isConfirmed=${encodeURIComponent(filtersData.isConfirmed)}`;
@@ -608,16 +574,6 @@ export default defineComponent({
       if (filtersData.classNumber) {
         query += `&classNumber=${encodeURIComponent(filtersData.classNumber)}`;
       }
-      if (filtersData.numberOfStudents) {
-        query += `&numberOfStudents=${encodeURIComponent(filtersData.numberOfStudents)}`;
-      }
-      // if (filtersData.startDate) {
-      //   query += `&startDate=${filtersData.startDate}`;
-      // }
-      // if (filtersData.endDate) {
-      //   query += `&endDate=${filtersData.endDate}`;
-      // }
-
       return query;
     };
 
@@ -625,19 +581,21 @@ export default defineComponent({
       fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
     });
 
-    const deleteSubscription = async (id: number) => {
+    const deleteSubscription = async (educationId: number) => { 
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(ApiUrl(`/v1/user/education/ready/${id}`), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        data.value = data.value.filter((program) => program.id !== id);
-      } catch (error) {
-        console.error("Error deleting program: ", error);
-      }
-    };
+        await axios.delete(
+          ApiUrl(`/v1/user/education/open/${educationId}`),
+          {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            data.value = data.value.filter((program) => program.educationId !== educationId);
+          } catch (error) {
+            console.error("Error deleting program: ", error);
+          }
+        };
 
     const deleteFewSubscriptions = async () => {
       const result = await Swal.fire({
@@ -655,8 +613,8 @@ export default defineComponent({
       });
 
       if (result.isConfirmed) {
-        for (const id of selectedIds.value) {
-          await deleteSubscription(id);
+        for (const educationId of selectedIds.value) { // 수정된 부분
+          await deleteSubscription(educationId);
         }
 
         selectedIds.value.length = 0;
@@ -689,7 +647,7 @@ export default defineComponent({
           ? "&sortBy=programName&direction=asc"
           : "&sortBy=programName&direction=desc";
         isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "chapterNumber") {
+      } else if (sort.label === "chapterNumber") { // 수정: chapterNumber로 변경
         sortBy = isAscending.value.chapterNumber
           ? "&sortBy=chapterNumber&direction=asc"
           : "&sortBy=chapterNumber&direction=desc";
@@ -704,11 +662,6 @@ export default defineComponent({
           ? "&sortBy=numberOfStudents&direction=asc"
           : "&sortBy=numberOfStudents&direction=desc";
         isAscending.value.numberOfStudents = !isAscending.value.numberOfStudents;
-      } else if (sort.label === "chapterNumber") {
-        sortBy = isAscending.value.chapterNumber
-          ? "&sortBy=chapterNumber&direction=asc"
-          : "&sortBy=chapterNumber&direction=desc";
-        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
       } else if (sort.label === "date") {
         sortBy = isAscending.value.date
           ? "&sortBy=date&direction=asc"
@@ -721,7 +674,7 @@ export default defineComponent({
       fetchPrograms(currentPage.value, sortBy, filters.value);
     };
 
-    const onItemSelect = (selectedItems: Array<number>) => {
+    const onItemSelect = (selectedItems: Array<number>) => { // 수정: educationId가 number임을 가정
       selectedIds.value = selectedItems;
     };
 
@@ -755,9 +708,9 @@ export default defineComponent({
       }
     };
 
-    const onProgramClick = (program: IProgram) => {
-      localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "user-EduViewDetails", params: { id: program.id } });
+    const onProgramClick = (program: IProgram) => { // 수정된 부분
+      localStorage.setItem("selectedProgramId", program.educationId.toString());
+      router.push({ name: "user-MyApplEduListDetails", params: { id: program.educationId } });
     };
 
     return {
@@ -789,6 +742,8 @@ export default defineComponent({
       selectedIsConfirmed,
       filterGoalIsConfirmed,
       applyStatusFilter,
+      onApplicationClick,
+      selectedGoal
     };
   },
 });
@@ -864,7 +819,7 @@ export default defineComponent({
 }
 
 .column-institutionName {
-  width: 110x;
+  width: 110px; /* 수정: 'x'를 'px'로 변경 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -940,5 +895,8 @@ export default defineComponent({
   margin-right: auto;
   display: block;
 }
-
+.column-application {
+  width: 100px;
+  text-align: center;
+}
 </style>

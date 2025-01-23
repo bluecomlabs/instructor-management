@@ -337,6 +337,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import Dropdown10 from "@/components/dropdown/Dropdown10.vue";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface IUser {
   id: number;
@@ -414,7 +415,7 @@ export default defineComponent({
           status: selectedStatus.value,
         };
 
-        const apiUrl = `http://localhost:8081/api/v1/admin/user/list/status`;
+        const apiUrl = ApiUrl(`/api/v1/admin/user/list/status`);
         console.log("API 호출 URL:", apiUrl);
         console.log("요청 바디:", requestBody);
 
@@ -611,7 +612,7 @@ export default defineComponent({
         const token = localStorage.getItem("token");
         const filterQuery = buildFilterQuery(filtersData);
 
-        const apiUrl = `http://localhost:8081/api/v1/admin/user/list?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`;
+        const apiUrl = ApiUrl(`/api/v1/admin/user/list?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`);
         console.log("API 호출 URL:", apiUrl);
 
         const response = await axios.get(
@@ -671,7 +672,7 @@ export default defineComponent({
     const deleteUser = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        const apiUrl = `http://localhost:8081/api/v1/admin/user/${id}`;
+        const apiUrl = ApiUrl(`/api/v1/admin/user/${id}`);
         console.log("API 호출 URL:", apiUrl);
 
         await axios.delete(apiUrl, {
