@@ -52,7 +52,7 @@
         <KTIcon icon-name="element-4" icon-class="fs-2" />
       </div>
     </div>
-    <sidebar-menu class="app-sidebar-menu-wrap" v-if="sidebarVisible" v-model:visible="sidebarVisible"/>
+    <sidebar-menu class="app-sidebar-menu-wrap" v-if="sidebarVisible"  v-model:visible="sidebarVisible"/>
     <!--end::Header menu toggle-->
   </div>
   <!--end::Navbar-->

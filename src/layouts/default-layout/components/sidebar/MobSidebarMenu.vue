@@ -1,6 +1,8 @@
 <template>
   <!--begin::sidebar menu-->
-  <div class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom"
+  <div
+    ref="menuRef"
+    class="app-sidebar-menu overflow-hidden flex-column-fluid d-lg-none sidebar-custom"
     :class="{ 'sidebar-hidden': !sidebarVisible, 'sidebar-visible': sidebarVisible }"
     @animationend="handleAnimationEnd"
   >
@@ -181,7 +183,7 @@
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, onMounted, ref, computed, onBeforeUnmount, watch } from "vue";
 import { useRoute } from "vue-router";
 import MainMenuConfig from "@/layouts/default-layout/config/MainMenuConfig";
 import UserMainMenuConfig from "@/layouts/default-layout/config/UserMainMenuConfig";
@@ -205,27 +207,40 @@ export default defineComponent({
     const scrollElRef = ref<null | HTMLElement>(null);
     const activeArrows = ref<{ [key: string]: boolean }>({});
     const activeMenus = ref<{ [key: string]: boolean }>({});
-    const sidebarVisible = ref(true);
+    const sidebarVisible = ref(props.visible);
+    const menuRef = ref<HTMLElement | null>(null);
 
     onMounted(() => {
       if (scrollElRef.value) {
         scrollElRef.value.scrollTop = 0;
       }
+      document.addEventListener("mousedown", handleClickOutside);
     });
 
+    const animationInProgress = ref(false);
+
+    const handleAnimationEnd = (event: AnimationEvent) => {
+      if (!sidebarVisible.value) {
+        animationInProgress.value = false;
+      }
+    };
     const closeMenu = () => {
+      animationInProgress.value = true;
       sidebarVisible.value = false;
       setTimeout(() => {
         emit("update:visible", false);
       }, 300);
     };
 
-    const handleAnimationEnd = (event: AnimationEvent) => {
-      const target = event.target as HTMLElement;
-      if (!sidebarVisible.value && target.classList.contains("sidebar-hidden")) {
-        target.style.visibility = "hidden";
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
+        closeMenu();
       }
     };
+
+    onBeforeUnmount(() => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    });
 
     const toggleDiv = (key: string) => {
       activeArrows.value[key] = !activeArrows.value[key];
@@ -270,6 +285,7 @@ export default defineComponent({
     });
     
     return {
+      menuRef,
       sidebarVisible,
       closeMenu,
       handleAnimationEnd,
@@ -413,7 +429,7 @@ export default defineComponent({
   right: 10px;
   width: 10px;
   height: 10px;
-  border-top: 2px solid black;
+  border-top: 0.01px solid black;
   border-left: 2px solid black;
   transform: rotate(-135deg);
   display: inline-block;
