@@ -298,7 +298,7 @@ export default defineComponent({
 }
 
 .min-menu-bar-enter-active {
-  transition: opacity 0.5s ease, transform 0.3s ease, max-height 1s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
 }
 
 .min-menu-bar-enter-from {
@@ -312,6 +312,16 @@ export default defineComponent({
   opacity: 1;
   transform: translateY(0);
   max-height: 500px;
+}
+
+.min-menu-bar-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+}
+
+.min-menu-bar-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
 }
 
 .sidebar-visible {
