@@ -144,6 +144,6 @@ export default defineComponent({
   top: 0px;
   width: 100%;
   border-radius: 10px;
-  border-bottom: 2px solid black;
+  border-bottom: 0.1px solid #E2E2E2;
 }
 </style>

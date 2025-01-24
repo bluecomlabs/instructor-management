@@ -429,7 +429,7 @@ export default defineComponent({
   right: 10px;
   width: 10px;
   height: 10px;
-  border-top: 0.01px solid black;
+  border-top: 2px solid black;
   border-left: 2px solid black;
   transform: rotate(-135deg);
   display: inline-block;
