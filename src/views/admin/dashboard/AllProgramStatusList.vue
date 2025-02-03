@@ -2,12 +2,11 @@
   <!--begin::Row-->
   <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
     <!--begin::Col-->
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-md-5 mb-xl-10">
       <Widget1
         className="h-md-100 mb-5 mb-xl-10"
-        description="7월의 교육 교육 완료 수"
-        bgColor="#F1416C"
-        :bgImage="getAssetPath('media/patterns/vector-1.png')"
+        description="경기 미래채움 권역별 데이터 한 눈에 보기"
+        bgColor="#FAFAFA"
       />
     </div>
     <!--end::Col-->
