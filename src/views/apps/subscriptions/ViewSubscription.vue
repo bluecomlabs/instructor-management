@@ -5,9 +5,6 @@
     <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
       <ViewDetails></ViewDetails>
 
-      <Events></Events>
-
-      <Invoices></Invoices>
     </div>
     <!--end::Content-->
 
@@ -24,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ViewDetails from "@/components/subscriptions/view/Details.vue";
+import ViewDetails from "@/components/subscriptions/admin/Details.vue";
 import Events from "@/components/subscriptions/view/Events.vue";
 import Invoices from "@/components/subscriptions/view/Invoices.vue";
 import ViewSummary from "@/components/subscriptions/view/Summary.vue";

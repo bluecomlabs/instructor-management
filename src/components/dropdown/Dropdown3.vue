@@ -1,139 +1,147 @@
 <template>
-  <!--begin::Menu-->
   <div
-    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold py-4 w-250px fs-6"
+    class="menu menu-sub menu-sub-dropdown w-250px w-md-450px modal-content"
     data-kt-menu="true"
   >
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <div class="menu-content text-muted pb-2 px-5 fs-7 text-uppercase">
-        Payments
+    <div class="px-7 py-5 d-flex justify-content-between align-items-center">
+      <div class="fs-5 text-gray-900 fw-bold">프로그램 필터링</div>
+      <button
+        ref="closeButton"
+        type="button"
+        class="btn btn-sm btn-icon btn-light btn-hover-primary"
+        data-kt-menu-dismiss="true"
+      >
+      <i class="bi bi-x-lg"></i> 
+      </button>
+    </div>
+    <div class="separator border-gray-200"></div>
+    <div class="px-7 py-5">
+      <div class="mb-10">
+        <label class="form-label fw-semibold">상태</label>
+        <div>
+          <select class="form-select form-select-solid select2-hidden-accessible" v-model="data.status">
+            <option value="">전체</option>
+            <option value="OPEN">OPEN</option>
+            <option value="CLOSE">CLOSE</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="form-label fw-semibold">프로그램명</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="프로그램명을 입력해주세요." v-model="data.programName" />
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="form-label fw-semibold">총 차시</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="총 차시를 입력해주세요." v-model="data.chapter" />
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="form-label fw-semibold">교구</label>
+        <div>
+          <input type="text" class="form-control form-control-solid" placeholder="교구명을 입력해주세요." v-model="data.product" />
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="form-label fw-semibold">난이도</label>
+        <div>
+          <input type="number" class="form-control form-control-solid" placeholder="난이도를 입력해주세요." v-model="data.level" />
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button
+            type="reset"
+            class="btn btn-sm btn-light btn-active-light-primary me-2"
+            @click="resetForm"
+          >
+          초기화
+        </button>
+        <button
+          type="submit"
+          class="btn btn-sm btn-primary"
+          @click="submitForm"
+        >
+          필터 적용
+        </button>
       </div>
     </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <a href="#" class="menu-link px-5"> Create invoice </a>
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <a href="#" class="menu-link flex-stack px-5">
-        Create payments
-
-        <i
-          class="fas fa-exclamation-circle ms-2 fs-7"
-          data-bs-toggle="tooltip"
-          title="Specify a target name for future usage and reference"
-        ></i>
-      </a>
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div
-      class="menu-item px-5"
-      data-kt-menu-trigger="hover"
-      data-kt-menu-placement="left-start"
-    >
-      <a href="#" class="menu-link px-5">
-        <span class="menu-title">Subscription</span>
-        <span class="menu-arrow"></span>
-      </a>
-
-      <!--begin::Menu sub-->
-      <div class="menu-sub menu-sub-dropdown w-175px py-4">
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a href="#" class="menu-link px-5"> Apps </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a href="#" class="menu-link px-5"> Billing </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a href="#" class="menu-link px-5"> Statements </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu separator-->
-        <div class="separator my-2"></div>
-        <!--end::Menu separator-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <div class="menu-content px-3">
-            <label
-              class="form-check form-switch form-check-custom form-check-solid"
-            >
-              <input
-                class="form-check-input w-30px h-20px"
-                type="checkbox"
-                value=""
-                name="notifications"
-                checked
-                id="kt_user_menu_notifications"
-              />
-              <span
-                class="form-check-label text-muted fs-6"
-                for="kt_user_menu_notifications"
-              >
-                Notifications
-              </span>
-            </label>
-          </div>
-        </div>
-        <!--end::Menu item-->
-      </div>
-      <!--end::Menu sub-->
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu separator-->
-    <div class="separator my-3"></div>
-    <!--end::Menu separator-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <div class="menu-content text-muted pb-2 px-5 fs-7 text-uppercase">
-        Account
-      </div>
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <a href="#" class="menu-link px-5"> Reports </a>
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5 my-1">
-      <a href="#" class="menu-link px-5"> Account Settings </a>
-    </div>
-    <!--end::Menu item-->
-
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
-      <a href="#" class="menu-link text-danger px-5"> Delete customer </a>
-    </div>
-    <!--end::Menu item-->
   </div>
-  <!--end::Menu-->
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import Swal from "sweetalert2";
+
+interface Filter {
+  status: string;
+  level: string;
+  product: string;
+  programName: string;
+  chapter: string;
+}
 
 export default defineComponent({
-  name: "dropdown-3",
-  components: {},
+  name: "Dropdown1",
+  setup() {
+    return {
+      data: {
+        status: "",
+        level: "",
+        product: "",
+        programName: "",
+        chapter: "",
+      } as Filter,
+    };
+  },
+  methods: {
+    submitForm() {
+      Swal.fire({
+        title: "필터를 적용하시겠습니까?",
+        text: "작성한 값에 따른 데이터가 출력됩니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네, 적용합니다",
+        cancelButtonText: "취소",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.$emit("apply-filter", this.data);
+          (this.$refs.closeButton as HTMLElement).click();
+        }
+      });
+    },
+    resetForm() {
+      Swal.fire({
+        title: "필터를 초기화하시겠습니까?",
+        text: "필터값이 저장되지 않습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네, 초기화합니다",
+        cancelButtonText: "취소",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.data = {
+            status: "",
+            level: "",
+            product: "",
+            programName: "",
+            chapter: "",
+          };
+          this.$emit("apply-filter", this.data);
+          (this.$refs.closeButton as HTMLElement).click();
+        }
+      });
+    },
+  },
 });
 </script>
+
+<style scoped>
+.modal-content {
+  height: 60%;
+  overflow-y: auto;
+}
+</style>

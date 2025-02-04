@@ -1,6 +1,6 @@
 <template>
   <thead>
-    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+    <tr class="text-start text-gray-750 fw-bold fs-7 text-uppercase gs-0" style="text-align: center !important;">
       <th v-if="checkboxEnabled" :style="{ width: '30px' }">
         <div
           class="form-check form-check-sm form-check-custom form-check-solid me-3"
@@ -15,9 +15,6 @@
       </th>
       <template v-for="(column, i) in header" :key="i">
         <th
-          :class="{
-            'text-end': i === header.length - 1,
-          }"
           @click="onSort(column.columnLabel, column.sortEnabled)"
           :style="{
             minWidth: column.columnWidth ? `${column.columnWidth}px` : '0',

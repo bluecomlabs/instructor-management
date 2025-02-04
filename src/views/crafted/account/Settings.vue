@@ -547,7 +547,7 @@
                 <option value="cs">Čeština - Czech</option>
                 <option value="da">Dansk - Danish</option>
                 <option value="de">Deutsch - German</option>
-                <option value="en">English</option>
+                <!-- <option value="en">English</option> -->
                 <option value="en-gb">English UK - British English</option>
                 <option value="es">Español - Spanish</option>
                 <option value="fil">Filipino</option>

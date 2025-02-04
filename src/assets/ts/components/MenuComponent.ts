@@ -999,17 +999,19 @@ class MenuComponent {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const menu = menuObj.getElement();
             const sub = menuObj.getItemSubElement(item) as HTMLElement;
-            if (item === e.target || item.contains(e.target as HTMLElement)) {
-              continue;
-            }
 
-            if (
-              sub &&
-              (sub === e.target || sub.contains(e.target as HTMLElement))
-            ) {
-              continue;
-            }
-            menuObj.hide(item);
+            // 필터 창 유지를 위해 잠시 꺼둠
+            // if (item === e.target || item.contains(e.target as HTMLElement)) {
+            //   continue;
+            // }
+
+            // if (
+            //   sub &&
+            //   (sub === e.target || sub.contains(e.target as HTMLElement))
+            // ) {
+            //   continue;
+            // }
+            // menuObj.hide(item);
           }
         }
       }

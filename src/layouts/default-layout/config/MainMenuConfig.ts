@@ -2,269 +2,165 @@ import type { MenuItem } from "@/layouts/default-layout/config/types";
 
 const MainMenuConfig: Array<MenuItem> = [
   {
+    heading: "대시보드",
+    route: "/교육 관리",
     pages: [
       {
-        heading: "dashboard",
-        route: "/dashboard",
+        heading: "전체 프로그램 현황",
+        route: "/admin/AllProgramStatusList",
         keenthemesIcon: "element-11",
-        bootstrapIcon: "bi-app-indicator",
+        bootstrapIcon: "bi-Person-walking",
       },
+      // {
+      //   heading: "교육 일정 프로그램 현황",
+      //   route: "/admin/EduScheduleProgramStatusList",
+      //   keenthemesIcon: "element-11",
+      //   bootstrapIcon: "bi-Person-walking",
+      // },
     ],
   },
   {
-    heading: "apps",
-    route: "/apps",
+    heading: "프로그램 관리",
+    route: "/resources",
     pages: [
       {
-        heading: "ResearchNote",
-        route: "/apps/customers/getting-started",
-        keenthemesIcon: "abstract-38",
+        heading: "프로그램 생성",
+        route: "/admin/ProgramAdd",
+        keenthemesIcon: "add-files",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "customersListing",
-        route: "/apps/customers/customers-listing",
-        keenthemesIcon: "abstract-38",
+        heading: "프로그램 조회",
+        route: "/admin/ProgramList",
+        keenthemesIcon: "some-files",
+        bootstrapIcon: "bi-printer",
+      }
+    ],
+  },
+  {
+    heading: "교육 관리",
+    route: "/resources",
+    pages: [
+      // {
+      //   heading: "기관별 신청 조회",
+      //   route: "/admin/InstApplList",
+      //   keenthemesIcon: "cheque",
+      //   bootstrapIcon: "bi-printer",
+      // },
+      {
+        heading: "신청 조회 및 확정",
+        route: "/admin/ApplReviewList",
+        keenthemesIcon: "eye",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "customerDetails",
-        route: "/apps/customers/customer-details",
-        keenthemesIcon: "abstract-38",
+        heading: "교육 상태 변경",
+        route: "/admin/ApplStatusChange",
+        keenthemesIcon: "note-2",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "widgetsLists",
-        route: "/crafted/widgets/lists",
-        keenthemesIcon: "element-7",
-        bootstrapIcon: "bi-layers",
+        heading: "교육 신청",
+        route: "/admin/InstApplPassivity",
+        keenthemesIcon: "notepad-edit",
+        bootstrapIcon: "bi-printer",
+      }
+    ],
+  },
+  {
+    heading: "강사 배정 관리",
+    route: "/교육 관리",
+    pages: [
+      {
+        heading: "신청 조회 및 배정",
+        route: "/admin/TeacherApplList",
+        keenthemesIcon: "archive-tick",
+        bootstrapIcon: "bi-printer",
       },
       {
-        heading: "calendarApp",
-        route: "/apps/calendar",
-        keenthemesIcon: "calendar-8",
-        bootstrapIcon: "bi-calendar3-event",
+        heading: "배정 결과 및 상태 관리",
+        route: "/admin/TeacherAlloList",
+        keenthemesIcon: "calendar-tick",
+        bootstrapIcon: "bi-app-indicator",
+      },
+      {
+        heading: "교육별 조회",
+        route: "/admin/TeacherAlloPassivity",
+        keenthemesIcon: "calendar-edit",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "강사 출강 일정 조회",
+        route: "/admin/TeacherAlloschedule",
+        keenthemesIcon: "calendar",
+        bootstrapIcon: "bi-printer",
       },
     ],
   },
   // {
-  //   heading: "apps",
-  //   route: "/apps",
+  //   heading: "보고서 관리",
+  //   route: "/resources",
   //   pages: [
   //     {
-  //       heading: "ResearchNote",
-  //       route: "/apps/customers/getting-started",
-  //       keenthemesIcon: "abstract-38",
-  //       bootstrapIcon: "bi-printer",
-  //     },
-  //     {
-  //       heading: "customersListing",
-  //       route: "/apps/customers/customers-listing",
-  //       keenthemesIcon: "abstract-38",
-  //       bootstrapIcon: "bi-printer",
-  //     },
-  //     {
-  //       heading: "customerDetails",
-  //       route: "/apps/customers/customer-details",
-  //       keenthemesIcon: "abstract-38",
-  //       bootstrapIcon: "bi-printer",
-  //     },
-  //     {
-  //       heading: "widgetsLists",
-  //       route: "/crafted/widgets/lists",
-  //       keenthemesIcon: "element-7",
+  //       heading: "업무일지 관리",
+  //       route: "/admin/TeacherReportList",
+  //       keenthemesIcon: "notepad",
   //       bootstrapIcon: "bi-layers",
   //     },
   //     {
-  //       heading: "calendarApp",
-  //       route: "/apps/calendar",
-  //       keenthemesIcon: "calendar-8",
-  //       bootstrapIcon: "bi-calendar3-event",
+  //       heading: "교육일지 관리",
+  //       route: "/admin/EducationalReportList",
+  //       keenthemesIcon: "people",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "근무상황부 관리",
+  //       route: "/admin/WorkSchedule",
+  //       keenthemesIcon: "calendar-2",
+  //       bootstrapIcon: "bi-layers",
+  //     },
+  //     {
+  //       heading: "서명 확인",
+  //       route: "/admin/SignCheck",
+  //       keenthemesIcon: "brush",
+  //       bootstrapIcon: "bi-layers",
   //     },
   //   ],
   // },
   {
-    heading: "craft",
-    route: "/crafted",
+    heading: "설정 및 사용자 관리",
+    route: "/resources",
     pages: [
+      // {
+      //   heading: "관리자 관리",
+      //   route: "/admin/AdminList",
+      //   keenthemesIcon: "user",
+      //   bootstrapIcon: "bi-layers",
+      // },
       {
-        sectionTitle: "pages",
-        route: "/pages",
-        keenthemesIcon: "element-plus",
-        bootstrapIcon: "bi-archive",
-        sub: [
-          {
-            sectionTitle: "profile",
-            route: "/profile",
-            sub: [
-              {
-                heading: "profileOverview",
-                route: "/crafted/pages/profile/overview",
-              },
-              {
-                heading: "projects",
-                route: "/crafted/pages/profile/projects",
-              },
-              {
-                heading: "campaigns",
-                route: "/crafted/pages/profile/campaigns",
-              },
-              {
-                heading: "documents",
-                route: "/crafted/pages/profile/documents",
-              },
-              {
-                heading: "connections",
-                route: "/crafted/pages/profile/connections",
-              },
-              {
-                heading: "activity",
-                route: "/crafted/pages/profile/activity",
-              },
-            ],
-          },
-          {
-            sectionTitle: "wizards",
-            route: "/wizard",
-            sub: [
-              {
-                heading: "horizontal",
-                route: "/crafted/pages/wizards/horizontal",
-              },
-              {
-                heading: "vertical",
-                route: "/crafted/pages/wizards/vertical",
-              },
-            ],
-          },
-        ],
+        heading: "공지사항 관리",
+        route: "/admin/NoticeList",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-buildings",
       },
       {
-        sectionTitle: "account",
-        route: "/account",
-        keenthemesIcon: "profile-circle",
-        bootstrapIcon: "bi-person",
-        sub: [
-          {
-            heading: "accountOverview",
-            route: "/crafted/account/overview",
-          },
-          {
-            heading: "settings",
-            route: "/crafted/account/settings",
-          },
-        ],
+        heading: "기관 관리",
+        route: "/admin/InstitutionList",
+        keenthemesIcon: "abstract-38",
+        bootstrapIcon: "bi-buildings",
       },
       {
-        sectionTitle: "authentication",
-        keenthemesIcon: "fingerprint-scanning",
-        bootstrapIcon: "bi-sticky",
-        sub: [
-          {
-            sectionTitle: "basicFlow",
-            sub: [
-              {
-                heading: "admin-signIn",
-                route: "/admin-sign-in",
-              },
-              {
-                heading: "signIn",
-                route: "/sign-in",
-              },
-              {
-                heading: "signUp",
-                route: "/sign-up",
-              },
-              {
-                heading: "passwordReset",
-                route: "/password-reset",
-              },
-            ],
-          },
-          {
-            heading: "multiStepSignUp",
-            route: "/multi-step-sign-up",
-          },
-          {
-            heading: "error404",
-            route: "/404",
-          },
-          {
-            heading: "error500",
-            route: "/500",
-          },
-        ],
+        heading: "강사 관리",
+        route: "/admin/TeacherList",
+        keenthemesIcon: "teacher",
+        bootstrapIcon: "bi-layers",
       },
-      {
-        sectionTitle: "modals",
-        route: "/modals",
-        keenthemesIcon: "design",
-        bootstrapIcon: "bi-shield-check",
-        sub: [
-          {
-            sectionTitle: "general",
-            route: "/general",
-            sub: [
-              {
-                heading: "inviteFriends",
-                route: "/crafted/modals/general/invite-friends",
-              },
-              {
-                heading: "viewUsers",
-                route: "/crafted/modals/general/view-user",
-              },
-              {
-                heading: "upgradePlan",
-                route: "/crafted/modals/general/upgrade-plan",
-              },
-              {
-                heading: "shareAndEarn",
-                route: "/crafted/modals/general/share-and-earn",
-              },
-            ],
-          },
-          {
-            sectionTitle: "forms",
-            route: "/forms",
-            sub: [
-              {
-                heading: "newTarget",
-                route: "/crafted/modals/forms/new-target",
-              },
-              {
-                heading: "newCard",
-                route: "/crafted/modals/forms/new-card",
-              },
-              {
-                heading: "newAddress",
-                route: "/crafted/modals/forms/new-address",
-              },
-              {
-                heading: "createAPIKey",
-                route: "/crafted/modals/forms/create-api-key",
-              },
-            ],
-          },
-          {
-            sectionTitle: "wizards",
-            route: "/wizards",
-            sub: [
-              {
-                heading: "twoFactorAuth",
-                route: "/crafted/modals/wizards/two-factor-auth",
-              },
-              {
-                heading: "createApp",
-                route: "/crafted/modals/wizards/create-app",
-              },
-              {
-                heading: "createAccount",
-                route: "/crafted/modals/wizards/create-account",
-              },
-            ],
-          },
-        ],
-      },
+      // {
+      //   heading: "시스템 이력 조회",
+      //   route: "/admin/SystemSettings",
+      //   keenthemesIcon: "setting-2",
+      //   bootstrapIcon: "bi-layers",
+      // }
     ],
   },
 ];

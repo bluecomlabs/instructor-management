@@ -2,7 +2,7 @@
   <!--begin::Logo-->
   <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
     <!--begin::Logo image-->
-    <router-link to="/">
+    <!-- <router-link to="/dashboard"> -->
       <img
         v-if="
           layout === 'dark-sidebar' ||
@@ -10,20 +10,20 @@
         "
         alt="Logo"
         :src="getAssetPath('media/logos/default-dark.svg')"
-        class="h-25px app-sidebar-logo-default"
+        class="h-35px app-sidebar-logo-default"
       />
       <img
         v-if="themeMode === 'light' && layout === 'light-sidebar'"
         alt="Logo"
         :src="getAssetPath('media/logos/default.svg')"
-        class="h-25px app-sidebar-logo-default"
+        class="h-35px app-sidebar-logo-default"
       />
       <img
         alt="Logo"
         :src="getAssetPath('media/logos/default-small.svg')"
         class="h-20px app-sidebar-logo-minimize"
       />
-    </router-link>
+    <!-- </router-link> -->
     <!--end::Logo image-->
     <!--begin::Sidebar toggle-->
     <div

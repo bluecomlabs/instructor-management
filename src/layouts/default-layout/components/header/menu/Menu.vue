@@ -20,7 +20,7 @@
       id="kt_app_header_menu"
       data-kt-menu="true"
     >
-      <KTMenuPages></KTMenuPages>
+      <!-- <KTMenuPages></KTMenuPages> -->
 
       <!--end:Menu item-->
     </div>

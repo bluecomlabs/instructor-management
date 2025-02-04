@@ -1,5 +1,5 @@
 <template>
-  <tbody class="fw-semibold text-gray-600">
+  <tbody class="fw-semibold text-gray-600" style="text-align: center !important;">
     <template v-for="(row, i) in data" :key="i">
       <tr>
         <td v-if="checkboxEnabled">
@@ -16,7 +16,7 @@
           </div>
         </td>
         <template v-for="(properties, j) in header" :key="j">
-          <td :class="{ 'text-end': j === header.length - 1 }">
+          <td>
             <slot :name="`${properties.columnLabel}`" :row="row">
               {{ row }}
             </slot>

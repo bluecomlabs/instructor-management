@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "demo1": "file:../.."
+  }
+}

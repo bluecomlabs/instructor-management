@@ -1,221 +1,29 @@
 <template>
-  <!--begin::Card-->
   <div :class="`card pt-2 ${cardClasses}`">
-    <!--begin::Card header-->
     <div class="card-header border-0">
-      <!--begin::Card title-->
       <div class="card-title">
-        <h2>Invoices</h2>
+        <h2>상세 정보</h2>
       </div>
-      <!--end::Card title-->
-
-      <!--begin::Toolbar-->
-      <div class="card-toolbar m-0">
-        <!--begin::Tab nav-->
-        <ul
-          class="nav nav-stretch fs-5 fw-semibold nav-line-tabs nav-line-tabs-2x border-transparent"
-          role="tablist"
-        >
-          <li class="nav-item" role="presentation">
-            <a
-              id="kt_referrals_year_tab"
-              class="nav-link text-active-primary active"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_details_invoices_1"
-            >
-              This Year
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              id="kt_referrals_2019_tab"
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_details_invoices_2"
-            >
-              2020
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              id="kt_referrals_2018_tab"
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_details_invoices_3"
-            >
-              2019
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              id="kt_referrals_2017_tab"
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_details_invoices_4"
-            >
-              2018
-            </a>
-          </li>
-        </ul>
-        <!--end::Tab nav-->
-      </div>
-      <!--end::Toolbar-->
     </div>
-    <!--end::Card header-->
-
-    <!--begin::Card body-->
-    <div class="card-body pt-0">
-      <!--begin::Tab Content-->
-      <div id="kt_referred_users_tab_content" class="tab-content">
-        <div
-          id="kt_customer_details_invoices_1"
-          class="py-0 tab-pane fade active show"
-          role="tabpanel"
-        >
-          <Datatable
-            :header="tableHeader"
-            :data="tableData1"
-            :items-per-page="5"
-            :items-per-page-dropdown-enabled="false"
-          >
-            <template v-slot:order="{ row: invoice }">
-              {{ invoice.order }}
-            </template>
-            <template v-slot:amount="{ row: invoice }">
-              <span :class="`text-${invoice.color}`">
-                {{ invoice.amount }}
-              </span>
-            </template>
-            <template v-slot:status="{ row: invoice }">
-              <span :class="`badge badge-light-${invoice.status.state}`">{{
-                invoice.status.label
-              }}</span>
-            </template>
-            <template v-slot:date="{ row: invoice }">
-              {{ invoice.date }}
-            </template>
-            <template v-slot:invoice>
-              <button class="btn btn-sm btn-light btn-active-light-primary">
-                Download
-              </button>
-            </template>
-          </Datatable>
-        </div>
-        <div
-          id="kt_customer_details_invoices_2"
-          class="py-0 tab-pane fade"
-          role="tabpanel"
-        >
-          <Datatable
-            :header="tableHeader"
-            :data="tableData2"
-            :items-per-page="5"
-            :items-per-page-dropdown-enabled="false"
-          >
-            <template v-slot:order="{ row: invoice }">
-              {{ invoice.order }}
-            </template>
-            <template v-slot:amount="{ row: invoice }">
-              <span :class="`text-${invoice.color}`">
-                {{ invoice.amount }}
-              </span>
-            </template>
-            <template v-slot:status="{ row: invoice }">
-              <span :class="`badge badge-light-${invoice.status.state}`">{{
-                invoice.status.label
-              }}</span>
-            </template>
-            <template v-slot:date="{ row: invoice }">
-              {{ invoice.date }}
-            </template>
-            <template v-slot:invoice>
-              <button class="btn btn-sm btn-light btn-active-light-primary">
-                Download
-              </button>
-            </template>
-          </Datatable>
-        </div>
-        <div
-          id="kt_customer_details_invoices_3"
-          class="py-0 tab-pane fade"
-          role="tabpanel"
-        >
-          <Datatable
-            :header="tableHeader"
-            :data="tableData3"
-            :items-per-page="5"
-            :items-per-page-dropdown-enabled="false"
-          >
-            <template v-slot:order="{ row: invoice }">
-              {{ invoice.order }}
-            </template>
-            <template v-slot:amount="{ row: invoice }">
-              <span :class="`text-${invoice.color}`">
-                {{ invoice.amount }}
-              </span>
-            </template>
-            <template v-slot:status="{ row: invoice }">
-              <span :class="`badge badge-light-${invoice.status.state}`">{{
-                invoice.status.label
-              }}</span>
-            </template>
-            <template v-slot:date="{ row: invoice }">
-              {{ invoice.date }}
-            </template>
-            <template v-slot:invoice>
-              <button class="btn btn-sm btn-light btn-active-light-primary">
-                Download
-              </button>
-            </template>
-          </Datatable>
-        </div>
-        <div
-          id="kt_customer_details_invoices_4"
-          class="py-0 tab-pane fade"
-          role="tabpanel"
-        >
-          <Datatable
-            :header="tableHeader"
-            :data="tableData4"
-            :items-per-page="5"
-            :items-per-page-dropdown-enabled="false"
-          >
-            <template v-slot:order="{ row: invoice }">
-              {{ invoice.order }}
-            </template>
-            <template v-slot:amount="{ row: invoice }">
-              <span :class="`text-${invoice.color}`">
-                {{ invoice.amount }}
-              </span>
-            </template>
-            <template v-slot:status="{ row: invoice }">
-              <span :class="`badge badge-light-${invoice.status.state}`">{{
-                invoice.status.label
-              }}</span>
-            </template>
-            <template v-slot:date="{ row: invoice }">
-              {{ invoice.date }}
-            </template>
-            <template v-slot:invoice>
-              <button class="btn btn-sm btn-light btn-active-light-primary">
-                Download
-              </button>
-            </template>
-          </Datatable>
+      <div class="card-body">
+          <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">홍길동</a>
+          <div class="fs-5 fw-semibold text-muted mb-6">SW울산미래채움</div>
+        <div id="kt_customer_view_details" class="collapse show">
+          <div class="fs-6">
+            <div class="fw-bold mt-5">주소</div>
+            <div class="text-gray-600">울산광역시 ~</div>
+            <div class="fw-bold mt-5">나이</div>
+            <div class="text-gray-600">
+              <a href="#" class="text-gray-600 text-hover-primary">30</a>
+            </div>
+            <div class="fw-bold mt-5">특이사항</div>
+            <div class="text-gray-600">교사경력있음</div>
+            <div class="fw-bold mt-5">메모</div>
+            <div class="text-gray-600">교사경력있음</div>
+          </div>
         </div>
       </div>
-      <!--end::Tab Content-->
-    </div>
-    <!--end::Card body-->
   </div>
-  <!--end::Card-->
 </template>
 
 <script lang="ts">

@@ -5,63 +5,10 @@
     <div class="card-header">
       <!--begin::Title-->
       <div class="card-title">
-        <h2>Statement</h2>
+        <h2>상세정보</h2>
       </div>
       <!--end::Title-->
 
-      <!--begin::Toolbar-->
-      <div class="card-toolbar">
-        <!--begin::Tab nav-->
-        <ul
-          class="nav nav-stretch fs-5 fw-semibold nav-line-tabs nav-line-tabs-2x border-transparent"
-          role="tablist"
-        >
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link text-active-primary active"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_view_statement_1"
-            >
-              This Year
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_view_statement_2"
-            >
-              2020
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_view_statement_3"
-            >
-              2019
-            </a>
-          </li>
-
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link text-active-primary ms-3"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#kt_customer_view_statement_4"
-            >
-              2018
-            </a>
-          </li>
-        </ul>
-        <!--end::Tab nav-->
-      </div>
       <!--end::Toolbar-->
     </div>
     <!--end::Header-->

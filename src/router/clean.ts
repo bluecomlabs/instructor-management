@@ -18,7 +18,26 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/userdashboard",
         name: "userdashboard",
-        component: () => import("@/views/UserDashboard.vue"),
+        component: () => import("@/views/teacher/dashborad/UserDashboard.vue"),
+        meta: {
+          pageTitle: "Dashboard",
+          breadcrumbs: ["Dashboards"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/",
+    redirect: "/clientdashboard",
+    component: () => import("@/layouts/default-layout/DefaultLayout.vue"),
+    meta: {
+      middleware: "auth",
+    },
+    children: [
+      {
+        path: "/clientdashboard",
+        name: "clientdashboard",
+        component: () => import("@/views/client/dashborad/appSchedule.vue"),
         meta: {
           pageTitle: "Dashboard",
           breadcrumbs: ["Dashboards"],
@@ -34,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/sign-in",
         name: "sign-in",
         component: () =>
-          import("@/views/crafted/authentication/basic-flow/SignIn.vue"),
+          import("@/views/teacher/login/SignIn.vue"),
         meta: {
           pageTitle: "Sign In",
         },
@@ -43,9 +62,18 @@ const routes: Array<RouteRecordRaw> = [
         path: "/admin-sign-in",
         name: "admin-sign-in",
         component: () =>
-          import("@/views/crafted/authentication/basic-flow/admin-SignIn.vue"),
+          import("@/views/admin/login/admin-SignIn.vue"),
         meta: {
           pageTitle: "admin-Sign In",
+        },
+      },
+      {
+        path: "/client-sign-in",
+        name: "client-sign-in",
+        component: () =>
+          import("@/views/client/login/client-SignIn.vue"),
+        meta: {
+          pageTitle: "client-Sign In",
         },
       },
       {

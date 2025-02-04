@@ -240,6 +240,7 @@ import { defineComponent, onMounted, ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import MainMenuConfig from "@/layouts/default-layout/config/MainMenuConfig";
 import UserMainMenuConfig from "@/layouts/default-layout/config/UserMainMenuConfig";
+import ClientMenuConfig from "@/layouts/default-layout/config/ClientMenuConfig";
 import { sidebarMenuIcons } from "@/layouts/default-layout/config/helper";
 import { useI18n } from "vue-i18n";
 
@@ -270,7 +271,13 @@ export default defineComponent({
     };
 
     const activeMenuConfig = computed(() => {
-      return route.path.startsWith('/user') ? UserMainMenuConfig : MainMenuConfig;
+      if (route.path.startsWith('/user')) {
+        return UserMainMenuConfig;
+      } else if (route.path.startsWith('/client')) {
+        return ClientMenuConfig;
+      } else {
+        return MainMenuConfig;
+      }
     });
 
     return {

@@ -16,21 +16,21 @@
     <div class="card-header">
       <!--begin::Card title-->
       <div class="card-title">
-        <h2>Summary</h2>
+        <h2>강사정보</h2>
       </div>
       <!--end::Card title-->
 
       <!--begin::Card toolbar-->
       <div class="card-toolbar">
         <!--begin::More options-->
-        <a
+        <!-- <a
           href="#"
           class="btn btn-sm btn-light btn-icon"
           data-kt-menu-trigger="click"
           data-kt-menu-placement="bottom-end"
         >
           <KTIcon icon-name="dots-horizontal" icon-class="fs-3" />
-        </a>
+        </a> -->
         <UserMenu></UserMenu>
         <!--end::More options-->
       </div>
@@ -46,7 +46,7 @@
         <div class="d-flex align-items-center">
           <!--begin::Avatar-->
           <div class="symbol symbol-60px symbol-circle me-3">
-            <img alt="Pic" :src="getAssetPath('media/avatars/300-5.jpg')" />
+            <img alt="Pic" :src="getAssetPath('media/avatars/blank.png')" />
           </div>
           <!--end::Avatar-->
 
@@ -56,13 +56,13 @@
             <a
               href="#"
               class="fs-4 fw-bold text-gray-900 text-hover-primary me-2"
-              >Sean Bean</a
+              >홍길동</a
             >
             <!--end::Name-->
 
             <!--begin::Email-->
             <a href="#" class="fw-semibold text-gray-600 text-hover-primary"
-              >sean@dellito.com</a
+              >HGD@gmail.com</a
             >
             <!--end::Email-->
           </div>
@@ -70,31 +70,6 @@
         </div>
         <!--end::Details-->
       </div>
-      <!--end::Section-->
-
-      <!--begin::Seperator-->
-      <div class="separator separator-dashed mb-7"></div>
-      <!--end::Seperator-->
-
-      <!--begin::Section-->
-      <div class="mb-7">
-        <!--begin::Title-->
-        <h5 class="mb-4">Product details</h5>
-        <!--end::Title-->
-
-        <!--begin::Details-->
-        <div class="mb-0">
-          <!--begin::Plan-->
-          <span class="badge badge-light-info me-2">Basic Bundle</span>
-          <!--end::Plan-->
-
-          <!--begin::Price-->
-          <span class="fw-semibold text-gray-600">$149.99 / Year</span>
-          <!--end::Price-->
-        </div>
-        <!--end::Details-->
-      </div>
-      <!--end::Section-->
 
       <!--begin::Seperator-->
       <div class="separator separator-dashed mb-7"></div>
@@ -103,69 +78,37 @@
       <!--begin::Section-->
       <div class="mb-10">
         <!--begin::Title-->
-        <h5 class="mb-4">Payment Details</h5>
-        <!--end::Title-->
-
-        <!--begin::Details-->
-        <div class="mb-0">
-          <!--begin::Card info-->
-          <div class="fw-semibold text-gray-600 d-flex align-items-center">
-            Mastercard
-
-            <img
-              :src="getAssetPath('media/svg/card-logos/mastercard.svg')"
-              class="w-35px ms-2"
-              alt=""
-            />
-          </div>
-          <!--end::Card info-->
-
-          <!--begin::Card expiry-->
-          <div class="fw-semibold text-gray-600">Expires Dec 2024</div>
-          <!--end::Card expiry-->
-        </div>
-        <!--end::Details-->
-      </div>
-      <!--end::Section-->
-
-      <!--begin::Seperator-->
-      <div class="separator separator-dashed mb-7"></div>
-      <!--end::Seperator-->
-
-      <!--begin::Section-->
-      <div class="mb-10">
-        <!--begin::Title-->
-        <h5 class="mb-4">Subscription Details</h5>
+        <h5 class="mb-4">상세 정보</h5>
         <!--end::Title-->
 
         <!--begin::Details-->
         <table class="table fs-6 fw-semibold gs-0 gy-2 gx-2">
           <!--begin::Row-->
           <tr class="">
-            <td class="text-gray-500">Subscription ID:</td>
-            <td class="text-gray-800">sub_4567_8765</td>
+            <td class="text-gray-500">사번 :</td>
+            <td class="text-gray-800">SW23A_03</td>
           </tr>
           <!--end::Row-->
 
           <!--begin::Row-->
           <tr class="">
-            <td class="text-gray-500">Started:</td>
-            <td class="text-gray-800">15 Apr 2021</td>
+            <td class="text-gray-500">성별:</td>
+            <td class="text-gray-800">남자</td>
           </tr>
           <!--end::Row-->
 
           <!--begin::Row-->
           <tr class="">
-            <td class="text-gray-500">Status:</td>
-            <td><span class="badge badge-light-success">Active</span></td>
+            <td class="text-gray-500">기수:</td>
+            <td><span class="badge badge-light-success">4기</span></td>
           </tr>
           <!--end::Row-->
 
           <!--begin::Row-->
-          <tr class="">
+          <!-- <tr class="">
             <td class="text-gray-500">Next Invoice:</td>
             <td class="text-gray-800">15 Apr 2022</td>
-          </tr>
+          </tr> -->
           <!--end::Row-->
         </table>
         <!--end::Details-->
@@ -173,7 +116,7 @@
       <!--end::Section-->
 
       <!--begin::Actions-->
-      <div class="mb-0">
+      <!-- <div class="mb-0">
         <router-link
           to="/subscriptions/add"
           class="btn btn-primary"
@@ -181,7 +124,7 @@
         >
           Edit Subscription
         </router-link>
-      </div>
+      </div> -->
       <!--end::Actions-->
     </div>
     <!--end::Card body-->
