@@ -12,24 +12,24 @@
     <!--end::Col-->
 
     <!--begin::Col-->
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget3 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
-    </div>
+    </div> -->
     <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget2 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div> -->
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget4 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
-    </div>
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    </div> -->
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget5 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
-    </div>
-    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    </div> -->
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget6 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div>
     <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget7 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
-    </div>
+    </div> -->
     <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget8 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div> -->
