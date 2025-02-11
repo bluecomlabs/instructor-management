@@ -9,7 +9,15 @@
 //   },
 // });
 // src/utils/api.ts
-const apiBaseUrl = import.meta.env.VITE_API_URL;
+// const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+// 이거 기존에 쓰던건데 백엔드 포트랑 겹쳐서 밑에 따로 명시함
+// export const ApiUrl = (endpoint: string) => {
+//   return `${apiBaseUrl}${endpoint}`;
+// };
+
+// 개발용
+const apiBaseUrl = "http://localhost:8080";
 
 export const ApiUrl = (endpoint: string) => {
   return `${apiBaseUrl}${endpoint}`;
