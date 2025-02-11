@@ -10,7 +10,7 @@
       <div class="text-gray-900 order-2 order-md-1">
       </div>
       <ul class="menu menu-gray-600 fw-semibold order-1">
-        <span class="text-muted fw-semibold me-1">2024© bluecommunication</span>
+        <span class="text-muted fw-semibold me-1">2025© bluecommunication</span>
       </ul>
     </div>
   </div>

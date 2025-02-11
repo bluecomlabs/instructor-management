@@ -223,6 +223,15 @@ const routes: Array<RouteRecordRaw> = [
       },
       // 10월 22일 이전 작업페이지(정리예정)
       {
+        path: "UserAttendanceAdd",
+        name: "user-UserAttendanceAdd",
+        component: () => import("@/views/apps/subscriptions/UserAttendanceAdd.vue"),
+        meta: {
+          pageTitle: "교육일지",
+          breadcrumbs: ["배정 정보 관리", "교육일지"],
+        },
+      },
+      {
         path: "EditWorkSituation",
         name: "user-EditWorkSituation",
         component: () => import("@/views/apps/user/EditWorkSituation.vue"),
@@ -736,6 +745,24 @@ const routes: Array<RouteRecordRaw> = [
         path: "AdminAttendance",
         name: "admin-AdminAttendance",
         component: () => import("@/views/apps/subscriptions/AdminAttendance.vue"),
+        meta: {
+          pageTitle: "교육일지",
+          breadcrumbs: ["배정 정보 관리", "교육일지"],
+        },
+      },
+      {
+        path: "AdminAttendanceEdit",
+        name: "admin-AdminAttendanceEdit",
+        component: () => import("@/views/apps/subscriptions/AdminAttendanceEdit.vue"),
+        meta: {
+          pageTitle: "교육일지",
+          breadcrumbs: ["배정 정보 관리", "교육일지"],
+        },
+      },
+      {
+        path: "EditEducationJournal",
+        name: "admin-EditEducationJournal",
+        component: () => import("@/views/apps/subscriptions/EditEducationJournal.vue"),
         meta: {
           pageTitle: "교육일지",
           breadcrumbs: ["배정 정보 관리", "교육일지"],

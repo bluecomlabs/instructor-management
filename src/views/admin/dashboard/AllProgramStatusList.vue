@@ -529,17 +529,17 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
-        columnName: "출석부",
+        columnName: "교육 출석부",
         columnLabel: "customer",
         sortEnabled: true,
       },
       {
-        columnName: "교육일지",
+        columnName: "교육 활동 일지",
         columnLabel: "status",
         sortEnabled: true,
       },
       {
-        columnName: "강의확인서",
+        columnName: "교구 확인서",
         columnLabel: "product",
         sortEnabled: true,
       },

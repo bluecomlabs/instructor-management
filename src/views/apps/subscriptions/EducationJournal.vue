@@ -2,18 +2,15 @@
   <!--begin::Layout-->
   <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
-    <div class="flex-lg-row-fluid me-lg-15 order-2 order-lg-1 mb-10 mb-lg-0">
+    <div class="flex-lg-row-fluid me-lg-15 order-lg-1 mb-10 mb-lg-0">
       <EducationJournalDetail></EducationJournalDetail>
-
     </div>
     <!--end::Content-->
 
     <!--begin::Sidebar-->
-    <div
-      class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-1 order-lg-2"
-    >
+    <!-- <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-300px mb-10 order-lg-2">
       <ViewSummary></ViewSummary>
-    </div>
+    </div> -->
     <!--end::Sidebar-->
   </div>
   <!--end::Layout-->
