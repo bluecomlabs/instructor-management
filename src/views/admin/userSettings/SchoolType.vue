@@ -19,7 +19,8 @@
           </tr>
           <tr>
             <th style="width: 43px;">번호</th>
-            <th style="width: 60px;">사용사업</th>
+            <!-- 기존의 사용사업 컬럼은 제거하고 사업명 컬럼 추가 -->
+            <th style="width: 120px;">사업명</th>
             <th style="width: 120px;">이름</th>
             <th>비고</th>
             <th style="width: 60px;">삭제</th>
@@ -32,14 +33,8 @@
             :class="rowClass(schoolType)"
           >
             <td>{{ schoolType.id }}</td>
-            <td>
-              <input
-                type="text"
-                class="edit-input"
-                v-model="schoolType.businessId"
-                placeholder="사용사업"
-              />
-            </td>
+
+            <td>{{ schoolType.businessName }}</td>
             <td>
               <input
                 type="text"
@@ -87,7 +82,8 @@ export default defineComponent({
       // 각 레코드에 original 값을 추가하여 수정 여부를 판단
       schoolTypes: [] as Array<{
         id: number | string;
-        businessId: number | string;
+        businessId: number | string; // API 요청 시 전송됨
+        businessName: string; // UI에 표시됨
         name: string;
         description: string;
         original?: {
@@ -113,6 +109,7 @@ export default defineComponent({
           this.schoolTypes = response.data.data.content.map((item: any) => ({
             id: item.id,
             businessId: item.businessId,
+            businessName: item.businessName, // API에서 받아온 사업명 값
             name: item.name,
             description: item.description,
             original: {
@@ -167,13 +164,13 @@ export default defineComponent({
         cancelButtonText: "아니요",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$router.back();
+          this.$router.push({ name: "admin-SchoolList" });
         }
       });
     },
     goToSave() {
       this.attemptedSave = true;
-      // 모든 행의 필수 입력값(사용사업, 이름, 비고)이 입력되었는지 확인
+      // 모든 행의 필수 입력값(사용사업(businessId), 이름, 비고)이 입력되었는지 확인
       const hasEmptyField = this.schoolTypes.some((st) =>
         !st.businessId.toString().trim() ||
         !st.name.toString().trim() ||
@@ -209,7 +206,7 @@ export default defineComponent({
             axios.post(
               ApiUrl("/admin/school-types"),
               {
-                businessId: st.businessId,
+                businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
                 description: st.description,
               },
@@ -221,7 +218,7 @@ export default defineComponent({
             axios.put(
               ApiUrl(`/admin/school-types/${st.id}`),
               {
-                businessId: st.businessId,
+                businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
                 description: st.description,
               },
@@ -263,7 +260,8 @@ export default defineComponent({
       // 신규 항목 추가 시 original은 null로 지정하여 신규임을 표시
       const newSchoolType = {
         id: "",
-        businessId: "",
+        businessId: "",      // API 전송용 값 (직접 입력하지 않고 내부 처리)
+        businessName: "",    // 신규 항목에서는 입력 가능 (ex. 사업명을 직접 입력)
         name: "",
         description: "",
         original: null,
@@ -353,11 +351,9 @@ export default defineComponent({
   text-align: center;
   background-color: #fafafa;
 }
-/* 신규 등록 중인 레코드: 연한 녹색 선 테두리 */
 tr.new-record td {
   border: 2px solid #90ee90 !important;
 }
-/* 수정 중인 레코드: 연한 파란색 선 테두리 */
 tr.modified-record td {
   border: 2px solid #add8e6 !important;
 }

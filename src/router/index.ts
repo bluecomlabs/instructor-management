@@ -299,8 +299,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "user-EducationalList",
         component: () => import("@/views/admin/userSettings/SchoolList.vue"),
         meta: {
-          pageTitle: "학교 관리",
-          breadcrumbs: ["학교 관리", "학교 조회"],
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육기관 관리", "교육기관 조회"],
         },
       },
       {
@@ -635,8 +635,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-SchoolList",
         component: () => import("@/views/admin/userSettings/SchoolList.vue"),
         meta: {
-          pageTitle: "학교 조회",
-          breadcrumbs: ["학교 관리", "학교 조회"],
+          pageTitle: "교육기관 조회",
+          breadcrumbs: ["교육기관 관리", "교육기관 조회"],
         },
       },
       {
@@ -644,8 +644,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "admin-SchoolType",
         component: () => import("@/views/admin/userSettings/SchoolType.vue"),
         meta: {
-          pageTitle: "학교 관리",
-          breadcrumbs: ["학교 관리", "학교 타입 조회"],
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육기관 관리", "교육기관 타입 설정"],
         },
       },
       {
@@ -667,27 +667,27 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "InstitutionDetails",
-        name: "admin-InstitutionDetails",
-        component: () => import("@/views/admin/userSettings/InstitutionDetails.vue"),
+        path: "SchoolDetails",
+        name: "admin-SchoolDetails",
+        component: () => import("@/views/admin/userSettings/SchoolDetails.vue"),
         meta: {
           pageTitle: "설정 및 사용자 관리",
           breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
         },
       },
       {
-        path: "InstitutionEdit",
-        name: "admin-InstitutionEdit",
-        component: () => import("@/views/admin/userSettings/InstitutionEdit.vue"),
+        path: "SchoolEdit",
+        name: "admin-SchoolEdit",
+        component: () => import("@/views/admin/userSettings/SchoolEdit.vue"),
         meta: {
           pageTitle: "설정 및 사용자 관리",
           breadcrumbs: ["설정 및 사용자 관리", "기관 수정"],
         },
       },
       {
-        path: "InstitutionAdd",
-        name: "admin-InstitutionAdd",
-        component: () => import("@/views/admin/userSettings/InstitutionAdd.vue"),
+        path: "SchoolAdd",
+        name: "admin-SchoolAdd",
+        component: () => import("@/views/admin/userSettings/SchoolAdd.vue"),
         meta: {
           pageTitle: "설정 및 사용자 관리",
           breadcrumbs: ["설정 및 사용자 관리", "기관 생성"],

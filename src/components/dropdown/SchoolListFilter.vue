@@ -4,7 +4,7 @@
     data-kt-menu="true"
   >
     <div class="px-7 py-5 d-flex justify-content-between align-items-center">
-      <div class="fs-5 text-gray-900 fw-bold">학교 정보 필터링</div>
+      <div class="fs-5 text-gray-900 fw-bold">교육기관 정보 필터링</div>
       <button
         ref="closeButton"
         type="button"
@@ -24,8 +24,25 @@
             type="text"
             class="form-control form-control-solid"
             placeholder="학교명을 입력해주세요."
-            v-model="data.programName"
+            v-model="data.name"
           />
+        </div>
+      </div>
+      
+      <!-- 교육기관 유형 선택: API로 받아온 학교유형 목록 사용 -->
+      <div class="mb-10">
+        <label class="form-label fw-semibold">교육기관 유형</label>
+        <div>
+          <select v-model="data.schoolTypeId" class="form-select">
+            <option disabled value="">교육기관 유형을 선택하세요</option>
+            <option
+              v-for="option in schoolTypeOptions"
+              :key="option.id"
+              :value="option.id"
+            >
+              {{ option.name }}
+            </option>
+          </select>
         </div>
       </div>
 
@@ -132,7 +149,7 @@
             type="text"
             class="form-control form-control-solid"
             placeholder="상세주소를 입력해주세요."
-            v-model="data.chapter"
+            v-model="data.street"
           />
         </div>
       </div>
@@ -143,7 +160,7 @@
             type="text"
             class="form-control form-control-solid"
             placeholder="관리자명 입력해주세요."
-            v-model="data.grade"
+            v-model="data.managerName"
           />
         </div>
       </div>
@@ -197,9 +214,11 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, reactive, computed, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
+import { ApiUrl } from "@/assets/ts/_utils/api";
 
 interface Filter {
   isConfirmed: string;
@@ -207,11 +226,12 @@ interface Filter {
   district: string[];
   representativeNumber: string;
   classNumber: string;
-  grade: string;
-  programName: string;
-  chapter: string;
+  managerName: string;
+  name: string;
+  street: string;
   startDate: string;
   endDate: string;
+  schoolTypeId: string; // 선택한 학교유형의 id
 }
 
 export default defineComponent({
@@ -242,27 +262,73 @@ export default defineComponent({
 
     // 모든 개별 권역 목록 (고정 순서 사용)
     const allZones = computed(() => zoneOrder);
-
     // 모든 지역 목록 (모든 권역의 지역들을 합침)
     const allAreas = computed(() => {
       return Object.values(zoneData).flat();
     });
 
-    // 초기 상태: 모든 권역과 모든 지역 선택
+    // 초기 상태: 모든 권역과 모든 지역 선택, 그리고 학교유형은 빈 문자열
     const data = reactive<Filter>({
       isConfirmed: "",
       selectedZones: [...zoneOrder],
       district: [...allAreas.value],
       representativeNumber: "",
       classNumber: "",
-      grade: "",
-      programName: "",
-      chapter: "",
+      managerName: "",
+      name: "",
+      street: "",
       startDate: "",
       endDate: "",
+      schoolTypeId: "",
     });
 
-    // 전체권역 체크 여부: 모든 개별 권역이 선택되어 있으면 true
+    // 드롭다운으로 표시할 학교유형 옵션 (API 호출로 가져옴)
+    const schoolTypeOptions = ref<any[]>([]);
+
+    // 로컬스토리지 "user"에서 businessId 추출 후 학교유형 목록 호출
+    const loadSchoolTypes = async () => {
+      try {
+        const userString = localStorage.getItem("user");
+        if (!userString) {
+          console.error("user 데이터가 없습니다.");
+          return;
+        }
+        const user = JSON.parse(userString);
+        const businessId = user.businessId;
+        if (!businessId) {
+          console.error("businessId가 존재하지 않습니다.");
+          return;
+        }
+        const token = localStorage.getItem("token");
+        const url = ApiUrl(`/admin/school-types?businessId=${businessId}`);
+        console.log("Sending API request to:", url); // API 요청 URL 콘솔 출력
+        const response = await fetch(url, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const text = await response.text();
+        console.log("Raw response text:", text); // 응답 원본 텍스트 출력
+        try {
+          const json = JSON.parse(text);
+          console.log("Parsed JSON response:", json); // JSON 파싱 결과 출력
+          if (json.success) {
+            schoolTypeOptions.value = json.data.content;
+          } else {
+            console.error("API 응답 실패:", json.message);
+          }
+        } catch (parseError) {
+          console.error("JSON 파싱 실패:", parseError);
+        }
+      } catch (err) {
+        console.error("Error loading school types", err);
+      }
+    };
+
+
+    onMounted(() => {
+      loadSchoolTypes();
+    });
+
+    // 전체권역 체크 여부
     const isAllSelected = computed(() => {
       return data.selectedZones.length === allZones.value.length;
     });
@@ -275,7 +341,6 @@ export default defineComponent({
       if (checked) {
         data.selectedZones = [...allZones.value];
       }
-      // 해제 시도는 무시
     };
 
     // 개별 권역 체크박스 변경 처리
@@ -285,7 +350,6 @@ export default defineComponent({
           data.selectedZones.push(zone);
         }
       } else {
-        // 마지막 남은 권역은 해제할 수 없음
         if (data.selectedZones.length === 1 && data.selectedZones.includes(zone)) {
           return;
         }
@@ -295,7 +359,7 @@ export default defineComponent({
 
     // 선택된 권역들을 고정 순서대로 정렬한 computed 프로퍼티
     const sortedSelectedZones = computed(() => {
-      return zoneOrder.filter(zone => data.selectedZones.includes(zone));
+      return zoneOrder.filter((zone) => data.selectedZones.includes(zone));
     });
 
     return {
@@ -309,6 +373,7 @@ export default defineComponent({
       allAreas,
       sortedSelectedZones,
       zoneColors,
+      schoolTypeOptions,
     };
   },
   methods: {
@@ -322,20 +387,21 @@ export default defineComponent({
         cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
-          // 선택된 권역에 해당하는 지역 목록을 구합니다.
-          const allowedDistricts: string[] = []; // 타입 명시!
-          this.data.selectedZones.forEach(zone => {
+          const allowedDistricts: string[] = [];
+          this.data.selectedZones.forEach((zone: string) => {
             if (this.zoneData[zone]) {
               allowedDistricts.push(...this.zoneData[zone]);
             }
           });
-          // data.district에 포함된 값 중에서 allowedDistricts에 있는 값만 남깁니다.
-          const filteredDistrict = this.data.district.filter(area =>
+          const filteredDistrict = this.data.district.filter((area: string) =>
             allowedDistricts.includes(area)
           );
-          // 최종 필터 데이터 구성 (selectedZones 필드는 제외)
           const { selectedZones, ...rest } = this.data;
           const filterData = { ...rest, district: filteredDistrict };
+          // 학교유형 드롭다운 선택 시 해당 값을 schoolTypeId key로 포함
+          if (this.data.schoolTypeId) {
+            filterData.schoolTypeId = this.data.schoolTypeId;
+          }
           this.$emit("apply-filter", filterData);
           (this.$refs.closeButton as HTMLElement).click();
         }
@@ -352,16 +418,16 @@ export default defineComponent({
       }).then((result) => {
         if (result.isConfirmed) {
           this.data.isConfirmed = "";
-          // 초기 상태: 모든 권역과 모든 지역 선택
           this.data.selectedZones = ["1권역", "2권역", "3권역", "4권역", "5권역", "6권역"];
           this.data.district = [...this.allAreas];
           this.data.representativeNumber = "";
           this.data.classNumber = "";
-          this.data.grade = "";
-          this.data.programName = "";
-          this.data.chapter = "";
+          this.data.managerName = "";
+          this.data.name = "";
+          this.data.street = "";
           this.data.startDate = "";
           this.data.endDate = "";
+          this.data.schoolTypeId = "";
           const { selectedZones, ...rest } = this.data;
           const filterData = { ...rest, district: [...this.data.district] };
           this.$emit("apply-filter", filterData);
@@ -373,6 +439,18 @@ export default defineComponent({
 });
 </script>
 
+<style scoped>
+.modal-content {
+  height: 60%;
+  overflow-y: auto;
+}
+
+/* 드롭다운 메뉴 스크롤 처리 */
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+</style>
 
 
 <style scoped>

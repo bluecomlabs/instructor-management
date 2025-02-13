@@ -37,23 +37,23 @@ const MainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
-    heading: "학교 관리",
+    heading: "교육기관 관리",
     route: "/resources",
     pages: [
       {
-        heading: "학교 조회",
+        heading: "교육기관 조회",
         route: "/admin/SchoolList",
         keenthemesIcon: "ranking",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "학교 타입 조회",
+        heading: "교육기관 타입 설정",
         route: "/admin/SchoolType",
         keenthemesIcon: "ranking",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "학교 생성",
+        heading: "교육기관 생성",
         route: "/admin/SchoolAdd",
         keenthemesIcon: "ranking",
         bootstrapIcon: "bi-printer",

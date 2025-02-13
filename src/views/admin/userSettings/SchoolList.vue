@@ -522,7 +522,7 @@ export default defineComponent({
       if (selectedItems.value.length > 0) {
         console.log("선택된 기관 삭제:", selectedItems.value);
       } else {
-        router.push({ name: "admin-InstitutionAdd" });
+        router.push({ name: "admin-SchoolAdd" });
       }
     };
 
@@ -574,11 +574,11 @@ export default defineComponent({
       }
     };
 
-    // 단건 삭제
+    // 삭제
     const deleteInstitution = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(ApiUrl(`/admin/institutions/${id}`), {
+        await axios.delete(ApiUrl(`/admin/schools/${id}`), { 
           headers: { Authorization: `Bearer ${token}` },
         });
         data.value = data.value.filter((inst) => inst.id !== id);
@@ -587,11 +587,12 @@ export default defineComponent({
       }
     };
 
+
     // 상세보기 이동
     const onInstitutionClick = (institution: ITableSchool) => {
       localStorage.setItem("selectedInstitutionId", institution.id.toString());
       router.push({
-        name: "admin-InstitutionDetails",
+        name: "admin-SchoolDetails",
         params: { id: institution.id },
       });
     };

@@ -413,7 +413,7 @@ export default defineComponent({
 
     const goEdit = () => {
       if (id.value !== null) {
-        router.push({ name: "admin-InstitutionEdit", params: { id: id.value.toString() } });
+        router.push({ name: "admin-SchoolEdit", params: { id: id.value.toString() } });
       } else {
         Swal.fire({
           text: "수정할 교육기관 ID가 없습니다.",

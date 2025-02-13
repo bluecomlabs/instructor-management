@@ -43,7 +43,6 @@ import axios from 'axios';
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-// import api from '@/assets/ts/_utils/api.js';
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
 export default defineComponent({
@@ -77,16 +76,18 @@ export default defineComponent({
         const result = response.data;
         if (result.success) {
           // 로그인 성공 시 토큰과 사용자 정보는 result.data 안에 있음
-          const { token, role, username: userUsername } = result.data;
+          // businessId도 함께 받아옵니다.
+          const { token, role, username: userUsername, businessId } = result.data;
           
           // 혹시 토큰에 "Bearer " 접두어가 붙어 있다면 제거 (현재 예시에서는 붙어있지 않음)
           const tokenWithoutBearer = token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
           localStorage.setItem('token', tokenWithoutBearer);
 
-          // 필요한 사용자 정보만 로컬 스토리지에 저장
+          // 필요한 사용자 정보만 로컬 스토리지에 저장 (businessId 추가)
           localStorage.setItem('user', JSON.stringify({
             role,
-            username: userUsername
+            username: userUsername,
+            businessId,
           }));
 
           Swal.fire({
@@ -138,6 +139,7 @@ export default defineComponent({
   },
 });
 </script>
+
 
 <style scoped>
 .background-container {
