@@ -61,7 +61,7 @@ export default defineComponent({
       }
       
       try {
-        const response = await axios.post(ApiUrl('/v1/auth/login'),
+        const response = await axios.post(ApiUrl('/auth/login'),
           {
             username: username.value,
             password: password.value,

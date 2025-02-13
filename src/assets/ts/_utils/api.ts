@@ -17,7 +17,7 @@
 // };
 
 // 개발용
-const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = "http://localhost:8080/v1";
 
 export const ApiUrl = (endpoint: string) => {
   return `${apiBaseUrl}${endpoint}`;

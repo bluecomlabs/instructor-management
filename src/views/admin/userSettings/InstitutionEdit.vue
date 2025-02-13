@@ -396,7 +396,7 @@ export default defineComponent({
             confirmButton: "btn fw-semibold btn-light-primary",
           },
         }).then(() => {
-          router.push({ name: "admin-InstitutionList" });
+          router.push({ name: "admin-SchoolList" });
         });
 
       } catch (error: unknown) {
@@ -471,7 +471,7 @@ export default defineComponent({
               confirmButton: "btn fw-semibold btn-light-primary",
             },
           }).then(() => {
-            router.push({ name: "admin-InstitutionList" });
+            router.push({ name: "admin-SchoolList" });
           });
 
         } catch (error: unknown) {

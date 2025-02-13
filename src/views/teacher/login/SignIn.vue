@@ -60,43 +60,49 @@ export default defineComponent({
       }
 
       try {
-        const response = await axios.post(ApiUrl('/login'), {
-          username: username.value,
-          password: password.value,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await axios.post(ApiUrl('/v1/auth/login'), 
+          {
+            username: username.value,
+            password: password.value,
           },
-        });
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }
+        );
 
-        const token = response.data['token'];
-        const user = response.data['user'];
-        console.log(response);
-        console.log(token);
-        const tokenWithoutBearer = token.replace('Bearer ', '');
-        localStorage.setItem('token', tokenWithoutBearer);
+        // 새로운 API 응답 구조에 따라 response.data 안에 code, data, message, success가 있음
+        const result = response.data;
+        if (result.success) {
+          // 강사 로그인 시, 토큰 및 사용자 정보를 result.data 내부에서 추출합니다.
+          const { token, role, username: userUsername } = result.data;
+          
+          // 혹시 토큰에 "Bearer " 접두어가 붙어 있다면 제거
+          const tokenWithoutBearer = token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
+          localStorage.setItem('token', tokenWithoutBearer);
 
-        localStorage.setItem('user', JSON.stringify({
-          name: user.name,
-          id: user.id,
-          email: user.email,
-          username: user.username
-        }));
+          // 사용자 정보를 로컬 스토리지에 저장합니다.
+          localStorage.setItem('user', JSON.stringify({
+            role,
+            username: userUsername
+          }));
 
-        Swal.fire({
-          text: "방문을 환영합니다.",
-          icon: "success",
-          buttonsStyling: false,
-          confirmButtonText: "확인",
-          heightAuto: false,
-          customClass: {
-            confirmButton: "btn fw-semibold btn-light-primary",
-          },
-        }).then(() => {
-          router.push({ name: "user-dashboard" });
-        });
-
+          Swal.fire({
+            text: "방문을 환영합니다.",
+            icon: "success",
+            buttonsStyling: false,
+            confirmButtonText: "확인",
+            heightAuto: false,
+            customClass: {
+              confirmButton: "btn fw-semibold btn-light-primary",
+            },
+          }).then(() => {
+            router.push({ name: "user-dashboard" });
+          });
+        } else {
+          throw new Error(result.message || "로그인 실패");
+        }
       } catch (error: unknown) {
         Swal.fire({
           text: "아이디와 비밀번호가 틀렸습니다.",
@@ -130,7 +136,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .background-container {

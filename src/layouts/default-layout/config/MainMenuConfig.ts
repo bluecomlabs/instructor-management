@@ -9,7 +9,6 @@ const MainMenuConfig: Array<MenuItem> = [
         heading: "전체 프로그램 현황",
         route: "/admin/AllProgramStatusList",
         keenthemesIcon: "element-11",
-        bootstrapIcon: "bi-Person-walking",
       },
       // {
       //   heading: "교육 일정 프로그램 현황",
@@ -35,6 +34,30 @@ const MainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "some-files",
         bootstrapIcon: "bi-printer",
       }
+    ],
+  },
+  {
+    heading: "학교 관리",
+    route: "/resources",
+    pages: [
+      {
+        heading: "학교 조회",
+        route: "/admin/SchoolList",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "학교 타입 조회",
+        route: "/admin/SchoolType",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "학교 생성",
+        route: "/admin/SchoolAdd",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
     ],
   },
   {
@@ -143,12 +166,12 @@ const MainMenuConfig: Array<MenuItem> = [
         keenthemesIcon: "abstract-38",
         bootstrapIcon: "bi-buildings",
       },
-      {
-        heading: "기관 관리",
-        route: "/admin/InstitutionList",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-buildings",
-      },
+      // {
+      //   heading: "기관 관리",
+      //   route: "/admin/SchoolList",
+      //   keenthemesIcon: "abstract-38",
+      //   bootstrapIcon: "bi-buildings",
+      // },
       {
         heading: "강사 관리",
         route: "/admin/TeacherList",

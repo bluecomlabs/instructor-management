@@ -297,10 +297,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "EducationalList",
         name: "user-EducationalList",
-        component: () => import("@/views/admin/userSettings/InstitutionList.vue"),
+        component: () => import("@/views/admin/userSettings/SchoolList.vue"),
         meta: {
-          pageTitle: "교육기관 관리",
-          breadcrumbs: ["교육 리소스 관리", "교육기관 관리"],
+          pageTitle: "학교 관리",
+          breadcrumbs: ["학교 관리", "학교 조회"],
         },
       },
       {
@@ -631,12 +631,21 @@ const routes: Array<RouteRecordRaw> = [
       },
       // 설정 및 사용자 관리 - 기관 관련
       {
-        path: "InstitutionList",
-        name: "admin-InstitutionList",
-        component: () => import("@/views/admin/userSettings/InstitutionList.vue"),
+        path: "SchoolList",
+        name: "admin-SchoolList",
+        component: () => import("@/views/admin/userSettings/SchoolList.vue"),
         meta: {
-          pageTitle: "설정 및 사용자 관리",
-          breadcrumbs: ["설정 및 사용자 관리", "기관 관리"],
+          pageTitle: "학교 조회",
+          breadcrumbs: ["학교 관리", "학교 조회"],
+        },
+      },
+      {
+        path: "SchoolType",
+        name: "admin-SchoolType",
+        component: () => import("@/views/admin/userSettings/SchoolType.vue"),
+        meta: {
+          pageTitle: "학교 관리",
+          breadcrumbs: ["학교 관리", "학교 타입 조회"],
         },
       },
       {
