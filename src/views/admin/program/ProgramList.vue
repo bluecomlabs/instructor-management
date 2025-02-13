@@ -1,74 +1,46 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <div class="d-flex align-items-center me-3">
-        <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
-          <select v-model="selectedStatus" class="form-select filtercheckbox-button dropdown-button">
-            <option value="OPEN">OPEN</option>
-            <option value="CLOSE">CLOSE</option>
-          </select>
-          <button :class="{ 'cmdel-selected': selectedIds.length > 0 }" type="button" class="applycheckbox-button btn btn-primary ms-2" @click="changeProgramStatus">
-            변경
-          </button>
-        </div>
-      </div>
       <div class="card-title"></div>
+
       <div class="card-toolbar">
         <div class="card-toolbar d-flex justify-content-between align-items-center">
+          <!-- 좌측: 선택된 항목 표시/삭제 버튼 -->
           <div class="d-flex justify-content-start align-items-center">
             <transition name="fade">
               <div v-if="selectedIds.length > 0" class="d-flex align-items-center">
                 <div class="fw-bold me-5">
-                  <span class="desktop-text"><span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨</span>
+                  <span class="me-2">{{ selectedIds.length }}</span> 항목 선택됨
                 </div>
-
-                <div class="vertical-separator mx-3 check-delline"></div>
-
-                <div class="d-flex align-items-center me-3" style=" margin-right: 0 !important">
+                <div class="vertical-separator mx-3"></div>
+                <div class="ms-4" style="margin-left: 0 !important">
                   <button
                     type="button"
-                    class="btn btn-primary applycheckbox-button"
-                    @click="changeProgramStatus"
-                    :class="{ 'del-selected': selectedIds.length > 0 }"
-                  >
-                    <span class="desktop-text">상태 변경</span>
-                    <span class="mobile-text">변경</span>
-                  </button>
-                </div>
-
-                <div class="vertical-separator mx-3 check-delline"></div>
-
-                <div class="ms-4" style=" margin-left: 0 !important">
-                  <button
-                    type="button"
-                    class="btn btn-danger delcheckbox-button"
+                    class="btn btn-danger checkbox-button"
                     @click="onDeletePrograms"
-                    :class="{ 'check-selected': selectedIds.length > 0 }"
                   >
-                  <span class="desktop-text">프로그램 삭제</span>
-                  <span class="mobile-text">삭제</span>
+                    프로그램 삭제
                   </button>
                 </div>
-                <div class="vertical-separator mx-3 check-delline"></div>
+                <div class="vertical-separator mx-3"></div>
               </div>
             </transition>
           </div>
 
-
-          <div class="d-flex justify-content-end align-items-center" style="margin-left: 2px !important">
+          <!-- 우측: 프로그램 등록 버튼 -->
+          <div class="d-flex justify-content-end align-items-center">
             <button
-              v-if="showRegisterButton"
               tabindex="3"
               type="button"
               @click="onButtonAction"
               class="btn btn-light-primary checkbox-button"
             >
-              <span class="desktop-text">프로그램 등록</span>
-              <span class="mobile-text">등록</span>
+              <span class="indicator-label">프로그램 등록</span>
             </button>
           </div>
         </div>
 
+        <!-- 필터 아이콘 & 필터 컴포넌트 -->
         <div class="card-toolbar">
           <button
             type="button"
@@ -77,18 +49,22 @@
             data-kt-menu-placement="bottom-end"
             data-kt-menu-flip="top-end"
           >
+            <!-- 아이콘 (예: 'category') -->
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
-          <Dropdown3 @apply-filter="handleFilter"></Dropdown3>
+          <!-- 필터 컴포넌트 (Dropdown) -->
+          <ProgramListFilter @apply-filter="handleFilter" />
         </div>
       </div>
     </div>
 
-    <div class="card-body pt-0">
+    <div class="card-body pt-0 position-relative">
+      <!-- 로딩 오버레이 -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
 
+      <!-- KTDatatable (체크박스 및 컬럼 슬롯) -->
       <KTDatatable
         @on-sort="sort"
         @on-items-select="onItemSelect"
@@ -97,57 +73,61 @@
         :checkbox-enabled="true"
         @selection-change="onSelectionChange"
       >
+        <!-- ====== [헤더 슬롯들] ====== -->
         <template v-slot:header-status>
           <div>상태</div>
         </template>
         <template v-slot:header-programName>
           <div>프로그램명</div>
         </template>
-        <template v-slot:header-chapter>
-          <div>총 차시</div>
-        </template>
-        <template v-slot:header-product>
-          <div>교구</div>
-        </template>
-        <template v-slot:header-level>
-          <div>레벨</div>
-        </template>
-        <template v-slot:header-remark>
+        <template v-slot:header-remarks>
           <div>비고</div>
         </template>
         <template v-slot:header-createdAt>
-          <div>생성 날짜</div>
+          <div>등록일시</div>
         </template>
 
-        <template v-slot:status="{ row: customer }">
-          <div class="column-status" @click="onProgramClick(customer)" style="cursor: pointer;">
-            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[customer.status]}`">
-              {{ statusLabel[customer.status] }}
+        <!-- ====== [본문 슬롯들] ====== -->
+        <!-- 상태 -->
+        <template v-slot:status="{ row: program }">
+          <div
+            class="column-status"
+            @click="onProgramClick(program)"
+            style="cursor: pointer;"
+          >
+            <span :class="['badge', 'py-3', 'px-4', 'fs-7', 'badge-light-' + statusColor[program.status]]">
+              {{ statusLabel[program.status] }}
             </span>
           </div>
         </template>
-        <template v-slot:programName="{ row: customer }">
-          <div class="column-programName" @click="onProgramClick(customer)" style="cursor: pointer;">
-            {{ customer.programName }}
+
+        <!-- 프로그램명 -->
+        <template v-slot:programName="{ row: program }">
+          <div
+            class="column-programName"
+            @click="onProgramClick(program)"
+            style="cursor: pointer;"
+          >
+            {{ program.programName }}
           </div>
         </template>
-        <template v-slot:chapter="{ row: customer }">
-          <div class="column-chapter">{{ customer.chapter }}</div>
+
+        <!-- 비고 -->
+        <template v-slot:remarks="{ row: program }">
+          <div class="column-remarks">
+            {{ program.remarks }}
+          </div>
         </template>
-        <template v-slot:product="{ row: customer }">
-          <div class="column-product">{{ customer.product }}</div>
-        </template>
-        <template v-slot:level="{ row: customer }">
-          <div class="column-level">{{ customer.level }}</div>
-        </template>
-        <template v-slot:remark="{ row: customer }">
-          <div class="column-remark">{{ customer.remark }}</div>
-        </template>
-        <template v-slot:createdAt="{ row: customer }">
-          <div class="column-createdAt">{{ customer.createdAt }}</div>
+
+        <!-- 등록일시 -->
+        <template v-slot:createdAt="{ row: program }">
+          <div class="column-createdAt">
+            {{ program.createdAt }}
+          </div>
         </template>
       </KTDatatable>
 
+      <!-- 페이지네이션 -->
       <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
           <ul class="pagination">
@@ -205,207 +185,110 @@
   </div>
 </template>
 
-
-
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed, watch } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import type { Sort } from "@/components/kt-datatable/table-partials/models";
-import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
+import ProgramListFilter from "@/components/dropdown/ProgramListFilter.vue";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
-interface IProgram {
+interface IApiProgram {
   id: number;
-  status: string;
+  businessId: number;
   programName: string;
-  chapter: number | null;
-  product: number | null;
-  level: number | null;
-  remark: string | null;
+  status: string;
+  teachingAidId: number | null;
+  remarks: string | null;
   createdAt: number;
+  createdId: number;
+  updatedAt: number | null;
+  updatedId: number | null;
+}
+
+/** 실제 테이블에 표시할 데이터 구조 */
+interface ITableProgram {
+  id: number;
+  programName: string;
+  remarks: string;
+  status: string;
+  createdAt: string;
 }
 
 export default defineComponent({
   name: "kt-program-list",
   components: {
     KTDatatable,
-    Dropdown3,
+    ProgramListFilter,
   },
-
   setup() {
     const router = useRouter();
-    const data = ref<Array<IProgram>>([]);
-    const totalElements = ref<number>(0);
-    const totalPages = ref<number>(0);
-    const currentPage = ref<number>(0);
-    const pageSize = ref<number>(10);
-    const search = ref<string>("");
-    const selectedItems = ref<Array<IProgram>>([]);
-    const selectedIds = ref<Array<number>>([]);
-    const selectedStatus = ref("OPEN");
 
-    // 딜레이함수
-    const showRegisterButton = ref(true);
-    let registerButtonTimeout: number | null = null;
+    // 테이블에 표시할 최종 데이터
+    const data = ref<ITableProgram[]>([]);
+    // 페이지네이션 관련
+    const totalElements = ref(0);
+    const totalPages = ref(0);
+    const currentPage = ref(0);
+    const pageSize = ref(5);
 
-    watch(selectedIds, (newVal) => {
-      if (newVal.length === 0) {
-        showRegisterButton.value = false;
-        if (registerButtonTimeout) {
-          clearTimeout(registerButtonTimeout);
-        }
-        registerButtonTimeout = window.setTimeout(() => {
-          showRegisterButton.value = true;
-        }, 300);
-      } else {
-        showRegisterButton.value = false;
-        if (registerButtonTimeout) {
-          clearTimeout(registerButtonTimeout);
-          registerButtonTimeout = null;
-        }
-      }
+    // 선택된 아이템
+    const selectedItems = ref<ITableProgram[]>([]);
+    const selectedIds = ref<number[]>([]);
+    // 로딩 상태
+    const isLoading = ref(false);
+
+    // 정렬 상태
+    const isAscending = ref({
+      programName: true,
+      status: true,
+      createdAt: true,
     });
+    const currentSortBy = ref("");
 
-    const changeProgramStatus = async () => {
-      const token = localStorage.getItem("token");
+    // 필터 데이터
+    const filters = ref<any>({});
 
-      if (selectedIds.value.length === 0) {
-        Swal.fire({
-          title: "선택된 항목 없음",
-          text: "상태를 변경할 항목을 선택하세요.",
-          icon: "warning",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-warning",
-          },
-        });
-        return;
-      }
-
-      try {
-        const requestBody = {
-          programIds: selectedIds.value,
-          status: selectedStatus.value,
-        };
-
-        console.log("API 호출 URL:", ApiUrl("/api/v1/admin/programs/status"));
-        console.log("요청 바디:", requestBody);
-
-        await axios.post(ApiUrl("/api/v1/admin/programs/status"), requestBody, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        Swal.fire({
-          title: "상태 변경 완료",
-          text: "선택된 프로그램의 상태가 변경되었습니다.",
-          icon: "success",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-primary",
-          },
-        }).then(() => {
-          window.location.reload();
-        });
-      } catch (error) {
-        console.error("Error changing program status: ", error);
-
-        Swal.fire({
-          title: "오류",
-          text: "프로그램 상태 변경에 실패했습니다.",
-          icon: "error",
-          customClass: {
-            confirmButton: "btn fw-semibold btn-danger",
-          },
-        });
-      }
-    };
-
+    // 테이블 헤더 설정
     const headerConfig = ref([
-      {
-        columnName: "상태",
-        columnLabel: "status",
-        sortEnabled: true,
-        columnWidth: 50,
-      },
       {
         columnName: "프로그램명",
         columnLabel: "programName",
         sortEnabled: true,
-        columnWidth: 200,
       },
       {
-        columnName: "총 차시",
-        columnLabel: "chapter",
+        columnName: "상태",
+        columnLabel: "status",
         sortEnabled: true,
-        columnWidth: 100,
-      },
-      {
-        columnName: "교구",
-        columnLabel: "product",
-        sortEnabled: true,
-        columnWidth: 50,
-      },
-      {
-        columnName: "레벨",
-        columnLabel: "level",
-        sortEnabled: true,
-        columnWidth: 50,
       },
       {
         columnName: "비고",
-        columnLabel: "remark",
+        columnLabel: "remarks",
         sortEnabled: false,
-        columnWidth: 200,
       },
       {
-        columnName: "생성 날짜",
+        columnName: "등록일시",
         columnLabel: "createdAt",
-        sortEnabled: false,
-        columnWidth: 150,
+        sortEnabled: true,
       },
     ]);
 
-    const statusColor = {
+    // 상태에 따른 배지 색상/라벨
+    const statusColor: Record<string, string> = {
+      INIT: "init",
       OPEN: "primary",
-      CLOSE: "danger"
+      CLOSE: "danger",
+    };
+    const statusLabel: Record<string, string> = {
+      INIT: "대기",
+      OPEN: "활성",
+      CLOSE: "비활성",
     };
 
-    const statusLabel = {
-      OPEN: "OPEN",
-      CLOSE: "CLOSE"
-    };
-
-    const isLoading = ref<boolean>(false);
-    const isAscending = ref({
-      status: true,
-      programName: true,
-      chapter: true,
-      product: true,
-      level: true,
-    });
-
-    const currentSortBy = ref<string>("");
-
-    const filters = ref({
-      status: "",
-      programName: "",
-      chapter: "",
-      product: "",
-      startDate: "",
-      endDate: "",
-      level: "",
-    });
-
-    const handleFilter = (filterData) => {
-      filters.value = filterData;
-      currentPage.value = 0;
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
-    };
-
-    const visiblePages = computed<Array<number>>(() => {
+    // 페이지네이션 계산
+    const visiblePages = computed(() => {
       const range = 2;
       let startPage = Math.max(1, currentPage.value + 1 - range);
       let endPage = Math.min(totalPages.value, currentPage.value + 1 + range);
@@ -418,108 +301,151 @@ export default defineComponent({
         }
       }
 
-      const pages: Array<number> = [];
+      const pages: number[] = [];
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
       return pages;
     });
 
+    /** ================ [API 호출 함수] ================ */
     const fetchPrograms = async (
       page: number = 0,
       sortBy: string = currentSortBy.value,
-      filtersData = filters.value
+      filterData = filters.value
     ) => {
       try {
         if (page === 0 && sortBy === "") isLoading.value = true;
+
         const token = localStorage.getItem("token");
-        const filterQuery = buildFilterQuery(filtersData);
 
-        const response = await axios.get(
-          ApiUrl(
-            `/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
-          ),
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        // URLSearchParams를 이용해 쿼리 파라미터 구성
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("size", pageSize.value.toString());
+
+        if (sortBy) {
+          // sortBy는 "&sort=key,asc" 형태이므로 처리
+          const cleanSortBy = sortBy.startsWith("&") ? sortBy.slice(1) : sortBy;
+          const [key, value] = cleanSortBy.split("=");
+          if (key && value) {
+            params.append(key, value);
           }
-        );
-        const responseData = response.data;
-        console.log(
-          "API 호출 URL:",
-          ApiUrl(
-            `/api/v1/admin/programs?page=${page}&size=${pageSize.value}&search=${search.value}${sortBy}${filterQuery}`
-          )
-        );
-        console.log("API 응답 데이터:", response.data);
+        }
 
-        data.value = responseData.content.map((program: IProgram) => ({
-          ...program,
-          status: program.status,
-          programName: program.programName,
-          chapter: program.chapter ? program.chapter : "-",
-          product: program.product ? program.product : "-",
-          level: program.level ? program.level : "-",
-          remark: program.remark ? program.remark : "-",
-          createdAt: new Date(program.createdAt * 1000).toISOString().split("T")[0],
-        }));
+        // 필터 데이터 추가
+        if (filterData) {
+          Object.keys(filterData).forEach((key) => {
+            if (filterData[key]) {
+              params.append(key, filterData[key]);
+            }
+          });
+        }
+
+        const finalUrl = ApiUrl(`/admin/programs?${params.toString()}`);
+        console.log("[fetchPrograms] Request URL:", finalUrl);
+        console.log("[fetchPrograms] Filters:", filterData);
+        console.log("[fetchPrograms] SortBy:", sortBy);
+
+        // GET 요청
+        const response = await axios.get(finalUrl, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        // 응답 처리
+        const responseData = response.data.data;
+        data.value = responseData.content.map((program: IApiProgram) => {
+          return {
+            id: program.id,
+            programName: program.programName,
+            remarks: program.remarks ?? "-",
+            status: program.status.toUpperCase(),
+            createdAt: new Date(program.createdAt).toLocaleString(),
+          } as ITableProgram;
+        });
 
         totalElements.value = responseData.totalElements;
         totalPages.value = responseData.totalPages;
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error("Error fetching programs: ", error);
       } finally {
         isLoading.value = false;
       }
     };
 
-    const buildFilterQuery = (filtersData) => {
-      let query = "";
-      if (filtersData.status) {
-        query += `&status=${encodeURIComponent(filtersData.status)}`;
-      }
-      if (filtersData.programName) {
-        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
-      }
-      if (filtersData.product) {
-        query += `&product=${encodeURIComponent(filtersData.product)}`;
-      }
-      if (filtersData.chapter) {
-        query += `&chapter=${encodeURIComponent(filtersData.chapter)}`;
-      }
-      if (filtersData.level) {
-        query += `&level=${encodeURIComponent(filtersData.level)}`;
-      }
-      // if (filtersData.startDate) {
-      //   query += `&startDate=${filtersData.startDate}`;
-      // }
-      // if (filtersData.endDate) {
-      //   query += `&endDate=${filtersData.endDate}`;
-      // }
-
-      return query;
-    };
-
+    /** 컴포넌트 마운트 시 목록 불러오기 */
     onMounted(() => {
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
+      fetchPrograms();
     });
 
-    const deleteSubscription = async (id: number) => {
-      try {
-        const token = localStorage.getItem("token");
-        await axios.delete(ApiUrl(`/api/v1/admin/programs/${id}`), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        data.value = data.value.filter((program) => program.id !== id);
-      } catch (error) {
-        console.error("Error deleting program: ", error);
+    /** ================ [정렬 처리] ================ */
+    const sort = (sort: Sort) => {
+      let sortBy = "";
+      if (sort.label === "programName") {
+        sortBy = isAscending.value.programName
+          ? "&sort=programName,asc"
+          : "&sort=programName,desc";
+        isAscending.value.programName = !isAscending.value.programName;
+      } else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "&sort=status,asc"
+          : "&sort=status,desc";
+        isAscending.value.status = !isAscending.value.status;
+      } else if (sort.label === "createdAt") {
+        sortBy = isAscending.value.createdAt
+          ? "&sort=createdAt,asc"
+          : "&sort=createdAt,desc";
+        isAscending.value.createdAt = !isAscending.value.createdAt;
+      } else {
+        return;
+      }
+
+      currentSortBy.value = sortBy;
+      fetchPrograms(currentPage.value, sortBy, filters.value);
+    };
+
+    /** ================ [필터 적용] ================ */
+    const handleFilter = (filterData: any) => {
+      filters.value = filterData;
+      currentPage.value = 0;
+      fetchPrograms(0, currentSortBy.value, filterData);
+    };
+
+    /** ================ [체크박스 선택] ================ */
+    const onItemSelect = (selected: number[]) => {
+      selectedIds.value = selected;
+    };
+    const onSelectionChange = (selectedRows: ITableProgram[]) => {
+      selectedItems.value = selectedRows;
+      selectedIds.value = selectedRows.map((row) => row.id);
+    };
+
+    /** ================ [페이지 변경] ================ */
+    const onPageChange = async (page: number) => {
+      const currentScrollPosition = window.scrollY;
+      currentPage.value = page;
+      await fetchPrograms(page, currentSortBy.value, filters.value);
+      window.scrollTo(0, currentScrollPosition);
+    };
+
+    /** ================ [등록 버튼/삭제 버튼 등] ================ */
+    const onButtonAction = () => {
+      if (selectedItems.value.length > 0) {
+        console.log("선택된 프로그램 삭제:", selectedItems.value);
+      } else {
+        router.push({ name: "admin-ProgramAdd" });
       }
     };
 
-    const deleteFewSubscriptions = async () => {
+    // 선택된 프로그램들 삭제
+    const onDeletePrograms = () => {
+      if (selectedIds.value.length > 0) {
+        deleteFewPrograms();
+      }
+    };
+
+    // 다건 삭제
+    const deleteFewPrograms = async () => {
       const result = await Swal.fire({
         title: "프로그램 삭제 확인",
         text: "정말로 삭제하시겠습니까?",
@@ -533,232 +459,148 @@ export default defineComponent({
         },
         buttonsStyling: false,
       });
-
       if (result.isConfirmed) {
         try {
           for (const id of selectedIds.value) {
-            await deleteSubscription(id);
+            await deleteProgram(id);
           }
-
-          selectedIds.value.length = 0;
-
+          selectedIds.value = [];
           Swal.fire({
             title: "삭제 완료",
             text: "선택된 프로그램이 삭제되었습니다.",
             icon: "success",
-            customClass: {
-              confirmButton: "btn fw-semibold btn-primary",
-            },
+            customClass: { confirmButton: "btn fw-semibold btn-primary" },
           }).then(() => {
             window.location.reload();
           });
         } catch (error) {
           console.error("Error deleting program: ", error);
-
           Swal.fire({
             title: "오류",
             text: "프로그램 삭제에 실패했습니다.",
             icon: "error",
-            customClass: {
-              confirmButton: "btn fw-semibold btn-danger",
-            },
+            customClass: { confirmButton: "btn fw-semibold btn-danger" },
           });
         }
       }
     };
 
-    const sort = (sort: Sort) => {
-      let sortBy = "";
-      if (sort.label === "programName") {
-        sortBy = isAscending.value.programName
-          ? "&sortBy=programName&direction=asc"
-          : "&sortBy=programName&direction=desc";
-        isAscending.value.programName = !isAscending.value.programName;
-      } else if (sort.label === "chapter") {
-        sortBy = isAscending.value.chapter
-          ? "&sortBy=chapter&direction=asc"
-          : "&sortBy=chapter&direction=desc";
-        isAscending.value.chapter = !isAscending.value.chapter;
-      } else if (sort.label === "product") {
-        sortBy = isAscending.value.product
-          ? "&sortBy=product&direction=asc"
-          : "&sortBy=product&direction=desc";
-        isAscending.value.product = !isAscending.value.product;
-      } else if (sort.label === "level") {
-        sortBy = isAscending.value.level
-          ? "&sortBy=level&direction=asc"
-          : "&sortBy=level&direction=desc";
-        isAscending.value.level = !isAscending.value.level;
-      } else if (sort.label === "status") {
-        sortBy = isAscending.value.status
-          ? "&sortBy=status&direction=asc"
-          : "&sortBy=status&direction=desc";
-        isAscending.value.status = !isAscending.value.status;
-      } else {
-        return;
-      }
-      currentSortBy.value = sortBy;
-      fetchPrograms(currentPage.value, sortBy, filters.value);
-    };
-
-    const onItemSelect = (selectedItems: Array<number>) => {
-      selectedIds.value = selectedItems;
-    };
-
-    const searchItems = () => {
-      currentPage.value = 0;
-      fetchPrograms(currentPage.value, currentSortBy.value, filters.value);
-    };
-
-    const onPageChange = async (page: number) => {
-      const currentScrollPosition = window.scrollY;
-      currentPage.value = page;
-      await fetchPrograms(page, currentSortBy.value, filters.value);
-      window.scrollTo(0, currentScrollPosition);
-    };
-
-    const onSelectionChange = (selectedRows: Array<IProgram>) => {
-      selectedItems.value = selectedRows;
-    };
-
-    const onButtonAction = () => {
-      if (selectedItems.value.length > 0) {
-        console.log("선택된 프로그램 삭제:", selectedItems.value);
-      } else {
-        router.push({ name: "admin-ProgramAdd" });
+    // 삭제
+    const deleteProgram = async (id: number) => {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(ApiUrl(`/admin/programs/${id}`), { 
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        data.value = data.value.filter((prog) => prog.id !== id);
+      } catch (error) {
+        console.error("Error deleting program: ", error);
       }
     };
 
-    const onDeletePrograms = () => {
-      if (selectedIds.value.length > 0) {
-        deleteFewSubscriptions();
-      }
-    };
-
-    const onProgramClick = (program: IProgram) => {
+    // 상세보기 이동
+    const onProgramClick = (program: ITableProgram) => {
       localStorage.setItem("selectedProgramId", program.id.toString());
-      router.push({ name: "admin-ProgramDetails", params: { id: program.id } });
+      router.push({
+        name: "admin-ProgramDetails",
+        params: { id: program.id },
+      });
     };
 
     return {
-      search,
-      searchItems,
       data,
-      headerConfig,
-      currentPage,
+      totalElements,
       totalPages,
-      onPageChange,
-      visiblePages,
+      currentPage,
+      pageSize,
       selectedItems,
-      onSelectionChange,
-      onButtonAction,
-      onDeletePrograms,
-      onProgramClick,
       selectedIds,
-      sort,
-      deleteFewSubscriptions,
-      onItemSelect,
       isLoading,
       isAscending,
       currentSortBy,
       filters,
-      handleFilter,
-      selectedStatus,
-      changeProgramStatus,
+      headerConfig,
       statusColor,
       statusLabel,
-      showRegisterButton,
+      visiblePages,
+      fetchPrograms,
+      handleFilter,
+      sort,
+      onItemSelect,
+      onSelectionChange,
+      onPageChange,
+      onButtonAction,
+      onDeletePrograms,
+      deleteFewPrograms,
+      deleteProgram,
+      onProgramClick,
     };
   },
 });
 </script>
 
 <style scoped>
+/* 로딩 오버레이 스타일 */
 .overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; 
+  z-index: 9999;
 }
-
 .loader {
-  border: 16px solid #f3f3f3; 
+  border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-.column-status,
-.column-programName,
-.column-chapter,
-.column-product,
-.column-createdAt {
+
+/* 테이블 */
+.kt-datatable table {
+  width: 100%;
+  table-layout: auto;
+}
+.kt-datatable thead th {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+.kt-datatable tbody td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.column-status{
-  width: 70px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+.kt-datatable tbody .column-status,
+.kt-datatable tbody .column-programName,
+.kt-datatable tbody .column-remarks,
+.kt-datatable tbody .column-createdAt {
+  max-width: 150px;
+}
+.kt-datatable thead .column-status,
+.kt-datatable thead .column-programName,
+.kt-datatable thead .column-remarks,
+.kt-datatable thead .column-createdAt {
+  max-width: none;
 }
 
-.column-programName {
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+/* Hover 효과 */
+.kt-datatable tbody tr:hover {
+  background-color: #f1f1f1;
 }
 
-.column-chapter {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-product {
-  width: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-createdAt {
-  width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-/* .fade-enter-active, .fade-leave-active {
+/* Fade 트랜지션 */
+.fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s ease;
 }
 .fade-enter, .fade-leave-to {
@@ -766,12 +608,14 @@ export default defineComponent({
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;
-} */
+}
+
+/* 기타 버튼/레이아웃 */
 .vertical-separator {
   border-left: 1px solid #dee2e6;
   height: 40px;
 }
-.checkbox-button, .applycheckbox-button, .delcheckbox-button, .filtercheckbox-button {
+.checkbox-button {
   width: 120px;
   height: 40px;
   padding: 0 !important;
@@ -781,77 +625,13 @@ export default defineComponent({
   padding-left: 7px !important;
 }
 
-@media (min-width: 769px) {
-  .desktop-text {
-    display: inline;
-  }
-  .mobile-text {
-    display: none;
-  }
-  .cmdel-selected {
-    display: none;
-  }
+/* 페이지네이션 */
+.pagination .page-item.active .page-link {
+  background-color: #3699FF;
+  border-color: #3699FF;
+  color: #fff;
 }
-
-@media (max-width: 768px) {
-  .desktop-text {
-    display: none;
-  }
-  .mobile-text {
-    display: inline;
-  }
-
-  .del-selected {
-    display: none;
-  }
-
-  .check-delline {
-    display: none;
-  }
-  
-  .check-selected {
-    margin-left: -10px;
-  }
-
-  .filtercheckbox-button {
-    width: 90px;
-  }
-
-  .applycheckbox-button, .checkbox-button, .delcheckbox-button {
-    width: 60px;
-  }
-
-  .justify-content-between {
-    justify-content: flex-start !important;
-  }
-
-  .table-row {
-    display: block;
-    margin-bottom: 15px;
-  }
-  .column-isConfirmed,
-  .column-institutionName,
-  .column-programName,
-  .column-createdAt,
-  .column-grade,
-  .column-classNumber,
-  .column-numberOfStudents,
-  .column-date,
-  .column-remark {
-    display: block;
-    width: auto; /* 너비를 자동으로 조정 */
-    white-space: normal; /* 텍스트가 너무 길면 자동 줄 바꿈 */
-    overflow: visible;
-    text-overflow: clip; /* 넘치는 텍스트를 표시하지 않음 */
-    margin: 10px 0;
-  }
-
-  /* 열을 세로로 나열하면서 셀 내용에도 스타일 적용 */
-  .table-row > div {
-    display: block;
-    padding: 10px;
-    border: 1px solid #ddd;
-    margin: 5px 0;
-  }
+.pagination .page-link {
+  cursor: pointer;
 }
 </style>

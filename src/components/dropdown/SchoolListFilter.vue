@@ -175,7 +175,7 @@
           />
         </div>
       </div>
-      <div class="mb-10">
+      <!-- <div class="mb-10">
         <label class="form-label fw-semibold">날짜</label>
         <div>
           <div class="input-group mx-2">
@@ -194,7 +194,7 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="d-flex justify-content-end">
         <button
           type="reset"

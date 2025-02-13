@@ -23,15 +23,15 @@ const MainMenuConfig: Array<MenuItem> = [
     route: "/resources",
     pages: [
       {
-        heading: "프로그램 생성",
-        route: "/admin/ProgramAdd",
-        keenthemesIcon: "add-files",
-        bootstrapIcon: "bi-printer",
-      },
-      {
         heading: "프로그램 조회",
         route: "/admin/ProgramList",
         keenthemesIcon: "some-files",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "프로그램 생성",
+        route: "/admin/ProgramAdd",
+        keenthemesIcon: "add-files",
         bootstrapIcon: "bi-printer",
       }
     ],

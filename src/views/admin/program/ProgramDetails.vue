@@ -3,178 +3,64 @@
     <div class="flex-column flex-lg-row-auto w-100 mb-10">
       <div class="card mb-5 mb-xl-8">
         <div class="card-body">
+          <!-- Program Details -->
           <div class="card mb-5 mb-xl-10">
-            <div
-                class="card-header border-0 cursor-pointer"
-                role="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#kt_account_toturprofile_details"
-                aria-expanded="true"
-                aria-controls="kt_account_toturprofile_details"
-            >
-              <div class="card-title m-0">
+            <div class="card-header border-0 cursor-pointer" role="button">
+              <div class="card-title m-0 d-flex align-items-center">
+                <i class="bi bi-journal-text me-2"></i>
                 <h2 class="fw-bold m-0">프로그램 조회</h2>
               </div>
             </div>
-
-            <div id="kt_account_toturprofile_details" class="collapse show">
-              <VForm
-                  id="kt_account_toturprofile_details_form"
-                  class="form"
-                  novalidate
-              >
-                <div class="card-body border-top p-9">
-                  
-                  <!-- ID 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      ID
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="id"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
+            <div class="card-body border-top p-9">
+              <div v-if="programData">
+                <!-- 프로그램 정보 -->
+                <h3 class="fw-bold section-title">프로그램 정보</h3>
+                <div class="card mb-4">
+                  <div class="card-body p-0">
+                    <table class="table table-bordered mb-0">
+                      <colgroup>
+                        <col style="width: 20%;">
+                        <col style="width: 30%;">
+                        <col style="width: 20%;">
+                        <col style="width: 30%;">
+                      </colgroup>
+                      <tbody>
+                        <tr>
+                          <th class="bg-light">프로그램 ID</th>
+                          <td>{{ programData.id }}</td>
+                          <th class="bg-light">프로그램명</th>
+                          <td>{{ programData.programName }}</td>
+                        </tr>
+                        <tr>
+                          <th class="bg-light">상태</th>
+                          <td>{{ statusLabel }}</td>
+                          <th class="bg-light">비고</th>
+                          <td>{{ programData.remarks || '-' }}</td>
+                        </tr>
+                        <tr>
+                          <th class="bg-light">생성일시</th>
+                          <td>{{ formattedCreatedAt }}</td>
+                          <th class="bg-light">수정일시</th>
+                          <td>{{ formattedUpdatedAt }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-
-                  <!-- 프로그램명 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      프로그램명
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="programName"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 총 차시 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      총 차시 (챕터)
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="chapter"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 상태 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      상태
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="status"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Level 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      난이도
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="level"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="number"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- 교구 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      교구
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="product"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Remark 입력 필드 -->
-                  <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-semibold fs-6" style="font-weight: 600;">
-                      메모
-                    </label>
-                    <div class="col-lg-8 fv-row">
-                      <input 
-                        v-model="remark"
-                        style="font-weight: bold; font-size: 16px; float: left;"
-                        class="form-control form-control-lg form-control-solid" 
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                 </div>
-              </VForm>
+              </div>
+              <div v-else>
+                <p>데이터를 불러오는 중입니다...</p>
+              </div>
+              <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
-          <button
-              type="button"
-              class="btn btn-left btn-active-left-primary me-2"
-              style="margin-right: auto !important; background-color: red; color: white;"
-              @click="deleteData()"
-              >
-            삭제
-          </button>
-          <button
-              type="button"
-              class="btn btn-light btn-active-light-primary me-2"
-              @click="goBack"
-              >
+          <button type="button" class="btn btn-light btn-active-light-primary me-2" @click="goBack">
             뒤로
           </button>
-          <button
-              type="submit"
-              id="kt_account_detaiprofile_details_submit"
-              ref="submitButton1"
-              class="btn btn-primary"
-              @click="goEdit()"
-             >
-            <span class="indicator-label">
-              수정
-            </span>
-            <span class="indicator-progress">
-              잠시만 기다려주세요...
-              <span
-                  class="spinner-border spinner-border-sm align-middle ms-2">
-              </span>
-            </span>
+          <button type="button" class="btn btn-primary" @click="goEdit">
+            수정
           </button>
         </div>
       </div>
@@ -182,141 +68,160 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import axios from 'axios';
-import { defineComponent, ref, onMounted } from "vue";
-import Swal from "sweetalert2/dist/sweetalert2.js";
+import axios from "axios";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
+interface IProgram {
+  id: number;
+  businessId: number;
+  programName: string;
+  status: string;
+  teachingAidId: number | null;
+  remarks: string | null;
+  createdAt: number;
+  createdId: number;
+  updatedAt: number | null;
+  updatedId: number | null;
+}
+
 export default defineComponent({
-  name: "sign-in",
+  name: "ProgramDetails",
   setup() {
     const router = useRouter();
-    const submitButton = ref<HTMLButtonElement | null>(null);
-    const id = ref('');
-    const programName = ref('');
-    const product = ref('');
-    const chapter = ref<number | null>(null);
-    const level = ref<number | null>(null);
-    const status = ref('');
-    const remark = ref('');
-    const errorMessage = ref('');
+    const programData = ref<IProgram | null>(null);
+    const errorMessage = ref("");
 
     const fetchProgramData = async () => {
-      const programId = localStorage.getItem('selectedProgramId');
+      const programId = localStorage.getItem("selectedProgramId");
       if (!programId) {
-        errorMessage.value = '프로그램 ID를 찾을 수 없습니다.';
+        errorMessage.value = "프로그램 ID를 찾을 수 없습니다.";
         return;
       }
-
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/api/v1/admin/programs/${programId}`), {
-          headers: {
-            'Authorization': `Bearer ${token}`
+        const response = await axios.get<{ success: boolean; code: number; message: string; data: IProgram }>(
+          ApiUrl(`/admin/programs/${programId}`),
+          {
+            headers: { Authorization: `Bearer ${token}` },
           }
-        });
-
-        const programData = response.data;
-        
-        id.value = programData.id;
-        programName.value = programData.programName;
-        product.value = programData.product;
-        chapter.value = programData.chapter;
-        level.value = programData.level;
-        status.value = programData.status;
-        remark.value = programData.remark;
+        );
+        programData.value = response.data.data;
       } catch (error) {
-        console.error('Error fetching program data:', error);
-        errorMessage.value = '프로그램 정보를 불러오는 데 실패했습니다.';
+        console.error("Error fetching program data:", error);
+        errorMessage.value = "프로그램 정보를 불러오는 데 실패했습니다.";
       }
     };
 
-    const deleteData = async () => {
-      const programId = localStorage.getItem('selectedProgramId');
+    // 생성일시, 수정일시 포맷팅 (숫자 타임스탬프 → 지역시간 문자열)
+    const formattedCreatedAt = computed(() =>
+      programData.value ? new Date(programData.value.createdAt).toLocaleString() : "-"
+    );
+    const formattedUpdatedAt = computed(() =>
+      programData.value && programData.value.updatedAt
+        ? new Date(programData.value.updatedAt).toLocaleString()
+        : "-"
+    );
 
-      const result = await Swal.fire({
-        title: "삭제하시겠습니까?",
-        text: "삭제된 교육은 복구할 수 없습니다.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-danger",
-          cancelButton: "btn fw-semibold btn-light"
-        },
-        buttonsStyling: false,
-        heightAuto: false,
-      });
-
-      if (result.isConfirmed) {
-        try {
-          const token = localStorage.getItem("token");
-          await axios.delete(ApiUrl(`/api/v1/admin/programs/${programId}`), {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-
-          Swal.fire({
-            text: "프로그램이 성공적으로 삭제되었습니다.",
-            icon: "success",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-primary",
-            },
-          }).then(() => {
-            router.push({ name: "admin-ProgramEdit" });
-          });
-
-        } catch (error: unknown) {
-          Swal.fire({
-            text: "오류가 발생하였습니다.",
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-danger",
-            },
-          });
-        }
+    // 상태에 따른 라벨 매핑: Active -> 활성, Inactive -> 비활성
+    const statusLabel = computed(() => {
+      if (programData.value) {
+        return programData.value.status === "OPEN"
+          ? "활성"
+          : programData.value.status === "CLOSE"
+          ? "비활성"
+          : programData.value.status === "INIT"
+          ? "대기"
+          : programData.value.status;
       }
-    };
-
-    const goEdit = () => {
-      router.push({ name: "admin-ProgramEdit" })
-    };
+      return "-";
+    });
 
     onMounted(() => {
       fetchProgramData();
     });
 
     const goBack = () => {
-      router.back();
+      router.push({ name: "admin-ProgramList" });
+    };
+
+    const goEdit = () => {
+      if (programData.value) {
+        router.push({ name: "admin-ProgramEdit", params: { id: programData.value.id } });
+      } else {
+        errorMessage.value = "프로그램 정보가 로드되지 않았습니다.";
+      }
     };
 
     return {
-      id,
-      programName,
-      product,
-      chapter,
-      level,
-      remark,
-      status,
-      submitButton,
-      goEdit,
-      deleteData,
-      goBack,
+      programData,
       errorMessage,
+      formattedCreatedAt,
+      formattedUpdatedAt,
+      statusLabel,
+      goBack,
+      goEdit,
     };
   },
 });
 </script>
 
+<style scoped>
+.section-title {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+.table {
+  margin-bottom: 1.5rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+.alert {
+  margin-top: 1rem;
+}
+
+.card {
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background-color: #f7f9fc;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.card-title {
+  margin-bottom: 0;
+}
+
+.bi-journal-text {
+  font-size: 1.2rem;
+}
+
+.card-body strong {
+  color: #495057;
+}
+
+.card-footer {
+  background-color: #fff;
+}
+</style>
