@@ -47,12 +47,6 @@ const MainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "교육기관 타입 설정",
-        route: "/admin/SchoolType",
-        keenthemesIcon: "ranking",
-        bootstrapIcon: "bi-printer",
-      },
-      {
         heading: "교육기관 생성",
         route: "/admin/SchoolAdd",
         keenthemesIcon: "ranking",
@@ -154,6 +148,24 @@ const MainMenuConfig: Array<MenuItem> = [
     heading: "설정 및 사용자 관리",
     route: "/resources",
     pages: [
+      {
+        heading: "교육기관 타입 설정",
+        route: "/admin/SchoolType",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "교육 타입 설정",
+        route: "/admin/EducationType",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "수당 타입 설정",
+        route: "/admin/AllowanceType",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
       // {
       //   heading: "관리자 관리",
       //   route: "/admin/AdminList",

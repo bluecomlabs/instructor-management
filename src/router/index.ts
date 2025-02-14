@@ -649,6 +649,24 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "EducationType",
+        name: "admin-EducationType",
+        component: () => import("@/views/admin/userSettings/EducationType.vue"),
+        meta: {
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육 관리", "교육 타입 설정"],
+        },
+      },
+      {
+        path: "AllowanceType",
+        name: "admin-AllowanceType",
+        component: () => import("@/views/admin/userSettings/AllowanceType.vue"),
+        meta: {
+          pageTitle: "교육기관 관리",
+          breadcrumbs: ["교육 관리", "교육 타입 설정"],
+        },
+      },
+      {
         path: "NoticeList",
         name: "admin-NoticeList",
         component: () => import("@/views/admin/userSettings/NoticeList.vue"),

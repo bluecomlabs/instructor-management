@@ -10,7 +10,8 @@
       <table class="attendance-table top-table">
         <thead>
           <tr>
-            <td class="title-cell" colspan="5">
+            <!-- 컬럼 수 변경에 맞춰 colspan 수정 -->
+            <td class="title-cell" colspan="7">
               <h2 class="fw-bold">
                 교육관리 시스템<br />
                 <span class="big-title">교육기관 타입별 관리</span>
@@ -19,9 +20,10 @@
           </tr>
           <tr>
             <th style="width: 43px;">번호</th>
-            <!-- 기존의 사용사업 컬럼은 제거하고 사업명 컬럼 추가 -->
             <th style="width: 120px;">사업명</th>
             <th style="width: 120px;">이름</th>
+            <th style="width: 120px;">타입</th>
+            <th style="width: 100px;">수당</th>
             <th>비고</th>
             <th style="width: 60px;">삭제</th>
           </tr>
@@ -33,7 +35,6 @@
             :class="rowClass(schoolType)"
           >
             <td>{{ schoolType.id }}</td>
-
             <td>{{ schoolType.businessName }}</td>
             <td>
               <input
@@ -41,6 +42,22 @@
                 class="edit-input"
                 v-model="schoolType.name"
                 placeholder="이름"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="edit-input"
+                v-model="schoolType.type"
+                placeholder="타입"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                class="edit-input"
+                v-model="schoolType.fee"
+                placeholder="수당"
               />
             </td>
             <td>
@@ -85,10 +102,14 @@ export default defineComponent({
         businessId: number | string; // API 요청 시 전송됨
         businessName: string; // UI에 표시됨
         name: string;
+        type: string;
+        fee: number | string;
         description: string;
         original?: {
           businessId: number | string;
           name: string;
+          type: string;
+          fee: number | string;
           description: string;
         } | null;
       }>,
@@ -100,7 +121,7 @@ export default defineComponent({
   mounted() {
     const token = localStorage.getItem("token");
     axios
-      .get(ApiUrl("/admin/school-types"), {
+      .get(ApiUrl("/admin/allowance-types"), {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -111,10 +132,14 @@ export default defineComponent({
             businessId: item.businessId,
             businessName: item.businessName, // API에서 받아온 사업명 값
             name: item.name,
+            type: item.type,
+            fee: item.fee,
             description: item.description,
             original: {
               businessId: item.businessId,
               name: item.name,
+              type: item.type,
+              fee: item.fee,
               description: item.description,
             },
           }));
@@ -147,6 +172,8 @@ export default defineComponent({
         if (
           schoolType.businessId !== schoolType.original.businessId ||
           schoolType.name !== schoolType.original.name ||
+          schoolType.type !== schoolType.original.type ||
+          Number(schoolType.fee) !== Number(schoolType.original.fee) ||
           schoolType.description !== schoolType.original.description
         ) {
           return "modified-record";
@@ -170,9 +197,14 @@ export default defineComponent({
     },
     goToSave() {
       this.attemptedSave = true;
-      // 모든 행의 필수 입력값(이름, 비고)이 입력되었는지 확인 (사업명은 로컬스토리지에서 자동 할당)
+      // 모든 행의 필수 입력값(이름, 타입, 수당, 비고)이 입력되었는지 확인
       const hasEmptyField = this.schoolTypes.some((st) =>
-        !st.name.toString().trim() || !st.description.toString().trim()
+        !st.name.toString().trim() ||
+        !st.type.toString().trim() ||
+        st.fee === "" ||
+        st.fee === null ||
+        st.fee === undefined ||
+        !st.description.toString().trim()
       );
       if (hasEmptyField) {
         Swal.fire({
@@ -202,10 +234,12 @@ export default defineComponent({
           // 신규 등록 API (POST)
           const newPromises = newSchoolTypes.map((st) =>
             axios.post(
-              ApiUrl("/admin/school-types"),
+              ApiUrl("/admin/allowance-types"),
               {
                 businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
+                type: st.type,
+                fee: Number(st.fee),
                 description: st.description,
               },
               { headers: { Authorization: `Bearer ${token}` } }
@@ -214,10 +248,12 @@ export default defineComponent({
           // 수정 API (PUT)
           const updatePromises = updatedSchoolTypes.map((st) =>
             axios.put(
-              ApiUrl(`/admin/school-types/${st.id}`),
+              ApiUrl(`/admin/allowance-types/${st.id}`),
               {
                 businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
+                type: st.type,
+                fee: Number(st.fee),
                 description: st.description,
               },
               { headers: { Authorization: `Bearer ${token}` } }
@@ -225,7 +261,7 @@ export default defineComponent({
           );
           // 삭제 API (DELETE)
           const deletionPromises = this.deletedSchoolTypeIds.map((id) =>
-            axios.delete(ApiUrl(`/admin/school-types/${id}`), {
+            axios.delete(ApiUrl(`/admin/allowance-types/${id}`), {
               headers: { Authorization: `Bearer ${token}` },
             })
           );
@@ -262,6 +298,8 @@ export default defineComponent({
         businessId: user.businessId || "",      // 로컬스토리지에서 받아온 값
         businessName: user.businessName || "",    // 로컬스토리지에서 받아온 사업명
         name: "",
+        type: "",
+        fee: "",
         description: "",
         original: null,
       };
@@ -277,7 +315,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .edit-input {

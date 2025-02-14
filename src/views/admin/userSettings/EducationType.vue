@@ -33,7 +33,6 @@
             :class="rowClass(schoolType)"
           >
             <td>{{ schoolType.id }}</td>
-
             <td>{{ schoolType.businessName }}</td>
             <td>
               <input
@@ -100,7 +99,7 @@ export default defineComponent({
   mounted() {
     const token = localStorage.getItem("token");
     axios
-      .get(ApiUrl("/admin/school-types"), {
+      .get(ApiUrl("/admin/education-types"), {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -202,7 +201,7 @@ export default defineComponent({
           // 신규 등록 API (POST)
           const newPromises = newSchoolTypes.map((st) =>
             axios.post(
-              ApiUrl("/admin/school-types"),
+              ApiUrl("/admin/education-types"),
               {
                 businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
@@ -214,7 +213,7 @@ export default defineComponent({
           // 수정 API (PUT)
           const updatePromises = updatedSchoolTypes.map((st) =>
             axios.put(
-              ApiUrl(`/admin/school-types/${st.id}`),
+              ApiUrl(`/admin/education-types/${st.id}`),
               {
                 businessId: st.businessId, // API에는 businessId 값 전송
                 name: st.name,
@@ -225,7 +224,7 @@ export default defineComponent({
           );
           // 삭제 API (DELETE)
           const deletionPromises = this.deletedSchoolTypeIds.map((id) =>
-            axios.delete(ApiUrl(`/admin/school-types/${id}`), {
+            axios.delete(ApiUrl(`/admin/education-types/${id}`), {
               headers: { Authorization: `Bearer ${token}` },
             })
           );
@@ -240,6 +239,7 @@ export default defineComponent({
                 icon: "success",
                 title: "저장되었습니다.",
               }).then(() => {
+                // 저장 성공 시 페이지 새로고침
                 window.location.reload();
               });
             })
@@ -277,7 +277,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .edit-input {

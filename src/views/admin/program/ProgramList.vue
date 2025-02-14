@@ -277,7 +277,7 @@ export default defineComponent({
 
     // 상태에 따른 배지 색상/라벨
     const statusColor: Record<string, string> = {
-      INIT: "init",
+      INIT: "info",
       OPEN: "primary",
       CLOSE: "danger",
     };

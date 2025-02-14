@@ -35,8 +35,9 @@
         <div>
           <select v-model="data.status" class="form-select">
             <option value="">전체 상태</option>
-            <option value="Active">활성</option>
-            <option value="Inactive">비활성</option>
+            <option value="INIT">대기</option>
+            <option value="OPEN">활성</option>
+            <option value="CLOSE">비활성</option>
           </select>
         </div>
       </div>
