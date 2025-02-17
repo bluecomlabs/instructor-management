@@ -96,11 +96,10 @@ export default defineComponent({
   name: "SchoolTypesManagement",
   data() {
     return {
-      // 각 레코드에 original 값을 추가하여 수정 여부를 판단
       schoolTypes: [] as Array<{
         id: number | string;
-        businessId: number | string; // API 요청 시 전송됨
-        businessName: string; // UI에 표시됨
+        businessId: number | string;
+        businessName: string;
         name: string;
         type: string;
         fee: number | string;

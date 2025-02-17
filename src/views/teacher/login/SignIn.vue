@@ -60,7 +60,7 @@ export default defineComponent({
       }
 
       try {
-        const response = await axios.post(ApiUrl('/v1/auth/login'), 
+        const response = await axios.post(ApiUrl('/auth/login'), 
           {
             username: username.value,
             password: password.value,
@@ -72,20 +72,17 @@ export default defineComponent({
           }
         );
 
-        // 새로운 API 응답 구조에 따라 response.data 안에 code, data, message, success가 있음
         const result = response.data;
         if (result.success) {
-          // 강사 로그인 시, 토큰 및 사용자 정보를 result.data 내부에서 추출합니다.
-          const { token, role, username: userUsername } = result.data;
+          const { token, role, username: userUsername, businessId } = result.data;
           
-          // 혹시 토큰에 "Bearer " 접두어가 붙어 있다면 제거
           const tokenWithoutBearer = token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
           localStorage.setItem('token', tokenWithoutBearer);
 
-          // 사용자 정보를 로컬 스토리지에 저장합니다.
-          localStorage.setItem('user', JSON.stringify({
+           localStorage.setItem('user', JSON.stringify({
             role,
-            username: userUsername
+            username: userUsername,
+            businessId,
           }));
 
           Swal.fire({

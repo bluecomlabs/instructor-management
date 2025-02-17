@@ -630,6 +630,43 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       // 설정 및 사용자 관리 - 기관 관련
+      
+      {
+        path: "CouresDetails",
+        name: "admin-CouresDetails",
+        component: () => import("@/views/admin/Coures/CouresDetails.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
+        },
+      },
+      {
+        path: "CouresEdit",
+        name: "admin-CouresEdit",
+        component: () => import("@/views/admin/Coures/CouresEdit.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 수정"],
+        },
+      },
+      {
+        path: "CouresAdd",
+        name: "admin-CouresAdd",
+        component: () => import("@/views/admin/Coures/CouresAdd.vue"),
+        meta: {
+          pageTitle: "설정 및 사용자 관리",
+          breadcrumbs: ["설정 및 사용자 관리", "기관 생성"],
+        },
+      },
+      {
+        path: "CouresList",
+        name: "admin-CouresList",
+        component: () => import("@/views/admin/Coures/CouresList.vue"),
+        meta: {
+          pageTitle: "교육기관 조회",
+          breadcrumbs: ["교육기관 관리", "교육기관 조회"],
+        },
+      },
       {
         path: "SchoolList",
         name: "admin-SchoolList",

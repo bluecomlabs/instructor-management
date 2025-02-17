@@ -37,6 +37,24 @@ const MainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
+    heading: "교육 관리",
+    route: "/resources",
+    pages: [
+      {
+        heading: "교육 조회",
+        route: "/admin/CouresList",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+      {
+        heading: "교육 생성",
+        route: "/admin/CouresAdd",
+        keenthemesIcon: "ranking",
+        bootstrapIcon: "bi-printer",
+      },
+    ],
+  },
+  {
     heading: "교육기관 관리",
     route: "/resources",
     pages: [

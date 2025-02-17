@@ -38,7 +38,7 @@
                       <td colspan="3">
                         <select v-model="status" class="form-select">
                           <option disabled value="">선택하세요</option>
-                          <option value="INIT">활성</option>
+                          <option value="INIT">대기</option>
                           <option value="OPEN">활성</option>
                           <option value="CLOSE">비활성</option>
                         </select>
@@ -122,7 +122,7 @@ export default defineComponent({
       if (
         !programName.value.trim() ||
         !status.value.trim() ||
-        teachingAidId.value === null ||
+        // teachingAidId.value === null ||
         !remarks.value.trim()
       ) {
         Swal.fire({

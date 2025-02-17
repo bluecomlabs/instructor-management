@@ -72,18 +72,13 @@ export default defineComponent({
           }
         );
 
-        // 새로운 응답 구조: response.data = { code, data, message, success }
         const result = response.data;
         if (result.success) {
-          // 로그인 성공 시 토큰과 사용자 정보는 result.data 안에 있음
-          // businessId도 함께 받아옵니다.
           const { token, role, username: userUsername, businessId } = result.data;
           
-          // 혹시 토큰에 "Bearer " 접두어가 붙어 있다면 제거 (현재 예시에서는 붙어있지 않음)
           const tokenWithoutBearer = token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
           localStorage.setItem('token', tokenWithoutBearer);
 
-          // 필요한 사용자 정보만 로컬 스토리지에 저장 (businessId 추가)
           localStorage.setItem('user', JSON.stringify({
             role,
             username: userUsername,
@@ -103,7 +98,6 @@ export default defineComponent({
             router.push({ name: "admin-AllProgramStatusList" });
           });
         } else {
-          // API에서 success가 false인 경우, 에러 메시지 출력
           throw new Error(result.message || "로그인 실패");
         }
       } catch (error: unknown) {
