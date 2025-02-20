@@ -506,7 +506,7 @@ import MixedWidget3 from "@/components/widgets/mixed/Widget3.vue";
 import MixedWidget4 from "@/components/widgets/mixed/Widget4.vue";
 import MixedWidget5 from "@/components/widgets/mixed/Widget5.vue";
 import MixedWidget6 from "@/components/widgets/mixed/Widget6.vue";
-import MixedWidget7 from "@/components/widgets/mixed/Widget7.vue";
+import MixedWidget7 from "@/components/widgets/mixed/UserSummary.vue";
 import MixedWidget8 from "@/components/widgets/mixed/Widget8.vue";
 import MixedWidget9 from "@/components/widgets/mixed/Widget9.vue";
 import MixedWidget10 from "@/components/widgets/mixed/Widget10.vue";

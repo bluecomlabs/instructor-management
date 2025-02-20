@@ -28,7 +28,7 @@
       <Widget6 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div>
     <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
-      <Widget7 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+      <UserSummary className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
     </div> -->
     <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
       <Widget8 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
@@ -216,7 +216,7 @@ import Widget3 from "@/components/dashboard-default-widgets/Widget3.vue";
 import Widget4 from "@/components/dashboard-default-widgets/Widget4.vue";
 import Widget5 from "@/components/dashboard-default-widgets/Widget5.vue";
 import Widget6 from "@/components/dashboard-default-widgets/Widget6.vue";
-import Widget7 from "@/components/dashboard-default-widgets/Widget7.vue";
+import UserSummary from "@/components/dashboard-default-widgets/UserSummary.vue";
 import Widget8 from "@/components/dashboard-default-widgets/Widget8.vue";
 
 interface ISubscription {
@@ -243,7 +243,7 @@ export default defineComponent({
     Widget4,
     Widget5,
     Widget6,
-    Widget7,
+    UserSummary,
     Widget8,
   },
   setup() {

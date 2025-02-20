@@ -14,7 +14,7 @@ import ListsWidget3 from "@/components/widgets/lists/Widget3.vue";
 import ListsWidget4 from "@/components/widgets/lists/Widget4.vue";
 import ListsWidget5 from "@/components/widgets/lists/Widget5.vue";
 import ListsWidget6 from "@/components/widgets/lists/Widget6.vue";
-import ListsWidget7 from "@/components/widgets/lists/Widget7.vue";
+import ListsWidget7 from "@/components/widgets/lists/UserSummary.vue";
 import ListsWidget8 from "@/components/widgets/lists/Widget8.vue";
 
 export default defineComponent({

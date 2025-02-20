@@ -1,15 +1,36 @@
 <template>
+  <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+  <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+    <Widget5 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+  </div> -->
+    <div class="col-md-8 col-lg-8 col-xl-8 col-xxl-8 mb-md-5 mb-xl-10">
+      <UserSummary className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+  <div class="col-md-4 col-lg-4 col-xl-4 col-xxl-4 mb-md-5 mb-xl-10">
+    <Widget3 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+  </div>
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget2 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div> -->
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget4 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget6 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div> -->
+    <!-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-md-5 mb-xl-10">
+      <Widget8 className="h-md-100 mb-5 mb-xl-10" :chartSize="70" />
+    </div> -->
   <div>
     <!-- <div v-if="isMobile" class="mobile-buttons">
       <button @click="goToEduAppl" class="btn btn-primary">교육 신청하기</button>
     </div> -->
-
     <FullCalendar
       ref="calendarRef"
       class="demo-app-calendar"
       :options="calendarOptions"
     ></FullCalendar>
-  </div>
+  </div></div>
 </template>
 
 <script lang="ts">
@@ -24,11 +45,27 @@ import koLocale from "@fullcalendar/core/locales/ko";
 import { Modal } from "bootstrap";
 import axios from "axios";
 import { Tooltip } from "bootstrap";
+import Widget1 from "@/components/dashboard-default-widgets/Widget1.vue";
+import Widget2 from "@/components/dashboard-default-widgets/Widget2.vue";
+import Widget3 from "@/components/dashboard-default-widgets/Widget3.vue";
+import Widget4 from "@/components/dashboard-default-widgets/Widget4.vue";
+import Widget5 from "@/components/dashboard-default-widgets/Widget5.vue";
+import Widget6 from "@/components/dashboard-default-widgets/Widget6.vue";
+import UserSummary from "@/components/dashboard-default-widgets/UserSummary.vue";
+import Widget8 from "@/components/dashboard-default-widgets/Widget8.vue";
 
 export default defineComponent({
   name: "calendar-app-1",
   components: {
     FullCalendar,
+    Widget1,
+    Widget2,
+    Widget3,
+    Widget4,
+    Widget5,
+    Widget6,
+    UserSummary,
+    Widget8,
   },
   setup() {
     const router = useRouter();
