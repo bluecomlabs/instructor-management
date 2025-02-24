@@ -22,9 +22,9 @@
       <div class="tab-wrapper position-relative">
         <!-- 좌측 버튼 -->
         <button class="btn btn-icon left-arrow"
-                @mousedown="startScrollLeft"
-                @mouseup="stopScrollLeft"
-                @mouseleave="stopScrollLeft">
+            @mousedown="startScrollLeft"
+            @mouseup="stopScrollLeft"
+            @mouseleave="stopScrollLeft">
           <KTIcon icon-name="arrow-left" icon-class="fs-3" />
         </button>
 
@@ -223,7 +223,7 @@ export default defineComponent({
     const totalElements = ref(0);
     const totalPages = ref(0);
     const currentPage = ref(0);
-    const pageSize = ref(20);
+    const pageSize = ref(5);
     const isLoading = ref(false);
 
     // 정렬 상태
@@ -268,13 +268,11 @@ export default defineComponent({
       fetchCourses(0, "");
     };
 
-    // API 호출: 선택된 탭의 데이터 로드
     const fetchCourses = async (page: number = 0, sortBy: string = currentSortBy.value) => {
       try {
         if (page === 0 && sortBy === "") isLoading.value = true;
         const token = localStorage.getItem("token");
         const status = items.value[activeTabIndex.value].status;
-        // 상태값을 소문자로 변환하여 엔드포인트 경로에 포함
         const endpoint = `/user/courses/${status.toLowerCase()}`;
         
         const params = new URLSearchParams();
@@ -286,7 +284,6 @@ export default defineComponent({
             params.append("sort", `${key},${order}`);
           }
         }
-        // 예: /user/courses/open?page=0&size=20...
         const url = ApiUrl(`${endpoint}?${params.toString()}`);
         console.log("Sending API request to:", url);
         

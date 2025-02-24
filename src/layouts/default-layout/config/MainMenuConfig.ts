@@ -37,24 +37,6 @@ const MainMenuConfig: Array<MenuItem> = [
     ],
   },
   {
-    heading: "교육 관리",
-    route: "/resources",
-    pages: [
-      {
-        heading: "교육 조회",
-        route: "/admin/CouresList",
-        keenthemesIcon: "ranking",
-        bootstrapIcon: "bi-printer",
-      },
-      {
-        heading: "교육 생성",
-        route: "/admin/CouresAdd",
-        keenthemesIcon: "ranking",
-        bootstrapIcon: "bi-printer",
-      },
-    ],
-  },
-  {
     heading: "교육기관 관리",
     route: "/resources",
     pages: [
@@ -76,30 +58,18 @@ const MainMenuConfig: Array<MenuItem> = [
     heading: "교육 관리",
     route: "/resources",
     pages: [
-      // {
-      //   heading: "기관별 신청 조회",
-      //   route: "/admin/InstApplList",
-      //   keenthemesIcon: "cheque",
-      //   bootstrapIcon: "bi-printer",
-      // },
       {
-        heading: "신청 조회 및 확정",
-        route: "/admin/ApplReviewList",
-        keenthemesIcon: "eye",
+        heading: "교육 조회",
+        route: "/admin/CouresList",
+        keenthemesIcon: "book",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "교육 상태 변경",
-        route: "/admin/ApplStatusChange",
-        keenthemesIcon: "note-2",
+        heading: "교육 생성",
+        route: "/admin/CouresAdd",
+        keenthemesIcon: "book-open",
         bootstrapIcon: "bi-printer",
       },
-      {
-        heading: "교육 신청",
-        route: "/admin/InstApplPassivity",
-        keenthemesIcon: "notepad-edit",
-        bootstrapIcon: "bi-printer",
-      }
     ],
   },
   {
@@ -107,31 +77,67 @@ const MainMenuConfig: Array<MenuItem> = [
     route: "/교육 관리",
     pages: [
       {
-        heading: "신청 조회 및 배정",
+        heading: "교육 상태 변경",
         route: "/admin/TeacherApplList",
-        keenthemesIcon: "archive-tick",
+        keenthemesIcon: "calendar-edit",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "배정 결과 및 상태 관리",
+        heading: "강사 신청 관리",
         route: "/admin/TeacherAlloList",
         keenthemesIcon: "calendar-tick",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "교육별 조회",
-        route: "/admin/TeacherAlloPassivity",
-        keenthemesIcon: "calendar-edit",
+        heading: "강사 수동 배정",
+        route: "/admin/AdminEduAppl",
+        keenthemesIcon: "archive-tick",
         bootstrapIcon: "bi-printer",
       },
       {
-        heading: "강사 출강 일정 조회",
-        route: "/admin/TeacherAlloschedule",
-        keenthemesIcon: "calendar",
+        heading: "출강 확정 조회",
+        route: "/admin/TeacherAlloPassivity",
+        keenthemesIcon: "archive-tick",
         bootstrapIcon: "bi-printer",
       },
+      // {
+      //   heading: "강사 출강 일정 조회",
+      //   route: "/admin/TeacherAlloschedule",
+      //   keenthemesIcon: "calendar",
+      //   bootstrapIcon: "bi-printer",
+      // },
     ],
   },
+  // {
+  //   heading: "교육 관리",
+  //   route: "/resources",
+  //   pages: [
+  //     // {
+  //     //   heading: "기관별 신청 조회",
+  //     //   route: "/admin/InstApplList",
+  //     //   keenthemesIcon: "cheque",
+  //     //   bootstrapIcon: "bi-printer",
+  //     // },
+  //     {
+  //       heading: "신청 조회 및 확정",
+  //       route: "/admin/ApplReviewList",
+  //       keenthemesIcon: "eye",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "교육 상태 변경",
+  //       route: "/admin/ApplStatusChange",
+  //       keenthemesIcon: "note-2",
+  //       bootstrapIcon: "bi-printer",
+  //     },
+  //     {
+  //       heading: "교육 신청",
+  //       route: "/admin/InstApplPassivity",
+  //       keenthemesIcon: "notepad-edit",
+  //       bootstrapIcon: "bi-printer",
+  //     }
+  //   ],
+  // },
   // {
   //   heading: "보고서 관리",
   //   route: "/resources",
@@ -175,13 +181,13 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "교육 타입 설정",
         route: "/admin/EducationType",
-        keenthemesIcon: "ranking",
+        keenthemesIcon: "book-square",
         bootstrapIcon: "bi-printer",
       },
       {
         heading: "수당 타입 설정",
         route: "/admin/AllowanceType",
-        keenthemesIcon: "ranking",
+        keenthemesIcon: "dollar",
         bootstrapIcon: "bi-printer",
       },
       // {
@@ -190,24 +196,24 @@ const MainMenuConfig: Array<MenuItem> = [
       //   keenthemesIcon: "user",
       //   bootstrapIcon: "bi-layers",
       // },
-      {
-        heading: "공지사항 관리",
-        route: "/admin/NoticeList",
-        keenthemesIcon: "abstract-38",
-        bootstrapIcon: "bi-buildings",
-      },
+        // {
+        //   heading: "공지사항 관리",
+        //   route: "/admin/NoticeList",
+        //   keenthemesIcon: "abstract-38",
+        //   bootstrapIcon: "bi-buildings",
+        // },
+        // {
+        //   heading: "강사 관리",
+        //   route: "/admin/TeacherList",
+        //   keenthemesIcon: "teacher",
+        //   bootstrapIcon: "bi-layers",
+        // },
       // {
       //   heading: "기관 관리",
       //   route: "/admin/SchoolList",
       //   keenthemesIcon: "abstract-38",
       //   bootstrapIcon: "bi-buildings",
       // },
-      {
-        heading: "강사 관리",
-        route: "/admin/TeacherList",
-        keenthemesIcon: "teacher",
-        bootstrapIcon: "bi-layers",
-      },
       // {
       //   heading: "시스템 이력 조회",
       //   route: "/admin/SystemSettings",

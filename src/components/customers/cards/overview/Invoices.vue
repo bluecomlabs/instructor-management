@@ -2,19 +2,22 @@
   <div :class="`card pt-2 ${cardClasses}`">
     <div class="card-header border-0">
       <div class="card-title">
-        <h2>상세 정보</h2>
+        <!-- <h2>상세 정보</h2> -->
+          <div class="text-gray-600">
+            <p style="color: red;" class="fs-3 text-hover-primary fw-bold mb-1">※ 마이페이지 영역은 더미데이터로 이루어진 테스트 페이지이며 실제 데이터가 아닙니다. ※</p>
+          </div>
       </div>
     </div>
       <div class="card-body">
-          <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">홍길동</a>
-          <div class="fs-5 fw-semibold text-muted mb-6">SW울산미래채움</div>
+          <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">김철수</a>
+          <div class="fs-5 fw-semibold text-muted mb-6">SW경기미래채움</div>
         <div id="kt_customer_view_details" class="collapse show">
           <div class="fs-6">
             <div class="fw-bold mt-5">주소</div>
-            <div class="text-gray-600">울산광역시 ~</div>
+            <div class="text-gray-600">경기도 상세주소</div>
             <div class="fw-bold mt-5">나이</div>
             <div class="text-gray-600">
-              <a href="#" class="text-gray-600 text-hover-primary">30</a>
+              <a href="#" class="text-gray-600 text-hover-primary">28</a>
             </div>
             <div class="fw-bold mt-5">특이사항</div>
             <div class="text-gray-600">교사경력있음</div>

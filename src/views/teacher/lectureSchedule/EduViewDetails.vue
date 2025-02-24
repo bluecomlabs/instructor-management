@@ -3,27 +3,25 @@
     <div class="flex-column flex-lg-row-auto w-100 mb-10">
       <div class="card mb-5 mb-xl-8">
         <div class="card-body">
-          <!-- Education Details -->
+          <!-- 과정 정보 -->
           <div class="card mb-5 mb-xl-10">
             <div
               class="card-header border-0 cursor-pointer"
               role="button"
               data-bs-toggle="collapse"
-              data-bs-target="#kt_account_education_details"
+              data-bs-target="#courseDetails"
               aria-expanded="true"
-              aria-controls="kt_account_education_details"
+              aria-controls="courseDetails"
             >
               <div class="card-title m-0 d-flex align-items-center">
                 <i class="bi bi-info-circle me-2"></i>
-                <h2 class="fw-bold m-0">교육 조회</h2>
+                <h2 class="fw-bold m-0">과정 조회</h2>
               </div>
             </div>
-
-            <div id="kt_account_education_details" class="collapse show">
+            <div id="courseDetails" class="collapse show">
               <div class="card-body border-top p-9">
-                <div v-if="educationData">
-                  <!-- Main Education Details -->
-                  <h3 class="fw-bold section-title">교육 정보</h3>
+                <div v-if="courseData">
+                  <h3 class="fw-bold section-title">과정 정보</h3>
                   <div class="card mb-4">
                     <div class="card-body p-0">
                       <table class="table table-bordered mb-0">
@@ -35,35 +33,47 @@
                         </colgroup>
                         <tbody>
                           <tr>
-                            <th class="bg-light">교육 ID</th>
-                            <td>{{ educationData.educationId }}</td>
+                            <th class="bg-light">과정 ID</th>
+                            <td>{{ courseData.id }}</td>
                             <th class="bg-light">상태</th>
-                            <td>{{ educationData.status }}</td>
+                            <td>{{ courseData.status }}</td>
                           </tr>
                           <tr>
-                            <th class="bg-light">학년</th>
-                            <td>{{ educationData.grade }}</td>
-                            <th class="bg-light">반 번호</th>
-                            <td>{{ educationData.classNumber }}</td>
+                            <th class="bg-light">과정명</th>
+                            <td>{{ courseData.courseName }}</td>
+                            <th class="bg-light">설명</th>
+                            <td>{{ courseData.description }}</td>
                           </tr>
                           <tr>
-                            <th class="bg-light">학생 수</th>
-                            <td>{{ educationData.numberOfStudents }}</td>
-                            <th class="bg-light">챕터 수</th>
-                            <td>{{ educationData.chapterNumber }}</td>
+                            <th class="bg-light">시작일</th>
+                            <td>{{ courseData.startDate }}</td>
+                            <th class="bg-light">종료일</th>
+                            <td>{{ courseData.endDate }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light">확정 여부</th>
-                            <td>{{ educationData.isConfirmed }}</td>
-                            <th class="bg-light">메모</th>
-                            <td>{{ educationData.remark || '-' }}</td>
+                            <td>{{ courseData.confirmed ? '확정' : '미확정' }}</td>
+                            <th class="bg-light">비고</th>
+                            <td>{{ courseData.remarks || '-' }}</td>
+                          </tr>
+                          <tr>
+                            <th class="bg-light">학년</th>
+                            <td>{{ courseData.grade }}</td>
+                            <th class="bg-light">반</th>
+                            <td>{{ courseData.classNo }}</td>
+                          </tr>
+                          <tr>
+                            <th class="bg-light">학생 수</th>
+                            <td>{{ courseData.studentCount }}</td>
+                            <th class="bg-light"></th>
+                            <td></td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
 
-                  <!-- Program Details -->
+                  <!-- 프로그램 정보 -->
                   <h3 class="fw-bold section-title">프로그램 정보</h3>
                   <div class="card mb-4">
                     <div class="card-body p-0">
@@ -77,32 +87,16 @@
                         <tbody>
                           <tr>
                             <th class="bg-light">프로그램 ID</th>
-                            <td>{{ educationData.program.programId }}</td>
+                            <td>{{ courseData.programId }}</td>
                             <th class="bg-light">프로그램명</th>
-                            <td>{{ educationData.program.programName }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light">챕터</th>
-                            <td>{{ educationData.program.chapter }}</td>
-                            <th class="bg-light">제품</th>
-                            <td>{{ educationData.program.product || '-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light">상태</th>
-                            <td>{{ educationData.program.status }}</td>
-                            <th class="bg-light">난이도</th>
-                            <td>{{ educationData.program.level }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light">메모</th>
-                            <td colspan="3">{{ educationData.program.remark || '-' }}</td>
+                            <td>{{ courseData.programName }}</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
 
-                  <!-- Institution Details -->
+                  <!-- 기관 정보 -->
                   <h3 class="fw-bold section-title">기관 정보</h3>
                   <div class="card mb-4">
                     <div class="card-body p-0">
@@ -115,63 +109,53 @@
                         </colgroup>
                         <tbody>
                           <tr>
-                            <th class="bg-light">기관 ID</th>
-                            <td>{{ educationData.institution.institutionId }}</td>
-                            <th class="bg-light">기관명</th>
-                            <td>{{ educationData.institution.institutionName }}</td>
+                            <th class="bg-light">비즈니스명</th>
+                            <td>{{ courseData.businessName }}</td>
+                            <th class="bg-light">교육기관 ID</th>
+                            <td>{{ courseData.schoolId }}</td>
                           </tr>
                           <tr>
-                            <th class="bg-light">도시</th>
-                            <td>{{ educationData.institution.city }}</td>
-                            <th class="bg-light">구/군</th>
-                            <td>{{ educationData.institution.district }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light">도로명 주소</th>
-                            <td>{{ educationData.institution.street }}</td>
-                            <th class="bg-light">담당자명</th>
-                            <td>{{ educationData.institution.managerName }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light">연락처</th>
-                            <td>{{ educationData.institution.phoneNumber || '-' }}</td>
-                            <th class="bg-light">비고</th>
-                            <td>{{ educationData.institution.remarks || '-' }}</td>
+                            <th class="bg-light">교육기관명</th>
+                            <td>{{ courseData.schoolName }}</td>
+                            <th class="bg-light">주소</th>
+                            <td>
+                              {{ courseData.city }} {{ courseData.district }}
+                              {{ courseData.street }} {{ courseData.number }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
 
-                  <!-- Education Chapters -->
-                  <h3 class="fw-bold section-title">교육 챕터 정보</h3>
-                  <div class="accordion" id="educationAccordion">
+                  <!-- 강의(세션) 정보 -->
+                  <h3 class="fw-bold section-title">강의 정보</h3>
+                  <div class="accordion" id="courseSessionsAccordion">
                     <div
                       class="accordion-item"
-                      v-for="chapter in educationData.educationChapters"
-                      :key="chapter.educationChapterId"
+                      v-for="session in courseData.courseSessions"
+                      :key="session.id"
                     >
-                      <h2 class="accordion-header" :id="'heading' + chapter.educationChapterId">
+                      <h2 class="accordion-header" :id="'heading' + session.id">
                         <button
                           class="accordion-button collapsed"
                           type="button"
                           data-bs-toggle="collapse"
-                          :data-bs-target="'#collapse' + chapter.educationChapterId"
+                          :data-bs-target="'#collapse' + session.id"
                           aria-expanded="false"
-                          :aria-controls="'collapse' + chapter.educationChapterId"
+                          :aria-controls="'collapse' + session.id"
                         >
                           <i class="bi bi-journal-bookmark me-2"></i>
-                          챕터 {{ chapter.chapterNumber }} - {{ chapter.notes || '-' }}
+                          세션 {{ session.sessionNumber }} - {{ session.date }}
                         </button>
                       </h2>
                       <div
-                        :id="'collapse' + chapter.educationChapterId"
+                        :id="'collapse' + session.id"
                         class="accordion-collapse collapse"
-                        :aria-labelledby="'heading' + chapter.educationChapterId"
-                        data-bs-parent="#educationAccordion"
+                        :aria-labelledby="'heading' + session.id"
+                        data-bs-parent="#courseSessionsAccordion"
                       >
                         <div class="accordion-body">
-                          <!-- Chapter Details -->
                           <div class="card mb-4">
                             <div class="card-body p-0">
                               <table class="table table-bordered mb-0">
@@ -183,33 +167,30 @@
                                 </colgroup>
                                 <tbody>
                                   <tr>
-                                    <th class="bg-light">챕터 번호</th>
-                                    <td>{{ chapter.chapterNumber }}</td>
-                                    <th class="bg-light">주 강사 수</th>
-                                    <td>{{ chapter.mainInstructorsNumber }}</td>
-                                  </tr>
-                                  <tr>
-                                    <th class="bg-light">보조 강사 수</th>
-                                    <td>{{ chapter.assistantInstructorsNumber }}</td>
+                                    <th class="bg-light">세션 ID</th>
+                                    <td>{{ session.id }}</td>
                                     <th class="bg-light">날짜</th>
-                                    <td>{{ chapter.date }}</td>
+                                    <td>{{ session.date }}</td>
                                   </tr>
                                   <tr>
                                     <th class="bg-light">시작 시간</th>
-                                    <td>{{ chapter.startTime }}</td>
+                                    <td>{{ session.startTime }}</td>
                                     <th class="bg-light">종료 시간</th>
-                                    <td>{{ chapter.endTime }}</td>
+                                    <td>{{ session.endTime }}</td>
                                   </tr>
                                   <tr>
-                                    <th class="bg-light">노트</th>
-                                    <td colspan="3">{{ chapter.notes || '-' }}</td>
+                                    <th class="bg-light">세션 상태</th>
+                                    <td>{{ session.status }}</td>
+                                    <th class="bg-light">필요 주강사 수</th>
+                                    <td>{{ session.neededMainInstructors }}</td>
                                   </tr>
                                   <tr>
-                                    <th class="bg-light">확정 여부</th>
-                                    <td>{{ chapter.isConfirmed || '-' }}</td>
+                                    <th class="bg-light">필요 보조강사 수</th>
+                                    <td>{{ session.neededAssistantInstructors }}</td>
                                     <th class="bg-light"></th>
                                     <td></td>
                                   </tr>
+                                  <!-- 필요시 추가 강사 관련 정보 표시 -->
                                 </tbody>
                               </table>
                             </div>
@@ -218,26 +199,16 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
                 <div v-else>
                   <p>데이터를 불러오는 중입니다...</p>
                 </div>
-
                 <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
               </div>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex justify-content-end py-6 px-9">
-          <!-- <button
-            type="button"
-            class="btn btn-left btn-active-left-primary me-2"
-            style="margin-right: auto !important; background-color: red; color: white;"
-            @click="deleteData()"
-          >
-            삭제
-          </button> -->
           <button
             type="button"
             class="btn btn-light btn-active-light-primary me-2"
@@ -245,21 +216,6 @@
           >
             뒤로
           </button>
-          <!-- <button
-            type="submit"
-            id="kt_account_detaiprofile_details_submit"
-            ref="submitButton1"
-            class="btn btn-primary"
-            @click="goEdit()"
-          >
-            <span class="indicator-label">
-              수정
-            </span>
-            <span class="indicator-progress">
-              잠시만 기다려주세요...
-              <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-            </span>
-          </button> -->
         </div>
       </div>
     </div>
@@ -267,168 +223,98 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
+import axios from "axios";
 import { defineComponent, ref, onMounted } from "vue";
-import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
-interface Program {
-  programId: number;
-  programName: string;
-  chapter: number;
-  product: string | null;
-  status: string;
-  level: number;
-  remark: string | null;
-}
-
-interface Institution {
-  institutionId: number;
-  institutionName: string;
-  city: string;
-  district: string;
-  street: string;
-  number: string | null;
-  representativeNumber: string | null;
-  managerName: string;
-  phoneNumber: string;
-  remarks: string;
-}
-
-interface EducationChapter {
-  educationChapterId: number;
-  chapterNumber: number;
-  mainInstructorsNumber: number;
-  assistantInstructorsNumber: number;
+interface CourseSession {
+  id: number;
+  sessionNumber: number;
   date: string;
   startTime: string;
   endTime: string;
-  notes: string;
-  isConfirmed: string | null;
+  status: string;
+  neededMainInstructors: number;
+  neededAssistantInstructors: number;
+  // 추가 강사 정보 등이 필요하면 여기에 확장
 }
 
-interface EducationData {
-  educationId: number;
+interface CourseData {
+  id: number;
+  businessId: number;
+  businessName: string;
+  schoolId: number;
+  schoolName: string;
+  programId: number;
+  programName: string;
+  courseName: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  confirmed: boolean;
   status: string;
-  grade: number;
-  classNumber: number;
-  numberOfStudents: number;
-  productQuantity: number;
-  chapterNumber: number;
-  isConfirmed: string;
-  remark: string;
-  program: Program;
-  institution: Institution;
-  educationChapters: EducationChapter[];
-  educationInstructors: any; // 타입을 알고 있다면 명시해주세요
+  remarks: string;
+  createdAt: number;
+  createdId: number;
+  updatedAt: number;
+  updatedId: number;
+  grade: string;
+  classNo: string;
+  studentCount: number;
+  city: string;
+  district: string;
+  street: string;
+  number: string;
+  courseSessions: CourseSession[];
 }
 
 export default defineComponent({
-  name: "EducationDetail",
+  name: "CourseDetail",
   setup() {
     const router = useRouter();
-    const submitButton = ref<HTMLButtonElement | null>(null);
-    const educationData = ref<EducationData | null>(null);
-    const errorMessage = ref('');
+    const courseData = ref<CourseData | null>(null);
+    const errorMessage = ref("");
 
-    const fetchEducationData = async () => {
-      const educationId = localStorage.getItem('selectedProgramId');
-      if (!educationId) {
-        errorMessage.value = '교육 ID를 찾을 수 없습니다.';
+    const fetchCourseData = async () => {
+      // localStorage에 저장된 selectedCourseId를 사용합니다.
+      const courseId = localStorage.getItem("selectedCourseId");
+      if (!courseId) {
+        errorMessage.value = "과정 ID를 찾을 수 없습니다.";
         return;
       }
 
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/api/v1/user/education/ready/${educationId}`), {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        educationData.value = response.data;
-      } catch (error) {
-        console.error('Error fetching education data:', error);
-        errorMessage.value = '교육 정보를 불러오는 데 실패했습니다.';
-      }
-    };
-
-    const deleteData = async () => {
-      const educationId = localStorage.getItem('selectedProgramId');
-
-      const result = await Swal.fire({
-        title: "삭제하시겠습니까?",
-        text: "삭제된 교육은 복구할 수 없습니다.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "삭제",
-        cancelButtonText: "취소",
-        customClass: {
-          confirmButton: "btn fw-semibold btn-danger",
-          cancelButton: "btn fw-semibold btn-light"
-        },
-        buttonsStyling: false,
-        heightAuto: false,
-      });
-
-      if (result.isConfirmed) {
-        try {
-          const token = localStorage.getItem("token");
-          await axios.delete(ApiUrl(`/api/v1/user/education/ready/${educationId}`), {
+        // API URL에 과정 ID를 포함하여 호출
+        const response = await axios.get(
+          ApiUrl(`/user/courses/${courseId}/course-detailed?status=READY`),
+          {
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
-          });
-
-          Swal.fire({
-            text: "교육이 성공적으로 삭제되었습니다.",
-            icon: "success",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-primary",
-            },
-          }).then(() => {
-            router.push({ name: "EducationList" });
-          });
-
-        } catch (error: unknown) {
-          Swal.fire({
-            text: "오류가 발생하였습니다.",
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "확인",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn fw-semibold btn-light-danger",
-            },
-          });
-        }
+          }
+        );
+        // 응답 데이터가 { success, code, message, data } 구조이므로 data 프로퍼티 사용
+        courseData.value = response.data.data;
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+        errorMessage.value = "과정 정보를 불러오는 데 실패했습니다.";
       }
     };
-
-    const goEdit = () => {
-      router.push({ name: "EducationEdit" });
-    };
-
-    onMounted(() => {
-      fetchEducationData();
-    });
 
     const goBack = () => {
       router.back();
     };
 
+    onMounted(() => {
+      fetchCourseData();
+    });
+
     return {
-      educationData,
-      submitButton,
-      goEdit,
-      deleteData,
-      goBack,
+      courseData,
       errorMessage,
+      goBack,
     };
   },
 });

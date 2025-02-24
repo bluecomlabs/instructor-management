@@ -633,7 +633,7 @@ export default defineComponent({
 <style scoped>
 /* 로딩 오버레이 스타일 */
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

@@ -135,7 +135,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/teacher/lectureSchedule/MyApplEdu.vue"),
         meta: {
           pageTitle: "출강 신청",
-          breadcrumbs: ["출강 신청", "출강 신청 내역"],
+          breadcrumbs: ["출강 신청", "출강 확정 내역"],
         },
       },
       {
@@ -144,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/teacher/lectureSchedule/MyApplEduDetails.vue"),
         meta: {
           pageTitle: "출강 신청",
-          breadcrumbs: ["출강 신청", "출강 신청 내역 상세보기"],
+          breadcrumbs: ["출강 신청", "출강 확정 내역 상세보기"],
         },
       },
       {
@@ -580,6 +580,15 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["강사 배정 관리", "출강정보 강사 수동변경"],
         },
       },
+      {
+        path: "AdminEduAppl",
+        name: "admin-AdminEduAppl",
+        component: () => import("@/views/admin/teacherAllo/AdminEduAppl.vue"),
+        meta: {
+          pageTitle: "출강정보 상세조회",
+          breadcrumbs: ["강사 배정 관리", "출강정보 강사 수동변경"],
+        },
+      },
       
       // 보고서 관리
       {
@@ -640,6 +649,16 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
         },
       },
+      
+      // {
+      //   path: "CouresEdit",
+      //   name: "admin-CouresEdit",
+      //   component: () => import("@/views/admin/Coures/CouresEdit.vue"),
+      //   meta: {
+      //     pageTitle: "설정 및 사용자 관리",
+      //     breadcrumbs: ["설정 및 사용자 관리", "기관 상세보기"],
+      //   },
+      // },
       {
         path: "CouresEdit",
         name: "admin-CouresEdit",

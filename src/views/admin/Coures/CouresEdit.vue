@@ -5,104 +5,145 @@
         <div class="card-header border-0">
           <div class="card-title d-flex align-items-center">
             <i class="bi bi-pencil-square me-2"></i>
-            <h2 class="fw-bold m-0">교육기관 수정</h2>
+            <h2 class="fw-bold m-0">코스 수정</h2>
           </div>
         </div>
         <div class="card-body">
-          <form @submit.prevent="updateSchool">
-            <!-- 교육기관 정보 테이블 -->
-            <h3 class="fw-bold section-title">교육기관 정보</h3>
+          <form @submit.prevent="updateCourse">
+            <!-- 코스 기본 정보 -->
+            <h3 class="fw-bold section-title">코스 기본 정보</h3>
             <div class="card mb-4">
-              <div class="card-body p-0">
-                <table class="table table-bordered mb-0">
-                  <colgroup>
-                    <col style="width: 20%;" />
-                    <col style="width: 30%;" />
-                    <col style="width: 20%;" />
-                    <col style="width: 30%;" />
-                  </colgroup>
-                  <tbody>
-                    <tr>
-                      <th class="bg-light">교육기관 ID</th>
-                      <td>{{ schoolData?.id || '-' }}</td>
-                      <th class="bg-light">학교명</th>
-                      <td>
-                        <input v-model="name" type="text" class="form-control" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="bg-light">교육기관 유형</th>
-                      <td colspan="3">
-                        <select v-model="selectedSchoolTypeId" class="form-select">
-                          <option disabled value="">선택하세요</option>
-                          <option v-for="option in schoolTypeOptions" :key="option.id" :value="option.id">
-                            {{ option.name }}
-                          </option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="bg-light">대표번호</th>
-                      <td>
-                        <input v-model="representativeNumber" type="text" class="form-control" />
-                      </td>
-                      <th class="bg-light">도시</th>
-                      <td>{{ schoolData?.city || '-' }}</td>
-                    </tr>
-                    <tr>
-                      <th class="bg-light">구/군</th>
-                      <td colspan="3">
-                        <select v-model="district" class="form-select">
-                          <option disabled value="">선택하세요</option>
-                          <option v-for="option in districtOptions" :key="option" :value="option">
-                            {{ option }}
-                          </option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="bg-light">도로명/번호</th>
-                      <td>
-                        <input v-model="street" type="text" class="form-control" placeholder="도로명" />
-                      </td>
-                      <th class="bg-light">비고</th>
-                      <td>
-                        <textarea v-model="remarks" class="form-control" rows="3"></textarea>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="card-body">
+                <!-- 프로그램 선택 -->
+                <div class="mb-3">
+                  <label class="form-label">프로그램</label>
+                  <select v-model="selectedProgramId" class="form-select">
+                    <option disabled value="">선택하세요</option>
+                    <option v-for="option in programOptions" :key="option.id" :value="option.id">
+                      {{ option.programName }}
+                    </option>
+                  </select>
+                </div>
+                <!-- 교육기관 선택 -->
+                <div class="mb-3">
+                  <label class="form-label">학교</label>
+                  <select v-model="selectedSchoolId" class="form-select">
+                    <option disabled value="">선택하세요</option>
+                    <option v-for="option in schoolOptions" :key="option.id" :value="option.id">
+                      {{ option.name }}
+                    </option>
+                  </select>
+                </div>
+                <!-- 코스명 -->
+                <div class="mb-3">
+                  <label class="form-label">코스명</label>
+                  <input v-model="courseName" type="text" class="form-control" placeholder="코스명" />
+                </div>
+                <!-- 설명 -->
+                <div class="mb-3">
+                  <label class="form-label">설명</label>
+                  <textarea v-model="description" class="form-control" rows="3" placeholder="설명"></textarea>
+                </div>
+                <!-- 기간 -->
+                <div class="row mb-3">
+                  <div class="col">
+                    <label class="form-label">시작일</label>
+                    <input v-model="startDate" type="date" class="form-control" />
+                  </div>
+                  <div class="col">
+                    <label class="form-label">종료일</label>
+                    <input v-model="endDate" type="date" class="form-control" />
+                  </div>
+                </div>
+                <!-- 상태 및 비고 -->
+                <div class="mb-3">
+                  <label class="form-label">상태</label>
+                  <select v-model="status" class="form-select">
+                    <option disabled value="">선택하세요</option>
+                    <option value="OPEN">OPEN</option>
+                    <option value="INIT">INIT</option>
+                    <option value="CANCEL">CANCEL</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">비고</label>
+                  <textarea v-model="remarks" class="form-control" rows="2" placeholder="비고 내용"></textarea>
+                </div>
               </div>
             </div>
-            <!-- 담당자 정보 테이블 -->
-            <h3 class="fw-bold section-title">담당자 정보</h3>
+
+            <!-- 학급 정보 -->
+            <h3 class="fw-bold section-title">학급 정보</h3>
             <div class="card mb-4">
-              <div class="card-body p-0">
-                <table class="table table-bordered mb-0">
-                  <colgroup>
-                    <col style="width: 50%;" />
-                    <col style="width: 50%;" />
-                  </colgroup>
-                  <tbody>
-                    <tr>
-                      <th class="bg-light">담당자명</th>
-                      <td>
-                        <input v-model="managerName" type="text" class="form-control" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="bg-light">담당자 전화</th>
-                      <td>
-                        <input v-model="managerPhone" type="text" class="form-control" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col">
+                    <label class="form-label">학년</label>
+                    <input v-model="grade" type="text" class="form-control" placeholder="예: 1학년" />
+                  </div>
+                  <div class="col">
+                    <label class="form-label">반</label>
+                    <input v-model="classNo" type="text" class="form-control" placeholder="예: 3반" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">학생 수</label>
+                  <input v-model.number="studentCount" type="number" class="form-control" placeholder="학생 수" />
+                </div>
               </div>
             </div>
+
+            <!-- 세션 정보 (여러 개 추가 가능) -->
+            <h3 class="fw-bold section-title">세션 정보</h3>
+            <div class="card mb-4" v-for="(session, index) in sessions" :key="index">
+              <div class="card-body">
+                <h5>세션 {{ index + 1 }}</h5>
+                <div class="mb-3">
+                  <label class="form-label">일자</label>
+                  <input v-model="session.date" type="date" class="form-control" />
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <label class="form-label">시작시간</label>
+                    <input v-model="session.startTime" type="time" class="form-control" />
+                  </div>
+                  <div class="col">
+                    <label class="form-label">종료시간</label>
+                    <input v-model="session.endTime" type="time" class="form-control" />
+                  </div>
+                </div>
+                <!-- 필요한 강사 수 및 신청된 강사 수 표시 -->
+                <div class="row mb-3">
+                  <div class="col">
+                    <label class="form-label">필요 주강사 수</label>
+                    <input v-model.number="session.neededMainInstructors" type="number" class="form-control" placeholder="필요 주강사 수" />
+                    <small class="text-muted">신청된 주강사: {{ session.mainInstructorsCount }}</small>
+                  </div>
+                  <div class="col">
+                    <label class="form-label">필요 보조강사 수</label>
+                    <input v-model.number="session.neededAssistantInstructors" type="number" class="form-control" placeholder="필요 보조강사 수" />
+                    <small class="text-muted">신청된 보조강사: {{ session.assistantInstructorsCount }}</small>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">세션 비고</label>
+                  <input v-model="session.remarks" type="text" class="form-control" placeholder="세션 비고" />
+                </div>
+                <button type="button" class="btn btn-danger" @click="removeSession(index)">세션 삭제</button>
+              </div>
+            </div>
+            <div class="mb-4">
+              <button type="button" class="btn btn-secondary" @click="addSession">세션 추가</button>
+            </div>
+
+            <!-- 버튼 -->
             <div class="d-flex justify-content-end py-6 px-9">
-              <button type="button" class="btn btn-light me-2" @click="goBack">뒤로</button>
-              <button type="submit" class="btn btn-primary">수정하기</button>
+              <button type="button" class="btn btn-light me-2" @click="goBack">
+                뒤로
+              </button>
+              <button type="submit" class="btn btn-primary">
+                수정하기
+              </button>
             </div>
           </form>
           <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
@@ -113,174 +154,271 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
+import axios from "axios";
 import Swal from "sweetalert2";
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
+interface IProgram {
+  id: number;
+  businessId: number;
+  programName: string;
+  status: string;
+  remarks: string;
+}
+
 interface ISchool {
   id: number;
   businessId: number;
-  schoolTypeId: number;
   name: string;
-  city: string | null;
-  district: string | null;
-  street: string | null;
-  number: string | null;
-  representativeNumber: string | null;
-  managerName: string | null;
-  managerPhone: string | null;
-  signaturePath: string | null;
-  remarks: string | null;
-  createdAt: number;
-  createdId: number;
-  updatedAt: number | null;
-  updatedId: number | null;
 }
 
-interface ISchoolType {
+interface ISession {
+  date: string;
+  startTime: string;
+  endTime: string;
+  neededMainInstructors: number;         // 필요한 주강사 수 (수정 가능)
+  neededAssistantInstructors: number;      // 필요한 보조강사 수 (수정 가능)
+  mainInstructorsCount: number;            // 신청된 주강사 수 (표시 전용)
+  assistantInstructorsCount: number;       // 신청된 보조강사 수 (표시 전용)
+  status: string;
+  remarks: string;
+}
+
+interface ICourse {
   id: number;
   businessId: number;
-  name: string;
+  schoolId: number;
+  programId: number;
+  courseName: string;
   description: string;
-  createdAt: number;
-  createdId: number;
-  updatedAt: number | null;
-  updatedId: number | null;
+  startDate: string;
+  endDate: string;
+  confirmed: boolean;
+  status: string;
+  remarks: string;
+  grade: string;
+  classNo: string;
+  studentCount: number;
+  courseSessions: any[]; // 원본 세션 데이터 (추후 매핑)
 }
 
 export default defineComponent({
-  name: "SchoolEdit",
+  name: "CourseEdit",
   setup() {
     const router = useRouter();
-    const schoolData = ref<ISchool | null>(null);
-    const errorMessage = ref('');
+    const errorMessage = ref("");
+    const courseData = ref<ICourse | null>(null);
 
-    // 수정 가능한 필드
-    const name = ref('');
-    const street = ref('');
-    const district = ref('');
-    const representativeNumber = ref('');
-    const managerName = ref('');
-    const managerPhone = ref('');
-    const remarks = ref('');
+    // 수정 폼 필드
+    const selectedProgramId = ref<number | null>(null);
+    const selectedSchoolId = ref<number | null>(null);
+    const courseName = ref("");
+    const description = ref("");
+    const startDate = ref("");
+    const endDate = ref("");
+    const confirmed = ref(false);
+    const status = ref("");
+    const remarks = ref("");
+    const grade = ref("");
+    const classNo = ref("");
+    const studentCount = ref<number | null>(null);
+    // 세션은 배열로 관리 (등록 시와 동일한 구조)
+    const sessions = ref<ISession[]>([]);
 
-    // 드롭다운 옵션: 구/군 값
-    const districtOptions = [
-      "고양", "동두천", "양주", "연천", "김포", "파주",
-      "의정부", "구리", "남양주", "가평", "포천",
-      "성남", "과천", "하남", "광주", "앙평",
-      "수원", "안양", "부천", "안산", "광명", "시흥", "군포", "의왕",
-      "평택", "오산", "화성",
-      "용인", "이천", "안성", "여주"
-    ];
+    const programOptions = ref<IProgram[]>([]);
+    const schoolOptions = ref<ISchool[]>([]);
 
-    // 교육기관 유형 옵션과 선택된 교육기관 유형
-    const schoolTypeOptions = ref<ISchoolType[]>([]);
-    const selectedSchoolTypeId = ref<number | null>(null);
+    // businessId는 로컬스토리지의 user 정보에서 가져옴
+    const userStr = localStorage.getItem("user");
+    let businessIdValue = 0;
+    if (userStr) {
+      try {
+        const userObj = JSON.parse(userStr);
+        businessIdValue = userObj.businessId;
+      } catch (e) {
+        console.error("Error parsing user from localStorage", e);
+        errorMessage.value = "사용자 정보를 불러오는데 실패했습니다.";
+      }
+    } else {
+      errorMessage.value = "사용자 정보가 없습니다.";
+    }
+    const businessId = ref(businessIdValue);
 
-    const fetchSchoolData = async () => {
-      const institutionId = localStorage.getItem('selectedInstitutionId');
-      if (!institutionId) {
-        errorMessage.value = '교육기관 ID를 찾을 수 없습니다.';
+    // API 호출로 프로그램 옵션 불러오기
+    const fetchProgramOptions = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(ApiUrl("/admin/programs"), {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        programOptions.value = response.data.data.content;
+      } catch (error) {
+        console.error("Error fetching program options:", error);
+        errorMessage.value = "프로그램 옵션을 불러오는데 실패했습니다.";
+      }
+    };
+
+    // API 호출로 학교 옵션 불러오기
+    const fetchSchoolOptions = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(ApiUrl("/admin/schools"), {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        schoolOptions.value = response.data.data.content;
+      } catch (error) {
+        console.error("Error fetching school options:", error);
+        errorMessage.value = "학교 옵션을 불러오는데 실패했습니다.";
+      }
+    };
+
+    // 교육과정 상세 데이터 불러오기 (수정할 데이터 미리 채우기)
+    const fetchCourseData = async () => {
+      const selectedCourseId = localStorage.getItem("selectedCourseId");
+      if (!selectedCourseId) {
+        errorMessage.value = "교육과정 ID가 없습니다.";
         return;
       }
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get<{ success: boolean; code: number; message: string; data: ISchool }>(
-          ApiUrl(`/admin/schools/${institutionId}`),
-          { headers: { 'Authorization': `Bearer ${token}` } }
-        );
-        schoolData.value = response.data.data;
-        // 초기값 할당
-        name.value = schoolData.value.name;
-        street.value = schoolData.value.street || '';
-        district.value = schoolData.value.district || '';
-        representativeNumber.value = schoolData.value.representativeNumber || '';
-        managerName.value = schoolData.value.managerName || '';
-        managerPhone.value = schoolData.value.managerPhone || '';
-        remarks.value = schoolData.value.remarks || '';
-        selectedSchoolTypeId.value = schoolData.value.schoolTypeId;
-        // 교육기관 유형 옵션은 교육기관 레코드의 businessId를 사용하여 가져옵니다.
-        fetchSchoolTypeOptions(schoolData.value.businessId);
-      } catch (error) {
-        console.error('Error fetching school data:', error);
-        errorMessage.value = '교육기관 정보를 불러오는 데 실패했습니다.';
-      }
-    };
-
-    const fetchSchoolTypeOptions = async (businessId: number) => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(ApiUrl(`/admin/school-types?businessId=${businessId}`), {
-          headers: { 'Authorization': `Bearer ${token}` }
+        const response = await axios.get(ApiUrl(`/admin/courses/${selectedCourseId}/detailed`), {
+          headers: { Authorization: `Bearer ${token}` },
         });
-        // 응답 데이터의 content 배열 사용
-        schoolTypeOptions.value = response.data.data.content;
+        const data = response.data.data;
+        courseData.value = data;
+        // 기존 데이터를 폼 필드에 할당
+        selectedProgramId.value = data.programId;
+        selectedSchoolId.value = data.schoolId;
+        courseName.value = data.courseName;
+        description.value = data.description;
+        startDate.value = data.startDate;
+        endDate.value = data.endDate;
+        confirmed.value = data.confirmed;
+        status.value = data.status || "";
+        remarks.value = data.remarks || "";
+        grade.value = data.grade || "";
+        classNo.value = data.classNo || "";
+        studentCount.value = data.studentCount;
+        // API의 필드명이 courseSessions이므로 이를 sessions 배열로 매핑
+        sessions.value = data.courseSessions
+          ? data.courseSessions.map((s: any) => ({
+              date: s.date,
+              startTime: s.startTime.substring(0, 5),
+              endTime: s.endTime.substring(0, 5),
+              neededMainInstructors: s.neededMainInstructors,         // 필요한 주강사 수
+              neededAssistantInstructors: s.neededAssistantInstructors,   // 필요한 보조강사 수
+              mainInstructorsCount: s.mainInstructorsCount,               // 신청된 주강사 수
+              assistantInstructorsCount: s.assistantInstructorsCount,     // 신청된 보조강사 수
+              status: "INIT",
+              remarks: s.remarks,
+            }))
+          : [];
       } catch (error) {
-        console.error('Error fetching school type options:', error);
+        console.error("Error fetching course data", error);
+        errorMessage.value = "교육과정 정보를 불러오는 데 실패했습니다.";
       }
     };
 
-    const updateSchool = async () => {
-      // 빈 칸 체크 (trim하여 공백만 있는 경우도 체크)
+    // 세션 추가 및 삭제
+    const addSession = () => {
+      sessions.value.push({
+        date: "",
+        startTime: "",
+        endTime: "",
+        neededMainInstructors: 0,
+        neededAssistantInstructors: 0,
+        mainInstructorsCount: 0,
+        assistantInstructorsCount: 0,
+        status: "INIT",
+        remarks: "",
+      });
+    };
+
+    const removeSession = (index: number) => {
+      sessions.value.splice(index, 1);
+    };
+
+    // 시간 포맷 보완 함수 (HH:mm이면 HH:mm:ss로)
+    const formatTime = (time: string) => {
+      return time.length === 5 ? time + ":00" : time;
+    };
+
+    // 교육과정 수정 함수 (PUT 요청)
+    const updateCourse = async () => {
       if (
-        !name.value.trim() ||
-        !street.value.trim() ||
-        !district.value.trim() ||
-        !representativeNumber.value.trim() ||
-        !managerName.value.trim() ||
-        !managerPhone.value.trim() ||
-        !remarks.value.trim() ||
-        selectedSchoolTypeId.value === null
+        !selectedProgramId.value ||
+        !selectedSchoolId.value ||
+        !courseName.value.trim() ||
+        !startDate.value ||
+        !endDate.value ||
+        !status.value ||
+        !grade.value.trim() ||
+        !classNo.value.trim() ||
+        studentCount.value === null ||
+        sessions.value.some((s) => !s.date || !s.startTime || !s.endTime)
       ) {
         Swal.fire({
-          icon: 'error',
-          title: '입력 오류',
-          text: '모든 필드를 입력해주세요.',
+          icon: "error",
+          title: "입력 오류",
+          text: "모든 필드를 올바르게 입력해주세요.",
         });
         return;
       }
-
-      if (!schoolData.value) {
-        errorMessage.value = '교육기관 정보가 없습니다.';
+      const selectedCourseId = localStorage.getItem("selectedCourseId");
+      if (!selectedCourseId) {
+        errorMessage.value = "교육과정 ID가 없습니다.";
         return;
       }
+      const body = {
+        businessId: businessId.value,
+        schoolId: selectedSchoolId.value,
+        programId: selectedProgramId.value,
+        courseName: courseName.value,
+        description: description.value,
+        startDate: startDate.value,
+        endDate: endDate.value,
+        confirmed: confirmed.value,
+        status: status.value,
+        remarks: remarks.value,
+        grade: grade.value,
+        classNo: classNo.value,
+        studentCount: studentCount.value,
+        sessions: sessions.value.map((session, idx) => ({
+          businessId: businessId.value,
+          sessionNumber: idx + 1,
+          date: session.date,
+          startTime: formatTime(session.startTime),
+          endTime: formatTime(session.endTime),
+          neededMainInstructors: session.neededMainInstructors,         // 수정된 값 전송
+          neededAssistantInstructors: session.neededAssistantInstructors,   // 수정된 값 전송
+          status: "INIT",
+          remarks: session.remarks,
+        })),
+      };
+
+      console.log("업데이트 API 호출 URL:", ApiUrl(`/admin/courses/${selectedCourseId}/with-sessions`));
+      console.log("전송 데이터:", body);
+
       try {
         const token = localStorage.getItem("token");
-        const body = {
-          businessId: schoolData.value.businessId, // 기존 레코드의 businessId 사용
-          schoolTypeId: selectedSchoolTypeId.value,
-          name: name.value,
-          city: schoolData.value.city, // 수정 불가
-          district: district.value,
-          street: street.value,
-          // number 필드는 제외
-          representativeNumber: representativeNumber.value,
-          managerName: managerName.value,
-          managerPhone: managerPhone.value,
-          signaturePath: schoolData.value.signaturePath, // 수정 불가
-          remarks: remarks.value
-        };
-        await axios.put(
-          ApiUrl(`/admin/schools/${schoolData.value.id}`),
-          body,
-          { headers: { 'Authorization': `Bearer ${token}` } }
-        );
+        await axios.put(ApiUrl(`/admin/courses/${selectedCourseId}/with-sessions`), body, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         Swal.fire({
-          icon: 'success',
-          title: '수정 완료',
-          text: '교육기관 정보가 성공적으로 수정되었습니다.',
+          icon: "success",
+          title: "수정 완료",
+          text: "교육과정 정보가 성공적으로 수정되었습니다.",
         }).then(() => {
-          router.push({ name: "admin-SchoolDetails", params: { id: schoolData.value.id } });
+          router.push({ name: "admin-CourseDetails", params: { id: selectedCourseId } });
         });
       } catch (error) {
-        console.error('Error updating school:', error);
+        console.error("Error updating course", error);
         Swal.fire({
-          icon: 'error',
-          title: '수정 실패',
-          text: '교육기관 정보를 수정하는 데 실패했습니다.',
+          icon: "error",
+          title: "수정 실패",
+          text: "교육과정 정보를 수정하는 데 실패했습니다.",
         });
       }
     };
@@ -290,23 +428,31 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      fetchSchoolData();
+      fetchCourseData();
+      fetchProgramOptions();
+      fetchSchoolOptions();
     });
 
     return {
-      schoolData,
       errorMessage,
-      name,
-      street,
-      district,
-      representativeNumber,
-      managerName,
-      managerPhone,
+      programOptions,
+      schoolOptions,
+      selectedProgramId,
+      selectedSchoolId,
+      courseName,
+      description,
+      startDate,
+      endDate,
+      confirmed,
+      status,
       remarks,
-      districtOptions,
-      schoolTypeOptions,
-      selectedSchoolTypeId,
-      updateSchool,
+      grade,
+      classNo,
+      studentCount,
+      sessions,
+      addSession,
+      removeSession,
+      updateCourse,
       goBack,
     };
   },
@@ -321,20 +467,6 @@ export default defineComponent({
   border-bottom: 2px solid #dee2e6;
   padding-bottom: 0.5rem;
 }
-.table {
-  margin-bottom: 1.5rem;
-}
-.table th,
-.table td {
-  vertical-align: middle;
-}
-.table th {
-  font-weight: 600;
-  background-color: #f8f9fa;
-}
-.alert {
-  margin-top: 1rem;
-}
 .card {
   margin-bottom: 1rem;
 }
@@ -342,21 +474,10 @@ export default defineComponent({
   background-color: #f7f9fc;
   border-bottom: 1px solid #e3e6f0;
 }
-.card-title {
-  margin-bottom: 0;
-}
 .btn {
   min-width: 100px;
 }
-@media (max-width: 575.98px) {
-  .row .col-md-6,
-  .row .col-md-4,
-  .row .col-md-12 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
-.card-body {
-  padding: 1rem;
+.alert {
+  margin-top: 1rem;
 }
 </style>

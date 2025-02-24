@@ -39,14 +39,10 @@
 
   <!--begin::Row-->
   <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-    <!--begin::Col-->
     <div class="col-xxl-12">
-      <!--begin::Card-->
       <div class="card">
         <div class="card-header border-0 pt-6">
-          <!--begin::Card title-->
           <div class="card-title">
-            <!--begin::Search-->
             <div class="d-flex align-items-center position-relative my-1">
               <KTIcon
                 icon-name="magnifier"
@@ -61,22 +57,16 @@
                 placeholder="Search Subscriptions"
               />
             </div>
-            <!--end::Search-->
           </div>
-          <!--begin::Card title-->
 
-          <!--begin::Card toolbar-->
           <div class="card-toolbar">
-            <!--begin::Toolbar-->
             <div
               v-if="selectedIds.length === 0"
               class="d-flex justify-content-end"
               data-kt-subscription-table-toolbar="base"
             >
             </div>
-            <!--end::Toolbar-->
 
-            <!--begin::Group actions-->
             <div v-else class="d-flex justify-content-end align-items-center">
               <div class="fw-bold me-5">
                 <span class="me-2">{{ selectedIds.length }}</span
@@ -90,9 +80,7 @@
                 Delete Selected
               </button>
             </div>
-            <!--begin::Card header-->
             <div class="card-toolbar">
-              <!--begin::Menu-->
               <button
                 type="button"
                 class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -103,15 +91,9 @@
                 <KTIcon icon-name="category" icon-class="fs-2" />
               </button>
               <Dropdown1></Dropdown1>
-              <!--end::Menu-->
             </div>
-            <!--end::Group actions-->
           </div>
-          <!--end::Card toolbar-->
         </div>
-        <!--end::Card header-->
-
-        <!--begin::Card body-->
         <div class="card-body pt-0">
           <KTDatatable
             @on-sort="sort"

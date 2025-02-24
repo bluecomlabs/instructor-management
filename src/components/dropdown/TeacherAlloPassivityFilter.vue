@@ -4,7 +4,7 @@
     data-kt-menu="true"
   >
     <div class="px-7 py-5 d-flex justify-content-between align-items-center">
-      <div class="fs-5 text-gray-900 fw-bold">교육과정 필터링</div>
+      <div class="fs-5 text-gray-900 fw-bold">출강 확정 조회 필터링</div>
       <button
         ref="closeButton"
         type="button"
@@ -16,58 +16,57 @@
     </div>
     <div class="separator border-gray-200"></div>
     <div class="px-7 py-5">
-      <!-- 교육과정명 입력 -->
-      <div class="mb-10">
-        <label class="form-label fw-semibold">교육과정명</label>
+      <!-- 강사명 필터 -->
+      <!-- <div class="mb-10">
+        <label class="form-label fw-semibold">강사명</label>
         <div>
           <input
             type="text"
             class="form-control form-control-solid"
-            placeholder="교육과정명을 입력해주세요."
-            v-model="data.courseName"
+            placeholder="강사명을 입력해주세요."
+            v-model="filter.instructorName"
+          />
+        </div>
+      </div> -->
+      <!-- 프로그램명 필터 -->
+      <div class="mb-10">
+        <label class="form-label fw-semibold">프로그램명</label>
+        <div>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            placeholder="프로그램명을 입력해주세요."
+            v-model="filter.courseName"
           />
         </div>
       </div>
-
-      <!-- 교육과정 상태 선택 -->
-      <div class="mb-10">
-        <label class="form-label fw-semibold">상태</label>
+      <!-- 신청 상태 필터 -->
+      <!-- <div class="mb-10">
+        <label class="form-label fw-semibold">신청 상태</label>
         <div>
-          <select v-model="data.status" class="form-select">
-            <option value="">전체 상태</option>
-            <option value="CONFIRMED">확정</option>
-            <option value="OPEN">모집중</option>
-            <option value="CLOSED">종료</option>
+          <select class="form-select form-select-solid" v-model="filter.assignmentStatus">
+            <option value="">전체</option>
+            <option value="INIT">신청 대기중</option>
+            <option value="OPEN">열림</option>
+            <option value="CONFIRMED">수락됨</option>
+            <option value="REJECTED">거절됨</option>
           </select>
         </div>
-      </div>
-
-      <!-- 비고 입력 -->
+      </div> -->
+      <!-- 날짜 필터 -->
       <div class="mb-10">
-        <label class="form-label fw-semibold">비고</label>
-        <div>
-          <input
-            type="text"
-            class="form-control form-control-solid"
-            placeholder="비고를 입력해주세요."
-            v-model="data.remarks"
-          />
+        <label class="form-label fw-semibold">날짜</label>
+        <div class="input-group">
+          <input type="date" v-model="filter.startDate" class="form-control" placeholder="시작 날짜" />
+          <span class="input-group-text">~</span>
+          <input type="date" v-model="filter.endDate" class="form-control" placeholder="종료 날짜" />
         </div>
       </div>
-
       <div class="d-flex justify-content-end">
-        <button
-          type="reset"
-          class="btn btn-sm btn-light btn-active-light-primary me-2"
-          @click="resetForm"
-        >
+        <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" @click="resetForm">
           초기화
         </button>
-        <button
-          type="submit"
-          class="btn btn-sm btn-primary"
-          @click="submitForm"
-        >
+        <button type="submit" class="btn btn-sm btn-primary" @click="submitForm">
           필터 적용
         </button>
       </div>
@@ -76,29 +75,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import Swal from "sweetalert2";
 
 interface Filter {
+  instructorName: string;
   courseName: string;
-  status: string;
-  remarks: string;
+  assignmentStatus: string;
   startDate: string;
   endDate: string;
 }
 
 export default defineComponent({
-  name: "CourseListFilter",
+  name: "AssignmentFilter",
   setup() {
-    const data = reactive<Filter>({
+    const filter = ref<Filter>({
+      instructorName: "",
       courseName: "",
-      status: "",
-      remarks: "",
+      assignmentStatus: "",
       startDate: "",
       endDate: "",
     });
-    const closeButton = ref<HTMLElement | null>(null);
-    return { data, closeButton };
+    return { filter };
   },
   methods: {
     submitForm() {
@@ -111,8 +109,7 @@ export default defineComponent({
         cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
-          // 필터 데이터 emit 후 닫기
-          this.$emit("apply-filter", { ...this.data });
+          this.$emit("apply-filter", this.filter);
           (this.$refs.closeButton as HTMLElement).click();
         }
       });
@@ -127,12 +124,14 @@ export default defineComponent({
         cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.data.courseName = "";
-          this.data.status = "";
-          this.data.remarks = "";
-          this.data.startDate = "";
-          this.data.endDate = "";
-          this.$emit("apply-filter", { ...this.data });
+          this.filter = {
+            instructorName: "",
+            courseName: "",
+            assignmentStatus: "",
+            startDate: "",
+            endDate: "",
+          };
+          this.$emit("apply-filter", this.filter);
           (this.$refs.closeButton as HTMLElement).click();
         }
       });
@@ -144,11 +143,6 @@ export default defineComponent({
 <style scoped>
 .modal-content {
   height: 60%;
-  overflow-y: auto;
-}
-
-.dropdown-menu {
-  max-height: 300px;
   overflow-y: auto;
 }
 </style>

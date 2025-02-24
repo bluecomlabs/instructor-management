@@ -1,69 +1,118 @@
 <template>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      <!-- Header content (unchanged) -->
+      <div class="card-title"></div>
+      <div class="card-toolbar">
+        <div class="card-toolbar">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+            data-kt-menu-trigger="click"
+            data-kt-menu-placement="bottom-end"
+            data-kt-menu-flip="top-end"
+          >
+            <KTIcon icon-name="category" icon-class="fs-2" />
+          </button>
+          <EduViewFilter @apply-filter="handleFilter" />
+        </div>
+      </div>
     </div>
 
     <div class="card-body pt-0">
-      <!-- Loading Overlay -->
       <div v-if="isLoading" class="overlay">
         <div class="loader"></div>
       </div>
 
       <KTDatatable
-        @on-sort="handleSort"
-        @on-items-per-page-change="onItemsPerPageChange"
+        @on-sort="sort"
+        @on-items-select="onItemSelect"
         :data="data"
         :header="headerConfig"
         :checkbox-enabled="false"
+        @selection-change="onSelectionChange"
       >
-        <!-- Updated slot with click event -->
-        <template v-slot:programName="{ row: item }">
-          <div
-            class="column-programName"
-            @click="onRecordClick(item)"
-            style="cursor: pointer;"
-          >
-            {{ item.programName }}
+        <template v-slot:courseName="{ row: course }">
+          <div class="column-courseName" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.courseName }}
           </div>
         </template>
-        <!-- Other columns remain the same -->
-        <template v-slot:institutionName="{ row: item }">
-          <div class="column-institutionName">
-            {{ item.institutionName }}
+        <template v-slot:programName="{ row: course }">
+          <div class="column-programName" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.programName }}
           </div>
         </template>
-        <template v-slot:chapterNumber="{ row: item }">
-          <div class="column-chapterNumber">
-            {{ item.chapterNumber }}
+        <template v-slot:schoolName="{ row: course }">
+          <div class="column-schoolName" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.schoolName }}
           </div>
         </template>
-        <template v-slot:numberOfStudents="{ row: item }">
-          <div class="column-numberOfStudents">
-            {{ item.numberOfStudents }}
+        <template v-slot:startDate="{ row: course }">
+          <div class="column-startDate" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.startDate }}
           </div>
         </template>
-        <template v-slot:grade="{ row: item }">
-          <div class="column-grade">
-            {{ item.grade }}
+        <template v-slot:endDate="{ row: course }">
+          <div class="column-endDate" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.endDate }}
           </div>
         </template>
-        <template v-slot:classNumber="{ row: item }">
-          <div class="column-classNumber">
-            {{ item.classNumber }}
+        <template v-slot:status="{ row: course }">
+          <div class="column-status" @click="onProgramClick(course)" style="cursor: pointer;">
+            <span :class="`badge py-3 px-4 fs-7 badge-light-${statusColor[course.status] || 'secondary'}`">
+              {{ course.status }}
+            </span>
           </div>
         </template>
-        <template v-slot:date="{ row: item }">
-          <div class="column-date">
-            {{ item.date }}
+        <template v-slot:remarks="{ row: course }">
+          <div class="column-remarks" @click="onProgramClick(course)" style="cursor: pointer;">
+            {{ course.remarks }}
           </div>
         </template>
       </KTDatatable>
 
-      <!-- Pagination Controls (unchanged) -->
       <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
-          <!-- Pagination items -->
+          <ul class="pagination">
+            <li class="page-item" :class="{ disabled: currentPage === 0 }" @click="onPageChange(0)">
+              <a class="page-link">
+                <i class="ki-duotone ki-double-left fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === 0 }" @click="onPageChange(currentPage - 1)">
+              <i class="page-link ki-duotone ki-left fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === currentPage + 1 }"
+              @click="onPageChange(page - 1)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(currentPage + 1)"
+            >
+              <i class="page-link ki-duotone ki-right fs-2"></i>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage + 1 === totalPages }"
+              @click="onPageChange(totalPages - 1)"
+            >
+              <a class="page-link">
+                <i class="ki-duotone ki-double-right fs-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </a>
+            </li>
+          </ul>
         </nav>
       </div>
     </div>
@@ -72,227 +121,74 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import axios from "axios";
+import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import EduViewFilter from "@/components/dropdown/EduViewFilter.vue";
 import { ApiUrl } from "@/assets/ts/_utils/api";
 
-interface ISubscription {
+interface ICourse {
   id: number;
-  programName: string;
-  institutionName: string;
-  chapterNumber: number;
-  numberOfStudents: number;
-  grade: number;
-  classNumber: number;
-  date: string;
+  courseName: string | null;
+  programName: string | null;
+  schoolName: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  status: string;
+  remarks: string | null;
 }
 
 export default defineComponent({
-  name: "kt-subscription-list",
+  name: "kt-course-list",
   components: {
     KTDatatable,
+    EduViewFilter,
   },
   setup() {
     const router = useRouter();
-    const filters = ref({
-      startDate: "",
-      endDate: "",
-      programName: "",
-      institutionName: "",
-    });
-
-    const handleFilter = (filterData: any) => {
-      filters.value = filterData;
-      currentPage.value = 0;
-      fetchData(currentPage.value, currentSortBy.value, filters.value);
-    };
-
-    const data = ref<Array<ISubscription>>([]);
-    const isAscending = ref({
-      programName: true,
-      institutionName: true,
-      chapterNumber: true,
-      numberOfStudents: true,
-      grade: true,
-      classNumber: true,
-      date: true,
-    });
-    const isLoading = ref(false);
-    const currentSortBy = ref<string>("");
-
-    const headerConfig = ref([
-      {
-        columnName: "프로그램명",
-        columnLabel: "programName",
-        sortEnabled: true,
-        columnWidth: 200,
-      },
-      {
-        columnName: "교육기관",
-        columnLabel: "institutionName",
-        sortEnabled: true,
-        columnWidth: 170,
-      },
-      {
-        columnName: "차시",
-        columnLabel: "chapterNumber",
-        sortEnabled: true,
-        columnWidth: 80,
-      },
-      {
-        columnName: "학생 수",
-        columnLabel: "numberOfStudents",
-        sortEnabled: true,
-        columnWidth: 80,
-      },
-      {
-        columnName: "학년",
-        columnLabel: "grade",
-        sortEnabled: true,
-        columnWidth: 80,
-      },
-      {
-        columnName: "반",
-        columnLabel: "classNumber",
-        sortEnabled: true,
-        columnWidth: 80,
-      },
-      {
-        columnName: "날짜",
-        columnLabel: "date",
-        sortEnabled: true,
-        columnWidth: 150,
-      },
-    ]);
-
+    const data = ref<Array<ICourse>>([]);
     const totalElements = ref<number>(0);
     const totalPages = ref<number>(0);
     const currentPage = ref<number>(0);
     const pageSize = ref<number>(10);
+    const search = ref<string>("");
+    const selectedItems = ref<Array<ICourse>>([]);
+    const selectedIds = ref<Array<number>>([]);
 
-    const fetchData = async (
-      page: number = 0,
-      sortBy: string = "",
-      filtersData = filters.value
-    ) => {
-      try {
-        isLoading.value = true;
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token이 없습니다.");
-        }
+    const headerConfig = ref([
+      { columnName: "과정명", columnLabel: "courseName", sortEnabled: true, columnWidth: 150 },
+      { columnName: "프로그램명", columnLabel: "programName", sortEnabled: true, columnWidth: 150 },
+      { columnName: "교육기관명", columnLabel: "schoolName", sortEnabled: true, columnWidth: 150 },
+      { columnName: "시작일", columnLabel: "startDate", sortEnabled: true, columnWidth: 150 },
+      { columnName: "종료일", columnLabel: "endDate", sortEnabled: true, columnWidth: 150 },
+      // { columnName: "상태", columnLabel: "status", sortEnabled: true, columnWidth: 100 },
+      { columnName: "비고", columnLabel: "remarks", sortEnabled: false, columnWidth: 200 },
+    ]);
 
-        const filterQuery = buildFilterQuery(filtersData);
-
-        const sortQuery = sortBy || "&sortBy=createdAt&direction=asc";
-
-        const url = ApiUrl(
-          `/api/v1/user/instructor-applications/application-list?page=${page}&size=${pageSize.value}${sortQuery}${filterQuery}`
-        );
-
-        console.log("API 호출 URL:", url);
-
-        const response = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        console.log("API 응답:", response.data);
-
-        const apiData = response.data.content.map((item: any) => ({
-          id: item.educationId,
-          programName: item.programName,
-          institutionName: item.institutionName,
-          chapterNumber: item.chapterNumber,
-          numberOfStudents: item.numberOfStudents,
-          grade: item.grade,
-          classNumber: item.classNumber,
-          date: item.date,
-        }));
-
-        data.value = apiData;
-        totalElements.value = response.data.totalElements;
-        totalPages.value = response.data.totalPages;
-      } catch (error) {
-        console.error("데이터를 가져오는데 실패했습니다:", error);
-      } finally {
-        isLoading.value = false;
-      }
+    const statusColor = {
+      READY: "primary",
+      // 다른 상태도 필요 시 추가
     };
 
-    const buildFilterQuery = (filtersData: any) => {
-      let query = "";
-      if (filtersData.startDate) {
-        query += `&startDate=${filtersData.startDate}`;
-      }
-      if (filtersData.endDate) {
-        query += `&endDate=${filtersData.endDate}`;
-      }
-      if (filtersData.programName) {
-        query += `&programName=${encodeURIComponent(filtersData.programName)}`;
-      }
-      if (filtersData.institutionName) {
-        query += `&institutionName=${encodeURIComponent(
-          filtersData.institutionName
-        )}`;
-      }
-      return query;
-    };
-
-    onMounted(() => {
-      fetchData(currentPage.value, currentSortBy.value, filters.value);
+    const isLoading = ref<boolean>(false);
+    const isAscending = ref({
+      courseName: true,
+      programName: true,
+      schoolName: true,
+      startDate: true,
+      endDate: true,
+      status: true,
     });
+    const currentSortBy = ref<string>("");
 
-    const onItemsPerPageChange = () => {
-      setTimeout(() => {
-        // Reinitialize any components if needed
-      }, 0);
-    };
+    const filters = ref({});
 
-    const handleSort = (sortParam: Sort) => {
-      let sortBy = "";
-      if (sortParam.label === "programName") {
-        sortBy = isAscending.value.programName
-          ? "&sortBy=programName&direction=asc"
-          : "&sortBy=programName&direction=desc";
-        isAscending.value.programName = !isAscending.value.programName;
-      } else if (sortParam.label === "institutionName") {
-        sortBy = isAscending.value.institutionName
-          ? "&sortBy=institutionName&direction=asc"
-          : "&sortBy=institutionName&direction=desc";
-        isAscending.value.institutionName = !isAscending.value.institutionName;
-      } else if (sortParam.label === "chapterNumber") {
-        sortBy = isAscending.value.chapterNumber
-          ? "&sortBy=chapterNumber&direction=asc"
-          : "&sortBy=chapterNumber&direction=desc";
-        isAscending.value.chapterNumber = !isAscending.value.chapterNumber;
-      } else if (sortParam.label === "numberOfStudents") {
-        sortBy = isAscending.value.numberOfStudents
-          ? "&sortBy=numberOfStudents&direction=asc"
-          : "&sortBy=numberOfStudents&direction=desc";
-        isAscending.value.numberOfStudents = !isAscending.value.numberOfStudents;
-      } else if (sortParam.label === "grade") {
-        sortBy = isAscending.value.grade
-          ? "&sortBy=grade&direction=asc"
-          : "&sortBy=grade&direction=desc";
-        isAscending.value.grade = !isAscending.value.grade;
-      } else if (sortParam.label === "classNumber") {
-        sortBy = isAscending.value.classNumber
-          ? "&sortBy=classNumber&direction=asc"
-          : "&sortBy=classNumber&direction=desc";
-        isAscending.value.classNumber = !isAscending.value.classNumber;
-      } else if (sortParam.label === "date") {
-        sortBy = isAscending.value.date
-          ? "&sortBy=date&direction=asc"
-          : "&sortBy=date&direction=desc";
-        isAscending.value.date = !isAscending.value.date;
-      }
-
-      currentSortBy.value = sortBy;
-      fetchData(currentPage.value, currentSortBy.value, filters.value);
+    const handleFilter = (filterData: any) => {
+      filters.value = filterData;
+      currentPage.value = 0;
+      fetchCourses(0, currentSortBy.value, filters.value);
     };
 
     const visiblePages = computed<Array<number>>(() => {
@@ -315,36 +211,171 @@ export default defineComponent({
       return pages;
     });
 
+    // API 호출 시 URLSearchParams를 이용하여 쿼리 파라미터 구성
+    const fetchCourses = async (
+      page: number = 0,
+      sortBy: string = currentSortBy.value,
+      filterData = filters.value
+    ) => {
+      try {
+        if (page === 0 && !sortBy) isLoading.value = true;
+        const token = localStorage.getItem("token");
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("size", pageSize.value.toString());
+        params.append("search", search.value);
+
+        if (sortBy) {
+          // sortBy는 예: "courseName,asc" 형식으로 전달
+          const [field, direction] = sortBy.split(",");
+          if (field && direction) {
+            params.append("sort", `${field},${direction}`);
+          }
+        }
+
+        // 필터 데이터 추가 (필요한 키만 추가)
+        Object.keys(filterData).forEach((key) => {
+          if (filterData[key]) {
+            params.append(key, filterData[key]);
+          }
+        });
+
+        const requestUrl = ApiUrl(`/user/courses/progress?${params.toString()}`);
+        console.log("API 호출 URL:", requestUrl);
+        const response = await axios.get(requestUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const responseData = response.data.data;
+        console.log("Number of contents:", responseData.content.length);
+        console.log("Total elements:", responseData.totalElements);
+        console.log("Total pages from API:", responseData.totalPages);
+
+        data.value = responseData.content.map((course: any) => ({
+          id: course.id,
+          courseName: course.courseName || "-",
+          programName: course.programName || "-",
+          schoolName: course.schoolName || "-",
+          startDate: course.startDate || "-",
+          endDate: course.endDate || "-",
+          status: course.status || "-",
+          remarks: course.remarks || "-",
+        }));
+
+        totalElements.value = responseData.totalElements;
+        totalPages.value = responseData.totalPages;
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        isLoading.value = false;
+      }
+    };
+
+    onMounted(() => {
+      fetchCourses();
+    });
+
+    const sort = (sort: Sort) => {
+      let sortBy = "";
+      if (sort.label === "courseName") {
+        sortBy = isAscending.value.courseName
+          ? "courseName,asc"
+          : "courseName,desc";
+        isAscending.value.courseName = !isAscending.value.courseName;
+      } else if (sort.label === "programName") {
+        sortBy = isAscending.value.programName
+          ? "programName,asc"
+          : "programName,desc";
+        isAscending.value.programName = !isAscending.value.programName;
+      } else if (sort.label === "schoolName") {
+        sortBy = isAscending.value.schoolName
+          ? "schoolName,asc"
+          : "schoolName,desc";
+        isAscending.value.schoolName = !isAscending.value.schoolName;
+      } else if (sort.label === "startDate") {
+        sortBy = isAscending.value.startDate
+          ? "startDate,asc"
+          : "startDate,desc";
+        isAscending.value.startDate = !isAscending.value.startDate;
+      } else if (sort.label === "endDate") {
+        sortBy = isAscending.value.endDate
+          ? "endDate,asc"
+          : "endDate,desc";
+        isAscending.value.endDate = !isAscending.value.endDate;
+      } else if (sort.label === "status") {
+        sortBy = isAscending.value.status
+          ? "status,asc"
+          : "status,desc";
+        isAscending.value.status = !isAscending.value.status;
+      } else {
+        return;
+      }
+      currentSortBy.value = sortBy;
+      fetchCourses(currentPage.value, sortBy, filters.value);
+    };
+
+    const onItemSelect = (selectedItems: Array<number>) => {
+      selectedIds.value = selectedItems;
+    };
+
+    const searchItems = () => {
+      currentPage.value = 0;
+      fetchCourses(0, currentSortBy.value, filters.value);
+    };
+
     const onPageChange = async (page: number) => {
+      const currentScrollPosition = window.scrollY;
       currentPage.value = page;
-      await fetchData(page, currentSortBy.value, filters.value);
+      await fetchCourses(page, currentSortBy.value, filters.value);
+      window.scrollTo(0, currentScrollPosition);
     };
 
-    // Added method to handle record click
-    const onRecordClick = (item: ISubscription) => {
-      // Store the id in localStorage
-      localStorage.setItem("selectedProgramId", item.id.toString());
-
-      // Navigate to the details page
-      router.push({ name: "user-MyApplEduDetails", params: { id: item.id } });
+    const onSelectionChange = (selectedRows: Array<ICourse>) => {
+      selectedItems.value = selectedRows;
     };
+
+    const onButtonAction = () => {
+      if (selectedItems.value.length > 0) {
+        console.log("선택된 과정 삭제:", selectedItems.value);
+      } else {
+        router.push({ name: "admin-CourseAdd" });
+      }
+    };
+
+    const onProgramClick = (course: ICourse) => {
+      localStorage.setItem("selectedCourseId", course.id.toString());
+      router.push({ name: "user-CourseViewDetails", params: { id: course.id } });
+    };
+
     return {
+      search,
+      searchItems,
       data,
       headerConfig,
-      onItemsPerPageChange,
-      isLoading,
-      visiblePages,
       currentPage,
       totalPages,
       onPageChange,
-      handleSort,
-      handleFilter,
+      visiblePages,
+      selectedItems,
+      onSelectionChange,
+      onButtonAction,
+      onProgramClick,
+      selectedIds,
+      sort,
+      onItemSelect,
+      isLoading,
+      isAscending,
+      currentSortBy,
       filters,
-      onRecordClick, // Expose the method to the template
+      handleFilter,
+      statusColor,
     };
   },
 });
 </script>
+
 <style scoped>
 .overlay {
   position: fixed;
@@ -369,52 +400,42 @@ export default defineComponent({
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
+}
+.vertical-separator {
+  border-left: 1px solid #dee2e6;
+  height: 40px;
+}
+.checkbox-button {
+  width: 120px;
+  height: 40px;
+  padding: 0 !important;
+  font-weight: 600;
+}
+.dropdown-button {
+  padding-left: 7px !important;
+}
+.column-courseName,
 .column-programName,
-.column-institutionName,
-.column-chapterNumber,
-.column-numberOfStudents,
-.column-grade,
-.column-classNumber,
-.column-date {
+.column-schoolName,
+.column-startDate,
+.column-endDate,
+.column-status,
+.column-remarks {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.column-programName {
-  width: 200px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-institutionName {
-  width: 170px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-chapterNumber,
-.column-numberOfStudents,
-.column-grade,
-.column-classNumber {
-  width: 80px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.column-date {
-  width: 150px;
   margin-left: auto;
   margin-right: auto;
   display: block;

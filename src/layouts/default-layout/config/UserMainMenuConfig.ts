@@ -42,7 +42,7 @@ const UserMainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "출강 신청 내역",
+        heading: "출강 확정 내역",
         route: "/user/MyApplEdu",
         keenthemesIcon: "clipboard",
         bootstrapIcon: "bi-app-indicator",

@@ -63,6 +63,38 @@
                     </table>
                   </div>
                 </div>
+                <!-- 세션 정보 -->
+                <h3 class="fw-bold section-title" v-if="courseData.courseSessions && courseData.courseSessions.length">세션 정보</h3>
+                <div v-if="courseData.courseSessions && courseData.courseSessions.length" class="card mb-4">
+                  <div class="card-body p-0">
+                    <table class="table table-bordered mb-0">
+                      <thead>
+                        <tr>
+                          <th class="bg-light">세션 번호</th>
+                          <th class="bg-light">일자</th>
+                          <th class="bg-light">시작시간</th>
+                          <th class="bg-light">종료시간</th>
+                          <th class="bg-light">주강사 수</th>
+                          <th class="bg-light">주강사</th>
+                          <th class="bg-light">보조강사 수</th>
+                          <th class="bg-light">보조강사</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="session in courseData.courseSessions" :key="session.id">
+                          <td>{{ session.sessionNumber }}</td>
+                          <td>{{ session.date }}</td>
+                          <td>{{ session.startTime }}</td>
+                          <td>{{ session.endTime }}</td>
+                          <td>{{ session.mainInstructorsCount }}</td>
+                          <td>{{ getMainInstructorNames(session) }}</td>
+                          <td>{{ session.assistantInstructorsCount }}</td>
+                          <td>{{ getAssistantInstructorNames(session) }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
               <div v-else>
                 <p>데이터를 불러오는 중입니다...</p>
@@ -75,6 +107,7 @@
           <button type="button" class="btn btn-light btn-active-light-primary me-2" @click="goBack">
             뒤로
           </button>
+          <!-- 수정 버튼 클릭 시 goEdit 함수에서 localStorage에 ID 저장 후 수정 페이지로 이동 -->
           <button type="button" class="btn btn-primary" @click="goEdit">
             수정
           </button>
@@ -89,6 +122,38 @@ import axios from 'axios';
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ApiUrl } from "@/assets/ts/_utils/api";
+
+interface IInstructor {
+  id: number;
+  businessId: number;
+  courseSessionId: number;
+  instructorId: number;
+  instructorName: string;
+  affiliation: string | null;
+  role: string;
+  status: string;
+  assignedAt: number | null;
+  isPartialAssignment: boolean;
+  createdAt: number;
+  createdId: number;
+  updatedAt: number | null;
+  updatedId: number | null;
+}
+
+interface ICourseSession {
+  id: number;
+  businessId: number;
+  businessName: string;
+  courseId: number;
+  sessionNumber: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  mainInstructors: IInstructor[];
+  assistantInstructors: IInstructor[];
+  mainInstructorsCount: number;
+  assistantInstructorsCount: number;
+}
 
 interface ICourse {
   id: number;
@@ -109,6 +174,7 @@ interface ICourse {
   createdId: number;
   updatedAt: number | null;
   updatedId: number | null;
+  courseSessions: ICourseSession[];
 }
 
 export default defineComponent({
@@ -126,8 +192,13 @@ export default defineComponent({
       }
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get<{ success: boolean; code: number; message: string; data: ICourse }>(
-          ApiUrl(`/admin/courses/${selectedCourseId}`),
+        const response = await axios.get<{
+          success: boolean;
+          code: number;
+          message: string;
+          data: ICourse;
+        }>(
+          ApiUrl(`/admin/courses/${selectedCourseId}/detailed`),
           {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -141,6 +212,14 @@ export default defineComponent({
       }
     };
 
+    const getMainInstructorNames = (session: ICourseSession): string => {
+      return session.mainInstructors.map(instructor => instructor.instructorName).join(', ');
+    };
+
+    const getAssistantInstructorNames = (session: ICourseSession): string => {
+      return session.assistantInstructors.map(instructor => instructor.instructorName).join(', ');
+    };
+
     onMounted(() => {
       fetchCourseData();
     });
@@ -149,19 +228,25 @@ export default defineComponent({
       router.push({ name: "admin-CourseList" });
     };
 
+    // 수정 버튼 클릭 시, 리스트 페이지에서 사용하는 방식과 동일하게
+    // 선택한 교육과정 ID를 localStorage에 저장하고, 수정 페이지로 이동합니다.
     const goEdit = () => {
-      if (courseData.value) {
-        router.push({ name: "admin-CourseEdit", params: { id: courseData.value.id } });
-      } else {
-        errorMessage.value = "교육과정 정보가 로드되지 않았습니다.";
-      }
-    };
+  if (courseData.value) {
+    localStorage.setItem("selectedCourseId", courseData.value.id.toString());
+    router.push({ name: "admin-CouresEdit", params: { id: courseData.value.id } });
+  } else {
+    errorMessage.value = "교육과정 정보가 로드되지 않았습니다.";
+  }
+};
+
 
     return {
       courseData,
       errorMessage,
       goBack,
       goEdit,
+      getMainInstructorNames,
+      getAssistantInstructorNames,
     };
   },
 });

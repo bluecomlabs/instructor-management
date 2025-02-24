@@ -482,7 +482,7 @@ export default defineComponent({
       if (selectedItems.value.length > 0) {
         console.log("선택된 교육 삭제:", selectedItems.value);
       } else {
-        router.push({ name: "admin-CourseAdd" });
+        router.push({ name: "admin-CouresAdd" });
       }
     };
 
@@ -509,6 +509,7 @@ export default defineComponent({
         buttonsStyling: false,
       });
       if (result.isConfirmed) {
+        console.log("[deleteFewCourses] 선택된 교육 ID:", selectedIds.value);
         try {
           for (const id of selectedIds.value) {
             await deleteCourse(id);
@@ -534,18 +535,25 @@ export default defineComponent({
       }
     };
 
+
     // 삭제
     const deleteCourse = async (id: number) => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(ApiUrl(`/admin/courses/${id}`), {
+        const apiUrl = ApiUrl(`/admin/courses/${id}`);
+        console.log("[deleteCourse] 호출 URL:", apiUrl);
+        const response = await axios.delete(apiUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("[deleteCourse] 응답 데이터:", response.data);
+        // 삭제 후 data 배열에서 해당 id 제거
         data.value = data.value.filter((course) => course.id !== id);
       } catch (error) {
         console.error("Error deleting course: ", error);
       }
     };
+
+
 
     // 상세보기 이동
     const onCourseClick = (course: ITableCourse) => {
@@ -591,7 +599,7 @@ export default defineComponent({
 <style scoped>
 /* 로딩 오버레이 스타일 */
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

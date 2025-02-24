@@ -11,9 +11,9 @@
               href="#"
               class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1"
             >
-              홍길동
+              김철수
             </a>
-            <div class="fs-5 fw-semibold text-muted mb-6">SW울산미래채움</div>
+            <div class="fs-5 fw-semibold text-muted mb-6">SW경기미래채움</div>
           </div>
           <div class="separator separator-dashed my-3"></div>
           <div id="kt_customer_view_details" class="collapse show">
