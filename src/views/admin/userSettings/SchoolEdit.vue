@@ -273,7 +273,7 @@ export default defineComponent({
           title: '수정 완료',
           text: '교육기관 정보가 성공적으로 수정되었습니다.',
         }).then(() => {
-          router.push({ name: "admin-SchoolDetails", params: { id: schoolData.value.id } });
+          router.push({ name: "admin-SchoolDetails" });
         });
       } catch (error) {
         console.error('Error updating school:', error);

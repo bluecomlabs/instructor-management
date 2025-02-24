@@ -58,7 +58,7 @@ import ChartsWidget3 from "@/components/widgets/charts/Widget3.vue";
 import ChartsWidget4 from "@/components/widgets/charts/Widget4.vue";
 import ChartsWidget5 from "@/components/widgets/charts/Widget5.vue";
 import ChartsWidget6 from "@/components/widgets/charts/Widget6.vue";
-import ChartsWidget7 from "@/components/widgets/charts/UserSummary.vue";
+// import ChartsWidget7 from "@/components/widgets/charts/UserSummary.vue";
 import ChartsWidget8 from "@/components/widgets/charts/Widget8.vue";
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
     ChartsWidget4,
     ChartsWidget5,
     ChartsWidget6,
-    ChartsWidget7,
+    // ChartsWidget7,
     ChartsWidget8,
   },
 });

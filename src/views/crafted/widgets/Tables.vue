@@ -90,7 +90,7 @@ import TablesWidget3 from "@/components/widgets/tables/Widget3.vue";
 import TablesWidget4 from "@/components/widgets/tables/Widget4.vue";
 import TablesWidget5 from "@/components/widgets/tables/Widget5.vue";
 import TablesWidget6 from "@/components/widgets/tables/Widget6.vue";
-import TablesWidget7 from "@/components/widgets/tables/UserSummary.vue";
+// import TablesWidget7 from "@/components/widgets/tables/UserSummary.vue";
 import TablesWidget8 from "@/components/widgets/tables/Widget8.vue";
 import TablesWidget9 from "@/components/widgets/tables/Widget9.vue";
 import TablesWidget10 from "@/components/widgets/tables/Widget10.vue";
@@ -107,7 +107,7 @@ export default defineComponent({
     TablesWidget4,
     TablesWidget5,
     TablesWidget6,
-    TablesWidget7,
+    // TablesWidget7,
     TablesWidget8,
     TablesWidget9,
     TablesWidget10,
