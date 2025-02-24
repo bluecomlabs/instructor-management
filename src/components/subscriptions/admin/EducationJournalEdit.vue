@@ -252,7 +252,7 @@ export default defineComponent({
       // 사진 자료 배열 (초기 기본 사진)
       photos: [
         { src: "../../../../public/test1.jpg", alt: "사진1" },
-        { src: "../../../../public/test2.jpeg", alt: "사진2" },
+        { src: "../../../../public/test2.jpg", alt: "사진2" },
       ],
     };
   },

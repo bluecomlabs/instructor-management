@@ -91,7 +91,7 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "강사 수동 배정",
         route: "/admin/AdminEduAppl",
-        keenthemesIcon: "archive-tick",
+        keenthemesIcon: "feather",
         bootstrapIcon: "bi-printer",
       },
       {

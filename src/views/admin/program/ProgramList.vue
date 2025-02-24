@@ -232,7 +232,7 @@ export default defineComponent({
     const totalElements = ref(0);
     const totalPages = ref(0);
     const currentPage = ref(0);
-    const pageSize = ref(5);
+    const pageSize = ref(10);
 
     // 선택된 아이템
     const selectedItems = ref<ITableProgram[]>([]);

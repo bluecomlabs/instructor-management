@@ -442,7 +442,7 @@ export default defineComponent({
             Authorization: `Bearer ${token}`,
           },
         });
-        Swal.fire("Success", `${selectedRole.value} 신청이 완료되었습니다.`, "success");
+        Swal.fire("성공", `${selectedRole.value} 신청이 완료되었습니다.`, "success");
         fetchCourses(currentPage.value, currentSortBy.value, filters.value, false);
       } catch (error) {
         console.error("Error applying instructor:", error);
@@ -475,7 +475,7 @@ export default defineComponent({
             Authorization: `Bearer ${token}`,
           },
         });
-        Swal.fire("Success", "신청이 취소되었습니다.", "success");
+        Swal.fire("성공", "신청이 취소되었습니다.", "success");
         fetchCourses(currentPage.value, currentSortBy.value, filters.value, false);
         if (modalVisible.value) closeModal();
       } catch (error) {

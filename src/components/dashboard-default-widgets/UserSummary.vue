@@ -83,9 +83,9 @@
               <template v-slot:header-endDate>
                 <div>종료일</div>
               </template>
-              <template v-slot:header-view>
+              <!-- <template v-slot:header-view>
                 <div>VIEW</div>
-              </template>
+              </template> -->
 
               <!-- 본문 슬롯 -->
               <template v-slot:courseName="{ row: course }">
@@ -108,13 +108,13 @@
                   {{ course.endDate }}
                 </div>
               </template>
-              <template v-slot:view="{ row: course }">
+              <!-- <template v-slot:view="{ row: course }">
                 <div class="text-end">
                   <button class="btn btn-sm btn-light" @click.prevent="onViewCourse(course)">
                     <KTIcon icon-name="black-right" icon-class="fs-5 text-gray-700" />
                   </button>
                 </div>
-              </template>
+              </template> -->
             </KTDatatable>
 
             <!-- 페이지네이션 -->
@@ -180,7 +180,7 @@ export default defineComponent({
       { title: "내 출강 리스트", icon: "brifecase-tick", status: "CONFIRMED" },
       { title: "오픈 예정 교육", icon: "briefcase", status: "READY" },
       { title: "신청할 수 있는 교육", icon: "click", status: "OPEN" },
-      { title: "내가 신청한 교육", icon: "brifecase-timer", status: "APPLIED" },
+      // { title: "내가 신청한 교육", icon: "brifecase-timer", status: "APPLIED" },
       // { title: "주강사 협의", icon: "brush", status: "PENDING_ASSIGN" },
       { title: "교육 진행 중", icon: "book-open", status: "PROGRESS" },
       { title: "교육 완료", icon: "flag", status: "COMPLETE" },
@@ -216,7 +216,7 @@ export default defineComponent({
       { columnName: "학교", columnLabel: "schoolName", sortEnabled: true },
       { columnName: "시작일", columnLabel: "startDate", sortEnabled: true },
       { columnName: "종료일", columnLabel: "endDate", sortEnabled: true },
-      { columnName: "VIEW", columnLabel: "view", sortEnabled: false },
+      // { columnName: "VIEW", columnLabel: "view", sortEnabled: false },
     ]);
 
     // 페이지네이션 및 로딩 상태
@@ -488,10 +488,10 @@ export default defineComponent({
   padding: 5px;
 }
 .left-arrow {
-  left: 0;
+  left: -20px; /* 기존 0px에서 왼쪽으로 이동 */
 }
 .right-arrow {
-  right: 0;
+  right: -20px; /* 기존 0px에서 오른쪽으로 이동 */
 }
 
 /* 내부 콘텐츠가 모두 보이도록 처리 */

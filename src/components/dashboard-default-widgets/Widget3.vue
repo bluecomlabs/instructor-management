@@ -27,7 +27,7 @@
 
         <!--begin::Subtitle-->
         <span class="text-gray-500 pt-1 fw-semibold fs-6"
-          >8월의 프로그램 완료율</span
+          >2월의 프로그램 완료율 (더미데이터)</span
         >
         <!--end::Subtitle-->
       </div>

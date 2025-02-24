@@ -124,7 +124,7 @@
                   class="photo"
                 />
                 <img
-                  src="../../../../public/test2.jpeg"
+                  src="../../../../public/test2.jpg"
                   alt="사진2"
                   class="photo"
                 />

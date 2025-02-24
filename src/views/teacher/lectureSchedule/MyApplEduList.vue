@@ -3,7 +3,7 @@
     <div class="card-header border-0 pt-6">
       <div class="card-title"></div>
       <div class="card-toolbar">
-        <div class="card-toolbar">
+        <!-- <div class="card-toolbar">
           <button
             type="button"
             class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
@@ -14,7 +14,7 @@
             <KTIcon icon-name="category" icon-class="fs-2" />
           </button>
           <EduViewFilter @apply-filter="handleFilter" />
-        </div>
+        </div> -->
       </div>
     </div>
 

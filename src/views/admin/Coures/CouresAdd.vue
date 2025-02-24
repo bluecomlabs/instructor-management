@@ -5,13 +5,13 @@
         <div class="card-header border-0">
           <div class="card-title d-flex align-items-center">
             <i class="bi bi-plus-square me-2"></i>
-            <h2 class="fw-bold m-0">코스 등록</h2>
+            <h2 class="fw-bold m-0">과정 등록</h2>
           </div>
         </div>
         <div class="card-body">
           <form @submit.prevent="registerCourse">
             <!-- 코스 기본 정보 -->
-            <h3 class="fw-bold section-title">코스 기본 정보</h3>
+            <h3 class="fw-bold section-title">과정 기본 정보</h3>
             <div class="card mb-4">
               <div class="card-body">
                 <!-- 프로그램 선택 -->
@@ -36,8 +36,8 @@
                 </div>
                 <!-- 코스명 -->
                 <div class="mb-3">
-                  <label class="form-label">코스명</label>
-                  <input v-model="courseName" type="text" class="form-control" placeholder="코스명" />
+                  <label class="form-label">과정명</label>
+                  <input v-model="courseName" type="text" class="form-control" placeholder="과정명" />
                 </div>
                 <!-- 설명 -->
                 <div class="mb-3">
@@ -346,7 +346,7 @@ export default defineComponent({
         Swal.fire({
           icon: "success",
           title: "등록 완료",
-          text: "코스 정보가 성공적으로 등록되었습니다.",
+          text: "과정 정보가 성공적으로 등록되었습니다.",
         }).then(() => {
           router.push({ name: "admin-CourseList" });
         });
@@ -355,7 +355,7 @@ export default defineComponent({
         Swal.fire({
           icon: "error",
           title: "등록 실패",
-          text: "코스 정보를 등록하는 데 실패했습니다.",
+          text: "과정 정보를 등록하는 데 실패했습니다.",
         });
       }
     };

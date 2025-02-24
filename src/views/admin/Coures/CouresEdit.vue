@@ -5,13 +5,13 @@
         <div class="card-header border-0">
           <div class="card-title d-flex align-items-center">
             <i class="bi bi-pencil-square me-2"></i>
-            <h2 class="fw-bold m-0">코스 수정</h2>
+            <h2 class="fw-bold m-0">과정 수정</h2>
           </div>
         </div>
         <div class="card-body">
           <form @submit.prevent="updateCourse">
             <!-- 코스 기본 정보 -->
-            <h3 class="fw-bold section-title">코스 기본 정보</h3>
+            <h3 class="fw-bold section-title">과정 기본 정보</h3>
             <div class="card mb-4">
               <div class="card-body">
                 <!-- 프로그램 선택 -->
@@ -36,8 +36,8 @@
                 </div>
                 <!-- 코스명 -->
                 <div class="mb-3">
-                  <label class="form-label">코스명</label>
-                  <input v-model="courseName" type="text" class="form-control" placeholder="코스명" />
+                  <label class="form-label">과정명</label>
+                  <input v-model="courseName" type="text" class="form-control" placeholder="과정명" />
                 </div>
                 <!-- 설명 -->
                 <div class="mb-3">

@@ -42,15 +42,15 @@ const UserMainMenuConfig: Array<MenuItem> = [
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "출강 확정 내역",
+        heading: "진행 중인 교육",
         route: "/user/MyApplEdu",
         keenthemesIcon: "clipboard",
         bootstrapIcon: "bi-app-indicator",
       },
       {
-        heading: "출강 협의",
+        heading: "완료된 교육",
         route: "/user/MyApplEduList",
-        keenthemesIcon: "clipboard",
+        keenthemesIcon: "flag",
         bootstrapIcon: "bi-app-indicator",
       },
     ],

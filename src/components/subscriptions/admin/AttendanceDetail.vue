@@ -159,9 +159,9 @@ export default defineComponent({
     ];
 
     const teachers = [
-      { role: "주강사", name: "박강명", signature: "(인)" },
-      { role: "보조강사", name: "박강명2", signature: "(인)" },
-      { role: "보조강사", name: "박강명3", signature: "(인)" }
+      { role: "주강사", name: "홍길동", signature: "(인)" },
+      { role: "보조강사", name: "이상혁", signature: "(인)" },
+      { role: "보조강사2", name: "손흥민", signature: "(인)" }
     ];
 
     return {
