@@ -93,7 +93,7 @@ export default defineComponent({
       teacherName: "홍길동",
       courseName: "오조봇 실습",
       workPeriod: "2024.08.01.(목) ~ 2024.08.06.(화)",
-      institutionName: "어썸초등학교",
+      institutionName: "안산초등학교",
       students: [
         { name: "서서현", gender: "남자", school: "해운대초등학교", grade: "5학년", remark: "" },
         { name: "김민수", gender: "남자", school: "해운대초등학교", grade: "5학년", remark: "우등생" },

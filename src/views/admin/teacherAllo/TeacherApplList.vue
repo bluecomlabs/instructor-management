@@ -7,7 +7,7 @@
           <option value="READY">오픈 예정</option>
           <option value="OPEN">강사 공개</option>
           <option value="APPRIED">신청 마감</option>
-          <option value="CONFIRMED">신청됨</option>
+          <option value="CONFIRMED">확정</option>
           <option value="PAUSE">중지</option>
           <option value="CANCEL">취소</option>
         </select>
@@ -31,7 +31,7 @@
                       <option value="READY">오픈 예정</option>
                       <option value="OPEN">강사 공개</option>
                       <option value="APPRIED">신청 마감</option>
-                      <option value="CONFIRMED">신청됨</option>
+                      <option value="CONFIRMED">확정</option>
                       <option value="PAUSE">중지</option>
                       <option value="CANCEL">취소</option>
                     </select>
@@ -255,7 +255,7 @@ export default defineComponent({
       READY: "오픈 예정",
       OPEN: "강사 공개",
       APPRIED: "신청 마감",
-      CONFIRMED: "신청됨",
+      CONFIRMED: "확정",
       PAUSE: "중지",
       CANCEL: "취소",
     };

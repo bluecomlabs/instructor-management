@@ -225,7 +225,7 @@ export default defineComponent({
     });
 
     const goBack = () => {
-      router.push({ name: "admin-CourseList" });
+      router.push({ name: "admin-CouresList" });
     };
 
     // 수정 버튼 클릭 시, 리스트 페이지에서 사용하는 방식과 동일하게

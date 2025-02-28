@@ -31,7 +31,7 @@
               </tr>
               <tr>
                 <td class="text-gray-500">신청기관:</td>
-                <td class="text-gray-800">어썸초등학교</td>
+                <td class="text-gray-800">안산초등학교</td>
               </tr>
             </table>
           </div>

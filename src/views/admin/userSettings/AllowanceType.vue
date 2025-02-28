@@ -14,7 +14,7 @@
             <td class="title-cell" colspan="7">
               <h2 class="fw-bold">
                 교육관리 시스템<br />
-                <span class="big-title">교육기관 타입별 관리</span>
+                <span class="big-title">수당 타입별 관리</span>
               </h2>
             </td>
           </tr>

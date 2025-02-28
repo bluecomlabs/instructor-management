@@ -167,7 +167,7 @@ export default defineComponent({
       regionName: "수원시",
 
       // 기관 및 학급 정보
-      institutionName: "블루초등학교",
+      institutionName: "수원초등학교",
       grade: 3,
       className: 2,
 

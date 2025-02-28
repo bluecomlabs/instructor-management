@@ -197,11 +197,11 @@ export default defineComponent({
       originalGrade: 3,
       originalClassName: 2,
       programOptions: [
-        { value: "program1", label: "4차시 어썸봇과 함께하는 파이썬 코딩" },
+        { value: "program1", label: "4차시 파이참과 함께하는 파이썬 코딩" },
         { value: "program2", label: "1차시 자바 기초" }
       ],
       schoolOptions: [
-        { value: "blue", label: "블루초등학교" },
+        { value: "blue", label: "수원초등학교" },
         { value: "red", label: "레드초등학교" },
         { value: "green", label: "그린초등학교" }
       ],

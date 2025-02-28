@@ -91,7 +91,7 @@ export default defineComponent({
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "어썸봇 실습",
+        name: "안산봇 실습",
         description: "24.07.09.",
       },
       {
@@ -106,7 +106,7 @@ export default defineComponent({
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "어썸카 실습",
+        name: "안산카 실습",
         description: "24.03.09.",
       },
       {
@@ -116,7 +116,7 @@ export default defineComponent({
       },
       {
         avatar: getAssetPath("media/avatars/blank.png"),
-        name: "어썸키트 실습",
+        name: "안산키트 실습",
         description: "24.08.01.",
       },
       {

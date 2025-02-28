@@ -215,7 +215,7 @@ export default defineComponent({
         "연계거점",
       ],
       institutionNameOptions: [
-        "블루초등학교",
+        "수원초등학교",
         "그린초등학교",
         "레드초등학교",
         "노랑중학교",
@@ -225,7 +225,7 @@ export default defineComponent({
       // 수정 가능 데이터
       educationType: "센터교육",
       institutionType: "일반학교",
-      institutionName: "블루초등학교",
+      institutionName: "수원초등학교",
       grade: 3,
       className: 2,
 
